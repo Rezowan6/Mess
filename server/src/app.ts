@@ -9,6 +9,8 @@ import express, {
 } from "express";
 import morgan from "morgan";
 
+// internal import
+
 dotenv.config();
 
 const app: Application = express();
