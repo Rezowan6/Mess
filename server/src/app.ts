@@ -1,17 +1,11 @@
+import "dotenv/config";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import dotenv from "dotenv";
-import express, {
-  Application,
-  Request,
-  Response,
-  NextFunction,
-} from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 
 // internal import
-
-dotenv.config();
+import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
 
 const app: Application = express();
 
@@ -32,8 +26,9 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
+
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({
@@ -42,4 +37,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   });
 });
 
+// ------------------- 500 GLOBAL ERROR HANDLER -------------------
+app.use(globalErrorHandler);
 export default app;
