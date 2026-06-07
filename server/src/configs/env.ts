@@ -1,12 +1,21 @@
 import { z } from "zod";
 
 const envSchema = z.object({
+  DB_URL: z.string(),
+  PORT: z.string(),
+  NODE_ENV: z.string(),
   ACCESS_TOKEN_SECRET: z.string(),
   ACCESS_TOKEN_EXPIRE: z.string(),
   REFRESH_TOKEN_SECRET: z.string(),
   REFRESH_TOKEN_EXPIRE: z.string(),
   VERIFY_TOKEN_SECRET: z.string(),
   VERIFY_TOKEN_EXPIRE: z.string(),
+  FRONTEND_URL: z.string(),
+  EMAIL_SECRET: z.string(),
+  SMTP_HOST: z.string(),
+  SMTP_PORT: z.string(),
+  SMTP_EMAIL: z.string(),
+  SMTP_PASS: z.string(),
 });
 
 export type Env = z.infer<typeof envSchema>;

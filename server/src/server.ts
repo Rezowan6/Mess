@@ -1,8 +1,10 @@
+import "dotenv/config";
+import { env } from "@/configs/env.js";
 import mongoose from "mongoose";
 import app from "./app.js";
 import connectDB from "./configs/db.js";
 
-const PORT = process.env.PORT || 5000;
+const PORT = env.PORT || 5000;
 
 const startServer = async (): Promise<void> => {
   try {

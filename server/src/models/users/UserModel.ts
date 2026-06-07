@@ -8,7 +8,7 @@ export interface IUser extends Document {
   data?: string;
   role: "systemOwner" | "user" | "admin" | "subAdmin" | "messMalik";
 
-  adminId?: Types.ObjectId;
+  adminId?: Types.ObjectId | null;
   createdBy?: Types.ObjectId;
   permanentData?: Types.ObjectId;
 
