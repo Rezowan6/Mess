@@ -1,12 +1,14 @@
-import "dotenv/config";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import "dotenv/config";
 import express, { Application, NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import { env } from "./configs/env.js";
 
 // internal import
+import authRouter from "@/modules/auth/authRoutes.js";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
+import tenantRoute from "./modules/tenant/tenant.route.js"
 
 const app: Application = express();
 
@@ -29,6 +31,12 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
+
+// ------------- router -------------
+app.use("/api/tenants", tenantRoute);
+
+app.use("/api/auth", authRouter);
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {

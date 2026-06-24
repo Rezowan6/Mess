@@ -1,17 +1,20 @@
-import "dotenv/config";
 import { env } from "@/configs/env.js";
+import "dotenv/config";
 import mongoose from "mongoose";
 import app from "./app.js";
-import connectDB from "./configs/db.js";
+import sequelize from "./configs/db.js";
+import { initAssociations } from "./modules/associations/index.js";
 
-const PORT = env.PORT || 5000;
+const PORT = env.PORT || 4000;
 
 const startServer = async (): Promise<void> => {
   try {
-    await connectDB();
+    await sequelize.authenticate();
+    // initAssociations();
+    console.log("Database connected successfully");
 
     const server = app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(`Server running on port http://localhost:${PORT}`);
     });
 
     // shutdown

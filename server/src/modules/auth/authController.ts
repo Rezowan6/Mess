@@ -1,30 +1,31 @@
-import { Request, Response } from "express";
-
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { ApiResponse } from "@/utils/ApiResponse.js";
-import * as authService from "./authService.js";
+import { Request, Response } from "express";
+import * as authService from "./auth.service.js";
 
-interface RegisterBody {
-  name: string;
-  email: string;
-  password: string;
-}
+// register
+export const register = asyncHandler(async (req: Request, res: Response) => {
+  const { data, message } = await authService.register(req.body);
 
-export const register = asyncHandler(
-  async (
-    req: Request<{}, {}, RegisterBody>,
-    res: Response
-  ): Promise<void> => {
-    const { name, email, password } = req.body;
+  res.status(201).json(new ApiResponse(201, message, data));
+});
 
-    const message = await authService.register({
-      name,
-      email,
-      password,
-    });
+// verity email
+export const verify = asyncHandler(async (req: Request, res: Response) => {
+  const { token } = req.params;
 
-    res.status(201).json(
-      new ApiResponse(201, message, null)
-    );
-  }
-);
+  const { user, message } = await authService.verify(token);
+
+  res.status(201).json(new ApiResponse(201, message, user || null));
+});
+
+// login
+export const login = asyncHandler(async (req: Request, res: Response) => {
+  const { data, message } = await authService.login({
+    ...req.body,
+    ip: req,
+    userAgent: req.headers["user-agent"],
+  });
+
+  res.status(201).json(new ApiResponse(201, message, data));
+});

@@ -5,8 +5,7 @@ interface JwtPayload {
   [key: string]: any;
 }
 
-export const accessToken = (payload: JwtPayload): string => {
-  console.log("JWT FILE:", env);
+export const createAccessToken = (payload: JwtPayload): string => {
   const expiresIn =
     (env.ACCESS_TOKEN_EXPIRE as jwt.SignOptions["expiresIn"]) ?? "15m";
 
@@ -15,7 +14,7 @@ export const accessToken = (payload: JwtPayload): string => {
   });
 };
 
-export const refreshToken = (payload: JwtPayload): string => {
+export const createRefreshToken = (payload: JwtPayload): string => {
   return jwt.sign(payload, env.REFRESH_TOKEN_SECRET as string, {
     expiresIn: env.REFRESH_TOKEN_EXPIRE as SignOptions["expiresIn"] ?? "15m",
   });

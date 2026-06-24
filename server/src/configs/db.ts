@@ -1,5 +1,20 @@
 import { env } from "@/configs/env.js";
-import "dotenv/config";
+import {Sequelize} from "sequelize"
+
+
+const sequelize = new Sequelize(
+  env.DB_NAME as string,
+  env.DB_USER as string,
+  env.DB_PASS as string,
+  {
+    host: env.DB_HOST,
+    dialect: "mysql",
+  }
+);
+
+export default sequelize;
+
+/**
 import mongoose from "mongoose";
 
 const connectDB = async (): Promise<void> => {
@@ -13,7 +28,7 @@ const connectDB = async (): Promise<void> => {
     console.log("Mongoose atlas connect success!");
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.error("MongoDB connection error:", error.message);
+      console.error("MongoDB connection error:", error);
     } else {
       console.error("Unknown MongoDB connection error");
     }
@@ -23,3 +38,5 @@ const connectDB = async (): Promise<void> => {
 };
 
 export default connectDB;
+
+*/
