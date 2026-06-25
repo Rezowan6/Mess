@@ -1,10 +1,5 @@
-import User from "@/modules/user/user.model.js";
+import RefreshToken from "@/modules/refreshToken/refreshToken.model.js";
 import Tenant from "@/modules/tenant/tenant.model.js";
-import RefreshToken from "@/modules/auth/refreshToken.model.js";
+import User from "@/modules/user/user.model.js";
 
-
-export {
- User,
- Tenant,
- RefreshToken
-}
+export { RefreshToken, Tenant, User };

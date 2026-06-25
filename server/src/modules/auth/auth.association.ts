@@ -1,4 +1,4 @@
-import RefreshToken from "./refreshToken.model.js";
+import RefreshToken from "../refreshToken/refreshToken.model.js";
 import User from "../user/user.model.js";
 
 export const initAuthAssociations = () => {

@@ -1,6 +1,6 @@
-import User from "./user.model.js";
+import RefreshToken from "../refreshToken/refreshToken.model.js";
 import Tenant from "../tenant/tenant.model.js";
-import RefreshToken from "../auth/refreshToken.model.js";
+import User from "./user.model.js";
 
 export const initUserAssociations = () => {
   User.belongsTo(User, {

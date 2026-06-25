@@ -1,7 +1,26 @@
-import { DataTypes, Model } from "sequelize";
 import sequelize from "@/configs/db.js";
+import { DataTypes, Model } from "sequelize";
+import {
+  RefreshTokenAttributes,
+  RefreshTokenCreationAttributes,
+} from "./refreshToken.interface.js";
 
-class RefreshToken extends Model {}
+class RefreshToken
+  extends Model<RefreshTokenAttributes, RefreshTokenCreationAttributes>
+  implements RefreshTokenAttributes
+{
+  declare id: number;
+  declare userId: number;
+  declare tenantId: number;
+  declare tokenHash: string;
+  declare deviceInfo: string | null;
+  declare ipAddress: string | null;
+  declare userAgent: string | null;
+  declare expiresAt: Date;
+  declare revokedAt: Date | null;
+  declare createdAt: Date;
+  declare updatedAt: Date;
+}
 
 RefreshToken.init(
   {
@@ -55,7 +74,7 @@ RefreshToken.init(
     modelName: "RefreshToken",
     tableName: "refresh_tokens",
     timestamps: true,
-    
+
     indexes: [
       {
         fields: ["userId"],
@@ -70,7 +89,7 @@ RefreshToken.init(
         fields: ["expiresAt"],
       },
     ],
-  }
+  },
 );
 
 export default RefreshToken;

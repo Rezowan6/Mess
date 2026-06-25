@@ -2,17 +2,20 @@ import { ApiError } from "@/utils/ApiError.js";
 import { comparePassword } from "@/utils/bcrypt.js";
 import {
   createAccessToken,
-  createRefreshToken,
   emailVerifyToken,
+  generateRefreshToken,
   verifyToken,
 } from "@/utils/jwt.util.js";
 import sequelize from "../../configs/db.js";
 import { sendVerificationEmail } from "../email/email.service.js";
 
 import { env } from "@/configs/env.js";
-import { RefreshToken, Tenant, User } from "@/models/index.js";
+import { Tenant, User } from "@/models/index.js";
 import { getClientIp } from "@/utils/getClient.ip.js";
-import { hashToken } from "@/utils/hash.util.js";
+import {
+  createRefreshToken,
+  revokeRefreshToken,
+} from "../refreshToken/refreshToken.service.js";
 import { createTenantService } from "../tenant/tenant.service.js";
 import { createAdminUserService } from "../user/user.service.js";
 import { LoginPayload, RegisterPayload } from "./auth.interface.js";
@@ -186,18 +189,16 @@ export const login = async (data: LoginPayload) => {
   const accessToken = createAccessToken(payload);
 
   // 6. refresh token
-  const refreshToken = createRefreshToken(payload);
+  const refreshToken = generateRefreshToken(payload);
 
   const userIp = getClientIp(ip);
-  // 7. save refresh token
-  await RefreshToken.create({
+
+  await createRefreshToken({
     userId: user.id,
     tenantId: tenant.id,
-    tokenHash: hashToken(refreshToken),
-    expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-    ipAddress: userIp || null,
-    userAgent: userAgent || null,
-    revokedAt: null,
+    token: refreshToken,
+    ipAddress: userIp,
+    userAgent,
   });
 
   return {
@@ -217,5 +218,18 @@ export const login = async (data: LoginPayload) => {
         slug: tenant.slug,
       },
     },
+  };
+};
+
+export const logout = async (refreshToken: string) => {
+  if (!refreshToken) {
+    throw new ApiError(401, "Refresh token missing");
+  }
+
+  // 1. revoke token (DB update)
+  await revokeRefreshToken(refreshToken);
+
+  return {
+    message: "Logout successful",
   };
 };

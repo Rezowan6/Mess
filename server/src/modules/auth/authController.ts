@@ -1,8 +1,8 @@
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { ApiResponse } from "@/utils/ApiResponse.js";
+import { cookieOptions } from "@/utils/cookie.util.js";
 import { Request, Response } from "express";
 import * as authService from "./auth.service.js";
-import { env } from "@/configs/env.js";
 
 // register
 export const register = asyncHandler(async (req: Request, res: Response) => {
@@ -29,11 +29,19 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   });
 
   res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: env.NODE_ENV === "production",
-    sameSite: "strict",
+    ...cookieOptions,
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
   res.status(201).json(new ApiResponse(201, message, data));
+});
+
+// logout
+export const logout = asyncHandler(async (req: Request, res: Response) => {
+const refreshToken = req.cookies.refreshToken;
+  const { message, } = await authService.logout(refreshToken);
+
+  res.clearCookie("refreshToken", cookieOptions);
+
+  res.status(200).json(new ApiResponse(201, message, null));
 });
