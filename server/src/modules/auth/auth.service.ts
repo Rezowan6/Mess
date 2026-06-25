@@ -11,12 +11,12 @@ import { sendVerificationEmail } from "../email/email.service.js";
 
 import { env } from "@/configs/env.js";
 import { RefreshToken, Tenant, User } from "@/models/index.js";
+import { getClientIp } from "@/utils/getClient.ip.js";
 import { hashToken } from "@/utils/hash.util.js";
 import { createTenantService } from "../tenant/tenant.service.js";
 import { createAdminUserService } from "../user/user.service.js";
 import { LoginPayload, RegisterPayload } from "./auth.interface.js";
 import { findUserByEmail } from "./auth.repository.js";
-import { getClientIp } from "@/utils/getClient.ip.js";
 
 export const register = async (payload: RegisterPayload) => {
   const exists = await findUserByEmail(payload.email);
@@ -35,10 +35,7 @@ export const register = async (payload: RegisterPayload) => {
       transaction,
     );
 
-    const tenant = await createTenantService(
-      user.id,
-      payload.messName,
-    );
+    const tenant = await createTenantService(user.id, payload.messName);
 
     await user.update(
       {
@@ -191,7 +188,7 @@ export const login = async (data: LoginPayload) => {
   // 6. refresh token
   const refreshToken = createRefreshToken(payload);
 
-  const userIp = getClientIp(ip)
+  const userIp = getClientIp(ip);
   // 7. save refresh token
   await RefreshToken.create({
     userId: user.id,
@@ -205,9 +202,9 @@ export const login = async (data: LoginPayload) => {
 
   return {
     message: "Login successfully",
+    refreshToken,
     data: {
       accessToken,
-      refreshToken,
       user: {
         id: user.id,
         name: user.name,
