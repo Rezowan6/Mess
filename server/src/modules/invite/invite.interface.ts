@@ -16,7 +16,7 @@ export interface IInviteAttributes {
   id: number;
 
   email: string;
-  token: string;
+  tokenHash: string;
 
   role: InviteRole;
 
@@ -37,4 +37,5 @@ export interface IInviteAttributes {
 
   createdAt?: Date;
   updatedAt?: Date;
+  deletedAt?: Date;
 }

@@ -6,9 +6,10 @@ import morgan from "morgan";
 import { env } from "./configs/env.js";
 
 // internal import
-import authRouter from "@/modules/auth/authRoutes.js";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
-import tenantRoute from "./modules/tenant/tenant.route.js"
+import authRouter from "@/modules/auth/authRoutes.js";
+import invitesRouter from "@/modules/invite/invite.route.js";
+import tenantRoute from "./modules/tenant/tenant.route.js";
 
 const app: Application = express();
 
@@ -32,11 +33,10 @@ app.use(
   }),
 );
 
-
 // ------------- router -------------
 app.use("/api/tenants", tenantRoute);
-
 app.use("/api/auth", authRouter);
+app.use("/api/invites", invitesRouter);
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {

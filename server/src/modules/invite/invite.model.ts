@@ -1,11 +1,10 @@
 import sequelize from "@/configs/db.js";
+import { DataTypes, Model, Optional } from "sequelize";
 import {
-  DataTypes,
-  Model,
-  Optional,
-} from "sequelize";
-import { IInviteAttributes, InviteRole, InviteStatus } from "./invite.interface.js";
-
+  IInviteAttributes,
+  InviteRole,
+  InviteStatus,
+} from "./invite.interface.js";
 
 /* -----------------------------
    CREATION TYPE
@@ -28,11 +27,10 @@ class Invite
   extends Model<IInviteAttributes, IInviteCreationAttributes>
   implements IInviteAttributes
 {
-
   declare id: number;
 
   declare email: string;
-  declare token: string;
+  declare tokenHash: string;
 
   declare role: InviteRole;
 
@@ -53,11 +51,9 @@ class Invite
 
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
+  declare readonly deletedAt: Date;
 }
 
-/* -----------------------------
-   INIT
-------------------------------*/
 Invite.init(
   {
     id: {
@@ -74,7 +70,7 @@ Invite.init(
       },
     },
 
-    token: {
+    tokenHash: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
@@ -124,6 +120,11 @@ Invite.init(
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
+    deletedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
+    },
 
     message: {
       type: DataTypes.TEXT,
@@ -135,7 +136,7 @@ Invite.init(
     modelName: "Invite",
     tableName: "invites",
     timestamps: true,
-    paranoid: true,
+    paranoid: false,
 
     indexes: [
       {
