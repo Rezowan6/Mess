@@ -9,11 +9,28 @@ export const invite = asyncHandler(async (req: Request, res: Response) => {
   const user = req.user;
   const data = inviteSchema.parse(req.body);
 
-  const {data: inviteData, message} = await inviteService.invite({
+  const { data: inviteData, message } = await inviteService.invite({
     ...data,
     tenantId: user.tenantId,
     createdBy: user.id,
   });
 
   res.status(200).json(new ApiResponse(201, message, inviteData));
+});
+
+export const validate = asyncHandler(async (req: Request, res: Response) => {
+  const token = req.params.token;
+  console.log(token)
+
+  const { invite, message } = await inviteService.validate(token);
+
+  res.status(200).json(new ApiResponse(201, message, invite));
+});
+
+export const accept = asyncHandler(async (req: Request, res: Response) => {
+  const {token, password } = req.body;
+
+  const { user, message } = await inviteService.accept(token, password);
+
+  res.status(200).json(new ApiResponse(201, message, user));
 });

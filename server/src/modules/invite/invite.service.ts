@@ -1,10 +1,13 @@
-import { Invite,Tenant } from "@/models/index.js";
-import { hashToken } from "@/utils/hash.util.js";
 import crypto from "crypto";
+import sequelize from "@/configs/db.js";
+import { env } from "@/configs/env.js";
+import { Invite, Tenant } from "@/models/index.js";
+import { ApiError, hashPassword, hashToken } from "@/utils/index.js";
 import { findUserByEmail } from "../auth/auth.repository.js";
+import { sendInviteEmail } from "../email/inviteEmail.service.js";
+import { createUser } from "../user/user.repository.js";
 import { InviteStatus } from "./invite.interface.js";
 import { CreateInvitePayload } from "./invite.validation.js";
-import { sendInviteEmail } from "../email/inviteEmail.service.js";
 
 export const invite = async (
   payload: CreateInvitePayload & {
@@ -28,7 +31,7 @@ export const invite = async (
     },
   });
 
-  const tenent = await Tenant.findOne( {where: {ownerId: tenantId}})
+  const tenent = await Tenant.findOne({ where: { ownerId: tenantId } });
 
   if (existingInvite) {
     throw new Error("Invite already exists for this email");
@@ -56,7 +59,11 @@ export const invite = async (
     usedCount: 0,
   });
 
-  await sendInviteEmail(email,`${rawToken}`,tenent?.name )
+  await sendInviteEmail(
+    email,
+    `${env.FRONTEND_URL}/accept-invite?token=${rawToken}`,
+    tenent?.name,
+  );
 
   return {
     message: "Invite created successfully",
@@ -64,5 +71,68 @@ export const invite = async (
       invite,
       rawToken,
     },
+  };
+};
+
+export const validate = async (token: any) => {
+  const tokenHash = hashToken(token);
+
+  const invite = await Invite.findOne({
+    where: {
+      tokenHash,
+      status: InviteStatus.PENDING,
+    },
+  });
+
+  if (!invite) {
+    throw new ApiError(404, "Invalid invite");
+  }
+
+  if (invite.expiresAt < new Date()) {
+    throw new ApiError(404, "Invite expired");
+  }
+
+  if (invite.usedCount >= invite.maxUses) {
+    throw new ApiError(404, "Invite already used");
+  }
+
+  return {
+    message: "Accept invite",
+    invite,
+  };
+};
+
+export const accept = async (token: any, password: string) => {
+  const { invite, message } = await validate(token);
+
+  const hashedPassword = await hashPassword(password);
+
+  let result: any;
+
+  await sequelize.transaction(async (transaction: any) => {
+    const user = await createUser(
+      {
+        email: invite.email,
+        password: hashedPassword,
+        role: invite.role,
+        tenantId: invite.tenantId,
+      },
+      transaction,
+    );
+
+    await invite.update({
+      status: InviteStatus.ACCEPTED,
+      usedCount: invite.usedCount + 1,
+      acceptedAt: new Date(),
+    });
+
+    result = {
+      user,
+    };
+  });
+
+  return {
+    message,
+    user: result?.user,
   };
 };
