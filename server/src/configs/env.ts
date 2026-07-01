@@ -16,6 +16,7 @@ const envSchema = z.object({
   VERIFY_TOKEN_SECRET: z.string(),
   VERIFY_TOKEN_EXPIRE: z.string(),
   FRONTEND_URL: z.string(),
+  BACKEND_URL: z.string(),
   EMAIL_SECRET: z.string(),
   SMTP_HOST: z.string(),
   SMTP_PORT: z.string(),

@@ -15,6 +15,8 @@ declare global {
       PORT: string;
 
       NODE_ENV: "development" | "production";
+      FRONTEND_URL:string;
+      BACKEND_URL:string;
 
       DATABASE_HOST: string;
 

@@ -1,10 +1,12 @@
 import express from "express";
 
+import { auth, tenantMiddleware, role } from "@/middlewares/index.js";
 import * as invitesController from "./invite.controller.js";
-import { auth } from "@/middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.post("/", auth, invitesController.invite);
+const adminAccess = [auth, tenantMiddleware, role("admin")];
+
+router.post("/", ...adminAccess, invitesController.invite);
 
 export default router;

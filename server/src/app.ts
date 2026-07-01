@@ -7,7 +7,7 @@ import { env } from "./configs/env.js";
 
 // internal import
 import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
-import authRouter from "@/modules/auth/authRoutes.js";
+import authRouter from "@/modules/auth/auth.routes.js";
 import invitesRouter from "@/modules/invite/invite.route.js";
 import tenantRoute from "./modules/tenant/tenant.route.js";
 

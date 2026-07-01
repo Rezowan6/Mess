@@ -56,7 +56,7 @@ export const invite = async (
     usedCount: 0,
   });
 
-  await sendInviteEmail(email,`https://your-app.com/invite/${rawToken}`,tenent?.name )
+  await sendInviteEmail(email,`${rawToken}`,tenent?.name )
 
   return {
     message: "Invite created successfully",
