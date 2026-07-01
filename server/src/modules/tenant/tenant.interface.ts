@@ -1,6 +1,6 @@
 export interface ITenant {
   id?: number;
-  messName: string;
+  name: string;
   slug: string;
   isActive?: boolean;
   ownerId?: number;

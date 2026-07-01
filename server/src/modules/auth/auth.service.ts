@@ -214,7 +214,7 @@ export const login = async (data: LoginPayload) => {
       },
       tenant: {
         id: tenant.id,
-        name: tenant.messName,
+        name: tenant.name,
         slug: tenant.slug,
       },
     },

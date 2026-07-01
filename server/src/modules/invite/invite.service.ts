@@ -1,13 +1,11 @@
+import { Invite,Tenant } from "@/models/index.js";
 import { hashToken } from "@/utils/hash.util.js";
 import crypto from "crypto";
 import { findUserByEmail } from "../auth/auth.repository.js";
 import { InviteStatus } from "./invite.interface.js";
-import Invite from "./invite.model.js";
 import { CreateInvitePayload } from "./invite.validation.js";
+import { sendInviteEmail } from "../email/inviteEmail.service.js";
 
-/* --------------------------------
-   CREATE INVITE SERVICE
----------------------------------*/
 export const invite = async (
   payload: CreateInvitePayload & {
     tenantId: number;
@@ -29,6 +27,8 @@ export const invite = async (
       status: InviteStatus.PENDING,
     },
   });
+
+  const tenent = await Tenant.findOne( {where: {ownerId: tenantId}})
 
   if (existingInvite) {
     throw new Error("Invite already exists for this email");
@@ -55,6 +55,8 @@ export const invite = async (
     expiresAt,
     usedCount: 0,
   });
+
+  await sendInviteEmail(email,`https://your-app.com/invite/${rawToken}`,tenent?.name )
 
   return {
     message: "Invite created successfully",

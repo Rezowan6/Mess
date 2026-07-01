@@ -4,7 +4,7 @@ import { ITenant } from "./tenant.interface.js";
 
 class Tenant extends Model<ITenant> implements ITenant {
   declare id: number;
-  declare messName: string;
+  declare name: string;
   declare slug: string;
   declare ownerId: number;
   declare plan: "free" | "basic" | "premium";
@@ -21,7 +21,7 @@ Tenant.init(
       primaryKey: true,
     },
 
-    messName: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
