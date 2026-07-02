@@ -20,7 +20,7 @@ export const invite = asyncHandler(async (req: Request, res: Response) => {
 
 export const validate = asyncHandler(async (req: Request, res: Response) => {
   const token = req.params.token;
-  console.log(token)
+  console.log(token);
 
   const { invite, message } = await inviteService.validate(token);
 
@@ -28,7 +28,7 @@ export const validate = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const accept = asyncHandler(async (req: Request, res: Response) => {
-  const {token, password } = req.body;
+  const { token, password } = req.body;
 
   const { user, message } = await inviteService.accept(token, password);
 
@@ -36,7 +36,6 @@ export const accept = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const cancel = asyncHandler(async (req: Request, res: Response) => {
-
   const inviteId = Number(req.params.id);
   const tenantId = req.user.tenantId;
 
@@ -45,10 +44,11 @@ export const cancel = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json(new ApiResponse(200, message, null));
 });
 
-// export const resend = asyncHandler(async (req: Request, res: Response) => {
-//   const {token, password } = req.body;
+export const resend = asyncHandler(async (req: Request, res: Response) => {
+  const inviteId = Number(req.params.id);
+  const tenantId = req.user.tenantId;
 
-//   const { user, message } = await inviteService.accept(token, password);
+  const { message } = await inviteService.resend(inviteId, tenantId);
 
-//   res.status(200).json(new ApiResponse(201, message, user));
-// });
+  res.status(200).json(new ApiResponse(201, message, null));
+});

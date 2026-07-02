@@ -1,13 +1,21 @@
-import sequelize from "@/configs/db.js";
-import { env } from "@/configs/env.js";
-import { Invite, Tenant } from "@/models/index.js";
-import { ApiError, hashPassword, hashToken } from "@/utils/index.js";
-import crypto from "crypto";
-import { findUserByEmail } from "../auth/auth.repository.js";
-import { sendInviteEmail } from "../email/inviteEmail.service.js";
-import { createUser } from "../user/user.repository.js";
-import { InviteStatus } from "./invite.interface.js";
+import {
+  ApiError,
+  createUser,
+  env,
+  findUserByEmail,
+  generateInviteExpiry,
+  generateInviteToken,
+  hashPassword,
+  hashToken,
+  Invite,
+  InviteStatus,
+  sendInvite,
+  sendInviteEmail,
+  sequelize,
+  Tenant,
+} from "./index.js";
 import { CreateInvitePayload } from "./invite.validation.js";
+
 
 export const invite = async (
   payload: CreateInvitePayload & {
@@ -31,18 +39,17 @@ export const invite = async (
     },
   });
 
-  const tenent = await Tenant.findOne({ where: { ownerId: tenantId } });
+  const tenant = await Tenant.findOne({
+    where: { ownerId: tenantId, id: tenantId },
+  });
 
   if (existingInvite) {
     throw new Error("Invite already exists for this email");
   }
 
-  const rawToken = crypto.randomBytes(32).toString("hex");
+  const { rawToken, tokenHash } = generateInviteToken();
 
-  const tokenHash = hashToken(rawToken);
-
-  const expiresAt = new Date();
-  expiresAt.setHours(expiresAt.getHours() + 24);
+  const expiresAt = generateInviteExpiry();
 
   const invite = await Invite.create({
     email,
@@ -59,11 +66,7 @@ export const invite = async (
     usedCount: 0,
   });
 
-  await sendInviteEmail(
-    email,
-    `${env.FRONTEND_URL}/accept-invite?token=${rawToken}`,
-    tenent?.name,
-  );
+  await sendInvite(email, tenant?.name ?? "", rawToken);
 
   return {
     message: "Invite created successfully",
@@ -163,6 +166,41 @@ export const cancel = async (inviteId: number, tenantId: number) => {
   });
 
   return {
-    message:"Invite cancelled successfully"
+    message: "Invite cancelled successfully",
+  };
+};
+
+export const resend = async (inviteId: number, tenantId: number) => {
+  const invite = await Invite.findOne({ where: { id: inviteId, tenantId } });
+
+  if (!invite) {
+    throw new ApiError(404, "Invite not found");
   }
+
+  if (invite.status === InviteStatus.ACCEPTED) {
+    throw new ApiError(409, "Invite has already been accepted");
+  }
+
+  if (invite.status === InviteStatus.REVOKED) {
+    throw new ApiError(409, "Cancelled invite cannot be resent");
+  }
+  const tenant = await Tenant.findOne({ where: { ownerId: tenantId } });
+
+  const { rawToken, tokenHash } = generateInviteToken();
+
+  const expiresAt = generateInviteExpiry();
+
+  await invite.update({
+    tokenHash,
+    expiresAt,
+    status: InviteStatus.PENDING,
+  });
+  await sendInviteEmail(
+    invite.email,
+    `${env.FRONTEND_URL}/accept-invite/${rawToken}`,
+    tenant?.name ?? "",
+  );
+  return {
+    message: "Invite resent successfully",
+  };
 };
