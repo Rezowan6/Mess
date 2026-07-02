@@ -1,35 +1,9 @@
 export type Role = "systemOwner" | "user" | "admin" | "subAdmin" | "messMalik";
 
-export type InviteStatus = "pending" | "verified" | "expired";
+export const USER_STATUS = ["active", "inactive"] as const;
+export type UserStatus = (typeof USER_STATUS)[number];
 
-export interface IRefreshToken {
-  token: string;
-  createdAt: Date;
-}
-
-export interface Subscription {
-  isActive: boolean;
-  plan: "monthly";
-  startDate?: Date;
-  endDate?: Date;
-  lastPaymentId?: string;
-}
-
-export interface IUserAttributes {
-  id: number;
-  name?: string;
+export interface CreateUserDto {
   email: string;
   password: string;
-  isVerified: boolean;
-  role: Role;
-  tenantId?: number | null;
-  createdBy?: number | null;
-  isActive: boolean;
-  loginAttempts: number;
-  lockUntil?: Date;
-  lastLogin?: Date;
-  inviteStatus: InviteStatus;
-  deletedAt?: Date;
-  createdAt?: Date;
-  updatedAt?: Date;
 }

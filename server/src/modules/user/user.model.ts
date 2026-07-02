@@ -1,58 +1,43 @@
 import sequelize from "@/configs/db.js";
-import { DataTypes, Model, Optional } from "sequelize";
 import {
-  InviteStatus,
-  IRefreshToken,
-  IUserAttributes,
-  Role,
-} from "./user.interface.js";
+  CreationOptional,
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+} from "sequelize";
+import { UserStatus, USER_STATUS } from "./user.interface.js";
+import { hashPassword } from "@/utils/bcrypt.js";
 
-/* -----------------------------
-   OPTIONAL FOR CREATE()
-------------------------------*/
-export type IUserCreationAttributes = Optional<
-  IUserAttributes,
-  "id" | "createdAt" | "updatedAt"
->;
+export class User extends Model<
+  InferAttributes<User,
+  {
+    omit: "createdAt" | "updatedAt" | "deletedAt";
+  }
+  >,
+  InferCreationAttributes<User>
+> {
+  declare id: CreationOptional<number>;
 
-class User
-  extends Model<IUserAttributes, IUserCreationAttributes>
-  implements IUserAttributes
-{
-  declare id: number;
+  declare name: CreationOptional<string | null>;
 
-  declare name?: string;
   declare email: string;
+
   declare password: string;
 
-  declare isVerified: boolean;
+  declare avatar: CreationOptional<string | null>;
 
-  declare role: Role;
-  declare tenantId: number;
-  declare createdBy?: number | null;
+  declare status: CreationOptional<UserStatus>;
 
-  declare isActive: boolean;
+  declare isVerified: CreationOptional<boolean>;
 
-  declare refreshTokens: IRefreshToken[];
+  declare lastLoginAt: CreationOptional<Date | null>;
 
-  declare emailVerificationToken?: string;
-  declare passwordResetOTP?: string;
-  declare passwordResetOTPExpires?: Date;
+  declare readonly createdAt: CreationOptional<Date>;
 
-  declare inviteToken?: string;
-  declare inviteExpires?: Date;
-  declare linkAttempts?: string;
+  declare readonly updatedAt: CreationOptional<Date>;
 
-  declare loginAttempts: number;
-  declare lockUntil?: Date;
-  declare lastLogin?: Date;
-
-  declare inviteStatus: InviteStatus;
-
-  declare deletedAt?: Date;
-
-  declare readonly createdAt: Date;
-  declare readonly updatedAt: Date;
+  declare readonly deletedAt: CreationOptional<Date | null>;
 }
 
 User.init(
@@ -62,97 +47,66 @@ User.init(
       autoIncrement: true,
       primaryKey: true,
     },
-
-    name: { type: DataTypes.STRING, allowNull: true },
-
+    name: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: false,
       validate: {
         isEmail: true,
+        len: [5, 255]
       },
     },
-
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: [6, 20],
+      }
     },
-
+    avatar: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    status: {
+      type: DataTypes.ENUM(...USER_STATUS),
+      defaultValue: "active",
+    },
     isVerified: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-
-    role: {
-      type: DataTypes.ENUM(
-        "systemOwner",
-        "user",
-        "admin",
-        "subAdmin",
-        "messMalik",
-      ),
-      defaultValue: "user",
-    },
-    tenantId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: "tenants",
-        key: "id",
-      },
-    },
-    createdBy: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-
-    isActive: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
-    loginAttempts: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-    },
-
-    lockUntil: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-
-    lastLogin: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-
-    inviteStatus: {
-      type: DataTypes.ENUM("pending", "verified", "expired"),
-      defaultValue: "pending",
-    },
-
-    deletedAt: {
+    lastLoginAt: {
       type: DataTypes.DATE,
       allowNull: true,
     },
   },
   {
     sequelize,
-    modelName: "User",
+
     tableName: "users",
+
+    modelName: "User",
+
     timestamps: true,
+
     paranoid: true,
 
-    indexes: [
-      {
-        unique: true,
-        fields: ["email", "tenantId"],
-      },
-      { fields: ["tenantId"] },
-      { fields: ["role"] },
-      { fields: ["createdBy"] },
-    ],
+    underscored: true,
   },
 );
+
+User.beforeCreate(async (user) => {
+  user.password = await hashPassword(user.password);
+})
+
+User.beforeUpdate(async (user) => {
+  if (user.changed("password")) {
+    user.password = await hashPassword(user.password)
+  }
+})
 
 export default User;
