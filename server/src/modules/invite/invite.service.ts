@@ -1,8 +1,8 @@
-import crypto from "crypto";
 import sequelize from "@/configs/db.js";
 import { env } from "@/configs/env.js";
 import { Invite, Tenant } from "@/models/index.js";
 import { ApiError, hashPassword, hashToken } from "@/utils/index.js";
+import crypto from "crypto";
 import { findUserByEmail } from "../auth/auth.repository.js";
 import { sendInviteEmail } from "../email/inviteEmail.service.js";
 import { createUser } from "../user/user.repository.js";
@@ -135,4 +135,34 @@ export const accept = async (token: any, password: string) => {
     message,
     user: result?.user,
   };
+};
+
+export const cancel = async (inviteId: number, tenantId: number) => {
+  const invite = await Invite.findOne({
+    where: {
+      id: inviteId,
+      tenantId,
+    },
+  });
+
+  if (!invite) {
+    throw new ApiError(404, "Invite not found");
+  }
+
+  if (invite.status === InviteStatus.ACCEPTED) {
+    throw new ApiError(400, "Accepted invite cannot be cancelled");
+  }
+
+  if (invite.status === InviteStatus.REVOKED) {
+    throw new ApiError(400, "Invite already cancelled");
+  }
+
+  await invite.update({
+    status: InviteStatus.REVOKED,
+    revokedAt: new Date(),
+  });
+
+  return {
+    message:"Invite cancelled successfully"
+  }
 };
