@@ -1,5 +1,4 @@
-import sequelize from "@/configs/db.js";
-import { env } from "@/configs/env.js";
+import { env, sequelize } from "@/configs/index.js";
 import { Invite, Tenant } from "@/models/index.js";
 import { ApiError, hashPassword, hashToken } from "@/utils/index.js";
 import { findUserByEmail } from "../auth/auth.repository.js";

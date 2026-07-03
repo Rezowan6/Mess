@@ -1,4 +1,4 @@
-import Tenant from "./tenant.model.js";
+import { Tenant } from "@/models/index.js";
 
 export const createTenantDB = (data: any) => {
   return Tenant.create(data);

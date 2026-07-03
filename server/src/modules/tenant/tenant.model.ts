@@ -1,16 +1,31 @@
 import sequelize from "@/configs/db.js";
-import { DataTypes, Model } from "sequelize";
-import { ITenant } from "./tenant.interface.js";
+import {
+  CreationOptional,
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+} from "sequelize";
 
-class Tenant extends Model<ITenant> implements ITenant {
-  declare id: number;
+import { TENANT_STATUS, TenantStatus } from "./tenant.interface.js";
+
+export class Tenant extends Model<
+  InferAttributes<
+    Tenant,
+    {
+      omit: "createdAt" | "updatedAt" | "deletedAt";
+    }
+  >,
+  InferCreationAttributes<Tenant>
+> {
+  declare id: CreationOptional<number>;
   declare name: string;
   declare slug: string;
-  declare ownerId: number;
-  declare plan: "free" | "basic" | "premium";
-  declare isActive: boolean;
-  declare createdAt: Date;
-  declare updatedAt: Date;
+  declare status: CreationOptional<TenantStatus>;
+
+  declare readonly createdAt: CreationOptional<Date>;
+  declare readonly updatedAt: CreationOptional<Date>;
+  declare readonly deletedAt: CreationOptional<Date | null>;
 }
 
 Tenant.init(
@@ -31,20 +46,9 @@ Tenant.init(
       allowNull: false,
       unique: true,
     },
-
-    ownerId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-
-    plan: {
-      type: DataTypes.ENUM("free", "basic", "premium"),
-      defaultValue: "free",
-    },
-
-    isActive: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
+    status: {
+      type: DataTypes.ENUM(...TENANT_STATUS),
+      defaultValue: "active",
     },
   },
   {
@@ -52,7 +56,8 @@ Tenant.init(
     modelName: "Tenant",
     tableName: "tenants",
     timestamps: true,
+    paranoid: true,
+    underscored: true,
   },
 );
 
-export default Tenant;

@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
 import { env } from "@/configs/env.js";
-import User from "@/modules/user/user.model.js";
-import { ApiError } from "@/utils/ApiError.js";
-import { verifyToken } from "@/utils/jwt.util.js";
+import { User } from "@/models/index.js";
+import { ApiError, verifyToken } from "@/utils/index.js";
 import asyncHandler from "./asyncHandler.js";
 
 interface JwtPayload {

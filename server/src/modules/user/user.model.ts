@@ -109,4 +109,3 @@ User.beforeUpdate(async (user) => {
   }
 })
 
-export default User;

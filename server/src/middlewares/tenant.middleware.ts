@@ -1,4 +1,4 @@
-import Tenant from "@/modules/tenant/tenant.model.js";
+import { Tenant } from "@/models/index.js";
 import { NextFunction, Request, Response } from "express";
 
 export const tenantMiddleware = async (
