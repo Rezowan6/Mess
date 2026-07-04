@@ -1,41 +1,32 @@
-export enum InviteStatus {
-  PENDING = "pending",
-  ACCEPTED = "accepted",
-  EXPIRED = "expired",
-  REVOKED = "revoked",
+import { Membership, Tenant, User } from "@/models/index.js";
+import { RequestContext } from "@/types/requestContext.js";
+
+export const INVITE_STATUS = [
+  "pending",
+  "accepted",
+  "expired",
+  "revoked",
+] as const;
+
+export type InviteStatus = (typeof INVITE_STATUS)[number];
+
+export interface SendInvitePayload {
+  email: string;
+  context: RequestContext
 }
 
-export enum InviteRole {
-  USER = "user",
-  ADMIN = "admin",
-  SUB_ADMIN = "subAdmin",
-  MESS_MALIK = "messMalik",
+export interface SendInviteEmailPayload {
+  email: string;
+  recipientName: string;
+  messName: string;
+  inviterName: string;
+  token: string;
 }
 
-export interface IInviteAttributes {
-  id: number;
-
+export interface CreateInvitePayload {
   email: string;
   tokenHash: string;
-
-  role: InviteRole;
-
   tenantId: number;
   createdBy: number;
-
-  status: InviteStatus;
-
   expiresAt: Date;
-
-  acceptedAt?: Date | null;
-  revokedAt?: Date | null;
-
-  maxUses: number;
-  usedCount: number;
-
-  message?: string | null;
-
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date;
 }

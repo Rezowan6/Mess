@@ -1,49 +1,14 @@
-import { Request, Response, NextFunction } from "express";
-import {
-  createTenantService,
-  getTenantService,
-  getTenantsService,
-} from "./tenant.service.js";
+import { NextFunction, Request, Response } from "express";
 
-export const createTenant = async (req:Request, res:Response, next:NextFunction) => {
-  const {id, messName} = req.user;
-  try {
-    const tenant = await createTenantService(id, messName, );
+import { asyncHandler } from "@/middlewares/index.js";
+import { ApiResponse } from "@/utils/index.js";
+import * as TenantService from "./tenant.service.js";
 
-    res.status(201).json({
-      success: true,
+export const create = asyncHandler(async (req: Request, res: Response) => {
+  const { id: userId } = req.user;
 
-      data: tenant,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+  const { data, message } = await TenantService.create(userId, req.body);
 
-export const getTenant = async (req:Request, res:Response, next:NextFunction) => {
-  try {
-    const tenant = await getTenantService(Number(req.params.id));
+  res.status(201).json(new ApiResponse(201, message, data));
+});
 
-    res.json({
-      success: true,
-
-      data: tenant,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const getTenants = async (req:Request, res:Response, next:NextFunction) => {
-  try {
-    const tenants = await getTenantsService();
-
-    res.json({
-      success: true,
-
-      data: tenants,
-    });
-  } catch (err) {
-    next(err);
-  }
-};

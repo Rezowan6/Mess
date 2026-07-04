@@ -34,8 +34,8 @@ app.use(
 );
 
 // ------------- router -------------
-app.use("/api/tenants", tenantRoute);
 app.use("/api/auth", authRouter);
+app.use("/api/tenants", tenantRoute);
 app.use("/api/invites", invitesRouter);
 
 // ------------------- 404 HANDLER -------------------
@@ -43,9 +43,23 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({
     success: false,
     message: "Route not found!",
-  });
+  })
+  
 });
 
 // ------------------- 500 GLOBAL ERROR HANDLER -------------------
 app.use(globalErrorHandler);
 export default app;
+
+
+// “Create Mess after login” = ✅ correct SaaS design
+// 🎯 Final SaaS Flow
+// Register
+//    ↓
+// Verify Email
+//    ↓
+// Login
+//    ↓
+// Create Tenant (Mess)
+//    ↓
+// Auto Membership (Admin)

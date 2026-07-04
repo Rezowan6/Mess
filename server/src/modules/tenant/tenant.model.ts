@@ -58,6 +58,6 @@ Tenant.init(
     timestamps: true,
     paranoid: true,
     underscored: true,
+    indexes: [{ fields: ["slug"] }],
   },
 );
-

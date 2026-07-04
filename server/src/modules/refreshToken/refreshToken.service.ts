@@ -5,14 +5,12 @@ import RefreshToken from "./refreshToken.model.js";
 
 export const createRefreshToken = async (data: {
   userId: number;
-  tenantId: number;
   token: string;
   ipAddress?: string;
   userAgent?: string;
 }) => {
   return await RefreshToken.create({
     userId: data.userId,
-    tenantId: data.tenantId,
     tokenHash: hashToken(data.token),
     ipAddress: data.ipAddress ?? null,
     userAgent: data.userAgent ?? null,

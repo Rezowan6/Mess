@@ -1,11 +1,9 @@
-import User from "@/modules/user/user.model";
+import { RequestContext } from "./requestContext.ts";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: User;
-      role: string,
-      tenant?: any;
+      context: RequestContext;
     }
   }
 }

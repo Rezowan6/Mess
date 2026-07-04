@@ -3,52 +3,47 @@ import { Request, Response } from "express";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { ApiResponse } from "@/utils/ApiResponse.js";
 import * as inviteService from "./invite.service.js";
-import { inviteSchema } from "./invite.validation.js";
 
-export const invite = asyncHandler(async (req: Request, res: Response) => {
-  const user = req.user;
-  const data = inviteSchema.parse(req.body);
-
-  const { data: inviteData, message } = await inviteService.invite({
-    ...data,
-    tenantId: user.tenantId,
-    createdBy: user.id,
+export const send = asyncHandler(async (req: Request, res: Response) => {
+  const { invite, message } = await inviteService.send({
+    email: req.body.email,
+    context: req.context,
   });
 
-  res.status(200).json(new ApiResponse(201, message, inviteData));
+  res.status(201).json(new ApiResponse(201, message, invite));
 });
 
-export const validate = asyncHandler(async (req: Request, res: Response) => {
-  const token = req.params.token;
-  console.log(token);
+// export const validate = asyncHandler(async (req: Request, res: Response) => {
+//   const token = req.params.token;
+//   console.log(token);
 
-  const { invite, message } = await inviteService.validate(token);
+//   const { invite, message } = await inviteService.validate(token);
 
-  res.status(200).json(new ApiResponse(201, message, invite));
-});
+//   res.status(200).json(new ApiResponse(201, message, invite));
+// });
 
-export const accept = asyncHandler(async (req: Request, res: Response) => {
-  const { token, password } = req.body;
+// export const accept = asyncHandler(async (req: Request, res: Response) => {
+//   const { token, password } = req.body;
 
-  const { user, message } = await inviteService.accept(token, password);
+//   const { user, message } = await inviteService.accept(token, password);
 
-  res.status(200).json(new ApiResponse(201, message, user));
-});
+//   res.status(200).json(new ApiResponse(201, message, user));
+// });
 
-export const cancel = asyncHandler(async (req: Request, res: Response) => {
-  const inviteId = Number(req.params.id);
-  const tenantId = req.user.tenantId;
+// export const cancel = asyncHandler(async (req: Request, res: Response) => {
+//   const inviteId = Number(req.params.id);
+//   const tenantId = req.user.tenantId;
 
-  const { message } = await inviteService.cancel(inviteId, tenantId);
+//   const { message } = await inviteService.cancel(inviteId, tenantId);
 
-  res.status(200).json(new ApiResponse(200, message, null));
-});
+//   res.status(200).json(new ApiResponse(200, message, null));
+// });
 
-export const resend = asyncHandler(async (req: Request, res: Response) => {
-  const inviteId = Number(req.params.id);
-  const tenantId = req.user.tenantId;
+// export const resend = asyncHandler(async (req: Request, res: Response) => {
+//   const inviteId = Number(req.params.id);
+//   const tenantId = req.user.tenantId;
 
-  const { message } = await inviteService.resend(inviteId, tenantId);
+//   const { message } = await inviteService.resend(inviteId, tenantId);
 
-  res.status(200).json(new ApiResponse(201, message, null));
-});
+//   res.status(200).json(new ApiResponse(201, message, null));
+// });

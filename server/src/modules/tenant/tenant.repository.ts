@@ -1,5 +1,10 @@
 import { Tenant } from "@/models/index.js";
 
+export const findById = async (id: number) => {
+  return Tenant.findByPk(id);
+}
+
+
 export const createTenantDB = (data: any) => {
   return Tenant.create(data);
 };

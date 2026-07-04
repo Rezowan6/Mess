@@ -1,10 +1,12 @@
 import sequelize from "@/configs/db.js";
+import { Tenant, User } from "@/models/index.js";
 import {
   CreationOptional,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
   Model,
+  NonAttribute,
 } from "sequelize";
 import {
   MEMBER_SHIP_ROLE,
@@ -13,14 +15,14 @@ import {
   MemberShipStatus,
 } from "./membership.interface.js";
 
-export class MemberShip extends Model<
+export class Membership extends Model<
   InferAttributes<
-    MemberShip,
+    Membership,
     {
       omit: "createdAt" | "updatedAt" | "deletedAt";
     }
   >,
-  InferCreationAttributes<MemberShip>
+  InferCreationAttributes<Membership>
 > {
   declare id: CreationOptional<number>;
   declare tenantId: number;
@@ -30,12 +32,15 @@ export class MemberShip extends Model<
   declare joinedAt: CreationOptional<Date | null>;
   declare invitedBy: CreationOptional<number | null>;
 
+  declare tenant?: NonAttribute<Tenant>;
+  declare user?: NonAttribute<User>;
+
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
   declare readonly deletedAt: CreationOptional<Date | null>;
 }
 
-MemberShip.init(
+Membership.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -74,5 +79,12 @@ MemberShip.init(
     timestamps: true,
     paranoid: true,
     underscored: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ["tenantId", "userId"],
+        name: "tenant_memberships_tenant_user_unique",
+      },
+    ],
   },
 );

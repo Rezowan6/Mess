@@ -1,5 +1,5 @@
 import { env, sequelize } from "@/configs/index.js";
-import { initAssociations } from "@/models/associations.js";
+import { setupAssociations } from "@/models/associations.js";
 import "dotenv/config";
 import mongoose from "mongoose";
 import app from "./app.js";
@@ -9,7 +9,7 @@ const PORT = env.PORT || 4000;
 const startServer = async (): Promise<void> => {
   try {
     await sequelize.authenticate();
-    initAssociations();
+    setupAssociations();
     console.log("Database connected successfully");
 
     const server = app.listen(PORT, () => {

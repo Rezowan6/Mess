@@ -1,16 +1,18 @@
+import { env } from "@/configs/index.js";
 import { sendEmail } from "@/utils/sendEmail.js";
+import { SendInviteEmailPayload } from "../invite/invite.interface.js";
 
-export const sendInviteEmail = async (
-  email: string,
-  inviteLink: string,
-  name?: string,
-) => {
+export const sendInviteEmail = async (payload: SendInviteEmailPayload) => {
+  
+  const { recipientName, token, messName, email, inviterName } = payload;
+  const inviteLink = `${env.FRONTEND_URL}/accept-invite/${token}`;
+
   const html = `
     <div style="font-family: Arial, sans-serif;">
-      <h2>You are invited to join ${name ?? "Mess Management System"}</h2>
+      <h2>You are invited to join ${messName ?? "Mess Management System"}</h2>
 
       <p>
-        An admin has invited you to join the system.
+        An ${inviterName} has invited you to join the system.
       </p>
 
       <p>
@@ -39,15 +41,14 @@ export const sendInviteEmail = async (
       <br />
 
       <p>
-        Thanks,<br/>
-        Mess Management System
+        Thanks, ${recipientName}
       </p>
     </div>
   `;
 
   return await sendEmail(
     email,
-    "You are invited to join Mess Management System",
+    `You are invited to join ${messName}`,
     html,
   );
 };

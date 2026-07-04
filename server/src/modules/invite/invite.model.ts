@@ -1,57 +1,41 @@
 import sequelize from "@/configs/db.js";
-import { DataTypes, Model, Optional } from "sequelize";
 import {
-  IInviteAttributes,
-  InviteRole,
-  InviteStatus,
-} from "./invite.interface.js";
+  CreationOptional,
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+} from "sequelize";
+import { INVITE_STATUS, InviteStatus } from "./invite.interface.js";
 
-/* -----------------------------
-   CREATION TYPE
-------------------------------*/
-export type IInviteCreationAttributes = Optional<
-  IInviteAttributes,
-  | "id"
-  | "status"
-  | "usedCount"
-  | "acceptedAt"
-  | "revokedAt"
-  | "createdAt"
-  | "updatedAt"
->;
-
-/* -----------------------------
-   MODEL
-------------------------------*/
-class Invite
-  extends Model<IInviteAttributes, IInviteCreationAttributes>
-  implements IInviteAttributes
-{
-  declare id: number;
-
+export class Invite extends Model<
+  InferAttributes<
+    Invite,
+    {
+      omit: "createdAt" | "updatedAt" | "deletedAt";
+    }
+  >,
+  InferCreationAttributes<Invite>
+> {
+  declare id: CreationOptional<number>;
   declare email: string;
   declare tokenHash: string;
-
-  declare role: InviteRole;
-
+  declare status: CreationOptional<InviteStatus>;
+  
   declare tenantId: number;
   declare createdBy: number;
 
-  declare status: InviteStatus;
-
   declare expiresAt: Date;
 
-  declare acceptedAt?: Date | null;
-  declare revokedAt?: Date | null;
+  declare acceptedAt: CreationOptional<Date | null>;
+  declare revokedAt: CreationOptional<Date | null>;
 
-  declare maxUses: number;
-  declare usedCount: number;
+  declare maxUses: CreationOptional<number>;
+  declare usedCount: CreationOptional<number>;
 
-  declare message?: string | null;
-
-  declare readonly createdAt: Date;
-  declare readonly updatedAt: Date;
-  declare readonly deletedAt: Date;
+  declare readonly createdAt: CreationOptional<Date>;
+  declare readonly updatedAt: CreationOptional<Date>;
+  declare readonly deletedAt: CreationOptional<Date | null>;
 }
 
 Invite.init(
@@ -76,11 +60,6 @@ Invite.init(
       unique: true,
     },
 
-    role: {
-      type: DataTypes.ENUM("user", "admin", "subAdmin", "messMalik"),
-      allowNull: false,
-    },
-
     tenantId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -92,7 +71,7 @@ Invite.init(
     },
 
     status: {
-      type: DataTypes.ENUM("pending", "accepted", "expired", "revoked"),
+      type: DataTypes.ENUM(...INVITE_STATUS),
       defaultValue: "pending",
     },
 
@@ -120,43 +99,20 @@ Invite.init(
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
-    deletedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: null,
-    },
-
-    message: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
   },
   {
     sequelize,
     modelName: "Invite",
     tableName: "invites",
     timestamps: true,
-    paranoid: false,
-
+    paranoid: true,
+    underscored: true,
     indexes: [
-      {
-        fields: ["email", "tenantId"],
-      },
-      {
-        fields: ["token"],
-        unique: true,
-      },
-      {
-        fields: ["tenantId"],
-      },
-      {
-        fields: ["status"],
-      },
-      {
-        fields: ["expiresAt"],
-      },
+      { fields: ["email", "tenantId"] },
+      { fields: ["tokenHash"], unique: true },
+      { fields: ["tenantId"] },
+      { fields: ["status"] },
+      { fields: ["expiresAt"] },
     ],
   },
 );
-
-export default Invite;

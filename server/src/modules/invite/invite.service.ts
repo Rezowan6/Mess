@@ -1,206 +1,196 @@
-import {
-  ApiError,
-  createUser,
-  env,
-  findUserByEmail,
-  generateInviteExpiry,
-  generateInviteToken,
-  hashPassword,
-  hashToken,
-  Invite,
-  InviteStatus,
-  sendInvite,
-  sendInviteEmail,
-  sequelize,
-  Tenant,
-} from "./index.js";
-import { CreateInvitePayload } from "./invite.validation.js";
+import * as MembershipRepository from "../membership/membership.repository.js";
+import * as UserRepository from "../user/user.repository.js";
+import * as IDep from "./index.js";
+import { ApiError } from "./index.js";
+import { SendInvitePayload } from "./invite.interface.js";
+import * as InviteRepository from "./invite.repository.js";
 
+export const send = async (payload: SendInvitePayload) => {
+  const { user, membership, tenant } = payload.context;
 
-export const invite = async (
-  payload: CreateInvitePayload & {
-    tenantId: number;
-    createdBy: number;
-  },
-) => {
-  const { email, role, message, maxUses, tenantId, createdBy } = payload;
+  const email = payload.email.trim().toLocaleLowerCase();
 
-  const user = await findUserByEmail(email);
+  // User already exists?
+  const existingUser = await UserRepository.findByEmail(email);
 
-  if (user) {
-    throw new Error("User already exists for this email");
+  if (existingUser) {
+    const existingMembership = await MembershipRepository.findByTenantAndUser(
+      membership.tenantId,
+      existingUser.id,
+    );
+
+    if (existingMembership) {
+      throw new ApiError(409, "User already belongs to this tenant.");
+    }
   }
 
-  const existingInvite = await Invite.findOne({
-    where: {
-      email,
-      tenantId,
-      status: InviteStatus.PENDING,
-    },
-  });
-
-  const tenant = await Tenant.findOne({
-    where: { ownerId: tenantId, id: tenantId },
-  });
-
-  if (existingInvite) {
-    throw new Error("Invite already exists for this email");
-  }
-
-  const { rawToken, tokenHash } = generateInviteToken();
-
-  const expiresAt = generateInviteExpiry();
-
-  const invite = await Invite.create({
+  // Pending invite?
+  const pendingInvite = await InviteRepository.findPendingByEmailAndTenant(
     email,
-    role,
-    message: message ?? null,
-    maxUses: maxUses ?? 1,
+    membership.tenantId,
+  );
 
-    tenantId,
-    createdBy,
-    tokenHash,
-
-    status: InviteStatus.PENDING,
-    expiresAt,
-    usedCount: 0,
-  });
-
-  await sendInvite(email, tenant?.name ?? "", rawToken);
-
-  return {
-    message: "Invite created successfully",
-    data: {
-      invite,
-      rawToken,
-    },
-  };
-};
-
-export const validate = async (token: any) => {
-  const tokenHash = hashToken(token);
-
-  const invite = await Invite.findOne({
-    where: {
-      tokenHash,
-      status: InviteStatus.PENDING,
-    },
-  });
-
-  if (!invite) {
-    throw new ApiError(404, "Invalid invite");
+  if (pendingInvite) {
+    throw new ApiError(409, "Pending invite already exists.");
   }
 
-  if (invite.expiresAt < new Date()) {
-    throw new ApiError(404, "Invite expired");
-  }
+  // Generate token
+  const { rawToken, tokenHash } = IDep.generateInviteToken();
+  const expiresAt = IDep.generateInviteExpiry();
 
-  if (invite.usedCount >= invite.maxUses) {
-    throw new ApiError(404, "Invite already used");
-  }
-
-  return {
-    message: "Accept invite",
-    invite,
-  };
-};
-
-export const accept = async (token: any, password: string) => {
-  const { invite, message } = await validate(token);
-
-  const hashedPassword = await hashPassword(password);
-
-  let result: any;
-
-  await sequelize.transaction(async (transaction: any) => {
-    const user = await createUser(
+  const invite = await IDep.sequelize.transaction(async (transaction) => {
+    const newInvite = await InviteRepository.create(
       {
-        email: invite.email,
-        password: hashedPassword,
-        role: invite.role,
-        tenantId: invite.tenantId,
+        email,
+        tokenHash,
+        expiresAt,
+        tenantId: membership.tenantId,
+        createdBy: user.id,
       },
       transaction,
     );
 
-    await invite.update({
-      status: InviteStatus.ACCEPTED,
-      usedCount: invite.usedCount + 1,
-      acceptedAt: new Date(),
-    });
+    return newInvite;
+  });
 
-    result = {
-      user,
-    };
+  await IDep.sendInviteEmail({
+    email,
+    recipientName: existingUser?.name ?? "Member",
+    messName: tenant?.name,
+    inviterName: user?.name ?? "Admin",
+    token: rawToken,
   });
 
   return {
-    message,
-    user: result?.user,
+    message: "Invite send successfully",
+    invite,
   };
 };
 
-export const cancel = async (inviteId: number, tenantId: number) => {
-  const invite = await Invite.findOne({
-    where: {
-      id: inviteId,
-      tenantId,
-    },
-  });
+// export const validate = async (token: any) => {
+//   const tokenHash = hashToken(token);
 
-  if (!invite) {
-    throw new ApiError(404, "Invite not found");
-  }
+//   const invite = await Invite.findOne({
+//     where: {
+//       tokenHash,
+//       status: InviteStatus.PENDING,
+//     },
+//   });
 
-  if (invite.status === InviteStatus.ACCEPTED) {
-    throw new ApiError(400, "Accepted invite cannot be cancelled");
-  }
+//   if (!invite) {
+//     throw new ApiError(404, "Invalid invite");
+//   }
 
-  if (invite.status === InviteStatus.REVOKED) {
-    throw new ApiError(400, "Invite already cancelled");
-  }
+//   if (invite.expiresAt < new Date()) {
+//     throw new ApiError(404, "Invite expired");
+//   }
 
-  await invite.update({
-    status: InviteStatus.REVOKED,
-    revokedAt: new Date(),
-  });
+//   if (invite.usedCount >= invite.maxUses) {
+//     throw new ApiError(404, "Invite already used");
+//   }
 
-  return {
-    message: "Invite cancelled successfully",
-  };
-};
+//   return {
+//     message: "Accept invite",
+//     invite,
+//   };
+// };
 
-export const resend = async (inviteId: number, tenantId: number) => {
-  const invite = await Invite.findOne({ where: { id: inviteId, tenantId } });
+// export const accept = async (token: any, password: string) => {
+//   const { invite, message } = await validate(token);
 
-  if (!invite) {
-    throw new ApiError(404, "Invite not found");
-  }
+//   const hashedPassword = await hashPassword(password);
 
-  if (invite.status === InviteStatus.ACCEPTED) {
-    throw new ApiError(409, "Invite has already been accepted");
-  }
+//   let result: any;
 
-  if (invite.status === InviteStatus.REVOKED) {
-    throw new ApiError(409, "Cancelled invite cannot be resent");
-  }
-  const tenant = await Tenant.findOne({ where: { ownerId: tenantId } });
+//   await sequelize.transaction(async (transaction: any) => {
+//     const user = await createUser(
+//       {
+//         email: invite.email,
+//         password: hashedPassword,
+//         role: invite.role,
+//         tenantId: invite.tenantId,
+//       },
+//       transaction,
+//     );
 
-  const { rawToken, tokenHash } = generateInviteToken();
+//     await invite.update({
+//       status: InviteStatus.ACCEPTED,
+//       usedCount: invite.usedCount + 1,
+//       acceptedAt: new Date(),
+//     });
 
-  const expiresAt = generateInviteExpiry();
+//     result = {
+//       user,
+//     };
+//   });
 
-  await invite.update({
-    tokenHash,
-    expiresAt,
-    status: InviteStatus.PENDING,
-  });
-  await sendInviteEmail(
-    invite.email,
-    `${env.FRONTEND_URL}/accept-invite/${rawToken}`,
-    tenant?.name ?? "",
-  );
-  return {
-    message: "Invite resent successfully",
-  };
-};
+//   return {
+//     message,
+//     user: result?.user,
+//   };
+// };
+
+// export const cancel = async (inviteId: number, tenantId: number) => {
+//   const invite = await Invite.findOne({
+//     where: {
+//       id: inviteId,
+//       tenantId,
+//     },
+//   });
+
+//   if (!invite) {
+//     throw new ApiError(404, "Invite not found");
+//   }
+
+//   if (invite.status === InviteStatus.ACCEPTED) {
+//     throw new ApiError(400, "Accepted invite cannot be cancelled");
+//   }
+
+//   if (invite.status === InviteStatus.REVOKED) {
+//     throw new ApiError(400, "Invite already cancelled");
+//   }
+
+//   await invite.update({
+//     status: InviteStatus.REVOKED,
+//     revokedAt: new Date(),
+//   });
+
+//   return {
+//     message: "Invite cancelled successfully",
+//   };
+// };
+
+// export const resend = async (inviteId: number, tenantId: number) => {
+//   const invite = await Invite.findOne({ where: { id: inviteId, tenantId } });
+
+//   if (!invite) {
+//     throw new ApiError(404, "Invite not found");
+//   }
+
+//   if (invite.status === InviteStatus.ACCEPTED) {
+//     throw new ApiError(409, "Invite has already been accepted");
+//   }
+
+//   if (invite.status === InviteStatus.REVOKED) {
+//     throw new ApiError(409, "Cancelled invite cannot be resent");
+//   }
+//   const tenant = await Tenant.findOne({ where: { ownerId: tenantId } });
+
+//   const { rawToken, tokenHash } = generateInviteToken();
+
+//   const expiresAt = generateInviteExpiry();
+
+//   await invite.update({
+//     tokenHash,
+//     expiresAt,
+//     status: InviteStatus.PENDING,
+//   });
+//   await sendInviteEmail(
+//     invite.email,
+//     `${env.FRONTEND_URL}/accept-invite/${rawToken}`,
+//     tenant?.name ?? "",
+//   );
+//   return {
+//     message: "Invite resent successfully",
+//   };
+// };

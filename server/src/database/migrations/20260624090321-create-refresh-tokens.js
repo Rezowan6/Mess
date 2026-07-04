@@ -1,76 +1,93 @@
 "use strict";
 
+import { DataTypes } from "sequelize";
+
+/** @type {import("sequelize-cli").Migration} */
+
 export default {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.createTable("refresh_tokens", {
       id: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
 
-      userId: {
-        type: Sequelize.INTEGER,
+      user_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
-
         references: {
           model: "users",
           key: "id",
         },
-
+        onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
 
-      tenantId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-
-        references: {
-          model: "tenants",
-          key: "id",
-        },
-
-        onDelete: "CASCADE",
-      },
-
-      tokenHash: {
-        type: Sequelize.STRING,
+      token_hash: {
+        type: DataTypes.STRING(255),
         allowNull: false,
       },
 
-      deviceInfo: {
-        type: Sequelize.STRING,
+      device_info: {
+        type: DataTypes.STRING(255),
         allowNull: true,
       },
 
-      ipAddress: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      userAgent: {
-        type: Sequelize.STRING,
+      ip_address: {
+        type: DataTypes.STRING(45),
         allowNull: true,
       },
 
-      expiresAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-
-      revokedAt: {
-        type: Sequelize.DATE,
+      user_agent: {
+        type: DataTypes.STRING(500),
         allowNull: true,
       },
 
-      createdAt: {
-        type: Sequelize.DATE,
+      expires_at: {
+        type: DataTypes.DATE,
         allowNull: false,
       },
 
-      updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
+      revoked_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
       },
+
+      created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
+
+      updated_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
+
+      deleted_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+    });
+
+    await queryInterface.addIndex("refresh_tokens", ["user_id"], {
+      name: "refresh_tokens_user_index",
+    });
+
+    await queryInterface.addIndex("refresh_tokens", ["token_hash"], {
+      unique: true,
+      name: "refresh_tokens_token_hash_unique",
+    });
+
+    await queryInterface.addIndex("refresh_tokens", ["expires_at"], {
+      name: "refresh_tokens_expires_at_index",
+    });
+
+    await queryInterface.addIndex("refresh_tokens", ["deleted_at"], {
+      name: "refresh_tokens_deleted_at_index",
     });
   },
 

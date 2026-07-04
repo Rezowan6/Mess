@@ -12,6 +12,7 @@ export const MEMBER_SHIP_STATUS = [
   "active",
   "invited",
   "inactive",
+  "left",
   "removed",
 ] as const;
 

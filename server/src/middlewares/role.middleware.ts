@@ -2,21 +2,21 @@ import { NextFunction, Request, Response } from "express";
 
 import { ApiError } from "@/utils/ApiError.js";
 
-export type UserRole =
+export type MemberShipRole =
   | "systemOwner"
   | "admin"
-  | "user"
-  | "subAdmin"
+  | "member"
+  | "manager"
   | "messMalik";
 
-export const role = (...roles: UserRole[]) => {
+export const role = (...roles: MemberShipRole[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    if (!req.user) {
-      throw new ApiError(401, "Unauthorized");
+    if (!req.context.membership) {
+      throw new ApiError(401, "Membership not found.");
     }
 
-    if (!roles.includes(req.user.role as UserRole)) {
-      throw new ApiError(403, "You don't have permission");
+    if (!roles.includes(req.context.membership.role as MemberShipRole)) {
+      throw new ApiError(403, "You don't have permission.");
     }
 
     next();

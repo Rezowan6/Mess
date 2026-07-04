@@ -1,4 +1,5 @@
 import sequelize from "@/configs/db.js";
+import { hashPassword } from "@/utils/bcrypt.js";
 import {
   CreationOptional,
   DataTypes,
@@ -6,14 +7,14 @@ import {
   InferCreationAttributes,
   Model,
 } from "sequelize";
-import { UserStatus, USER_STATUS } from "./user.interface.js";
-import { hashPassword } from "@/utils/bcrypt.js";
+import { USER_STATUS, UserStatus } from "./user.interface.js";
 
 export class User extends Model<
-  InferAttributes<User,
-  {
-    omit: "createdAt" | "updatedAt" | "deletedAt";
-  }
+  InferAttributes<
+    User,
+    {
+      omit: "createdAt" | "updatedAt" | "deletedAt";
+    }
   >,
   InferCreationAttributes<User>
 > {
@@ -57,7 +58,7 @@ User.init(
       unique: false,
       validate: {
         isEmail: true,
-        len: [5, 255]
+        len: [5, 255],
       },
     },
     password: {
@@ -65,7 +66,7 @@ User.init(
       allowNull: false,
       validate: {
         len: [6, 20],
-      }
+      },
     },
     avatar: {
       type: DataTypes.STRING,
@@ -96,16 +97,16 @@ User.init(
     paranoid: true,
 
     underscored: true,
+    indexes: [{ fields: ["email"] }],
   },
 );
 
 User.beforeCreate(async (user) => {
   user.password = await hashPassword(user.password);
-})
+});
 
 User.beforeUpdate(async (user) => {
   if (user.changed("password")) {
-    user.password = await hashPassword(user.password)
+    user.password = await hashPassword(user.password);
   }
-})
-
+});

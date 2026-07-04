@@ -1,59 +1,70 @@
 "use strict";
 
+import { DataTypes } from "sequelize";
+
 /** @type {import('sequelize-cli').Migration} */
+
 export default {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.createTable("tenants", {
       id: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
 
-      messName: {
-        type: Sequelize.STRING,
+      name: {
+        type: DataTypes.STRING(100),
         allowNull: false,
       },
 
       slug: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING(150),
         allowNull: false,
-        unique: true,
       },
 
-      isActive: {
-        type: Sequelize.BOOLEAN,
+      status: {
+        type: DataTypes.ENUM("active", "inactive", "suspended", "deleted"),
         allowNull: false,
-        defaultValue: true,
+        defaultValue: "active",
       },
 
-      ownerId: {
-        type: Sequelize.INTEGER,
+      created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
+
+      updated_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
+
+      deleted_at: {
+        type: DataTypes.DATE,
         allowNull: true,
       },
+    });
 
-      plan: {
-        type: Sequelize.ENUM("free", "basic", "premium"),
-        allowNull: false,
-        defaultValue: "free",
-      },
+    // Unique Index
+    await queryInterface.addIndex("tenants", ["slug"], {
+      unique: true,
+      name: "tenants_slug_unique",
+    });
 
-      createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.NOW,
-      },
+    // Query Optimization
+    await queryInterface.addIndex("tenants", ["status"], {
+      name: "tenants_status_index",
+    });
 
-      updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.NOW,
-      },
+    await queryInterface.addIndex("tenants", ["deleted_at"], {
+      name: "tenants_deleted_at_index",
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable("tenants");
   },
 };

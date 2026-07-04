@@ -6,18 +6,18 @@ import * as authService from "./auth.service.js";
 
 // register
 export const register = asyncHandler(async (req: Request, res: Response) => {
-  const { data, message } = await authService.register(req.body);
+  const { user, message } = await authService.register(req.body);
 
-  res.status(201).json(new ApiResponse(201, message, data));
+  res.status(201).json(new ApiResponse(201, message, user));
 });
 
 // verity email
 export const verify = asyncHandler(async (req: Request, res: Response) => {
   const { token } = req.params;
 
-  const { user, message } = await authService.verify(token);
+  const { message } = await authService.verify(token);
 
-  res.status(201).json(new ApiResponse(201, message, user || null));
+  res.status(201).json(new ApiResponse(201, message, null));
 });
 
 // login

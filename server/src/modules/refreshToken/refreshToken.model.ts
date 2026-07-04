@@ -1,25 +1,28 @@
 import sequelize from "@/configs/db.js";
-import { DataTypes, Model } from "sequelize";
-import {
-  RefreshTokenAttributes,
-  RefreshTokenCreationAttributes,
-} from "./refreshToken.interface.js";
+import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from "sequelize";
 
-class RefreshToken
-  extends Model<RefreshTokenAttributes, RefreshTokenCreationAttributes>
-  implements RefreshTokenAttributes
-{
-  declare id: number;
+
+ export class RefreshToken extends Model<
+  InferAttributes<
+    RefreshToken,
+    {
+      omit: "createdAt" | "updatedAt" | "deletedAt";
+    }
+  >,
+  InferCreationAttributes<RefreshToken>
+> {
+  declare id: CreationOptional<number>;
   declare userId: number;
-  declare tenantId: number;
   declare tokenHash: string;
   declare deviceInfo: string | null;
   declare ipAddress: string | null;
   declare userAgent: string | null;
   declare expiresAt: Date;
-  declare revokedAt: Date | null;
-  declare createdAt: Date;
-  declare updatedAt: Date;
+  declare revokedAt: CreationOptional<Date | null>;
+
+  declare readonly createdAt: CreationOptional<Date>;
+  declare readonly updatedAt: CreationOptional<Date>;
+  declare readonly deletedAt?: Date;
 }
 
 RefreshToken.init(
@@ -31,11 +34,6 @@ RefreshToken.init(
     },
 
     userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-
-    tenantId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -74,16 +72,15 @@ RefreshToken.init(
     modelName: "RefreshToken",
     tableName: "refresh_tokens",
     timestamps: true,
-
+    paranoid: true,
+    underscored: true,
     indexes: [
       {
-        fields: ["userId"],
-      },
-      {
-        fields: ["tenantId"],
+        fields: ["userId",],
       },
       {
         fields: ["tokenHash"],
+        unique: true,
       },
       {
         fields: ["expiresAt"],

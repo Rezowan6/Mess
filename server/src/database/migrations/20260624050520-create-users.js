@@ -1,108 +1,94 @@
 "use strict";
+import { DataTypes } from "sequelize";
 
 /** @type {import('sequelize-cli').Migration} */
+
 export default {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.createTable("users", {
       id: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
 
       name: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING(100),
         allowNull: true,
       },
 
       email: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING(255),
         allowNull: false,
-        unique: true,
       },
 
       password: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING(255),
+        allowNull: false,
+      },
+
+      avatar: {
+        type: DataTypes.STRING(500),
         allowNull: true,
       },
 
-      role: {
-        type: Sequelize.ENUM(
-          "systemOwner",
-          "admin",
-          "subAdmin",
-          "messMalik",
-          "user",
-        ),
-        defaultValue: "user",
-      },
-
-      tenantId: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
-
-      createdBy: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: "users",
-          key: "id",
-        },
-        onDelete: "SET NULL",
-      },
-
-      isVerified: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
-
-      isActive: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true,
-      },
-
-      loginAttempts: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-      },
-
-      lockUntil: {
-        type: Sequelize.DATE,
-        allowNull: true,
-      },
-
-      lastLogin: {
-        type: Sequelize.DATE,
-        allowNull: true,
-      },
-
-      inviteStatus: {
-        type: Sequelize.ENUM("pending", "verified", "expired"),
+      status: {
+        type: DataTypes.ENUM("active", "inactive", "blocked", "pending"),
+        allowNull: false,
         defaultValue: "pending",
       },
 
-      deletedAt: {
-        type: Sequelize.DATE,
+      is_verified: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+
+      last_login_at: {
+        type: DataTypes.DATE,
         allowNull: true,
       },
 
-      createdAt: {
-        type: Sequelize.DATE,
+      created_at: {
+        type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        defaultValue: DataTypes.NOW,
       },
 
-      updatedAt: {
-        type: Sequelize.DATE,
+      updated_at: {
+        type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        defaultValue: DataTypes.NOW,
       },
+
+      deleted_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+    });
+
+    // Indexes
+    await queryInterface.addIndex("users", ["email"], {
+      unique: true,
+      name: "users_email_unique",
+    });
+
+    await queryInterface.addIndex("users", ["status"], {
+      name: "users_status_index",
+    });
+
+    await queryInterface.addIndex("users", ["deleted_at"], {
+      name: "users_deleted_at_index",
     });
   },
 
   async down(queryInterface) {
     await queryInterface.dropTable("users");
+
+    // MySQL ENUM manually remove
+    await queryInterface.sequelize.query(
+      "DROP TYPE IF EXISTS enum_users_status;",
+    );
   },
 };

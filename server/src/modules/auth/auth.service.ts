@@ -1,71 +1,63 @@
+import { env, sequelize } from "@/configs/index.js";
+import { User } from "@/models/index.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { comparePassword } from "@/utils/bcrypt.js";
+import { getClientIp } from "@/utils/getClient.ip.js";
 import {
   createAccessToken,
   emailVerifyToken,
   generateRefreshToken,
   verifyToken,
 } from "@/utils/jwt.util.js";
-import sequelize from "../../configs/db.js";
 import { sendVerificationEmail } from "../email/email.service.js";
-
-import { env } from "@/configs/env.js";
-import { Tenant, User } from "@/models/index.js";
-import { getClientIp } from "@/utils/getClient.ip.js";
 import {
   createRefreshToken,
   revokeRefreshToken,
 } from "../refreshToken/refreshToken.service.js";
-import { createTenantService } from "../tenant/tenant.service.js";
-import { createAdminUserService } from "../user/user.service.js";
-import { LoginPayload, RegisterPayload } from "./auth.interface.js";
+import { createRegisterService } from "../user/user.service.js";
+import {
+  LoginPayload,
+  LoginResponse,
+  RegisterPayload,
+  RegisterResponse,
+} from "./auth.interface.js";
 import { findUserByEmail } from "./auth.repository.js";
 
-export const register = async (payload: RegisterPayload) => {
+
+//  service
+export const register = async (
+  payload: RegisterPayload,
+): Promise<RegisterResponse> => {
   const exists = await findUserByEmail(payload.email);
 
   if (exists) {
     throw new ApiError(409, "User already exists");
   }
 
-  let result: any;
-
-  await sequelize.transaction(async (transaction) => {
-    const user = await createAdminUserService(
-      {
-        ...payload,
-      },
-      transaction,
-    );
-
-    const tenant = await createTenantService(user.id, payload.messName);
-
-    await user.update(
-      {
-        tenantId: tenant.id,
-      },
-      { transaction },
-    );
-
-    result = {
-      tenant,
-      user,
-    };
+  const user = await createRegisterService({
+    ...payload,
   });
 
   // OUTSIDE TRANSACTION (IMPORTANT)
   const token = emailVerifyToken({
-    userId: result?.user?.id,
-    email: result?.user?.email,
-    tenantId: result?.user?.tenantId,
+    userId: user?.id,
+    email: user?.email,
   });
   const verifyLink = `${env.FRONTEND_URL}/verify-email/${token}`;
 
-  await sendVerificationEmail(result?.user?.email, verifyLink);
+  await sendVerificationEmail(user?.email, verifyLink);
+
+  const saveUser = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    isVerified: user.isVerified,
+    status: user.status,
+  };
 
   return {
-    message: "Registration successful. Check email.",
-    data: result,
+    message: "Registration successful. Please verify email.",
+    user: { ...saveUser },
   };
 };
 
@@ -74,24 +66,21 @@ export const verify = async (token: any) => {
     throw new ApiError(400, "Verification token is required");
   }
 
-  // 1. VERIFY TOKEN
   let decoded: any;
 
   try {
     decoded = verifyToken(token, env.VERIFY_TOKEN_SECRET);
   } catch (err) {
-    console.log(err);
     throw new ApiError(401, "Invalid or expired verification token");
   }
 
-  const { userId, email, tenantId } = decoded;
+  const { userId, email } = decoded;
 
   // 2. FIND USER
   const user = await User.findOne({
     where: {
       id: userId,
       email,
-      tenantId,
     },
   });
 
@@ -99,7 +88,6 @@ export const verify = async (token: any) => {
     throw new ApiError(404, "User not found");
   }
 
-  // 3. CHECK ALREADY VERIFIED
   if (user.isVerified) {
     return {
       message: "Email already verified",
@@ -111,7 +99,6 @@ export const verify = async (token: any) => {
     await user.update(
       {
         isVerified: true,
-        isActive: true,
       },
       { transaction },
     );
@@ -120,39 +107,14 @@ export const verify = async (token: any) => {
   // 5. RESPONSE
   return {
     message: "Email verified successfully",
-    user: {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      tenantId: user.tenantId,
-      isVerified: true,
-      isActive: true,
-    },
   };
 };
 
-export const login = async (data: LoginPayload) => {
-  const { email, password, tenantSlug, ip, userAgent } = data;
-
-  // 1. tenant check
-  const tenant = await Tenant.findOne({
-    where: {
-      slug: tenantSlug,
-      isActive: true,
-    },
-  });
-
-  if (!tenant) {
-    throw new ApiError(404, "Invalid credentials");
-  }
+export const login = async (data: LoginPayload): Promise<LoginResponse> => {
+  const { email, password, ip, userAgent } = data;
 
   // 2. user check
-  const user = await User.findOne({
-    where: {
-      email,
-      tenantId: tenant.id,
-    },
-  });
+  const user = await findUserByEmail(email);
 
   if (!user) {
     throw new Error("Invalid credentials");
@@ -162,27 +124,17 @@ export const login = async (data: LoginPayload) => {
     throw new ApiError(403, "Please verify your email first");
   }
 
-  if (!user.isActive) {
-    throw new ApiError(403, "Account is deactivated");
-  }
-
   // 3. password verify
   const passwordMatch = await comparePassword(password, user.password);
 
   if (!passwordMatch) {
-    await user.increment("loginAttempts");
     throw new ApiError(401, "Invalid credentials");
   }
-
-  // reset login attempts on success
-  await user.update({ loginAttempts: 0 });
 
   // 4. create payload
   const payload = {
     id: user.id,
     email: user.email,
-    role: user.role,
-    tenantId: tenant.id,
   };
 
   // 5. access token
@@ -195,28 +147,22 @@ export const login = async (data: LoginPayload) => {
 
   await createRefreshToken({
     userId: user.id,
-    tenantId: tenant.id,
     token: refreshToken,
     ipAddress: userIp,
     userAgent,
   });
 
+  const saveUser = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+  };
   return {
     message: "Login successfully",
     refreshToken,
     data: {
       accessToken,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-      tenant: {
-        id: tenant.id,
-        name: tenant.name,
-        slug: tenant.slug,
-      },
+      user: saveUser || null,
     },
   };
 };
