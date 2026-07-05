@@ -37,3 +37,8 @@ export interface AcceptInvitePayload {
   name: string;
   password: string;
 }
+
+export interface CancelPayload {
+  inviteId: string;
+  context: RequestContext;
+}

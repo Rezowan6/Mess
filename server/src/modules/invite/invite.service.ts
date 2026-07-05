@@ -3,52 +3,12 @@ import * as MembershipRepository from "../membership/membership.repository.js";
 import * as UserRepository from "../user/user.repository.js";
 import * as IDep from "./index.js";
 import { ApiError } from "./index.js";
-import { AcceptInvitePayload, SendInvitePayload } from "./invite.interface.js";
+import {
+  AcceptInvitePayload,
+  CancelPayload,
+  SendInvitePayload,
+} from "./invite.interface.js";
 import { InviteRepository } from "./invite.repository.js";
-
-/**
- * 
- * @param payload Step 10 — আজকের Implementation Order
-
-আমি আগের মতো ধাপে ধাপে এগোতে চাই:
-
-Lesson 1 (আজ শুরু)
-
-✅ inviteService.validate()
-
-Repository call
-Token check
-Invite exists
-Status check
-Expiry check
-Return invite
-Lesson 2
-
-✅ inviteService.accept()
-
-validate() reuse
-User check
-Password hash
-Transaction
-Lesson 3
-
-✅ Membership create
-
-Lesson 4
-
-✅ Update invite status
-
-Lesson 5
-
-✅ Edge cases
-
-Token reused
-User already active
-Tenant inactive
-Membership exists
-Rollback scenarios
- * @returns 
- */
 
 export const send = async (payload: SendInvitePayload) => {
   const { user, membership, tenant } = payload.context;
@@ -226,35 +186,42 @@ export const accept = async (payload: AcceptInvitePayload) => {
   });
 };
 
-// export const cancel = async (inviteId: number, tenantId: number) => {
-//   const invite = await Invite.findOne({
-//     where: {
-//       id: inviteId,
-//       tenantId,
-//     },
-//   });
+export const cancel = async (payload: CancelPayload) => {
+  const { context } = payload;
 
-//   if (!invite) {
-//     throw new ApiError(404, "Invite not found");
-//   }
+  const tenantId = context.membership.tenantId;
 
-//   if (invite.status === InviteStatus.ACCEPTED) {
-//     throw new ApiError(400, "Accepted invite cannot be cancelled");
-//   }
+  return await IDep.sequelize.transaction(async (transaction) => {
+    const invite = await InviteRepository.findInviteIdByTenantId(
+      Number(payload.inviteId),
+      tenantId,
+      transaction,
+    );
 
-//   if (invite.status === InviteStatus.REVOKED) {
-//     throw new ApiError(400, "Invite already cancelled");
-//   }
+    if (!invite) {
+      throw new ApiError(404, "Invite not found");
+    }
 
-//   await invite.update({
-//     status: InviteStatus.REVOKED,
-//     revokedAt: new Date(),
-//   });
+    switch (invite.status) {
+      case InviteStatus.ACCEPTED:
+        throw new ApiError(400, "Accepted invite cannot be cancelled");
+      case InviteStatus.CANCELLED:
+        throw new ApiError(400, "Invite already cancelled");
+      case InviteStatus.REVOKED:
+        throw new ApiError(400, "Rejected invite cannot be cancelled");
+    }
 
-//   return {
-//     message: "Invite cancelled successfully",
-//   };
-// };
+    if (invite.createdBy !== context.user.id) {
+      throw new ApiError(403, "You are not allowed to cancel this invite");
+    }
+
+    invite.status = InviteStatus.CANCELLED;
+    
+    return {
+      message: "Invite cancelled successfully",
+    };
+  });
+};
 
 // export const resend = async (inviteId: number, tenantId: number) => {
 //   const invite = await Invite.findOne({ where: { id: inviteId, tenantId } });

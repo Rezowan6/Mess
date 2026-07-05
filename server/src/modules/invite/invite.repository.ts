@@ -13,9 +13,7 @@ export class InviteRepository {
   static async findPendingByEmailAndTenant(email: string, tenantId: number) {
     return (await Invite.findOne({ where: { email, tenantId } })) || null;
   }
-  /**
-   * Create new invite
-   */
+
   static async create(
     payload: CreateInvitePayload,
     transaction: Transaction | null = null,
@@ -23,16 +21,10 @@ export class InviteRepository {
     return await Invite.create(payload, { transaction: transaction ?? null });
   }
 
-  /**
-   * Save existing invite instance
-   */
   static async save(invite: Invite) {
     return invite.save();
   }
 
-  /**
-   * Delete invite
-   */
   static async delete(invite: Invite) {
     return invite.destroy();
   }
@@ -49,9 +41,6 @@ export class InviteRepository {
     });
   }
 
-  /**
-   * Find pending(active) invite by token
-   */
   static async findActiveByToken(tokenHash: string) {
     return Invite.findOne({
       where: {
@@ -61,9 +50,6 @@ export class InviteRepository {
     });
   }
 
-  /**
-   * Find pending invite by email
-   */
   static async findPendingByEmail(email: string) {
     return Invite.findOne({
       where: {
@@ -73,9 +59,17 @@ export class InviteRepository {
     });
   }
 
-  /**
-   * Update invite status
-   */
+  static async findInviteIdByTenantId(
+    id: number,
+    tenantId: number,
+    transaction: Transaction | null = null,
+  ) {
+    return Invite.findOne({
+      where: { id, tenantId },
+      transaction: transaction ?? null,
+    });
+  }
+
   static async update(
     invite: Invite,
     data: Partial<Invite>,

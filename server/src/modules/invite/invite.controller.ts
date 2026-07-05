@@ -31,14 +31,14 @@ export const accept = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json(new ApiResponse(201, message, user));
 });
 
-// export const cancel = asyncHandler(async (req: Request, res: Response) => {
-//   const inviteId = Number(req.params.id);
-//   const tenantId = req.user.tenantId;
+export const cancel = asyncHandler(async (req: Request, res: Response) => {
 
-//   const { message } = await inviteService.cancel(inviteId, tenantId);
+  const inviteId = getParamString(req.params.inviteId);
 
-//   res.status(200).json(new ApiResponse(200, message, null));
-// });
+  const { message } = await inviteService.cancel({inviteId,context: req.context});
+
+  res.status(200).json(new ApiResponse(200, message, null));
+});
 
 // export const resend = asyncHandler(async (req: Request, res: Response) => {
 //   const inviteId = Number(req.params.id);

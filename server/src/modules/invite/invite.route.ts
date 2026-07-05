@@ -9,8 +9,8 @@ const adminAccess = [auth, contextMiddleware, role("admin")];
 
 router.post("/send", ...adminAccess, invitesController.send);
 router.post("/accept/:token", ...adminAccess, invitesController.accept);
-// router.get("/validate/:token", ...adminAccess, invitesController.validate);
-// router.post("/:id/cancel", ...adminAccess, invitesController.cancel);
+router.post("/:inviteId/cancel", ...adminAccess, invitesController.cancel);
 // router.post("/:id/resend", ...adminAccess, invitesController.resend);
+// router.get("/validate/:token", ...adminAccess, invitesController.validate);
 
 export default router;
