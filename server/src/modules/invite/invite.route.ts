@@ -8,8 +8,8 @@ const router = express.Router();
 const adminAccess = [auth, contextMiddleware, role("admin")];
 
 router.post("/send", ...adminAccess, invitesController.send);
-// router.get("/accept/:token", ...adminAccess, invitesController.validate);
-// router.post("/accept", ...adminAccess, invitesController.accept);
+router.post("/accept/:token", ...adminAccess, invitesController.accept);
+// router.get("/validate/:token", ...adminAccess, invitesController.validate);
 // router.post("/:id/cancel", ...adminAccess, invitesController.cancel);
 // router.post("/:id/resend", ...adminAccess, invitesController.resend);
 

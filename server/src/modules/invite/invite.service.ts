@@ -1,9 +1,54 @@
+import { InviteStatus, MemberRole, MemberStatus } from "@/constans/index.js";
 import * as MembershipRepository from "../membership/membership.repository.js";
 import * as UserRepository from "../user/user.repository.js";
 import * as IDep from "./index.js";
 import { ApiError } from "./index.js";
-import { SendInvitePayload } from "./invite.interface.js";
-import * as InviteRepository from "./invite.repository.js";
+import { AcceptInvitePayload, SendInvitePayload } from "./invite.interface.js";
+import { InviteRepository } from "./invite.repository.js";
+
+/**
+ * 
+ * @param payload Step 10 — আজকের Implementation Order
+
+আমি আগের মতো ধাপে ধাপে এগোতে চাই:
+
+Lesson 1 (আজ শুরু)
+
+✅ inviteService.validate()
+
+Repository call
+Token check
+Invite exists
+Status check
+Expiry check
+Return invite
+Lesson 2
+
+✅ inviteService.accept()
+
+validate() reuse
+User check
+Password hash
+Transaction
+Lesson 3
+
+✅ Membership create
+
+Lesson 4
+
+✅ Update invite status
+
+Lesson 5
+
+✅ Edge cases
+
+Token reused
+User already active
+Tenant inactive
+Membership exists
+Rollback scenarios
+ * @returns 
+ */
 
 export const send = async (payload: SendInvitePayload) => {
   const { user, membership, tenant } = payload.context;
@@ -14,10 +59,10 @@ export const send = async (payload: SendInvitePayload) => {
   const existingUser = await UserRepository.findByEmail(email);
 
   if (existingUser) {
-    const existingMembership = await MembershipRepository.findByTenantAndUser(
-      membership.tenantId,
-      existingUser.id,
-    );
+    const existingMembership = await MembershipRepository.findByTenantAndUser({
+      tenantId: membership.tenantId,
+      userId: existingUser.id,
+    });
 
     if (existingMembership) {
       throw new ApiError(409, "User already belongs to this tenant.");
@@ -67,68 +112,112 @@ export const send = async (payload: SendInvitePayload) => {
   };
 };
 
-// export const validate = async (token: any) => {
-//   const tokenHash = hashToken(token);
+export const validate = async (token: string) => {
+  const hashToken = IDep.hashToken(token);
 
-//   const invite = await Invite.findOne({
-//     where: {
-//       tokenHash,
-//       status: InviteStatus.PENDING,
-//     },
-//   });
+  // 2. Find invite
+  const invite = await InviteRepository.findByToken(hashToken);
 
-//   if (!invite) {
-//     throw new ApiError(404, "Invalid invite");
-//   }
+  if (!invite) {
+    throw new ApiError(404, "Invalid invite token.");
+  }
 
-//   if (invite.expiresAt < new Date()) {
-//     throw new ApiError(404, "Invite expired");
-//   }
+  // 3. Status validation
+  switch (invite.status) {
+    case InviteStatus.ACCEPTED:
+      throw new ApiError(400, "This invitation has already been accepted.");
 
-//   if (invite.usedCount >= invite.maxUses) {
-//     throw new ApiError(404, "Invite already used");
-//   }
+    case InviteStatus.CANCELLED:
+      throw new ApiError(400, "This invitation has been cancelled.");
 
-//   return {
-//     message: "Accept invite",
-//     invite,
-//   };
-// };
+    case InviteStatus.EXPIRED:
+      throw new ApiError(400, "This invitation has expired.");
+  }
 
-// export const accept = async (token: any, password: string) => {
-//   const { invite, message } = await validate(token);
+  // 4. Expiry validation
+  if (invite.expiresAt && invite.expiresAt.getTime() < Date.now()) {
+    await InviteRepository.update(invite, {
+      status: InviteStatus.EXPIRED,
+    });
 
-//   const hashedPassword = await hashPassword(password);
+    throw new ApiError(400, "This invitation has expired.");
+  }
 
-//   let result: any;
+  // 5. Success
+  return {
+    invite,
+    message: "Invitation is valid.",
+  };
+};
 
-//   await sequelize.transaction(async (transaction: any) => {
-//     const user = await createUser(
-//       {
-//         email: invite.email,
-//         password: hashedPassword,
-//         role: invite.role,
-//         tenantId: invite.tenantId,
-//       },
-//       transaction,
-//     );
+export const accept = async (payload: AcceptInvitePayload) => {
+  // 1. Validate invite
+  const { invite } = await validate(payload.token);
 
-//     await invite.update({
-//       status: InviteStatus.ACCEPTED,
-//       usedCount: invite.usedCount + 1,
-//       acceptedAt: new Date(),
-//     });
+  // 2. Find invited user
+  const user = await UserRepository.findByEmail(invite.email);
 
-//     result = {
-//       user,
-//     };
-//   });
+  if (!user) {
+    throw new ApiError(404, "User not found.");
+  }
+  // Check membership
+  const membership = await MembershipRepository.findByTenantAndUser({
+    tenantId: invite.tenantId,
+    userId: user.id,
+  });
 
-//   return {
-//     message,
-//     user: result?.user,
-//   };
-// };
+  if (membership) {
+    throw new ApiError(400, "User is already a member of this mess.");
+  }
+
+  // 5. Transaction
+  const transaction = await IDep.sequelize.transaction();
+
+  try {
+    // User invited first time
+    if (!user.password) {
+      await UserRepository.update(
+        user,
+        {
+          password: payload.password,
+          isVerified: true,
+        },
+        transaction,
+      );
+    }
+
+    // Create membership
+    await MembershipRepository.create(
+      {
+        tenantId: invite.tenantId,
+        userId: user.id,
+        role: MemberRole.MEMBER,
+        status: MemberStatus.ACTIVE,
+      },
+      transaction,
+    );
+
+    // Update invite
+    await InviteRepository.update(
+      invite,
+      {
+        status: InviteStatus.ACCEPTED,
+        acceptedAt: new Date(),
+      },
+      transaction,
+    );
+
+    await transaction.commit();
+
+    return {
+      user,
+      message: "Invitation accepted successfully.",
+    };
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
 
 // export const cancel = async (inviteId: number, tenantId: number) => {
 //   const invite = await Invite.findOne({

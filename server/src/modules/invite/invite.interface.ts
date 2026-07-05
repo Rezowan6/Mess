@@ -6,9 +6,11 @@ export const INVITE_STATUS = [
   "accepted",
   "expired",
   "revoked",
+  "cancelled",
 ] as const;
 
 export type InviteStatus = (typeof INVITE_STATUS)[number];
+export type InviteStatusType = (typeof INVITE_STATUS)[number];
 
 export interface SendInvitePayload {
   email: string;
@@ -29,4 +31,10 @@ export interface CreateInvitePayload {
   tenantId: number;
   createdBy: number;
   expiresAt: Date;
+}
+
+export interface AcceptInvitePayload {
+  token: string;
+  password: string;
+  context: RequestContext;
 }

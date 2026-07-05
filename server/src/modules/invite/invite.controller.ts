@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { ApiResponse } from "@/utils/ApiResponse.js";
+import { getParamString } from "@/utils/index.js";
 import * as inviteService from "./invite.service.js";
 
 export const send = asyncHandler(async (req: Request, res: Response) => {
@@ -15,20 +16,19 @@ export const send = asyncHandler(async (req: Request, res: Response) => {
 
 // export const validate = asyncHandler(async (req: Request, res: Response) => {
 //   const token = req.params.token;
-//   console.log(token);
 
 //   const { invite, message } = await inviteService.validate(token);
 
 //   res.status(200).json(new ApiResponse(201, message, invite));
 // });
 
-// export const accept = asyncHandler(async (req: Request, res: Response) => {
-//   const { token, password } = req.body;
+export const accept = asyncHandler(async (req: Request, res: Response) => {
+  const token = getParamString(req.params.token);
 
-//   const { user, message } = await inviteService.accept(token, password);
+  const { user, message } = await inviteService.accept({token: token, password: req.body, context: req.context});
 
-//   res.status(200).json(new ApiResponse(201, message, user));
-// });
+  res.status(200).json(new ApiResponse(201, message, user));
+});
 
 // export const cancel = asyncHandler(async (req: Request, res: Response) => {
 //   const inviteId = Number(req.params.id);

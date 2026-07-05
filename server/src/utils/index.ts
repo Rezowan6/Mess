@@ -4,6 +4,7 @@ import { ApiResponse } from "./ApiResponse.js";
 import { comparePassword, hashPassword } from "./bcrypt.js";
 import { cookieOptions } from "./cookie.util.js";
 import { hashToken } from "./hash.util.js";
+import { getParamString } from "./getParamString.utils.js";
 import {
   createAccessToken,
   emailVerifyToken,
@@ -23,4 +24,5 @@ export {
   hashToken,
   sendEmail,
   verifyToken,
+  getParamString
 };

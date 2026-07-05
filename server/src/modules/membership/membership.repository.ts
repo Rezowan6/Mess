@@ -1,5 +1,7 @@
 import { MemberStatus } from "@/constans/index.js";
 import { Membership } from "@/models/index.js";
+import { Transaction } from "sequelize";
+import { MembershipCreationAttributes, FindByTenantAndUserPayload } from "./membership.interface.js";
 
 export const findActiveByUserId = async (userId: number) => {
   return (
@@ -12,6 +14,15 @@ export const findActiveByUserId = async (userId: number) => {
   );
 };
 
-export const findByTenantAndUser = async (tenantId: number, userId: number) => {
+export const findByTenantAndUser = async ({tenantId, userId}: FindByTenantAndUserPayload) => {
   return (await Membership.findOne({ where: { tenantId, userId } })) || null;
+};
+
+export const create = async (
+  data: MembershipCreationAttributes,
+  transaction: Transaction | null = null,
+) => {
+  return Membership.create(data, {
+    transaction: transaction ?? null,
+  });
 };

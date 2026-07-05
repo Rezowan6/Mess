@@ -3,6 +3,7 @@ export const InviteStatus = {
   ACCEPTED: "accepted",
   EXPIRED: "expired",
   REVOKED: "revoked",
+  CANCELLED: "cancelled",
 } as const;
 
 export const MemberRole = {
