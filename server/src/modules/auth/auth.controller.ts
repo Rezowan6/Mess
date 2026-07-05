@@ -1,17 +1,14 @@
 import asyncHandler from "@/middlewares/asyncHandler.js";
-import { ApiResponse } from "@/utils/ApiResponse.js";
-import { cookieOptions } from "@/utils/cookie.util.js";
+import { ApiResponse, cookieOptions } from "@/utils/index.js";
 import { Request, Response } from "express";
 import * as authService from "./auth.service.js";
 
-// register
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { user, message } = await authService.register(req.body);
 
   res.status(201).json(new ApiResponse(201, message, user));
 });
 
-// verity email
 export const verify = asyncHandler(async (req: Request, res: Response) => {
   const { token } = req.params;
 
@@ -20,7 +17,6 @@ export const verify = asyncHandler(async (req: Request, res: Response) => {
   res.status(201).json(new ApiResponse(201, message, null));
 });
 
-// login
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const { data, message, refreshToken } = await authService.login({
     ...req.body,
@@ -38,8 +34,8 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 
 // logout
 export const logout = asyncHandler(async (req: Request, res: Response) => {
-const refreshToken = req.cookies.refreshToken;
-  const { message, } = await authService.logout(refreshToken);
+  const refreshToken = req.cookies.refreshToken;
+  const { message } = await authService.logout(refreshToken);
 
   res.clearCookie("refreshToken", cookieOptions);
 
