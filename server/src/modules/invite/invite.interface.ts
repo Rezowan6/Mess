@@ -1,4 +1,3 @@
-import { Membership, Tenant, User } from "@/models/index.js";
 import { RequestContext } from "@/types/requestContext.js";
 
 export const INVITE_STATUS = [
@@ -14,7 +13,7 @@ export type InviteStatusType = (typeof INVITE_STATUS)[number];
 
 export interface SendInvitePayload {
   email: string;
-  context: RequestContext
+  context: RequestContext;
 }
 
 export interface SendInviteEmailPayload {
@@ -35,6 +34,6 @@ export interface CreateInvitePayload {
 
 export interface AcceptInvitePayload {
   token: string;
+  name: string;
   password: string;
-  context: RequestContext;
 }

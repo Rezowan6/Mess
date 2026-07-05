@@ -65,7 +65,7 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [6, 20],
+        len: [6, 255],
       },
     },
     avatar: {

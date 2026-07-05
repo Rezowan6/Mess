@@ -94,7 +94,6 @@ export const send = async (payload: SendInvitePayload) => {
       },
       transaction,
     );
-
     return newInvite;
   });
 
@@ -116,7 +115,7 @@ export const validate = async (token: string) => {
   const hashToken = IDep.hashToken(token);
 
   // 2. Find invite
-  const invite = await InviteRepository.findByToken(hashToken);
+  const invite = await InviteRepository.findByToken(token);
 
   if (!invite) {
     throw new ApiError(404, "Invalid invite token.");
@@ -151,39 +150,45 @@ export const validate = async (token: string) => {
 };
 
 export const accept = async (payload: AcceptInvitePayload) => {
-  // 1. Validate invite
-  const { invite } = await validate(payload.token);
+  const { name, password, token } = payload;
 
-  // 2. Find invited user
-  const user = await UserRepository.findByEmail(invite.email);
+  return IDep.sequelize.transaction(async (transaction) => {
+    const { invite } = await validate(token);
 
-  if (!user) {
-    throw new ApiError(404, "User not found.");
-  }
-  // Check membership
-  const membership = await MembershipRepository.findByTenantAndUser({
-    tenantId: invite.tenantId,
-    userId: user.id,
-  });
+    let user = await UserRepository.findByEmail(invite.email, transaction);
 
-  if (membership) {
-    throw new ApiError(400, "User is already a member of this mess.");
-  }
-
-  // 5. Transaction
-  const transaction = await IDep.sequelize.transaction();
-
-  try {
-    // User invited first time
-    if (!user.password) {
-      await UserRepository.update(
-        user,
+    if (!user) {
+      user = await UserRepository.createUser(
         {
-          password: payload.password,
+          email: invite.email,
+          name,
+          password,
           isVerified: true,
         },
         transaction,
       );
+    } else if (!user.password) {
+      await UserRepository.update(
+        user,
+        {
+          name,
+          password,
+          isVerified: true,
+        },
+        transaction,
+      );
+    }
+    // Check membership
+    const membership = await MembershipRepository.findByTenantAndUser(
+      {
+        tenantId: invite.tenantId,
+        userId: user.id,
+      },
+      transaction,
+    );
+
+    if (membership) {
+      throw new ApiError(400, "User is already a member of this mess.");
     }
 
     // Create membership
@@ -193,6 +198,8 @@ export const accept = async (payload: AcceptInvitePayload) => {
         userId: user.id,
         role: MemberRole.MEMBER,
         status: MemberStatus.ACTIVE,
+        invitedBy: invite.createdBy,
+        joinedAt: new Date(),
       },
       transaction,
     );
@@ -207,16 +214,16 @@ export const accept = async (payload: AcceptInvitePayload) => {
       transaction,
     );
 
-    await transaction.commit();
-
     return {
-      user,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        status: user.status,
+      },
       message: "Invitation accepted successfully.",
     };
-  } catch (error) {
-    await transaction.rollback();
-    throw error;
-  }
+  });
 };
 
 // export const cancel = async (inviteId: number, tenantId: number) => {

@@ -24,8 +24,9 @@ export const send = asyncHandler(async (req: Request, res: Response) => {
 
 export const accept = asyncHandler(async (req: Request, res: Response) => {
   const token = getParamString(req.params.token);
+  const {name, password} = req.body;
 
-  const { user, message } = await inviteService.accept({token: token, password: req.body, context: req.context});
+  const { user, message } = await inviteService.accept({token, name, password });
 
   res.status(200).json(new ApiResponse(201, message, user));
 });

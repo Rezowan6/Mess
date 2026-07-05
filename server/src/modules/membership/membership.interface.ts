@@ -23,6 +23,8 @@ export interface MembershipCreationAttributes {
   userId: number;
   role: MemberShipRole;
   status: MemberShipStatus;
+  invitedBy: number;
+  joinedAt: Date
 }
 
 export interface FindByTenantAndUserPayload {

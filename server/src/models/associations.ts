@@ -11,6 +11,8 @@ export const setupAssociations = () => {
     as: "user",
   });
 
+  Membership.belongsTo(User, { foreignKey: "invitedBy", as: "inviter" });
+
   Membership.belongsTo(Tenant, {
     foreignKey: "tenantId",
     as: "tenant",

@@ -14,8 +14,8 @@ export const findActiveByUserId = async (userId: number) => {
   );
 };
 
-export const findByTenantAndUser = async ({tenantId, userId}: FindByTenantAndUserPayload) => {
-  return (await Membership.findOne({ where: { tenantId, userId } })) || null;
+export const findByTenantAndUser = async ({tenantId, userId}: FindByTenantAndUserPayload,transaction: Transaction | null = null ) => {
+  return (await Membership.findOne({ where: { tenantId, userId }, transaction: transaction ?? null })) || null;
 };
 
 export const create = async (
