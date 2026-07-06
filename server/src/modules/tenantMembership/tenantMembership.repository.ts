@@ -4,6 +4,7 @@ import { Transaction } from "sequelize";
 import {
   FindByTenantAndUserPayload,
   MembershipCreationAttributes,
+  updateRoleDTO,
 } from "./tenantMembership.interface.js";
 
 export class TenantMembershipRepository {
@@ -51,5 +52,21 @@ export class TenantMembershipRepository {
       ],
       order: [["createdAt", "ASC"]],
     });
+  }
+
+  static async updateRole(
+    data: updateRoleDTO,
+    trnasaction: Transaction | null = null,
+  ) {
+    const { newRole: role, targetMembershipId: id } = data;
+    return await TenantMembership.update(
+      { role },
+      {
+        where: {
+          userId: id,
+        },
+        transaction: trnasaction ?? null,
+      },
+    );
   }
 }

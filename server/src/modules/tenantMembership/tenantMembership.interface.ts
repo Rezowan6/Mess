@@ -24,10 +24,23 @@ export interface MembershipCreationAttributes {
   role: MemberShipRole;
   status: MemberShipStatus;
   invitedBy: number;
-  joinedAt: Date
+  joinedAt: Date;
 }
 
 export interface FindByTenantAndUserPayload {
   tenantId: number;
   userId: number;
+}
+
+export interface UpdateRolePayload {
+  tenantId: number;
+  currentMembershipId: number;
+  currentRole: string;
+  targetMembershipId: number;
+  newRole: MemberShipRole;
+}
+
+export interface updateRoleDTO {
+  targetMembershipId: number;
+  newRole: MemberShipRole;
 }

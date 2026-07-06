@@ -7,6 +7,7 @@ const router = express.Router();
 
 const managerAccess = [auth, contextMiddleware, role(MemberRole.ADMIN)];
 
-router.get("/", ...managerAccess, TenantMembershipController.getMembers);
+router.get("/members", ...managerAccess, TenantMembershipController.getMembers);
+router.patch("/members/:id", ...managerAccess, TenantMembershipController.updateRole);
 
 export default router;

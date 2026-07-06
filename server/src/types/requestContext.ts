@@ -1,7 +1,19 @@
-import { Membership, Tenant, User } from "@/models/index.js";
+import { MemberShipRole } from "@/middlewares/role.middleware.js";
 
 export interface RequestContext {
-  user: User;
-  membership: Membership;
-  tenant: Tenant;
+  user: {
+    id: number;
+    email: string;
+  };
+
+  membership: {
+    id: number;
+    tenantId: number;
+    role: MemberShipRole;
+  };
+
+  tenant: {
+    id: number;
+    name?: string;
+  };
 }
