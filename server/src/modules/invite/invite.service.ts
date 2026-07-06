@@ -170,6 +170,7 @@ export const accept = async (payload: AcceptInvitePayload) => {
       {
         status: InviteStatus.ACCEPTED,
         acceptedAt: new Date(),
+        usedCount: 1
       },
       transaction,
     );

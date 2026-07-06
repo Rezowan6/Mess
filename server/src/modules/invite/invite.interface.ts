@@ -39,6 +39,6 @@ export interface AcceptInvitePayload {
 }
 
 export interface CancelPayload {
-  inviteId: string;
+  inviteId: number;
   context: RequestContext;
 }

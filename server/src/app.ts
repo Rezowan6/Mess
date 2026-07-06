@@ -35,8 +35,8 @@ app.use(
 
 // ------------- router -------------
 app.use("/api/auth", authRouter);
-app.use("/api/tenants", tenantRoute);
-app.use("/api/invites", invitesRouter);
+app.use("/api/tenant", tenantRoute);
+app.use("/api/invite", invitesRouter);
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {

@@ -33,7 +33,7 @@ export const accept = asyncHandler(async (req: Request, res: Response) => {
 
 export const cancel = asyncHandler(async (req: Request, res: Response) => {
 
-  const inviteId = getParamString(req.params.inviteId);
+  const inviteId = req.body.inviteId;
 
   const { message } = await inviteService.cancel({inviteId,context: req.context});
 
