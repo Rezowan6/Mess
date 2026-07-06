@@ -1,5 +1,5 @@
 import { InviteStatus, MemberRole, MemberStatus } from "@/constans/index.js";
-import * as MembershipRepository from "../membership/membership.repository.js";
+import * as MembershipRepository from "../tenantMembership/tenantMembership.repository.js";
 import * as UserRepository from "../user/user.repository.js";
 import * as IDep from "./index.js";
 import { ApiError } from "./index.js";
@@ -170,7 +170,7 @@ export const accept = async (payload: AcceptInvitePayload) => {
       {
         status: InviteStatus.ACCEPTED,
         acceptedAt: new Date(),
-        usedCount: 1
+        usedCount: 1,
       },
       transaction,
     );
@@ -217,7 +217,7 @@ export const cancel = async (payload: CancelPayload) => {
     }
 
     invite.status = InviteStatus.CANCELLED;
-    
+
     return {
       message: "Invite cancelled successfully",
     };

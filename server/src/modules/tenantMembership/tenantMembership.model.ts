@@ -13,7 +13,7 @@ import {
   MEMBER_SHIP_STATUS,
   MemberShipRole,
   MemberShipStatus,
-} from "./membership.interface.js";
+} from "./tenantMembership.interface.js";
 
 export class Membership extends Model<
   InferAttributes<
