@@ -15,14 +15,14 @@ import {
   MemberShipStatus,
 } from "./tenantMembership.interface.js";
 
-export class Membership extends Model<
+export class TenantMembership  extends Model<
   InferAttributes<
-    Membership,
+    TenantMembership ,
     {
       omit: "createdAt" | "updatedAt" | "deletedAt";
     }
   >,
-  InferCreationAttributes<Membership>
+  InferCreationAttributes<TenantMembership >
 > {
   declare id: CreationOptional<number>;
   declare tenantId: number;
@@ -40,7 +40,7 @@ export class Membership extends Model<
   declare readonly deletedAt: CreationOptional<Date | null>;
 }
 
-Membership.init(
+TenantMembership .init(
   {
     id: {
       type: DataTypes.INTEGER,

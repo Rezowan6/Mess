@@ -1,5 +1,5 @@
 import { MemberStatus, TenantStatus } from "@/constans/index.js";
-import { Membership, Tenant } from "@/models/index.js";
+import { TenantMembership, Tenant } from "@/models/index.js";
 import { ApiError } from "@/utils/index.js";
 import { NextFunction, Request, Response } from "express";
 
@@ -8,7 +8,7 @@ export const contextMiddleware = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const membership = await Membership.findOne({
+  const membership = await TenantMembership.findOne({
     where: {
       userId: req.user.id,
       status: MemberStatus.ACTIVE,

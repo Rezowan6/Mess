@@ -2,7 +2,7 @@ import { findTenantByIdDB, getAllTenantDB } from "./tenant.repository.js";
 
 import sequelize from "@/configs/db.js";
 import { MemberRole, MemberStatus } from "@/constans/index.js";
-import { Membership, Tenant } from "@/models/index.js";
+import { TenantMembership, Tenant } from "@/models/index.js";
 import { generateSlug } from "@/utils/generate.slug.js";
 import { ApiError } from "@/utils/index.js";
 import { TenantPayload } from "./tenant.interface.js";
@@ -22,7 +22,7 @@ export const create = async (userId: number, payload: TenantPayload) => {
       throw new ApiError(409, "Tenant slug already exists");
     }
 
-    const existingMembership = await Membership.findOne({
+    const existingMembership = await TenantMembership.findOne({
       where: {
         userId,
         role: MemberRole.MANAGER,
@@ -40,7 +40,7 @@ export const create = async (userId: number, payload: TenantPayload) => {
       { transaction },
     );
 
-    const membership = await Membership.create(
+    const membership = await TenantMembership.create(
       {
         userId,
         tenantId: tenant.id,

@@ -1,24 +1,24 @@
-import { Invite, Membership, RefreshToken, Tenant, User } from "./index.js";
+import { Invite, TenantMembership, RefreshToken, Tenant, User } from "./index.js";
 
 export const setupAssociations = () => {
-  User.hasMany(Membership, {
+  User.hasMany(TenantMembership, {
     foreignKey: "userId",
     as: "tenantMemberships",
   });
 
-  Membership.belongsTo(User, {
+  TenantMembership.belongsTo(User, {
     foreignKey: "userId",
     as: "user",
   });
 
-  Membership.belongsTo(User, { foreignKey: "invitedBy", as: "inviter" });
+  TenantMembership.belongsTo(User, { foreignKey: "invitedBy", as: "inviter" });
 
-  Membership.belongsTo(Tenant, {
+  TenantMembership.belongsTo(Tenant, {
     foreignKey: "tenantId",
     as: "tenant",
   });
 
-  Tenant.hasMany(Membership, {
+  Tenant.hasMany(TenantMembership, {
     foreignKey: "tenantId",
     as: "memberships",
   });
@@ -54,14 +54,14 @@ export const setupAssociations = () => {
   });
 
   User.belongsToMany(Tenant, {
-    through: Membership,
+    through: TenantMembership,
     foreignKey: "userId",
     otherKey: "tenantId",
     as: "tenants",
   });
 
   Tenant.belongsToMany(User, {
-    through: Membership,
+    through: TenantMembership,
     foreignKey: "tenantId",
     otherKey: "userId",
     as: "members",
