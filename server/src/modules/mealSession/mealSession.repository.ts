@@ -39,4 +39,30 @@ export class MealSessionRepository {
       },
     });
   }
+
+  static async findAllByTenant(tenantId: number) {
+    return await Mealsession.findAll({
+      where: {
+        tenantId,
+      },
+      order: [
+        ["year", "DESC"],
+        ["month", "DESC"],
+      ],
+    });
+  }
+  static async findById(id: number) {
+    return await Mealsession.findByPk(id);
+  }
+
+  static async closeSession(id: number, userId: number) {
+    return Mealsession.update(
+      {
+        status: MealSessionStatus.CLOSED,
+        closedBy: userId,
+        closedAt: new Date(),
+      },
+      { where: { id } },
+    );
+  }
 }

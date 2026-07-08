@@ -28,4 +28,32 @@ export class MealSessionController {
       data: session,
     });
   });
+
+
+  static getAll = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantContext(req);
+
+    const session = await MealSessionService.getAll(tenantId);
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Meal session fetched successfully.",
+      data: session,
+    });
+  });
+
+
+  static close = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, userId } = getTenantContext(req);
+
+    const sessionId = Number(req.params.id);
+
+    const session = await MealSessionService.close({tenantId, sessionId, userId});
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Meal session closed successfully.",
+      data: session,
+    });
+  });
 }
