@@ -6,32 +6,47 @@ import {
   InferCreationAttributes,
   Model,
 } from "sequelize";
+import {
+  MEAL_REQUEST_STATUSES,
+  MealRequestStatus,
+} from "./mealRequest.interface.js";
 
-export class MealEntry extends Model<
+export class MealRequest extends Model<
   InferAttributes<
-    MealEntry,
+    MealRequest,
     {
       omit: "createdAt" | "updatedAt" | "deletedAt";
     }
   >,
-  InferCreationAttributes<MealEntry>
+  InferCreationAttributes<MealRequest>
 > {
   declare id: CreationOptional<number>;
   declare tenantId: number;
   declare mealSessionId: number;
-  declare mealRequestId: number;
   declare userId: number;
+
   declare date: Date;
+
   declare breakfast: CreationOptional<number>;
   declare lunch: CreationOptional<number>;
   declare dinner: CreationOptional<number>;
+
+  declare status: CreationOptional<MealRequestStatus>;
+
+  declare approvedBy: CreationOptional<number>;
+  declare approvedAt: CreationOptional<Date>;
+
+  declare rejectedBy: CreationOptional<number>;
+  declare rejectedAt: CreationOptional<Date>;
+
+  declare note: CreationOptional<string>;
 
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
   declare readonly deletedAt: CreationOptional<Date | null>;
 }
 
-MealEntry.init(
+MealRequest.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -43,10 +58,6 @@ MealEntry.init(
       allowNull: false,
     },
     mealSessionId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    mealRequestId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -70,12 +81,31 @@ MealEntry.init(
       type: DataTypes.DECIMAL,
     },
 
+    status: {
+      type: DataTypes.ENUM(...MEAL_REQUEST_STATUSES),
+      defaultValue: MealRequestStatus.PENDING,
+    },
+    approvedBy: {
+      type: DataTypes.INTEGER,
+    },
+    approvedAt: {
+      type: DataTypes.DATE,
+    },
+    rejectedBy: {
+      type: DataTypes.INTEGER,
+    },
+    rejectedAt: {
+      type: DataTypes.DATE,
+    },
+    note: {
+      type: DataTypes.STRING,
+    },
   },
 
   {
     sequelize,
-    modelName: "MealEntry",
-    tableName: "meal_entries",
+    modelName: "MealRequest",
+    tableName: "meal_requests",
     timestamps: true,
     paranoid: true,
     underscored: true,
@@ -94,10 +124,10 @@ MealEntry.init(
         fields: ["user_id"],
       },
       {
-        fields: ["meal_request_id"],
+        fields: ["tenant_id", "date"],
       },
       {
-        fields: ["tenant_id", "date"],
+        fields: ["status"],
       },
     ],
   },

@@ -1,6 +1,7 @@
 import {
   Invite,
   MealEntry,
+  MealRequest,
   MealSession,
   RefreshToken,
   Tenant,
@@ -19,7 +20,10 @@ export const setupAssociations = () => {
     as: "user",
   });
 
-  TenantMembership.belongsTo(User, { foreignKey: "invitedBy", as: "inviter" });
+  TenantMembership.belongsTo(User, {
+    foreignKey: "invitedBy",
+    as: "inviter",
+  });
 
   TenantMembership.belongsTo(Tenant, {
     foreignKey: "tenantId",
@@ -82,18 +86,17 @@ export const setupAssociations = () => {
 
   Tenant.hasMany(MealSession, {
     foreignKey: "tenantId",
-    as: "mealsession",
+    as: "mealSessions",
   });
-
 
   MealEntry.belongsTo(Tenant, {
     foreignKey: "tenantId",
-    as: "tenant"
-  })
+    as: "tenant",
+  });
 
   Tenant.hasMany(MealEntry, {
     foreignKey: "tenantId",
-    as: "mealEntries"
+    as: "mealEntries",
   });
 
   MealEntry.belongsTo(User, {
@@ -103,7 +106,7 @@ export const setupAssociations = () => {
 
   User.hasMany(MealEntry, {
     foreignKey: "userId",
-    as: "mealEntries"
+    as: "mealEntries",
   });
 
   MealEntry.belongsTo(MealSession, {
@@ -114,5 +117,62 @@ export const setupAssociations = () => {
   MealSession.hasMany(MealEntry, {
     foreignKey: "mealSessionId",
     as: "mealEntries",
-  })
+  });
+
+  MealRequest.belongsTo(Tenant, {
+    foreignKey: "tenantId",
+    as: "tenant",
+  });
+
+  Tenant.hasMany(MealRequest, {
+    foreignKey: "tenantId",
+    as: "mealRequests",
+  });
+
+  MealRequest.belongsTo(User, {
+    foreignKey: "userId",
+    as: "requester",
+  });
+
+  User.hasMany(MealRequest, {
+    foreignKey: "userId",
+    as: "mealRequests",
+  });
+  MealRequest.belongsTo(User, {
+    foreignKey: "approvedBy",
+    as: "approver",
+  });
+
+  User.hasMany(MealRequest, {
+    foreignKey: "approvedBy",
+    as: "approvedMealRequests",
+  });
+
+  MealRequest.belongsTo(User, {
+    foreignKey: "rejectedBy",
+    as: "rejector",
+  });
+  User.hasMany(MealRequest, {
+    foreignKey: "rejectedBy",
+    as: "rejectedMealRequests",
+  });
+
+  MealRequest.belongsTo(MealSession, {
+    foreignKey: "mealSessionId",
+    as: "mealSession",
+  });
+
+  MealSession.hasMany(MealRequest, {
+    foreignKey: "mealSessionId",
+    as: "mealRequests",
+  });
+
+  MealEntry.belongsTo(MealRequest, {
+    foreignKey: "mealRequestId",
+    as: "mealRequest",
+  });
+  MealRequest.hasOne(MealEntry, {
+    foreignKey: "mealRequestId",
+    as: "MealEntry",
+  });
 };
