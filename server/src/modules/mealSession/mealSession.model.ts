@@ -74,7 +74,7 @@ Mealsession.init(
   {
     sequelize,
     modelName: "Mealsession",
-    tableName: "mealsession",
+    tableName: "meal_sessions",
     timestamps: true,
     paranoid: true,
     underscored: true,

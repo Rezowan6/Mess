@@ -72,7 +72,7 @@ export class TenantMembershipRepository {
 
   static async delete(id: number) {
     return TenantMembership.destroy({
-      where: { id },
+      where: { userId: id },
     });
   }
 
