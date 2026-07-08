@@ -1,4 +1,4 @@
-import { Mealsession } from "@/models/index.js";
+import { MealSession } from "@/models/index.js";
 import { Transaction } from "sequelize";
 import {
   CreateMealSessionPayload,
@@ -11,7 +11,7 @@ export class MealSessionRepository {
     payload: FindTenantMonthYear,
     transaction: Transaction | null = null,
   ) {
-    return await Mealsession.findOne({
+    return await MealSession.findOne({
       where: {
         ...payload,
       },
@@ -23,7 +23,7 @@ export class MealSessionRepository {
     payload: CreateMealSessionPayload,
     transaction: Transaction | null = null,
   ) {
-    return await Mealsession.create(
+    return await MealSession.create(
       {
         ...payload,
       },
@@ -32,7 +32,7 @@ export class MealSessionRepository {
   }
 
   static async findCurrentSession(tenantId: number) {
-    return await Mealsession.findOne({
+    return await MealSession.findOne({
       where: {
         tenantId,
         status: MealSessionStatus.OPEN,
@@ -41,7 +41,7 @@ export class MealSessionRepository {
   }
 
   static async findAllByTenant(tenantId: number) {
-    return await Mealsession.findAll({
+    return await MealSession.findAll({
       where: {
         tenantId,
       },
@@ -52,11 +52,11 @@ export class MealSessionRepository {
     });
   }
   static async findById(id: number) {
-    return await Mealsession.findByPk(id);
+    return await MealSession.findByPk(id);
   }
 
   static async closeSession(id: number, userId: number) {
-    return Mealsession.update(
+    return MealSession.update(
       {
         status: MealSessionStatus.CLOSED,
         closedBy: userId,

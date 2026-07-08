@@ -6,36 +6,31 @@ import {
   InferCreationAttributes,
   Model,
 } from "sequelize";
-import {
-  MEAL_SESSION_STATUS,
-  MealSessionStatus,
-} from "./mealSession.interface.js";
 
-export class MealSession extends Model<
+export class MealEntry extends Model<
   InferAttributes<
-    MealSession,
+    MealEntry,
     {
       omit: "createdAt" | "updatedAt" | "deletedAt";
     }
   >,
-  InferCreationAttributes<MealSession>
+  InferCreationAttributes<MealEntry>
 > {
   declare id: CreationOptional<number>;
   declare tenantId: number;
-  declare month: number;
-  declare year: number;
-  declare status: CreationOptional<MealSessionStatus>;
-  declare openedBy: CreationOptional<number>;
-  declare closedBy: CreationOptional<number>;
-  declare openedAt: CreationOptional<Date>;
-  declare closedAt: CreationOptional<Date>;
+  declare mealSessionId: number;
+  declare userId: number;
+  declare date: Date;
+  declare breakfast: CreationOptional<number>;
+  declare lunch: CreationOptional<number>;
+  declare dinner: CreationOptional<number>;
 
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
   declare readonly deletedAt: CreationOptional<Date | null>;
 }
 
-MealSession.init(
+MealEntry.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -46,48 +41,45 @@ MealSession.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    month: {
+    mealSessionId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    year: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    status: {
-      type: DataTypes.ENUM(...MEAL_SESSION_STATUS),
-      defaultValue: MealSessionStatus.OPEN,
-    },
-    openedBy: {
-      type: DataTypes.INTEGER,
-    },
-    closedBy: {
-      type: DataTypes.INTEGER,
-    },
-    openedAt: {
+    date: {
       type: DataTypes.DATE,
+      allowNull: false,
     },
-    closedAt: {
-      type: DataTypes.DATE,
+    breakfast: {
+      type: DataTypes.DECIMAL,
+    },
+    lunch: {
+      type: DataTypes.DECIMAL,
+    },
+    dinner: {
+      type: DataTypes.DECIMAL,
     },
   },
   {
     sequelize,
-    modelName: "Mealsession",
-    tableName: "meal_sessions",
+    modelName: "MealEntry",
+    tableName: "meal_entries",
     timestamps: true,
     paranoid: true,
     underscored: true,
     indexes: [
       {
         unique: true,
-        fields: ["tenant_id", "month", "year"],
+        fields: ["tenant_id", "meal_session_id", "user_id"],
       },
       {
         fields: ["tenant_id"],
       },
       {
-        fields: ["status"],
+        fields: ["meal_session_id"],
       },
     ],
   },

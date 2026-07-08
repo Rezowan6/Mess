@@ -1,4 +1,12 @@
-import { Invite, TenantMembership, RefreshToken, Tenant, User, Mealsession } from "./index.js";
+import {
+  Invite,
+  MealEntry,
+  MealSession,
+  RefreshToken,
+  Tenant,
+  TenantMembership,
+  User,
+} from "./index.js";
 
 export const setupAssociations = () => {
   User.hasMany(TenantMembership, {
@@ -67,13 +75,44 @@ export const setupAssociations = () => {
     as: "members",
   });
 
-  Mealsession.belongsTo(Tenant, {
+  MealSession.belongsTo(Tenant, {
     foreignKey: "tenantId",
     as: "tenant",
-  })
+  });
 
-  Tenant.hasMany(Mealsession, {
+  Tenant.hasMany(MealSession, {
     foreignKey: "tenantId",
     as: "mealsession",
+  });
+
+
+  MealEntry.belongsTo(Tenant, {
+    foreignKey: "tenantId",
+    as: "tenant"
+  })
+
+  Tenant.hasMany(MealEntry, {
+    foreignKey: "tenantId",
+    as: "mealEntries"
+  });
+
+  MealEntry.belongsTo(User, {
+    foreignKey: "userId",
+    as: "user",
+  });
+
+  User.hasMany(MealEntry, {
+    foreignKey: "userId",
+    as: "mealEntries"
+  });
+
+  MealEntry.belongsTo(MealSession, {
+    foreignKey: "mealSessionId",
+    as: "mealSession",
+  });
+
+  MealSession.hasMany(MealEntry, {
+    foreignKey: "mealSessionId",
+    as: "mealEntries",
   })
 };
