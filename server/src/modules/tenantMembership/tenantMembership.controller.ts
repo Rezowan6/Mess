@@ -18,9 +18,8 @@ export class TenantMembershipController {
   });
 
   static updateRole = asyncHandler(async (req: Request, res: Response) => {
-
     const { tenantId, membershipId, role: currentRole } = getTenantContext(req);
-    
+
     const targetMembershipId = Number(req.params.id);
     const { role } = req.body;
 
@@ -39,4 +38,20 @@ export class TenantMembershipController {
     });
   });
 
+  static deleteMember = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, membershipId, role } = getTenantContext(req);
+    const targetMembershipId = Number(req.params.id);
+
+    await TenantMembershipService.deleteMember({
+      tenantId,
+      currentMembershipId: membershipId,
+      currentRole: role,
+      targetMembershipId,
+    });
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Members remove successfully",
+      data: null,
+    });
+  });
 }

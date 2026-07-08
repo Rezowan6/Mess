@@ -1,7 +1,7 @@
 import sequelize from "@/configs/db.js";
 import { MemberRole } from "@/constans/index.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { UpdateRolePayload } from "./tenantMembership.interface.js";
+import { DeleteMemberPayload, UpdateRolePayload } from "./tenantMembership.interface.js";
 import { TenantMembershipRepository } from "./tenantMembership.repository.js";
 
 export class TenantMembershipService {
@@ -45,5 +45,34 @@ export class TenantMembershipService {
         trnasaction,
       );
     });
+  }
+
+  static async deleteMember (payload: DeleteMemberPayload) {
+    const {tenantId, currentMembershipId, currentRole, targetMembershipId} = payload;
+
+    const targetMember = await TenantMembershipRepository.findActiveByUserId(targetMembershipId);
+
+    if(targetMember?.tenantId !== tenantId) {
+      throw new ApiError(403, "Access denied");
+    }
+
+    if(targetMember.id === currentMembershipId) {
+      throw new ApiError(400, "You cannot remove yourself.");
+    }
+
+    if (targetMember.role === MemberRole.ADMIN) {
+      throw new ApiError(403, "The admin cannot be removed.");
+    }
+    if (targetMember.role === MemberRole.MANAGER) {
+      throw new ApiError(403, "The manager cannot be removed.");
+    }
+
+    const count = await TenantMembershipRepository.countByTenant(tenantId);
+    if(count === 1) {
+      throw new ApiError(400, "The last member of the tenant cannot be removed.");
+    }
+
+    await TenantMembershipRepository.delete(targetMembershipId);
+
   }
 }

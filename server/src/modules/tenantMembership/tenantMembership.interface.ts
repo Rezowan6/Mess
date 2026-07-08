@@ -39,6 +39,12 @@ export interface UpdateRolePayload {
   targetMembershipId: number;
   newRole: MemberShipRole;
 }
+export interface DeleteMemberPayload {
+  tenantId: number;
+  currentMembershipId: number;
+  currentRole: string;
+  targetMembershipId: number;
+}
 
 export interface updateRoleDTO {
   targetMembershipId: number;

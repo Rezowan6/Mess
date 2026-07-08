@@ -69,4 +69,14 @@ export class TenantMembershipRepository {
       },
     );
   }
+
+  static async delete(id: number) {
+    return TenantMembership.destroy({
+      where: { id },
+    });
+  }
+
+  static async countByTenant(id: number) {
+    return await TenantMembership.count({ where: { tenantId: id } });
+  }
 }
