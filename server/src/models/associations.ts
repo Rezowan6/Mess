@@ -1,4 +1,4 @@
-import { Invite, TenantMembership, RefreshToken, Tenant, User } from "./index.js";
+import { Invite, TenantMembership, RefreshToken, Tenant, User, Mealsession } from "./index.js";
 
 export const setupAssociations = () => {
   User.hasMany(TenantMembership, {
@@ -66,4 +66,14 @@ export const setupAssociations = () => {
     otherKey: "userId",
     as: "members",
   });
+
+  Mealsession.belongsTo(Tenant, {
+    foreignKey: "tenantId",
+    as: "tenant",
+  })
+
+  Tenant.hasMany(Mealsession, {
+    foreignKey: "tenantId",
+    as: "mealsession",
+  })
 };

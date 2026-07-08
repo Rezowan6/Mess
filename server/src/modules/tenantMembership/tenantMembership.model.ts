@@ -14,6 +14,7 @@ import {
   MemberShipRole,
   MemberShipStatus,
 } from "./tenantMembership.interface.js";
+import { MemberRole, MemberStatus } from "@/constans/index.js";
 
 export class TenantMembership  extends Model<
   InferAttributes<
@@ -57,11 +58,11 @@ TenantMembership .init(
     },
     role: {
       type: DataTypes.ENUM(...MEMBER_SHIP_ROLE),
-      defaultValue: "member",
+      defaultValue: MemberRole.MEMBER,
     },
     status: {
       type: DataTypes.ENUM(...MEMBER_SHIP_STATUS),
-      defaultValue: "invited",
+      defaultValue: MemberStatus.INACTIVE,
     },
     joinedAt: {
       type: DataTypes.DATE,
