@@ -4,7 +4,7 @@ import { MealSessionRepository } from "./mealSession.repository.js";
 
 export class MealSessionService {
   static async create(tenantId: number, userId: number) {
-    return await sequelize.transaction(async (transaction) => {
+    const data = await sequelize.transaction(async (transaction) => {
       const findSession = {
         tenantId,
         month: new Date().getMonth(),
@@ -25,7 +25,24 @@ export class MealSessionService {
         openedAt: new Date(),
       };
 
-      await MealSessionRepository.create({ ...payload }, transaction);
+      const session = await MealSessionRepository.create(
+        { ...payload },
+        transaction,
+      );
+      return session;
     });
+
+    return data;
   }
+
+  static async getCurrent(tenantId: number) {
+    const session = await MealSessionRepository.findCurrentSession(tenantId);
+
+    if(!session){
+      throw new ApiError(404, "No active meal session found.");
+    }
+
+    return session;
+  }
+
 }

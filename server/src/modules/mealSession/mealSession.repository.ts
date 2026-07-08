@@ -3,6 +3,7 @@ import { Transaction } from "sequelize";
 import {
   CreateMealSessionPayload,
   FindTenantMonthYear,
+  MealSessionStatus,
 } from "./mealSession.interface.js";
 
 export class MealSessionRepository {
@@ -28,5 +29,14 @@ export class MealSessionRepository {
       },
       { transaction: transaction ?? null },
     );
+  }
+
+  static async findCurrentSession(tenantId: number) {
+    return await Mealsession.findOne({
+      where: {
+        tenantId,
+        status: MealSessionStatus.OPEN,
+      },
+    });
   }
 }

@@ -5,15 +5,27 @@ import { Request, Response } from "express";
 import { MealSessionService } from "./MealSession.service.js";
 
 export class MealSessionController {
-    static create = asyncHandler(async (req: Request, res: Response) => {
-        const {tenantId, userId} = getTenantContext(req);
+  static create = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, userId } = getTenantContext(req);
 
-        await MealSessionService.create(tenantId, userId);
+    const session = await MealSessionService.create(tenantId, userId);
 
-        return sendResponse(res, {
-            statusCode: 201,
-            message: "Meal session create successfully",
-            data: null,
-        })
-    })
+    return sendResponse(res, {
+      statusCode: 201,
+      message: "Meal session created successfully",
+      data: session,
+    });
+  });
+
+  static getCurrent = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantContext(req);
+
+    const session = await MealSessionService.getCurrent(tenantId);
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Current meal session fetched successfully.",
+      data: session,
+    });
+  });
 }
