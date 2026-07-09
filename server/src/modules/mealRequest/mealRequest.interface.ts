@@ -42,7 +42,8 @@ export interface UpdateMealRequestDto {
 }
 
 export interface CreateMealRequestDto {
-  mealSessionId: number;
+  tenantId: number;
+  userId: number;
   date: Date;
   breakfast?: number;
   lunch?: number;

@@ -14,14 +14,20 @@ export class MealRequestService {
   ) {}
 
   async create(data: CreateMealRequestDto) {
-    const { tenantId, mealSessionId, userId, date, breakfast, lunch, dinner } =
+    const { tenantId, userId, date, breakfast, lunch, dinner } =
       data;
 
     const mealSession =
-      await this.mealSessionRepository.findById(mealSessionId);
+      await this.mealSessionRepository.getCurrentSession(tenantId);
 
     if (!mealSession) {
       throw new ApiError(404, "Meal session not found");
+    }
+
+    const mealSessionId = mealSession.id;
+
+    if(!mealSessionId) {
+      throw new ApiError(404, "Meal session Id required.")
     }
 
     if (mealSession.tenantId !== tenantId) {
@@ -36,7 +42,7 @@ export class MealRequestService {
         tenantId,
         mealSessionId,
         userId,
-        date: new Date(),
+        date,
       });
 
     if (existingRequest) {
@@ -49,6 +55,7 @@ export class MealRequestService {
 
     return this.mealRequestRepository.createMealRequest({
       ...data,
+      mealSessionId,
       status: MealRequestStatus.PENDING,
     });
   }

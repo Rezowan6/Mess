@@ -38,7 +38,7 @@ export class MealSessionService {
   }
 
    async getCurrent(tenantId: number) {
-    const session = await this.mealSessionRepository.findCurrentSession(tenantId);
+    const session = await this.mealSessionRepository.getCurrentSession(tenantId);
 
     if (!session) {
       throw new ApiError(404, "No active meal session found.");
@@ -48,7 +48,7 @@ export class MealSessionService {
   }
 
    async getAll(tenantId: number) {
-    const session = await this.mealSessionRepository.findAllByTenant(tenantId);
+    const session = await this.mealSessionRepository.getAllByTenant(tenantId);
 
     if (!session) {
       throw new ApiError(404, "No active meal session found.");

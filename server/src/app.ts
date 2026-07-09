@@ -43,7 +43,7 @@ app.use("/api/tenant", tenantRoute);
 app.use("/api/invite", invitesRouter);
 app.use("/api/tenant-membership", tenantMembershipRouter)
 app.use("/api/meal-session", mealSessionRouter)
-app.use("/api/meal-session", mealRequestRouter)
+app.use("/api/meal-request", mealRequestRouter)
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {

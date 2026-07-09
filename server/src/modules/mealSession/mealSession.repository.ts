@@ -33,7 +33,7 @@ export class MealSessionRepository {
     );
   }
 
-  async findCurrentSession(tenantId: number) {
+  async getCurrentSession(tenantId: number) {
     return await this.MealSessionModel.findOne({
       where: {
         tenantId,
@@ -42,7 +42,7 @@ export class MealSessionRepository {
     });
   }
 
-  async findAllByTenant(tenantId: number) {
+  async getAllByTenant(tenantId: number) {
     return await this.MealSessionModel.findAll({
       where: {
         tenantId,
