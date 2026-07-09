@@ -1,5 +1,5 @@
 import { MealRequest } from "@/models/index.js";
-import { Transaction } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import {
   CreateMealRequestDto,
   MealRequestStatus,
@@ -49,12 +49,30 @@ export class MealRequestRepository {
       order: [["createdAt", "ASC"]],
     });
   }
+
+  async getPendingRequestsByDate(
+    { tenantId, date }: { tenantId: number; date: any },
+    transaction: Transaction | null = null,
+  ) {
+    return await this.mealRequestModel.findAll({
+      where: {
+        tenantId,
+        date: {
+          [Op.between]: [date.start, date.end],
+        },
+        status: MealRequestStatus.PENDING,
+      },
+      transaction: transaction ?? null,
+    });
+  }
+
   async getMealRequestsByUserId(
     userId: number,
     tenantId: number,
   ): Promise<MealRequest[]> {
     return this.mealRequestModel.findAll({ where: { userId, tenantId } });
   }
+
   async getMyMealRequests({
     tenantId,
     userId,
@@ -117,6 +135,28 @@ export class MealRequestRepository {
       where: { id },
       transaction: transaction ?? null,
     });
+  }
+
+  async bulkApproveRequests(
+    requestIds: number[],
+    managerId: number,
+    transaction: Transaction | null = null,
+  ) {
+    return this.mealRequestModel.update(
+      {
+        status: MealRequestStatus.APPROVED,
+        approvedBy: managerId,
+        approvedAt: new Date(),
+      },
+      {
+        where: {
+          id: {
+            [Op.in]: requestIds,
+          },
+        },
+        transaction: transaction ?? null,
+      },
+    );
   }
 
   async deleteMealRequest(id: number): Promise<number> {

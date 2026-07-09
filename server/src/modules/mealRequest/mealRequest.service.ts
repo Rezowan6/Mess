@@ -1,5 +1,6 @@
 import sequelize from "@/configs/db.js";
 import { ApiError } from "@/utils/ApiError.js";
+import { MealEntryRepository } from "../mealEntry/mealEntry.repository.js";
 import { MealSessionStatus } from "../mealSession/mealSession.interface.js";
 import { MealSessionRepository } from "../mealSession/mealSession.repository.js";
 import {
@@ -7,7 +8,6 @@ import {
   MealRequestStatus,
 } from "./mealRequest.interface.js";
 import { MealRequestRepository } from "./mealRequest.repository.js";
-import { MealEntryRepository } from "../mealEntry/mealEntry.repository.js";
 
 export class MealRequestService {
   constructor(
@@ -57,6 +57,7 @@ export class MealRequestService {
 
     return this.mealRequestRepository.createMealRequest({
       ...data,
+      date,
       mealSessionId,
       status: MealRequestStatus.PENDING,
     });
@@ -126,6 +127,59 @@ export class MealRequestService {
       );
 
       return request;
+    });
+  }
+
+  async approveAllPending({
+    tenantId,
+    managerId,
+    date,
+  }: {
+    tenantId: number;
+    managerId: number;
+    date: Date;
+  }) {
+    return sequelize.transaction(async (transaction) => {
+      const start = new Date(date);
+      start.setHours(0, 0, 0, 0);
+
+      const end = new Date(date);
+      end.setHours(23, 59, 59, 999);
+
+      const requests =
+        await this.mealRequestRepository.getPendingRequestsByDate(
+          { tenantId, date: {start, end} },
+          transaction,
+        );
+      if (!requests.length) {
+        throw new ApiError(404, "No pending meal requests found.");
+      }
+      const mealEntries = requests.map((request) => ({
+        tenantId,
+        userId: request.userId,
+        mealSessionId: request.mealSessionId,
+        date: request.date,
+
+        breakfast: request.breakfast,
+        lunch: request.lunch,
+        dinner: request.dinner,
+
+        mealRequestId: request.id,
+      }));
+
+      await this.mealEntryRepository.bulkCreateMealEntries(
+        mealEntries,
+        transaction,
+      );
+
+      await this.mealRequestRepository.bulkApproveRequests(
+        requests.map((request) => request.id),
+        managerId,
+        transaction,
+      );
+      return {
+        approvedCount: requests.length,
+      };
     });
   }
 

@@ -67,6 +67,21 @@ export class MealRequestController {
     });
   });
 
+  static approveAll = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, userId: managerId } = getTenantContext(req);
+    const { approvedCount } = await mealRequestService.approveAllPending({
+      tenantId,
+      managerId,
+      date: req.body.date,
+    });
+
+    sendResponse(res, {
+      statusCode: 200,
+      message: "All meal request approved successfully",
+      data: approvedCount,
+    });
+  });
+
   static reject = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId: managerId } = getTenantContext(req);
 
