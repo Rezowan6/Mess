@@ -7,7 +7,12 @@ import { Request, Response } from "express";
 export class MealRequestController {
   static create = asyncHandler(async (req: Request, res: Response) => {
     const { userId, tenantId } = getTenantContext(req);
-
+// req.body:{
+//   "date": "2026-07-09",
+//   "breakfast": 1,
+//   "lunch": 1,
+//   "dinner": 0
+// }
     const mealRequest = await mealRequestService.create({
       ...req.body,
       userId,
@@ -86,7 +91,7 @@ export class MealRequestController {
     const { tenantId, userId: managerId } = getTenantContext(req);
 
     const result = await mealRequestService.reject({
-      id: Number(req.params.id),
+      id: Number(req.body.id),
       tenantId,
       managerId,
     });
@@ -97,4 +102,5 @@ export class MealRequestController {
       data: result,
     });
   });
+  
 }

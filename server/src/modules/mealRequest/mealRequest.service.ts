@@ -221,7 +221,7 @@ export class MealRequestService {
       );
 
       return {
-        ...request.toJSON(),
+        ...request,
         status: MealRequestStatus.REJECTED,
       };
     });
