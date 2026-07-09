@@ -14,8 +14,7 @@ export class MealRequestService {
   ) {}
 
   async create(data: CreateMealRequestDto) {
-    const { tenantId, userId, date, breakfast, lunch, dinner } =
-      data;
+    const { tenantId, userId, date, breakfast, lunch, dinner } = data;
 
     const mealSession =
       await this.mealSessionRepository.getCurrentSession(tenantId);
@@ -26,8 +25,8 @@ export class MealRequestService {
 
     const mealSessionId = mealSession.id;
 
-    if(!mealSessionId) {
-      throw new ApiError(404, "Meal session Id required.")
+    if (!mealSessionId) {
+      throw new ApiError(404, "Meal session Id required.");
     }
 
     if (mealSession.tenantId !== tenantId) {
@@ -58,5 +57,15 @@ export class MealRequestService {
       mealSessionId,
       status: MealRequestStatus.PENDING,
     });
+  }
+
+  async getPendingRequests({ tenantId }: { tenantId: number }) {
+    return await this.mealRequestRepository.getPendingRequestsByTenantId(
+      tenantId,
+    );
+  }
+
+  async my({ tenantId, userId }: { tenantId: number; userId: number }) {
+    return this.mealRequestRepository.getMyMealRequests({ userId, tenantId });
   }
 }

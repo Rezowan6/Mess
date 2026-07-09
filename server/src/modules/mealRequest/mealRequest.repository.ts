@@ -21,6 +21,26 @@ export class MealRequestRepository {
   async getPendingRequestsByTenantId(tenantId: number): Promise<MealRequest[]> {
     return this.mealRequestModel.findAll({
       where: { tenantId, status: MealRequestStatus.PENDING },
+      attributes: [
+        "id",
+        "date",
+        "breakfast",
+        "lunch",
+        "dinner",
+        "status",
+        "createdAt",
+      ],
+      include: [
+        {
+          association: "requester",
+          attributes: ["id", "name", "email", "avatar"],
+        },
+        {
+          association: "mealSession",
+          attributes: ["id", "month", "year", "status"],
+        },
+      ],
+      order: [["createdAt", "ASC"]],
     });
   }
   async getMealRequestsByUserId(
@@ -28,6 +48,32 @@ export class MealRequestRepository {
     tenantId: number,
   ): Promise<MealRequest[]> {
     return this.mealRequestModel.findAll({ where: { userId, tenantId } });
+  }
+  async getMyMealRequests(
+    {tenantId, userId}:
+{    tenantId: number;
+    userId: number;}
+  ): Promise<MealRequest[]> {
+    return this.mealRequestModel.findAll({
+      where: { userId, tenantId },
+      attributes: [
+        "id",
+        "date",
+        "breakfast",
+        "lunch",
+        "dinner",
+        "status",
+        "createdAt",
+      ],
+
+      include: [
+        {
+          association: "mealSession",
+          attributes: ["id", "month", "year", "status"],
+        },
+      ],
+      order: [["date", "DESC"]],
+    });
   }
 
   async getMealRequestsByDateAndTenant(

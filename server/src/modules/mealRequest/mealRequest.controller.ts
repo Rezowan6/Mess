@@ -20,4 +20,33 @@ export class MealRequestController {
       data: mealRequest,
     });
   });
+
+  static getPendingRequests = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantContext(req);
+
+    const mealRequest = await mealRequestService.getPendingRequests({
+      tenantId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 201,
+      message: "Pending meal requests fetched successfully.",
+      data: mealRequest,
+    });
+  });
+
+  static my = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, userId } = getTenantContext(req);
+
+    const mealRequest = await mealRequestService.my({
+      tenantId,
+      userId
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Meal requests fetched successfully.",
+      data: mealRequest,
+    });
+  });
 }
