@@ -4,14 +4,15 @@ import { MealSessionStatus } from "./mealSession.interface.js";
 import { MealSessionRepository } from "./mealSession.repository.js";
 
 export class MealSessionService {
-  static async create(tenantId: number, userId: number) {
+  constructor(private readonly mealSessionRepository: MealSessionRepository){};
+   async create(tenantId: number, userId: number) {
     const data = await sequelize.transaction(async (transaction) => {
       const findSession = {
         tenantId,
         month: new Date().getMonth(),
         year: new Date().getFullYear(),
       };
-      const exsistSession = await MealSessionRepository.findByTenantMonthYear(
+      const exsistSession = await this.mealSessionRepository.findByTenantMonthYear(
         { ...findSession },
         transaction,
       );
@@ -26,7 +27,7 @@ export class MealSessionService {
         openedAt: new Date(),
       };
 
-      const session = await MealSessionRepository.create(
+      const session = await this.mealSessionRepository.create(
         { ...payload },
         transaction,
       );
@@ -36,8 +37,8 @@ export class MealSessionService {
     return data;
   }
 
-  static async getCurrent(tenantId: number) {
-    const session = await MealSessionRepository.findCurrentSession(tenantId);
+   async getCurrent(tenantId: number) {
+    const session = await this.mealSessionRepository.findCurrentSession(tenantId);
 
     if (!session) {
       throw new ApiError(404, "No active meal session found.");
@@ -46,8 +47,8 @@ export class MealSessionService {
     return session;
   }
 
-  static async getAll(tenantId: number) {
-    const session = await MealSessionRepository.findAllByTenant(tenantId);
+   async getAll(tenantId: number) {
+    const session = await this.mealSessionRepository.findAllByTenant(tenantId);
 
     if (!session) {
       throw new ApiError(404, "No active meal session found.");
@@ -56,14 +57,14 @@ export class MealSessionService {
     return session;
   }
 
-  static async close(payload: {
+   async close(payload: {
     sessionId: number;
     tenantId: number;
     userId: number;
   }) {
     const { sessionId, tenantId, userId } = payload;
 
-    const session = await MealSessionRepository.findById(sessionId);
+    const session = await this.mealSessionRepository.findById(sessionId);
 
     if (!session) {
       throw new ApiError(404, "Meal session not found.");
@@ -76,8 +77,8 @@ export class MealSessionService {
       throw new ApiError(400, "Meal session already closed.");
     }
 
-    await MealSessionRepository.closeSession(sessionId, userId);
+    await this.mealSessionRepository.closeSession(sessionId, userId);
 
-    return MealSessionRepository.findById(sessionId);
+    return this.mealSessionRepository.findById(sessionId);
   }
 }

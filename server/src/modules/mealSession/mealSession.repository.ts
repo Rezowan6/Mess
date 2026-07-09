@@ -7,11 +7,13 @@ import {
 } from "./mealSession.interface.js";
 
 export class MealSessionRepository {
-  static async findByTenantMonthYear(
+  constructor(private readonly MealSessionModel: typeof MealSession) {}
+
+  async findByTenantMonthYear(
     payload: FindTenantMonthYear,
     transaction: Transaction | null = null,
   ) {
-    return await MealSession.findOne({
+    return await this.MealSessionModel.findOne({
       where: {
         ...payload,
       },
@@ -19,11 +21,11 @@ export class MealSessionRepository {
     });
   }
 
-  static async create(
+  async create(
     payload: CreateMealSessionPayload,
     transaction: Transaction | null = null,
   ) {
-    return await MealSession.create(
+    return await this.MealSessionModel.create(
       {
         ...payload,
       },
@@ -31,8 +33,8 @@ export class MealSessionRepository {
     );
   }
 
-  static async findCurrentSession(tenantId: number) {
-    return await MealSession.findOne({
+  async findCurrentSession(tenantId: number) {
+    return await this.MealSessionModel.findOne({
       where: {
         tenantId,
         status: MealSessionStatus.OPEN,
@@ -40,8 +42,8 @@ export class MealSessionRepository {
     });
   }
 
-  static async findAllByTenant(tenantId: number) {
-    return await MealSession.findAll({
+  async findAllByTenant(tenantId: number) {
+    return await this.MealSessionModel.findAll({
       where: {
         tenantId,
       },
@@ -51,12 +53,12 @@ export class MealSessionRepository {
       ],
     });
   }
-  static async findById(id: number) {
-    return await MealSession.findByPk(id);
+  async findById(id: number) {
+    return await this.MealSessionModel.findByPk(id);
   }
 
-  static async closeSession(id: number, userId: number) {
-    return MealSession.update(
+  async closeSession(id: number, userId: number) {
+    return this.MealSessionModel.update(
       {
         status: MealSessionStatus.CLOSED,
         closedBy: userId,

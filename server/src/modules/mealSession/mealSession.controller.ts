@@ -2,13 +2,13 @@ import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
-import { MealSessionService } from "./MealSession.service.js";
+import { mealSessionService } from './../containers/mealSession.container.js';
 
 export class MealSessionController {
   static create = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId } = getTenantContext(req);
 
-    const session = await MealSessionService.create(tenantId, userId);
+    const session = await mealSessionService.create(tenantId, userId);
 
     return sendResponse(res, {
       statusCode: 201,
@@ -20,7 +20,7 @@ export class MealSessionController {
   static getCurrent = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 
-    const session = await MealSessionService.getCurrent(tenantId);
+    const session = await mealSessionService.getCurrent(tenantId);
 
     return sendResponse(res, {
       statusCode: 200,
@@ -33,7 +33,7 @@ export class MealSessionController {
   static getAll = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 
-    const session = await MealSessionService.getAll(tenantId);
+    const session = await mealSessionService.getAll(tenantId);
 
     return sendResponse(res, {
       statusCode: 200,
@@ -48,7 +48,7 @@ export class MealSessionController {
 
     const sessionId = Number(req.params.id);
 
-    const session = await MealSessionService.close({tenantId, sessionId, userId});
+    const session = await mealSessionService.close({tenantId, sessionId, userId});
 
     return sendResponse(res, {
       statusCode: 200,
