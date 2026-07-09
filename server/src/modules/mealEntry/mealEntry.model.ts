@@ -22,9 +22,11 @@ export class MealEntry extends Model<
   declare mealRequestId: number;
   declare userId: number;
   declare date: Date;
+
   declare breakfast: CreationOptional<number>;
   declare lunch: CreationOptional<number>;
   declare dinner: CreationOptional<number>;
+  declare guestMeal: CreationOptional<number>;
 
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
@@ -69,7 +71,11 @@ MealEntry.init(
     dinner: {
       type: DataTypes.DECIMAL,
     },
-
+    guestMeal: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      defaultValue: 0,
+    },
   },
 
   {

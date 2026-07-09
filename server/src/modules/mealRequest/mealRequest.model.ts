@@ -30,6 +30,7 @@ export class MealRequest extends Model<
   declare breakfast: CreationOptional<number>;
   declare lunch: CreationOptional<number>;
   declare dinner: CreationOptional<number>;
+  declare guestMeal: CreationOptional<number>;
 
   declare status: CreationOptional<MealRequestStatus>;
 
@@ -79,6 +80,11 @@ MealRequest.init(
     },
     dinner: {
       type: DataTypes.DECIMAL,
+    },
+    guestMeal: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      defaultValue: 0,
     },
 
     status: {
