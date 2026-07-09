@@ -1,4 +1,5 @@
 import { MealRequest } from "@/models/index.js";
+import { Transaction } from "sequelize";
 import {
   CreateMealRequestDto,
   MealRequestStatus,
@@ -14,8 +15,13 @@ export class MealRequestRepository {
     return this.mealRequestModel.create(mealRequestData);
   }
 
-  async getMealRequestById(id: number): Promise<MealRequest | null> {
-    return this.mealRequestModel.findByPk(id);
+  async getMealRequestById(
+    id: number,
+    transaction: Transaction | null = null,
+  ): Promise<MealRequest | null> {
+    return this.mealRequestModel.findByPk(id, {
+      transaction: transaction ?? null,
+    });
   }
 
   async getPendingRequestsByTenantId(tenantId: number): Promise<MealRequest[]> {
@@ -49,11 +55,13 @@ export class MealRequestRepository {
   ): Promise<MealRequest[]> {
     return this.mealRequestModel.findAll({ where: { userId, tenantId } });
   }
-  async getMyMealRequests(
-    {tenantId, userId}:
-{    tenantId: number;
-    userId: number;}
-  ): Promise<MealRequest[]> {
+  async getMyMealRequests({
+    tenantId,
+    userId,
+  }: {
+    tenantId: number;
+    userId: number;
+  }): Promise<MealRequest[]> {
     return this.mealRequestModel.findAll({
       where: { userId, tenantId },
       attributes: [
@@ -103,9 +111,11 @@ export class MealRequestRepository {
   async updateMealRequest(
     id: number,
     updateData: UpdateMealRequestDto,
+    transaction: Transaction | null = null,
   ): Promise<[affectedCount: number]> {
     return await this.mealRequestModel.update(updateData, {
       where: { id },
+      transaction: transaction ?? null,
     });
   }
 

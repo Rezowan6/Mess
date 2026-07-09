@@ -1,3 +1,4 @@
+import sequelize from "@/configs/db.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { MealSessionStatus } from "../mealSession/mealSession.interface.js";
 import { MealSessionRepository } from "../mealSession/mealSession.repository.js";
@@ -6,11 +7,13 @@ import {
   MealRequestStatus,
 } from "./mealRequest.interface.js";
 import { MealRequestRepository } from "./mealRequest.repository.js";
+import { MealEntryRepository } from "../mealEntry/mealEntry.repository.js";
 
 export class MealRequestService {
   constructor(
     private readonly mealRequestRepository: MealRequestRepository,
     private readonly mealSessionRepository: MealSessionRepository,
+    private readonly mealEntryRepository: MealEntryRepository,
   ) {}
 
   async create(data: CreateMealRequestDto) {
@@ -67,5 +70,106 @@ export class MealRequestService {
 
   async my({ tenantId, userId }: { tenantId: number; userId: number }) {
     return this.mealRequestRepository.getMyMealRequests({ userId, tenantId });
+  }
+
+  async approve({
+    id,
+    tenantId,
+    managerId,
+  }: {
+    id: number;
+    tenantId: number;
+    managerId: number;
+  }) {
+    return await sequelize.transaction(async (transaction) => {
+      const request = await this.mealRequestRepository.getMealRequestById(
+        id,
+        transaction,
+      );
+
+      if (!request) {
+        throw new ApiError(404, "Meal request not found.");
+      }
+
+      if (request.tenantId !== tenantId) {
+        throw new ApiError(400, "Unauthorized.");
+      }
+
+      if (request.status !== MealRequestStatus.PENDING) {
+        throw new ApiError(400, "Only pending request can be approved");
+      }
+
+      await this.mealRequestRepository.updateMealRequest(
+        id,
+        {
+          status: MealRequestStatus.APPROVED,
+          approvedBy: managerId,
+          approvedAt: new Date(),
+        },
+        transaction,
+      );
+
+      await this.mealEntryRepository.createMealEntry(
+        {
+          tenantId,
+          userId: request.userId,
+          mealSessionId: request.mealSessionId,
+          date: request.date,
+
+          breakfast: request.breakfast,
+          lunch: request.lunch,
+          dinner: request.dinner,
+
+          mealRequestId: request.id,
+        },
+        transaction,
+      );
+
+      return request;
+    });
+  }
+
+  async reject({
+    id,
+    tenantId,
+    managerId,
+  }: {
+    id: number;
+    tenantId: number;
+    managerId: number;
+  }) {
+    return sequelize.transaction(async (transaction) => {
+      const request = await this.mealRequestRepository.getMealRequestById(
+        id,
+        transaction,
+      );
+
+      if (!request) {
+        throw new ApiError(404, "Meal request not found.");
+      }
+
+      if (request.tenantId !== tenantId) {
+        throw new ApiError(403, "You cannot reject this request.");
+      }
+
+      if (request.status !== MealRequestStatus.PENDING) {
+        throw new ApiError(400, "Only pending request can be rejected.");
+      }
+
+      await this.mealRequestRepository.updateMealRequest(
+        id,
+        {
+          status: MealRequestStatus.REJECTED,
+          rejectedBy: managerId,
+          rejectedAt: new Date(),
+        },
+        transaction,
+      );
+
+      return {
+        ...request.toJSON(),
+        status: MealRequestStatus.REJECTED,
+      };
+    });
   }
 }
