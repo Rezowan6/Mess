@@ -1,5 +1,5 @@
 import { MealEntry } from "@/models/index.js";
-import { Transaction } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { CreateMealEntryDto } from "./mealEntry.interface.js";
 
 export class MealEntryRepository {
@@ -48,6 +48,48 @@ export class MealEntryRepository {
         },
       ],
       order: [["date", "DESC"]],
+    });
+  }
+
+  async getDailyEntries(
+    { tenantId, date }: { tenantId: number; date: { start: Date; end: Date } },
+    transaction: Transaction | null = null,
+  ) {
+    return await this.mealEntryModel.findAll({
+      where: {
+        tenantId,
+        date: {
+          [Op.between]: [date.start, date.end],
+        },
+      },
+      attributes: [
+        "id",
+        "date",
+        "breakfast",
+        "lunch",
+        "dinner",
+        "guestMeal",
+        "createdAt",
+      ],
+      include: [
+        {
+          association: "user",
+          attributes: ["id", "name",],
+        },
+        {
+          association: "mealSession",
+          attributes: ["id", "month", "year", "status"],
+        },
+        {
+          association: "mealRequest",
+          attributes: [
+            "id",
+            "status",
+          ],
+        },
+      ],
+      order: [["createdAt", "ASC"]],
+      transaction: transaction ?? null,
     });
   }
 }

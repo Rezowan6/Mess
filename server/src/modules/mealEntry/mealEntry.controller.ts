@@ -16,4 +16,19 @@ export class MealEntriesController {
       data,
     });
   });
+
+  static daily = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantContext(req);
+
+    const data = await mealEntryService.daily({
+      tenantId,
+      date: new Date(),
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Today meal featch successfully.",
+      data,
+    });
+  });
 }
