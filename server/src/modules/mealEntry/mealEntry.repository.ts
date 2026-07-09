@@ -22,4 +22,32 @@ export class MealEntryRepository {
       transaction: transaction ?? null,
     });
   }
+
+  async getMyMeal({
+    tenantId,
+    userId,
+  }: {
+    tenantId: number;
+    userId: number;
+  }): Promise<MealEntry[]> {
+    return await this.mealEntryModel.findAll({
+      where: { userId, tenantId },
+      attributes: [
+        "id",
+        "date",
+        "breakfast",
+        "lunch",
+        "dinner",
+        "guest_meal",
+        "createdAt",
+      ],
+      include: [
+        {
+          association: "mealSession",
+          attributes: ["id", "month", "year", "status"],
+        },
+      ],
+      order: [["date", "DESC"]],
+    });
+  }
 }

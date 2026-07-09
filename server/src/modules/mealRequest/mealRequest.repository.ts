@@ -88,6 +88,7 @@ export class MealRequestRepository {
         "breakfast",
         "lunch",
         "dinner",
+        "guest_meal",
         "status",
         "createdAt",
       ],
