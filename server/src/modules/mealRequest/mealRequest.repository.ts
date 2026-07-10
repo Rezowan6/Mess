@@ -1,3 +1,4 @@
+import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealRequest } from "@/models/index.js";
 import { Op, Transaction } from "sequelize";
 import {
@@ -51,14 +52,17 @@ export class MealRequestRepository {
   }
 
   async getPendingRequestsByDate(
-    { tenantId, date }: { tenantId: number; date: any },
+    { tenantId, date }: { tenantId: number; date: Date },
     transaction: Transaction | null = null,
   ) {
+    
+    const { start, end } = getRangeTime(date);
+
     return await this.mealRequestModel.findAll({
       where: {
         tenantId,
         date: {
-          [Op.between]: [date.start, date.end],
+          [Op.between]: [start, end],
         },
         status: MealRequestStatus.PENDING,
       },

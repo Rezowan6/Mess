@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.get("/my", ...allAccess, MealEntriesController.my);
 router.get("/daily", ...managerAccess, MealEntriesController.daily);
-// router.get("/summary", ...managerAccess, mealEntriesController.summary);
-// router.get("/member-summary", ...managerAccess, mealEntriesController.memberSummary);
+router.get("/daily-summary", ...managerAccess, MealEntriesController.dailySummary);
+router.get("/summary", ...managerAccess, MealEntriesController.summary);
+router.get("/member-summary", ...allAccess, MealEntriesController.memberSummary);
 
 export default router;

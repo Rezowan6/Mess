@@ -22,12 +22,57 @@ export class MealEntriesController {
 
     const data = await mealEntryService.daily({
       tenantId,
-      date: new Date(),
+      date: new Date(req.query.date as string),
     });
 
     return sendResponse(res, {
       statusCode: 200,
       message: "Today meal featch successfully.",
+      data,
+    });
+  });
+
+  static dailySummary = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantContext(req);
+
+    const date = new Date(req.query.date as string);
+
+    const data = await mealEntryService.dailySummary({
+      tenantId,
+      date,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Daily meal summary fetched successfully.",
+      data,
+    });
+  });
+
+  static memberSummary = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantContext(req);
+
+    const data = await mealEntryService.memberSummary({
+      tenantId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Member meal summary fetched successfully.",
+      data,
+    });
+  });
+
+  static summary = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantContext(req);
+
+    const data = await mealEntryService.summary({
+      tenantId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Meal summary fetched successfully.",
       data,
     });
   });

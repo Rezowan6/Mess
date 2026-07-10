@@ -7,12 +7,12 @@ import { Request, Response } from "express";
 export class MealRequestController {
   static create = asyncHandler(async (req: Request, res: Response) => {
     const { userId, tenantId } = getTenantContext(req);
-// req.body:{
-//   "date": "2026-07-09",
-//   "breakfast": 1,
-//   "lunch": 1,
-//   "dinner": 0
-// }
+    // req.body:{
+    //   "date": "2026-07-09",
+    //   "breakfast": 1,
+    //   "lunch": 1,
+    //   "dinner": 0
+    // }
     const mealRequest = await mealRequestService.create({
       ...req.body,
       userId,
@@ -77,7 +77,7 @@ export class MealRequestController {
     const { approvedCount } = await mealRequestService.approveAllPending({
       tenantId,
       managerId,
-      date: req.body.date,
+      date: new Date(req.query.date as string),
     });
 
     sendResponse(res, {
@@ -102,5 +102,4 @@ export class MealRequestController {
       data: result,
     });
   });
-  
 }

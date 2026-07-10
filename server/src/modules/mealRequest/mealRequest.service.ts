@@ -140,15 +140,10 @@ export class MealRequestService {
     date: Date;
   }) {
     return sequelize.transaction(async (transaction) => {
-      const start = new Date(date);
-      start.setHours(0, 0, 0, 0);
-
-      const end = new Date(date);
-      end.setHours(23, 59, 59, 999);
 
       const requests =
         await this.mealRequestRepository.getPendingRequestsByDate(
-          { tenantId, date: {start, end} },
+          { tenantId, date },
           transaction,
         );
       if (!requests.length) {
