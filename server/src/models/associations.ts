@@ -196,4 +196,13 @@ export const setupAssociations = () => {
     foreignKey: "createdBy",
     as: "createdExpenses",
   });
+  Expenses.belongsTo(MealSession, {
+    foreignKey: "mealSessionId",
+    as: "mealSession",
+  });
+
+  MealSession.hasMany(Expenses, {
+    foreignKey: "mealSessionId",
+    as: "expenses",
+  });
 };

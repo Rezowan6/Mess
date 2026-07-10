@@ -22,6 +22,16 @@ export default {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
+      meal_session_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+        references: {
+          model: "meal_sessions",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
       amount: {
         type: DataTypes.INTEGER,
         allowNull: false,

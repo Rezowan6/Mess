@@ -21,4 +21,18 @@ export class ExpensesController {
       data: expenses,
     });
   });
+
+  static getAll = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, membershipId } = getTenantContext(req);
+
+    const data = await expensesService.getAll({
+      tenantId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Expenses fetched successfully.",
+      data,
+    });
+  });
 }

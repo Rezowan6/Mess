@@ -23,4 +23,31 @@ export class ExpensesRepository {
       where: { tenantId, expensesDate: { [Op.between]: [start, end] } },
     });
   }
+
+  async getAll(tenantId: number) {
+    return await this.expensesModel.findAll({
+      where: {
+        tenantId,
+      },
+
+      attributes: [
+        "id",
+        "amount",
+        "category",
+        "description",
+        "signature",
+        "expensesDate",
+        "createdAt",
+      ],
+
+      include: [
+        {
+          association: "creator",
+          attributes: ["id", "name", "email", "avatar"],
+        },
+      ],
+
+      order: [["expensesDate", "DESC"]],
+    });
+  }
 }

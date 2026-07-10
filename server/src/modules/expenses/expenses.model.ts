@@ -18,6 +18,7 @@ export class Expenses extends Model<
 > {
   declare id: CreationOptional<number>;
   declare tenantId: number;
+  declare mealSessionId: number;
   declare amount: number;
   declare category: CreationOptional<string>;
   declare description: CreationOptional<string>;
@@ -36,8 +37,13 @@ Expenses.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      allowNull: false,
     },
     tenantId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    mealSessionId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
