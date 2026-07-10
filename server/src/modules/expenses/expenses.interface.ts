@@ -8,3 +8,11 @@ export interface CreateExpensesDto {
   category?: string;
   description?: string;
 }
+
+export interface UpdateExpenseDto {
+  amount?: number;
+  category?: string;
+  description?: string;
+  signature?: string;
+  expensesDate?: Date;
+}
