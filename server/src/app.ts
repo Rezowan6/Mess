@@ -15,6 +15,7 @@ import mealRequestRouter from "@/modules/mealRequest/mealRequest.route.js";
 import mealSessionRouter from "@/modules/mealSession/mealSession.route.js";
 import tenantRoute from "@/modules/tenant/tenant.route.js";
 import tenantMembershipRouter from "@/modules/tenantMembership/tenantMembership.route.js";
+import expensesRouter from "@/modules/expenses/expenses.route.js";
 
 const app: Application = express();
 
@@ -46,6 +47,7 @@ app.use("/api/tenant-membership", tenantMembershipRouter);
 app.use("/api/meal-session", mealSessionRouter);
 app.use("/api/meal-request", mealRequestRouter);
 app.use("/api/meal-entries", mealEntriesRouter);
+app.use("/api/expenses", expensesRouter);
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {

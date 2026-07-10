@@ -23,7 +23,7 @@ export class Expenses extends Model<
   declare description: CreationOptional<string>;
   declare signature: string;
   declare expensesDate: Date;
-  declare createBy: number;
+  declare createdBy: number;
 
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
@@ -63,7 +63,7 @@ Expenses.init(
       allowNull: false,
       defaultValue: new Date(),
     },
-    createBy: {
+    createdBy: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

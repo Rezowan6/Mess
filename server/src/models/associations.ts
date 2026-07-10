@@ -1,4 +1,5 @@
 import {
+  Expenses,
   Invite,
   MealEntry,
   MealRequest,
@@ -174,5 +175,25 @@ export const setupAssociations = () => {
   MealRequest.hasOne(MealEntry, {
     foreignKey: "mealRequestId",
     as: "MealEntry",
+  });
+
+  Expenses.belongsTo(Tenant, {
+    foreignKey: "tenantId",
+    as: "tenant",
+  });
+
+  Tenant.hasMany(Expenses, {
+    foreignKey: "tenantId",
+    as: "expenses",
+  });
+
+  Expenses.belongsTo(User, {
+    foreignKey: "createdBy",
+    as: "creator",
+  });
+
+  User.hasMany(Expenses, {
+    foreignKey: "createdBy",
+    as: "createdExpenses",
   });
 };

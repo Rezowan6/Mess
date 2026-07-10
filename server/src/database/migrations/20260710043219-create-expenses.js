@@ -44,7 +44,7 @@ export default {
         allowNull: false,
         defaultValue: new Date(),
       },
-      create_by: {
+      created_by: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
