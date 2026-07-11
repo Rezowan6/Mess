@@ -24,6 +24,7 @@ export class ExpensesService {
     const count = await this.expensesRepository.todayExpensesCount({
       tenantId,
       expenseDate,
+      mealSessionId: currentSession.id,
     });
 
     if (count >= 3) {
