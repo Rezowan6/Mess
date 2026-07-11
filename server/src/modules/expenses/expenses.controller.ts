@@ -24,7 +24,7 @@ export class ExpensesController {
   });
 
   static getAll = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, membershipId } = getTenantContext(req);
+    const { tenantId } = getTenantContext(req);
 
     const data = await expensesService.getAll({
       tenantId,

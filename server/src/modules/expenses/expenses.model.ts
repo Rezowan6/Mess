@@ -83,7 +83,7 @@ Expenses.init(
     underscored: true,
     indexes: [
       {
-        fields: ["tenant_id"],
+        fields: ["tenant_id", "meal_session_id"],
       },
     ],
   },

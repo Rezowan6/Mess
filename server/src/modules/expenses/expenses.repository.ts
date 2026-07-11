@@ -24,10 +24,11 @@ export class ExpensesRepository {
     });
   }
 
-  async getAll(tenantId: number) {
+  async getAll(tenantId: number, mealSessionId: number) {
     return await this.expensesModel.findAll({
       where: {
         tenantId,
+        mealSessionId,
       },
 
       attributes: [
@@ -55,11 +56,12 @@ export class ExpensesRepository {
     });
   }
 
-  async getById(id: number, tenantId: number) {
+  async getById(id: number, tenantId: number, mealSessionId: number) {
     return this.expensesModel.findOne({
       where: {
         id,
         tenantId,
+        mealSessionId
       },
 
       include: [

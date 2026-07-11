@@ -36,11 +36,27 @@ export class ExpensesService {
   }
 
   async getAll({ tenantId }: { tenantId: number }) {
-    return this.expensesRepository.getAll(tenantId);
+    const currentSesion =
+      await this.mealSessionRepository.getCurrentSession(tenantId);
+
+    if (!currentSesion) {
+      throw new ApiError(404, "Meal session open not found.");
+    }
+    return this.expensesRepository.getAll(tenantId, currentSesion.id);
   }
 
   async getById({ id, tenantId }: { id: number; tenantId: number }) {
-    const expense = await this.expensesRepository.getById(id, tenantId);
+    const currentSesion =
+      await this.mealSessionRepository.getCurrentSession(tenantId);
+
+    if (!currentSesion) {
+      throw new ApiError(404, "Meal session open not found.");
+    }
+    const expense = await this.expensesRepository.getById(
+      id,
+      tenantId,
+      currentSesion.id,
+    );
 
     if (!expense) {
       throw new ApiError(404, "Expense not found.");
@@ -58,7 +74,17 @@ export class ExpensesService {
     tenantId: number;
     data: UpdateExpenseDto;
   }) {
-    const expense = await this.expensesRepository.getById(id, tenantId);
+    const currentSesion =
+      await this.mealSessionRepository.getCurrentSession(tenantId);
+
+    if (!currentSesion) {
+      throw new ApiError(404, "Meal session open not found.");
+    }
+    const expense = await this.expensesRepository.getById(
+      id,
+      tenantId,
+      currentSesion.id,
+    );
 
     if (!expense) {
       throw new ApiError(404, "Expense not found.");
@@ -88,7 +114,17 @@ export class ExpensesService {
   }
 
   async delete({ id, tenantId }: { id: number; tenantId: number }) {
-    const expense = await this.expensesRepository.getById(id, tenantId);
+    const currentSesion =
+      await this.mealSessionRepository.getCurrentSession(tenantId);
+
+    if (!currentSesion) {
+      throw new ApiError(404, "Meal session open not found.");
+    }
+    const expense = await this.expensesRepository.getById(
+      id,
+      tenantId,
+      currentSesion.id,
+    );
 
     if (!expense) {
       throw new ApiError(404, "Expense not found.");

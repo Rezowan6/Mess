@@ -77,8 +77,8 @@ export default {
       },
     });
 
-    await queryInterface.addIndex("expenses", ["tenant_id"], {
-      name: "expenses_tenant_id_index",
+    await queryInterface.addIndex("expenses", ["tenant_id", "meal_session_id"], {
+      name: "expenses_tenant_id_meal_session_id_index",
     });
   },
 
