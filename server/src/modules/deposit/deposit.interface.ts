@@ -23,3 +23,8 @@ export interface ICreateDepositPayload {
   depositDate: Date;
   note?: string;
 }
+
+export interface IGetDepositByIdPayload {
+  tenantId: number;
+  depositId: number;
+}

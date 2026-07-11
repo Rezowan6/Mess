@@ -2,7 +2,10 @@ import { ApiError } from "@/utils/ApiError.js";
 import { MealSessionStatus } from "../mealSession/mealSession.interface.js";
 import { MealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { TenantMembershipRepository } from "../tenantMembership/tenantMembership.repository.js";
-import { ICreateDepositPayload } from "./deposit.interface.js";
+import {
+  ICreateDepositPayload,
+  IGetDepositByIdPayload,
+} from "./deposit.interface.js";
 import { DepositRepository } from "./deposit.repository.js";
 
 export class DepositService {
@@ -12,7 +15,6 @@ export class DepositService {
   ) {}
 
   async createDeposit(data: ICreateDepositPayload) {
-
     const { tenantId, memberId, depositDate } = data;
     const currentSession =
       await this.mealSessionRepository.getCurrentSession(tenantId);
@@ -44,6 +46,43 @@ export class DepositService {
       );
     }
 
-    return await this.depositRepository.createDeposit({ ...data, mealSessionId: currentSession.id });
+    return await this.depositRepository.createDeposit({
+      ...data,
+      mealSessionId: currentSession.id,
+    });
+  }
+
+  async getAllDeposits(tenantId: number) {
+    const currentSession =
+      await this.mealSessionRepository.getCurrentSession(tenantId);
+
+    if (!currentSession) {
+      throw new ApiError(404, "Meal session open not found.");
+    }
+
+    return await this.depositRepository.getAll({
+      tenantId,
+      mealSessionId: currentSession.id,
+    });
+  }
+
+  async getDepositById({ tenantId, depositId }: IGetDepositByIdPayload) {
+    const currentSession =
+      await this.mealSessionRepository.getCurrentSession(tenantId);
+
+    if (!currentSession) {
+      throw new ApiError(404, "Meal session open not found.");
+    }
+    const deposit = await this.depositRepository.getById({
+      tenantId,
+      depositId,
+      mealSessionId: currentSession.id,
+    });
+
+    if (!deposit) {
+      throw new ApiError(404, "Deposit not found.");
+    }
+
+    return deposit;
   }
 }
