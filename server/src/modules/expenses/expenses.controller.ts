@@ -12,7 +12,7 @@ export class ExpensesController {
     const expenses = await expensesService.create({
       tenantId,
       createdBy: userId,
-      expensesDate: new Date(),
+      expenseDate: new Date(),
       ...req.body,
     });
 

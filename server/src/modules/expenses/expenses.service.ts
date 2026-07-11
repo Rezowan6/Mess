@@ -12,7 +12,7 @@ export class ExpensesService {
   ) {}
 
   async create(data: CreateExpensesDto) {
-    const { tenantId, expensesDate } = data;
+    const { tenantId, expenseDate } = data;
 
     const currentSession =
       await this.mealSessionRepository.getCurrentSession(tenantId);
@@ -23,7 +23,7 @@ export class ExpensesService {
 
     const count = await this.expensesRepository.todayExpensesCount({
       tenantId,
-      expensesDate,
+      expenseDate,
     });
 
     if (count >= 3) {

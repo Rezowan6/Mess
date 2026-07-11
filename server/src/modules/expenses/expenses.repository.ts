@@ -12,15 +12,15 @@ export class ExpensesRepository {
 
   async todayExpensesCount({
     tenantId,
-    expensesDate,
+    expenseDate,
   }: {
     tenantId: number;
-    expensesDate: Date;
+    expenseDate: Date;
   }) {
-    const { start, end } = getRangeTime(expensesDate);
+    const { start, end } = getRangeTime(expenseDate);
 
     return await this.expensesModel.count({
-      where: { tenantId, expensesDate: { [Op.between]: [start, end] } },
+      where: { tenantId, expenseDate: { [Op.between]: [start, end] } },
     });
   }
 

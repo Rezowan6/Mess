@@ -1,10 +1,11 @@
 "use strict";
+
 import { DataTypes } from "sequelize";
 
 /** @type {import('sequelize-cli').Migration} */
 export default {
   async up(queryInterface) {
-    await queryInterface.createTable("expenses", {
+    await queryInterface.createTable("deposits", {
       id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
@@ -32,6 +33,16 @@ export default {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
+      member_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+        references: {
+          model: "users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
       created_by: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
@@ -40,30 +51,26 @@ export default {
           key: "id",
         },
         onUpdate: "CASCADE",
-        onDelete: "RESTRICT",
       },
       amount: {
-        type: DataTypes.DECIMAL(10, 2),
+        type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0,
       },
-      category: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      description: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
-      signature: {
+      payment_method: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      expense_date: {
+      deposit_date: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
       },
+      note: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+
       created_at: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -83,15 +90,22 @@ export default {
     });
 
     await queryInterface.addIndex(
-      "expenses",
+      "deposits",
+      ["tenant_id", "meal_session_id", "member_id"],
+      {
+        name: "deposits_tenant_id_meal_session_id_member_id_index",
+      },
+    );
+    await queryInterface.addIndex(
+      "deposits",
       ["tenant_id", "meal_session_id"],
       {
-        name: "expenses_tenant_id_meal_session_id_index",
+        name: "deposits_tenant_id_meal_session_id_index",
       },
     );
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable("expenses");
+    await queryInterface.dropTable("deposits");
   },
 };

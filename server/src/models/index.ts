@@ -7,5 +7,6 @@ import { MealSession } from './../modules/mealSession/mealSession.model.js';
 import { MealRequest } from "@/modules/mealRequest/mealRequest.model.js";
 import { MealEntry } from "@/modules/mealEntry/mealEntry.model.js";
 import { Expenses } from "@/modules/expenses/expenses.model.js";
+import { Deposit } from "@/modules/deposit/deposit.model.js";
 
-export { Invite, TenantMembership, RefreshToken, Tenant, User, MealSession,MealRequest, MealEntry, Expenses, };
+export { Invite, TenantMembership, RefreshToken, Tenant, User, MealSession,MealRequest, MealEntry, Expenses,Deposit };

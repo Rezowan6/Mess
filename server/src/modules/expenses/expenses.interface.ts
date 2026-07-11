@@ -3,7 +3,7 @@ export interface CreateExpensesDto {
   mealSessionId: number;
   amount: number;
   signature: string;
-  expensesDate: Date;
+  expenseDate: Date;
   createdBy: number;
   category?: string;
   description?: string;

@@ -6,32 +6,36 @@ import {
   InferCreationAttributes,
   Model,
 } from "sequelize";
+import {
+  DEPOSIT_PAYMENT_METHOD,
+  DepositPaymentMethodType,
+} from "./deposit.interface.js";
 
-export class Expenses extends Model<
+export class Deposit extends Model<
   InferAttributes<
-    Expenses,
+    Deposit,
     {
       omit: "createdAt" | "updatedAt" | "deletedAt";
     }
   >,
-  InferCreationAttributes<Expenses>
+  InferCreationAttributes<Deposit>
 > {
   declare id: CreationOptional<number>;
   declare tenantId: number;
   declare mealSessionId: number;
-  declare amount: number;
-  declare category: CreationOptional<string>;
-  declare description: CreationOptional<string>;
-  declare signature: string;
-  declare expenseDate: Date;
+  declare memberId: number;
   declare createdBy: number;
+  declare amount: number;
+  declare paymentMethod: CreationOptional<DepositPaymentMethodType>;
+  declare depositDate: Date;
+  declare note: CreationOptional<string>;
 
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
   declare readonly deletedAt: CreationOptional<Date | null>;
 }
 
-Expenses.init(
+Deposit.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -47,41 +51,44 @@ Expenses.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    amount: {
+    memberId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0,
-    },
-    category: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    signature: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    expenseDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: new Date(),
     },
     createdBy: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    amount: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+      defaultValue: 0,
+    },
+    paymentMethod: {
+      type: DataTypes.ENUM(...DEPOSIT_PAYMENT_METHOD),
+      allowNull: false,
+    },
+    depositDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: new Date(),
+    },
+    note: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
   },
   {
     sequelize,
-    modelName: "Expenses",
-    tableName: "expenses",
+    modelName: "Deposit",
+    tableName: "deposits",
     timestamps: true,
     paranoid: true,
     underscored: true,
     indexes: [
+      {
+        fields: ["tenant_id", "member_id", "meal_session_id"],
+      },
       {
         fields: ["tenant_id", "meal_session_id"],
       },
