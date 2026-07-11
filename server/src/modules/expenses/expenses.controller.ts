@@ -23,6 +23,20 @@ export class ExpensesController {
     });
   });
 
+  static summary = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantContext(req);
+
+    const data = await expensesService.summary({
+      tenantId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Expense summary fetched successfully.",
+      data,
+    });
+  });
+  
   static getAll = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 
@@ -97,20 +111,6 @@ export class ExpensesController {
       statusCode: 200,
       message: "Expense deleted successfully.",
       data: null,
-    });
-  });
-
-  static summary = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
-
-    const data = await expensesService.summary({
-      tenantId,
-    });
-
-    return sendResponse(res, {
-      statusCode: 200,
-      message: "Expense summary fetched successfully.",
-      data,
     });
   });
 }

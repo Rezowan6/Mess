@@ -37,7 +37,7 @@ export class ExpensesRepository {
         "category",
         "description",
         "signature",
-        "expensesDate",
+        "expenseDate",
         "createdAt",
       ],
 
@@ -52,7 +52,7 @@ export class ExpensesRepository {
         },
       ],
 
-      order: [["expensesDate", "DESC"]],
+      order: [["expenseDate", "DESC"]],
     });
   }
 
