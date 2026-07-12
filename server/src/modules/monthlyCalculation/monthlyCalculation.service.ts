@@ -43,13 +43,13 @@ export class MonthlyCalculationService {
     });
 
     const members = memberMeals.map((member: any) => {
-      const totalMeal = Number(member.get("totalMeal"));
+      const totalMeal = Number(member.get("totalMeal")) || 0;
 
       const deposit = depositMap.get(member.userId);
 
-      const memberCost = totalMeal * mealRate;
+      const memberCost = totalMeal * mealRate || 0;
 
-      const balance = deposit - memberCost;
+      const balance = deposit - memberCost || 0;
 
       return {
         userId: member.userId,
@@ -57,25 +57,26 @@ export class MonthlyCalculationService {
         email: member.user?.email,
         avatar: member.user?.avatar,
 
-        totalMeal,
-        deposit,
+        totalMeal: Number(totalMeal.toFixed(2)),
+        deposit: Number(deposit.toFixed(2)),
         memberCost: Number(memberCost.toFixed(2)),
-        balance,
+        balance: Number(balance.toFixed(2)),
 
-        status: balance > 0 ? "Recived" : balance == 0 ? "due" : "Pay",
+        status:
+          balance > 0 ? "Received" : balance === 0 ? "Settled" : "Payable",
       };
     });
 
     const monthName = getMonthName(session.month, session.year);
 
     return {
-      totalExpense,
-      totalDeposit: memberDeposits.reduce(
-        (sum: number, item: any) => sum + Number(item.totalDeposit),
-        0,
-      ),
+      totalExpense: Number(totalExpense.toFixed(2)),
 
-      grandTotalMeals,
+      totalDeposit: memberDeposits
+        .reduce((sum: number, item: any) => sum + Number(item.totalDeposit), 0)
+        .toFixed(2),
+
+      grandTotalMeals: Number(grandTotalMeals.toFixed(2)),
       mealRate: Number(mealRate.toFixed(2)),
 
       members,
