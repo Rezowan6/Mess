@@ -41,14 +41,14 @@ app.use(
 );
 
 // ------------- router -------------
-app.use("/api/auth", authRouter);
-app.use("/api/tenant", tenantRoute);
-app.use("/api/invite", invitesRouter);
-app.use("/api/tenant-membership", tenantMembershipRouter);
-app.use("/api/meal-session", mealSessionRouter);
-app.use("/api/meal-request", mealRequestRouter);
-app.use("/api/meal-entries", mealEntriesRouter);
-app.use("/api/expense", expensesRouter);
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/tenant", tenantRoute);
+app.use("/api/v1/invite", invitesRouter);
+app.use("/api/v1/tenant-membership", tenantMembershipRouter);
+app.use("/api/v1/meal-session", mealSessionRouter);
+app.use("/api/v1/meal-request", mealRequestRouter);
+app.use("/api/v1/meal-entries", mealEntriesRouter);
+app.use("/api/v1/expense", expensesRouter);
 app.use("/api/v1/deposit", depositRouter);
 
 // ------------------- 404 HANDLER -------------------
