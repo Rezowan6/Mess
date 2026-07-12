@@ -1,6 +1,7 @@
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { mealRequestService } from "@/modules/containers/mealRequest.container.js";
+import { ApiError } from "@/utils/ApiError.js";
 import { getCurrentDate } from "@/utils/date.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
@@ -64,8 +65,13 @@ export class MealRequestController {
       userId: managerId,
       mealSessionId,
     } = getTenantContext(req);
+
+    const id = Number(req.params.id);
+    if (Number.isNaN(id)) {
+      throw new ApiError(400, "Valid request id is required");
+    }
     const result = await mealRequestService.approve({
-      id: Number(req.body.id),
+      id,
       tenantId,
       managerId,
       mealSessionId,
@@ -105,8 +111,13 @@ export class MealRequestController {
       mealSessionId,
     } = getTenantContext(req);
 
+    const id = Number(req.params.id);
+    if (Number.isNaN(id)) {
+      throw new ApiError(400, "Valid request id is required");
+    }
+
     const result = await mealRequestService.reject({
-      id: Number(req.body.id),
+      id,
       tenantId,
       mealSessionId,
       managerId,
