@@ -1,7 +1,7 @@
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealEntry } from "@/models/index.js";
 import { Op, Transaction, col, fn, literal } from "sequelize";
-import { CreateMealEntryDto } from "./mealEntry.interface.js";
+import { CreateMealEntryDto, IMealSummary } from "./mealEntry.interface.js";
 
 export class MealEntryRepository {
   constructor(private readonly mealEntryModel: typeof MealEntry) {}
@@ -56,7 +56,7 @@ export class MealEntryRepository {
     { tenantId, date }: { tenantId: number; date: Date },
     transaction: Transaction | null = null,
   ) {
-    const {start, end} = getRangeTime(date);
+    const { start, end } = getRangeTime(date);
     return await this.mealEntryModel.findAll({
       where: {
         tenantId,
@@ -123,9 +123,9 @@ export class MealEntryRepository {
     return summary;
   }
 
-  async getMemberSummary(tenantId: number) {
+  async getMemberSummary(tenantId: number, mealSessionId: number) {
     return await this.mealEntryModel.findAll({
-      where: { tenantId },
+      where: { tenantId, mealSessionId },
       attributes: [
         "userId",
         [fn("SUM", col("breakfast")), "totalBreakfast"],
@@ -144,20 +144,27 @@ export class MealEntryRepository {
     });
   }
 
-  async getSummary(tenantId: number) {
+  async getTotalMealByMealSession(tenantId: number, mealSessionId: number): Promise<IMealSummary | null> {
     const result = await this.mealEntryModel.findOne({
       where: {
         tenantId,
+        mealSessionId,
       },
 
       attributes: [
         [fn("SUM", literal("breakfast + lunch + dinner")), "totalMeals"],
+        [
+          fn("SUM", literal("breakfast + lunch + dinner + guest_meal")),
+          "grandTotalMeals",
+        ],
         [fn("SUM", col("guest_meal")), "totalGuestMeals"],
         [fn("COUNT", literal("DISTINCT user_id")), "memberCount"],
       ],
       raw: true,
     });
 
-    return result;
+    return result as IMealSummary | null;
   }
+
+  
 }

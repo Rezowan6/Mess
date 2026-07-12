@@ -8,3 +8,10 @@ export interface CreateMealEntryDto {
  lunch:number;
  dinner:number;
 }
+
+export interface IMealSummary {
+  totalMeals: string;
+  grandTotalMeals: string;
+  totalGuestMeals: string;
+  memberCount: string;
+}

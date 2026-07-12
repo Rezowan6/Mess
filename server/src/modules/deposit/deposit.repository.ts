@@ -174,4 +174,38 @@ export class DepositRepository {
       ],
     });
   }
+  
+  async getMemberDepositsByMealSession(
+    tenantId: number,
+    mealSessionId: number,
+  ) {
+    return this.depositModel.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+      },
+
+      attributes: ["memberId", [fn("SUM", col("amount")), "totalDeposit"]],
+
+      group: ["memberId"],
+
+      raw: true,
+    });
+  }
+
+  async getMemberDepositSum(
+    tenantId: number,
+    mealSessionId: number,
+    memberId: number,
+  ): Promise<number> {
+    return (
+      (await this.depositModel.sum("amount", {
+        where: {
+          tenantId,
+          mealSessionId,
+          memberId,
+        },
+      })) || 0
+    );
+  }
 }

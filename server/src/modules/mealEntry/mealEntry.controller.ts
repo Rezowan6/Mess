@@ -50,10 +50,11 @@ export class MealEntriesController {
   });
 
   static memberSummary = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const data = await mealEntryService.memberSummary({
       tenantId,
+      mealSessionId,
     });
 
     return sendResponse(res, {
@@ -64,10 +65,11 @@ export class MealEntriesController {
   });
 
   static summary = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const data = await mealEntryService.summary({
       tenantId,
+      mealSessionId,
     });
 
     return sendResponse(res, {

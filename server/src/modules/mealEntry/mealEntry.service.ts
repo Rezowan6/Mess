@@ -28,11 +28,11 @@ export class MealEntryService {
     return this.mealEntryRepository.getDailySummary(tenantId, date);
   }
 
-  async memberSummary({ tenantId }: { tenantId: number }) {
-    return this.mealEntryRepository.getMemberSummary(tenantId);
+  async memberSummary({ tenantId, mealSessionId}: { tenantId: number; mealSessionId: number }) {
+    return this.mealEntryRepository.getMemberSummary(tenantId, mealSessionId);
   }
 
-  async summary({ tenantId }: { tenantId: number }) {
-    return this.mealEntryRepository.getSummary(tenantId);
+  async summary({ tenantId, mealSessionId }: { tenantId: number, mealSessionId: number; }) {
+    return this.mealEntryRepository.getTotalMealByMealSession(tenantId, mealSessionId);
   }
 }
