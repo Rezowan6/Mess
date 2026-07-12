@@ -1,18 +1,9 @@
-import { DepositRepository } from "../deposit/deposit.repository.js";
-import { ExpensesRepository } from "../expenses/expenses.repository.js";
-import { MealEntryRepository } from "../mealEntry/mealEntry.repository.js";
+import { getMonthName } from "@/utils/date.util.js";
 import { IMealSessionReq } from "../mealSession/mealSession.interface.js";
-import { MealSessionRepository } from "../mealSession/mealSession.repository.js";
+import { MonthlyCalculationRepository } from "./monthlyCalculation.repository.js";
 
 export class MonthlyCalculationService {
-  constructor(
-    private readonly expensesRepository: ExpensesRepository,
-    private readonly depositRepository: DepositRepository,
-    private readonly mealEnryRepository: MealEntryRepository,
-    private readonly mealSessionRepository: MealSessionRepository,
-  ) {}
-
-  async getCurrentMonthCalculation({
+  static async getCurrentMonthCalculation({
     tenantId,
     mealSessionId,
     session,
@@ -22,12 +13,12 @@ export class MonthlyCalculationService {
     session: IMealSessionReq;
   }) {
     const totalExpense =
-      (await this.expensesRepository.getTotalExpenseByMealSession(
+      (await MonthlyCalculationRepository.getTotalExpense(
         tenantId,
         mealSessionId,
       )) || 0;
 
-    const mealSummary = await this.mealEnryRepository.getTotalMealByMealSession(
+    const mealSummary = await MonthlyCalculationRepository.getTotalMeal(
       tenantId,
       mealSessionId,
     );
@@ -35,16 +26,15 @@ export class MonthlyCalculationService {
 
     const mealRate = grandTotalMeals > 0 ? totalExpense / grandTotalMeals : 0;
 
-    const memberMeals = await this.mealEnryRepository.getMemberSummary(
+    const memberMeals = await MonthlyCalculationRepository.getMemberMeals(
       tenantId,
       mealSessionId,
     );
 
-    const memberDeposits =
-      await this.depositRepository.getMemberDepositsByMealSession(
-        tenantId,
-        mealSessionId,
-      );
+    const memberDeposits = await MonthlyCalculationRepository.getMemberDeposits(
+      tenantId,
+      mealSessionId,
+    );
 
     const depositMap = new Map();
 
@@ -76,12 +66,7 @@ export class MonthlyCalculationService {
       };
     });
 
-    const monthName = new Date(session.year, session.month - 1).toLocaleString(
-      "default",
-      {
-        month: "long",
-      },
-    );
+    const monthName = getMonthName(session.month, session.year);
 
     return {
       totalExpense,

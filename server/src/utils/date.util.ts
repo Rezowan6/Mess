@@ -19,3 +19,9 @@ export const getCurrentDate = (): string => {
 export const formatDate = (date: Date): string => {
   return date.toISOString().split("T")[0] as string;
 };
+
+export const getMonthName = (month: number, year: number): string => {
+  return new Date(year, month - 1).toLocaleString("default", {
+    month: "long",
+  });
+};
