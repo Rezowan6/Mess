@@ -1,3 +1,5 @@
+import { IMealSessionReq } from "../mealSession/mealSession.interface.js";
+
 export const MealRequestStatus = {
   PENDING: "pending",
   APPROVED: "approved",
@@ -9,10 +11,11 @@ export const MEAL_REQUEST_STATUSES = Object.values(MealRequestStatus);
 export type MealRequestStatus =
   (typeof MealRequestStatus)[keyof typeof MealRequestStatus];
 
-export interface CreateMealRequestDto {
+export interface ICreateMealRequestDto {
   tenantId: number;
   mealSessionId: number;
   userId: number;
+  session: IMealSessionReq
   date: Date;
   breakfast?: number;
   lunch?: number;
@@ -20,8 +23,6 @@ export interface CreateMealRequestDto {
   status?: MealRequestStatus;
   approvedBy?: number;
   approvedAt?: Date;
-  rejectedBy?: number;
-  rejectedAt?: Date;
   note?: string;
 }
 

@@ -2,7 +2,7 @@ import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealRequest } from "@/models/index.js";
 import { Op, Transaction } from "sequelize";
 import {
-  CreateMealRequestDto,
+  ICreateMealRequestDto,
   MealRequestStatus,
   UpdateMealRequestDto,
 } from "./mealRequest.interface.js";
@@ -11,23 +11,28 @@ export class MealRequestRepository {
   constructor(private readonly mealRequestModel: typeof MealRequest) {}
 
   async createMealRequest(
-    mealRequestData: CreateMealRequestDto,
+    mealRequestData: ICreateMealRequestDto,
   ): Promise<MealRequest> {
     return this.mealRequestModel.create(mealRequestData);
   }
 
   async getMealRequestById(
     id: number,
+    mealSessionId: number,
     transaction: Transaction | null = null,
   ): Promise<MealRequest | null> {
-    return this.mealRequestModel.findByPk(id, {
+    return this.mealRequestModel.findOne({
+      where: { id, mealSessionId },
       transaction: transaction ?? null,
     });
   }
 
-  async getPendingRequestsByTenantId(tenantId: number): Promise<MealRequest[]> {
-    return this.mealRequestModel.findAll({
-      where: { tenantId, status: MealRequestStatus.PENDING },
+  async getPendingRequestsByTenantId(
+    tenantId: number,
+    mealSessionId: number,
+  ): Promise<MealRequest[]> {
+    return await this.mealRequestModel.findAll({
+      where: { tenantId, mealSessionId, status: MealRequestStatus.PENDING },
       attributes: [
         "id",
         "date",
@@ -55,7 +60,6 @@ export class MealRequestRepository {
     { tenantId, date }: { tenantId: number; date: Date },
     transaction: Transaction | null = null,
   ) {
-    
     const { start, end } = getRangeTime(date);
 
     return await this.mealRequestModel.findAll({
@@ -80,12 +84,14 @@ export class MealRequestRepository {
   async getMyMealRequests({
     tenantId,
     userId,
+    mealSessionId,
   }: {
     tenantId: number;
     userId: number;
+    mealSessionId: number;
   }): Promise<MealRequest[]> {
     return this.mealRequestModel.findAll({
-      where: { userId, tenantId },
+      where: { userId, tenantId, mealSessionId, status: MealRequestStatus.PENDING },
       attributes: [
         "id",
         "date",
@@ -121,23 +127,27 @@ export class MealRequestRepository {
     date: Date;
   }): Promise<MealRequest | null> {
     const { tenantId, mealSessionId, userId, date } = payload;
+
+    const { start, end } = getRangeTime(date);
+
     return this.mealRequestModel.findOne({
       where: {
         tenantId,
         mealSessionId,
         userId,
-        date,
+        date: { [Op.between]: [start, end] },
       },
     });
   }
 
   async updateMealRequest(
     id: number,
+    mealSessionId: number,
     updateData: UpdateMealRequestDto,
     transaction: Transaction | null = null,
   ): Promise<[affectedCount: number]> {
     return await this.mealRequestModel.update(updateData, {
-      where: { id },
+      where: { id, mealSessionId },
       transaction: transaction ?? null,
     });
   }

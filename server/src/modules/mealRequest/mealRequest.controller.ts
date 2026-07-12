@@ -1,22 +1,21 @@
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { mealRequestService } from "@/modules/containers/mealRequest.container.js";
+import { getCurrentDate } from "@/utils/date.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 
 export class MealRequestController {
   static create = asyncHandler(async (req: Request, res: Response) => {
-    const { userId, tenantId } = getTenantContext(req);
-    // req.body:{
-    //   "date": "2026-07-09",
-    //   "breakfast": 1,
-    //   "lunch": 1,
-    //   "dinner": 0
-    // }
+    const { userId, tenantId, mealSessionId } = getTenantContext(req);
+    const date = getCurrentDate();
+
     const mealRequest = await mealRequestService.create({
-      ...req.body,
+      payload: req.body,
       userId,
       tenantId,
+      mealSessionId,
+      date: new Date(date),
     });
 
     return sendResponse(res, {
@@ -26,12 +25,29 @@ export class MealRequestController {
     });
   });
 
+  static my = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, userId, mealSessionId } = getTenantContext(req);
+
+    const mealRequest = await mealRequestService.my({
+      tenantId,
+      userId,
+      mealSessionId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Meal requests fetched successfully.",
+      data: mealRequest,
+    });
+  });
+
   static getPendingRequests = asyncHandler(
     async (req: Request, res: Response) => {
-      const { tenantId } = getTenantContext(req);
+      const { tenantId, mealSessionId } = getTenantContext(req);
 
       const mealRequest = await mealRequestService.getPendingRequests({
         tenantId,
+        mealSessionId,
       });
 
       return sendResponse(res, {
@@ -42,27 +58,17 @@ export class MealRequestController {
     },
   );
 
-  static my = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, userId } = getTenantContext(req);
-
-    const mealRequest = await mealRequestService.my({
-      tenantId,
-      userId,
-    });
-
-    return sendResponse(res, {
-      statusCode: 200,
-      message: "Meal requests fetched successfully.",
-      data: mealRequest,
-    });
-  });
-
   static approve = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, userId: managerId } = getTenantContext(req);
+    const {
+      tenantId,
+      userId: managerId,
+      mealSessionId,
+    } = getTenantContext(req);
     const result = await mealRequestService.approve({
       id: Number(req.body.id),
       tenantId,
       managerId,
+      mealSessionId,
     });
 
     sendResponse(res, {
@@ -73,10 +79,15 @@ export class MealRequestController {
   });
 
   static approveAll = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, userId: managerId } = getTenantContext(req);
+    const {
+      tenantId,
+      userId: managerId,
+      mealSessionId,
+    } = getTenantContext(req);
     const { approvedCount } = await mealRequestService.approveAllPending({
       tenantId,
       managerId,
+      mealSessionId,
       date: new Date(req.query.date as string),
     });
 
@@ -88,11 +99,16 @@ export class MealRequestController {
   });
 
   static reject = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, userId: managerId } = getTenantContext(req);
+    const {
+      tenantId,
+      userId: managerId,
+      mealSessionId,
+    } = getTenantContext(req);
 
     const result = await mealRequestService.reject({
       id: Number(req.body.id),
       tenantId,
+      mealSessionId,
       managerId,
     });
 

@@ -26,10 +26,28 @@ export class DepositController {
     });
   });
 
+  static summary = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
+
+    const summary = await depositService.getSummary({
+      tenantId,
+      mealSessionId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Deposit summary fetched successfully",
+      data: summary,
+    });
+  });
+
   static getAll = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
-    const deposits = await depositService.getAllDeposits(tenantId, mealSessionId);
+    const deposits = await depositService.getAllDeposits(
+      tenantId,
+      mealSessionId,
+    );
 
     return sendResponse(res, {
       statusCode: 200,
@@ -51,6 +69,57 @@ export class DepositController {
       statusCode: 200,
       message: "Deposit fetched successfully",
       data: deposit,
+    });
+  });
+
+  static getMemberDeposits = asyncHandler(
+    async (req: Request, res: Response) => {
+      const { tenantId, mealSessionId } = getTenantContext(req);
+
+      const deposits = await depositService.getMemberDeposits({
+        tenantId,
+        mealSessionId,
+        memberId: Number(req.params.memberId),
+      });
+
+      return sendResponse(res, {
+        statusCode: 200,
+        message: "Member deposits fetched successfully",
+        data: deposits,
+      });
+    },
+  );
+
+  static update = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
+
+    const deposit = await depositService.updateDeposit({
+      tenantId,
+      mealSessionId,
+      depositId: Number(req.params.id),
+      payload: req.body,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Deposit updated successfully",
+      data: deposit,
+    });
+  });
+
+  static delete = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
+
+    await depositService.deleteDeposit({
+      tenantId,
+      mealSessionId,
+      depositId: Number(req.params.id),
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Deposit deleted successfully",
+      data: null,
     });
   });
 }

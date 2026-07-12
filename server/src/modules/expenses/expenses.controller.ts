@@ -4,16 +4,19 @@ import { ApiError } from "@/utils/ApiError.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { expensesService } from "../containers/expenses.container.js";
+import { getCurrentDate } from "@/utils/date.util.js";
 
 export class ExpensesController {
   static create = asyncHandler(async (req: Request, res: Response) => {
+    
     const { tenantId, userId, mealSessionId } = getTenantContext(req);
+    const expenseDate = getCurrentDate();
 
     const expenses = await expensesService.create({
       tenantId,
       mealSessionId,
       createdBy: userId,
-      expenseDate: new Date(),
+      expenseDate,
       ...req.body,
     });
 

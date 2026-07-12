@@ -1,18 +1,18 @@
 import { MemberStatus } from "@/constans/index.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { MealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { getActiveMember } from "../tenantMembership/tenantMembership.helper.js";
 import {
   ICreateDepositPayload,
+  IDeleteDepositPayload,
+  IDepositSummaryPayload,
   IGetDepositByIdPayload,
+  IGetMemberDepositsPayload,
+  IUpdateDepositPayload,
 } from "./deposit.interface.js";
 import { DepositRepository } from "./deposit.repository.js";
 
 export class DepositService {
-  constructor(
-    private readonly depositRepository: DepositRepository,
-    private readonly mealSessionRepository: MealSessionRepository,
-  ) {}
+  constructor(private readonly depositRepository: DepositRepository) {}
 
   async createDeposit(data: ICreateDepositPayload) {
     const { tenantId, memberId, depositDate, mealSessionId } = data;
@@ -42,6 +42,14 @@ export class DepositService {
     });
   }
 
+  async getSummary({ tenantId, mealSessionId }: IDepositSummaryPayload) {
+
+    return await this.depositRepository.getSummary({
+      tenantId,
+      mealSessionId,
+    });
+  }
+
   async getAllDeposits(tenantId: number, mealSessionId: number) {
     return await this.depositRepository.getAll({
       tenantId,
@@ -65,5 +73,72 @@ export class DepositService {
     }
 
     return deposit;
+  }
+
+  async getMemberDeposits({
+    tenantId,
+    memberId,
+    mealSessionId,
+  }: IGetMemberDepositsPayload) {
+    const member = await getActiveMember({
+      tenantId,
+      userId: memberId,
+    });
+
+    return await this.depositRepository.getMemberDeposits({
+      tenantId,
+      memberId,
+      mealSessionId,
+    });
+  }
+
+  async updateDeposit({
+    tenantId,
+    mealSessionId,
+    depositId,
+    payload,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    depositId: number;
+    payload: IUpdateDepositPayload;
+  }) {
+    const deposit = await this.depositRepository.getById({
+      tenantId,
+      mealSessionId,
+      depositId,
+    });
+
+    if (!deposit) {
+      throw new ApiError(404, "Deposit not found.");
+    }
+
+    await this.depositRepository.update(deposit, payload);
+
+    return await this.depositRepository.getById({
+      tenantId,
+      depositId,
+      mealSessionId,
+    });
+  }
+
+  async deleteDeposit({
+    tenantId,
+    depositId,
+    mealSessionId,
+  }: IDeleteDepositPayload) {
+    const deposit = await this.depositRepository.getById({
+      tenantId,
+      depositId,
+      mealSessionId,
+    });
+
+    if (!deposit) {
+      throw new ApiError(404, "Deposit not found.");
+    }
+
+    await this.depositRepository.deleteDeposit(deposit);
+
+    return true;
   }
 }

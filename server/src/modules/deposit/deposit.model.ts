@@ -28,7 +28,7 @@ export class Deposit extends Model<
   declare amount: number;
   declare paymentMethod: DepositPaymentMethodType;
   declare depositDate: Date;
-  declare note: CreationOptional<string>;
+  declare note: CreationOptional<string | null>;
 
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
