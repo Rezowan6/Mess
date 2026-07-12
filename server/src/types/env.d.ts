@@ -1,14 +1,6 @@
-import Tenant from "@/modules/tenant/tenant.model.js";
-import { IUser } from "@/modules/user/user.interface.js";
+import {Tenant, User, MealSession} from "@/models/index.ts";
 
 declare global {
-  namespace Express {
-    interface Request {
-      user?: IUser;
-
-      tenant?: Tenant;
-    }
-  }
 
   namespace NodeJS {
     interface ProcessEnv {

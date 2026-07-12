@@ -19,13 +19,13 @@ export class TenantMembershipRepository {
     );
   }
 
-  static async findByTenantAndUser(
+  static async findByTenantAndActiveUser(
     { tenantId, userId }: FindByTenantAndUserPayload,
     transaction: Transaction | null = null,
   ) {
     return (
       (await TenantMembership.findOne({
-        where: { tenantId, userId },
+        where: { tenantId, userId, status: MemberStatus.ACTIVE },
         transaction: transaction ?? null,
       })) || null
     );

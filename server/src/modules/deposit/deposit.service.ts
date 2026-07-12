@@ -1,7 +1,7 @@
+import { MemberStatus } from "@/constans/index.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { MealSessionStatus } from "../mealSession/mealSession.interface.js";
 import { MealSessionRepository } from "../mealSession/mealSession.repository.js";
-import { TenantMembershipRepository } from "../tenantMembership/tenantMembership.repository.js";
+import { getActiveMember } from "../tenantMembership/tenantMembership.helper.js";
 import {
   ICreateDepositPayload,
   IGetDepositByIdPayload,
@@ -15,26 +15,17 @@ export class DepositService {
   ) {}
 
   async createDeposit(data: ICreateDepositPayload) {
-    const { tenantId, memberId, depositDate } = data;
-    const currentSession =
-      await this.mealSessionRepository.getCurrentSession(tenantId);
+    const { tenantId, memberId, depositDate, mealSessionId } = data;
 
-    if (currentSession?.status !== MealSessionStatus.OPEN) {
-      throw new ApiError(404, "Meal session open not found.");
-    }
+    const member = await getActiveMember({ tenantId, userId: memberId });
 
-    const member = await TenantMembershipRepository.findByTenantAndUser({
-      tenantId,
-      userId: memberId,
-    });
-
-    if (!member) {
+    if (!member || member?.status !== MemberStatus.ACTIVE) {
       throw new ApiError(404, "Member not found.");
     }
 
     const existingDeposit = await this.depositRepository.getTodayByMemberId({
       tenantId,
-      mealSessionId: currentSession.id,
+      mealSessionId,
       memberId,
       depositDate,
     });
@@ -48,35 +39,25 @@ export class DepositService {
 
     return await this.depositRepository.createDeposit({
       ...data,
-      mealSessionId: currentSession.id,
     });
   }
 
-  async getAllDeposits(tenantId: number) {
-    const currentSession =
-      await this.mealSessionRepository.getCurrentSession(tenantId);
-
-    if (!currentSession) {
-      throw new ApiError(404, "Meal session open not found.");
-    }
-
+  async getAllDeposits(tenantId: number, mealSessionId: number) {
     return await this.depositRepository.getAll({
       tenantId,
-      mealSessionId: currentSession.id,
+      mealSessionId,
     });
   }
 
-  async getDepositById({ tenantId, depositId }: IGetDepositByIdPayload) {
-    const currentSession =
-      await this.mealSessionRepository.getCurrentSession(tenantId);
-
-    if (!currentSession) {
-      throw new ApiError(404, "Meal session open not found.");
-    }
+  async getDepositById({
+    tenantId,
+    depositId,
+    mealSessionId,
+  }: IGetDepositByIdPayload) {
     const deposit = await this.depositRepository.getById({
       tenantId,
       depositId,
-      mealSessionId: currentSession.id,
+      mealSessionId,
     });
 
     if (!deposit) {

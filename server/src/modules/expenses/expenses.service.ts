@@ -1,6 +1,9 @@
 import { ApiError } from "@/utils/ApiError.js";
 import { isWithinHours } from "@/utils/date.util.js";
-import { MealSessionStatus } from "../mealSession/mealSession.interface.js";
+import {
+  IMealSessionReq,
+  MealSessionStatus,
+} from "../mealSession/mealSession.interface.js";
 import { MealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { CreateExpensesDto, UpdateExpenseDto } from "./expenses.interface.js";
 import { ExpensesRepository } from "./expenses.repository.js";
@@ -12,19 +15,12 @@ export class ExpensesService {
   ) {}
 
   async create(data: CreateExpensesDto) {
-    const { tenantId, expenseDate } = data;
-
-    const currentSession =
-      await this.mealSessionRepository.getCurrentSession(tenantId);
-
-    if (!currentSession) {
-      throw new ApiError(404, "Meal session open not found.");
-    }
+    const { tenantId, expenseDate, mealSessionId } = data;
 
     const count = await this.expensesRepository.todayExpensesCount({
       tenantId,
       expenseDate,
-      mealSessionId: currentSession.id,
+      mealSessionId,
     });
 
     if (count >= 3) {
@@ -32,31 +28,32 @@ export class ExpensesService {
     }
     return await this.expensesRepository.createExpenses({
       ...data,
-      mealSessionId: currentSession.id,
     });
   }
 
-  async getAll({ tenantId }: { tenantId: number }) {
-    const currentSesion =
-      await this.mealSessionRepository.getCurrentSession(tenantId);
-
-    if (!currentSesion) {
-      throw new ApiError(404, "Meal session open not found.");
-    }
-    return this.expensesRepository.getAll(tenantId, currentSesion.id);
+  async getAll({
+    tenantId,
+    mealSessionId,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+  }) {
+    return this.expensesRepository.getAll(tenantId, mealSessionId);
   }
 
-  async getById({ id, tenantId }: { id: number; tenantId: number }) {
-    const currentSesion =
-      await this.mealSessionRepository.getCurrentSession(tenantId);
-
-    if (!currentSesion) {
-      throw new ApiError(404, "Meal session open not found.");
-    }
+  async getById({
+    id,
+    tenantId,
+    mealSessionId,
+  }: {
+    id: number;
+    tenantId: number;
+    mealSessionId: number;
+  }) {
     const expense = await this.expensesRepository.getById(
       id,
       tenantId,
-      currentSesion.id,
+      mealSessionId,
     );
 
     if (!expense) {
@@ -69,22 +66,18 @@ export class ExpensesService {
   async update({
     id,
     tenantId,
+    mealSessionId,
     data,
   }: {
     id: number;
     tenantId: number;
+    mealSessionId: number;
     data: UpdateExpenseDto;
   }) {
-    const currentSesion =
-      await this.mealSessionRepository.getCurrentSession(tenantId);
-
-    if (!currentSesion) {
-      throw new ApiError(404, "Meal session open not found.");
-    }
     const expense = await this.expensesRepository.getById(
       id,
       tenantId,
-      currentSesion.id,
+      mealSessionId,
     );
 
     if (!expense) {
@@ -114,17 +107,19 @@ export class ExpensesService {
     return this.expensesRepository.updateExpense(id, data);
   }
 
-  async delete({ id, tenantId }: { id: number; tenantId: number }) {
-    const currentSesion =
-      await this.mealSessionRepository.getCurrentSession(tenantId);
-
-    if (!currentSesion) {
-      throw new ApiError(404, "Meal session open not found.");
-    }
+  async delete({
+    id,
+    tenantId,
+    mealSessionId,
+  }: {
+    id: number;
+    tenantId: number;
+    mealSessionId: number;
+  }) {
     const expense = await this.expensesRepository.getById(
       id,
       tenantId,
-      currentSesion.id,
+      mealSessionId,
     );
 
     if (!expense) {
@@ -154,16 +149,15 @@ export class ExpensesService {
     return null;
   }
 
-  async summary({ tenantId }: { tenantId: number }) {
-    const currentSession =
-      await this.mealSessionRepository.getCurrentSession(tenantId);
-
-    if (!currentSession) {
-      throw new ApiError(404, "No active meal session found.");
-    }
-
-    const mealSessionId = currentSession.id;
-
+  async summary({
+    tenantId,
+    mealSessionId,
+    session,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    session: IMealSessionReq;
+  }) {
     const totalExpense =
       await this.expensesRepository.getTotalExpenseByMealSession(
         tenantId,
@@ -183,10 +177,10 @@ export class ExpensesService {
 
     return {
       mealSession: {
-        id: currentSession.id,
-        month: currentSession.month,
-        year: currentSession.year,
-        status: currentSession.status,
+        id: session?.id,
+        month: session?.month,
+        year: session?.year,
+        status: session?.status,
       },
 
       totalExpense,

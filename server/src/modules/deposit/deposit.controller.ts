@@ -7,7 +7,7 @@ import { depositService } from "../containers/deposit.container.js";
 
 export class DepositController {
   static create = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, userId } = getTenantContext(req);
+    const { tenantId, userId, mealSessionId } = getTenantContext(req);
 
     const depositDate = getCurrentDate();
 
@@ -15,6 +15,7 @@ export class DepositController {
       tenantId,
       createdBy: userId,
       depositDate,
+      mealSessionId,
       ...req.body,
     });
 
@@ -26,9 +27,9 @@ export class DepositController {
   });
 
   static getAll = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
-    const deposits = await depositService.getAllDeposits(tenantId);
+    const deposits = await depositService.getAllDeposits(tenantId, mealSessionId);
 
     return sendResponse(res, {
       statusCode: 200,
@@ -37,13 +38,12 @@ export class DepositController {
     });
   });
 
-  // deposit.controller.ts
-
   static getById = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const deposit = await depositService.getDepositById({
       tenantId,
+      mealSessionId,
       depositId: Number(req.params.id),
     });
 

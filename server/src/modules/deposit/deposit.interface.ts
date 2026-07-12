@@ -26,5 +26,6 @@ export interface ICreateDepositPayload {
 
 export interface IGetDepositByIdPayload {
   tenantId: number;
+  mealSessionId: number;
   depositId: number;
 }

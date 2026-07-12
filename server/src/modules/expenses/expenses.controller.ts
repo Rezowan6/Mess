@@ -7,10 +7,11 @@ import { expensesService } from "../containers/expenses.container.js";
 
 export class ExpensesController {
   static create = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, userId } = getTenantContext(req);
+    const { tenantId, userId, mealSessionId } = getTenantContext(req);
 
     const expenses = await expensesService.create({
       tenantId,
+      mealSessionId,
       createdBy: userId,
       expenseDate: new Date(),
       ...req.body,
@@ -24,10 +25,12 @@ export class ExpensesController {
   });
 
   static summary = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, session, mealSessionId } = getTenantContext(req);
 
     const data = await expensesService.summary({
       tenantId,
+      mealSessionId,
+      session,
     });
 
     return sendResponse(res, {
@@ -36,12 +39,13 @@ export class ExpensesController {
       data,
     });
   });
-  
+
   static getAll = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const data = await expensesService.getAll({
       tenantId,
+      mealSessionId,
     });
 
     return sendResponse(res, {
@@ -52,7 +56,7 @@ export class ExpensesController {
   });
 
   static getById = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const id = Number(req.params.id);
 
@@ -63,6 +67,7 @@ export class ExpensesController {
     const data = await expensesService.getById({
       id,
       tenantId,
+      mealSessionId,
     });
 
     return sendResponse(res, {
@@ -73,7 +78,7 @@ export class ExpensesController {
   });
 
   static update = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const id = Number(req.params.id);
     if (Number.isNaN(id)) {
@@ -83,6 +88,7 @@ export class ExpensesController {
     const data = await expensesService.update({
       id,
       tenantId,
+      mealSessionId,
       data: req.body,
     });
 
@@ -94,7 +100,7 @@ export class ExpensesController {
   });
 
   static delete = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const id = Number(req.params.id);
 
@@ -105,6 +111,7 @@ export class ExpensesController {
     await expensesService.delete({
       id,
       tenantId,
+      mealSessionId,
     });
 
     return sendResponse(res, {
