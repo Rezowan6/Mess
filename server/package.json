@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsx watch src/server.ts",
     "build": "tsc",
-    "start": "cross-env NODE_ENV=production node dist/server.js"
+    "start": "cross-env NODE_ENV=production node dist/server.js",
+    "migrate": "sequelize-cli db:migrate",
+    "seed": "tsx src/database/seeder.ts"
   },
   "keywords": [],
   "author": "",
@@ -27,7 +29,7 @@
     "cross-env": "^10.1.0",
     "sequelize-cli": "^6.6.5",
     "ts-node": "^10.9.2",
-    "tsx": "^4.22.4",
+    "tsx": "^4.23.1",
     "typescript": "^6.0.3"
   },
   "dependencies": {
@@ -42,10 +44,11 @@
     "module-alias": "^2.3.4",
     "mongoose": "^9.6.3",
     "morgan": "^1.11.0",
-    "mysql2": "^3.22.5",
+    "mysql2": "^3.22.6",
     "nodemailer": "^8.0.10",
     "nodemon": "^3.1.14",
     "sequelize": "^6.37.8",
+    "sequelize-typescript": "^2.1.6",
     "zod": "^4.4.3"
   }
 }

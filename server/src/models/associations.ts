@@ -1,12 +1,17 @@
 import {
   Deposit,
   Expenses,
+  Feature,
   Invite,
   MealEntry,
   MealRequest,
   MealSession,
   Notice,
+  Payment,
+  Plan,
+  PlanFeature,
   RefreshToken,
+  Subscription,
   Tenant,
   TenantMembership,
   User,
@@ -272,5 +277,76 @@ export const setupAssociations = () => {
   MealSession.hasMany(Notice, {
     foreignKey: "mealSessionId",
     as: "notices",
+  });
+
+  /** Feature */
+  Feature.hasMany(PlanFeature, {
+    foreignKey: "featureId",
+    as: "planFeatures",
+  });
+
+  /** PlanFeature */
+  PlanFeature.belongsTo(Plan, {
+    foreignKey: "planId",
+    as: "plan",
+  });
+
+  PlanFeature.belongsTo(Feature, {
+    foreignKey: "featureId",
+    as: "feature",
+  });
+
+  /** Subscriptions */
+  // Tenant ↔ Subscription
+  Tenant.hasMany(Subscription, {
+    foreignKey: "tenantId",
+    as: "subscriptions",
+  });
+
+  Subscription.belongsTo(Tenant, {
+    foreignKey: "tenantId",
+    as: "tenant",
+  });
+
+  // Plan ↔ Subscription
+  Plan.hasMany(Subscription, {
+    foreignKey: "planId",
+    as: "subscriptions",
+  });
+
+  Subscription.belongsTo(Plan, {
+    foreignKey: "planId",
+    as: "plan",
+  });
+
+  Payment.hasOne(Subscription, {
+    foreignKey: "paymentId",
+    as: "subscription",
+  });
+
+  Subscription.belongsTo(Payment, {
+    foreignKey: "paymentId",
+    as: "payment",
+  });
+
+  /** Payment */
+  Tenant.hasMany(Payment, {
+    foreignKey: "tenantId",
+    as: "payments",
+  });
+
+  Payment.belongsTo(Tenant, {
+    foreignKey: "tenantId",
+    as: "tenant",
+  });
+
+  Subscription.hasMany(Payment, {
+    foreignKey: "subscriptionId",
+    as: "payments",
+  });
+
+  Payment.belongsTo(Subscription, {
+    foreignKey: "subscriptionId",
+    as: "subscription",
   });
 };

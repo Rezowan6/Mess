@@ -1,12 +1,13 @@
 export const MealSessionStatus = {
   OPEN: "open",
   CLOSED: "closed",
+  DRAFT: "draft",
 } as const;
 
 export const MEAL_SESSION_STATUS = Object.values(MealSessionStatus);
 export type MealSessionStatus =
   (typeof MealSessionStatus)[keyof typeof MealSessionStatus];
-  
+
 export interface IMealSessionReq {
   id: number;
   tenantId: number;
