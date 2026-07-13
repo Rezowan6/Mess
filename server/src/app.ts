@@ -18,6 +18,7 @@ import tenantMembershipRouter from "@/modules/tenantMembership/tenantMembership.
 import expensesRouter from "@/modules/expenses/expenses.route.js";
 import depositRouter from "@/modules/deposit/deposit.route.js";
 import monthlyCalculationRouter from "@/modules/monthlyCalculation/monthlyCalculation.route.js";
+import dashboardRouter from "@/modules/dashboard/dashboard.route.js";
 
 const app: Application = express();
 
@@ -52,6 +53,7 @@ app.use("/api/v1/meal-entries", mealEntriesRouter);
 app.use("/api/v1/expense", expensesRouter);
 app.use("/api/v1/deposit", depositRouter);
 app.use("/api/v1/monthly-calculation", monthlyCalculationRouter);
+app.use("/api/v1/dashboard", dashboardRouter);
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {

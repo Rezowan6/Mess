@@ -82,7 +82,7 @@ export class MonthlyCalculationService {
       members,
 
       month: monthName,
-      yerar: session.year,
+      year: session.year,
     };
   }
 }
