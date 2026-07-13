@@ -5,6 +5,7 @@ import {
   MealEntry,
   MealRequest,
   MealSession,
+  Notice,
   RefreshToken,
   Tenant,
   TenantMembership,
@@ -251,5 +252,25 @@ export const setupAssociations = () => {
   MealSession.hasMany(Deposit, {
     foreignKey: "mealSessionId",
     as: "deposits",
+  });
+
+  /** Notice */
+  Notice.belongsTo(User, {
+    foreignKey: "createdBy",
+    as: "creator",
+  });
+  User.hasMany(Notice, {
+    foreignKey: "createdBy",
+    as: "notices",
+  });
+
+  Notice.belongsTo(MealSession, {
+    foreignKey: "mealSessionId",
+    as: "mealSession",
+  });
+
+  MealSession.hasMany(Notice, {
+    foreignKey: "mealSessionId",
+    as: "notices",
   });
 };
