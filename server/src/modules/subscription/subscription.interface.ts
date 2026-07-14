@@ -3,7 +3,7 @@ export const SubscriptionStatus = {
   ACTIVE: "ACTIVE",
   PENDING: "PENDING",
   EXPIRED: "EXPIRED",
-  CANCELED: "CANCELED",
+  CANCELLED: "CANCELLED",
 } as const;
 
 export const SUBSCRIPTION_STATUSES = Object.values(SubscriptionStatus);

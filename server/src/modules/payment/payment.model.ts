@@ -17,12 +17,7 @@ import {
 } from "./payment.interface.js";
 
 export class Payment extends Model<
-  InferAttributes<
-    Payment,
-    {
-      omit: "createdAt" | "updatedAt";
-    }
-  >,
+  InferAttributes<Payment>,
   InferCreationAttributes<Payment>
 > {
   declare id: CreationOptional<number>;
@@ -33,6 +28,8 @@ export class Payment extends Model<
 
   declare transactionId: string | null;
 
+  declare gatewayPaymentId: string | null;
+
   declare gateway: PaymentGatewayType;
 
   declare amount: string;
@@ -40,6 +37,10 @@ export class Payment extends Model<
   declare status: PaymentStatusType;
 
   declare paidAt: Date | null;
+
+  declare gatewayResponse: Record<string, unknown> | null;
+
+  declare failureReason: string | null;
 
   declare createdAt: CreationOptional<Date>;
 
@@ -69,6 +70,11 @@ Payment.init(
       allowNull: true,
     },
 
+    gatewayPaymentId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
     gateway: {
       type: DataTypes.ENUM(...PAYMENT_GATEWAYS),
       allowNull: false,
@@ -90,6 +96,27 @@ Payment.init(
       type: DataTypes.DATE,
       allowNull: true,
     },
+    gatewayResponse: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
+
+    failureReason: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
   },
   {
     sequelize,
@@ -108,6 +135,10 @@ Payment.init(
       },
 
       {
+        fields: ["subscriptionId"],
+      },
+
+      {
         fields: ["status"],
       },
 
@@ -116,7 +147,13 @@ Payment.init(
       },
 
       {
+        unique: true,
         fields: ["transactionId"],
+      },
+
+      {
+        unique: true,
+        fields: ["gatewayPaymentId"],
       },
 
       {

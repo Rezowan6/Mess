@@ -111,7 +111,7 @@ class SubscriptionRepository extends BaseRepository<Subscription> {
         id,
       },
       {
-        status: SubscriptionStatus.CANCELED,
+        status: SubscriptionStatus.CANCELLED,
       },
     );
   }

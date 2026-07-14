@@ -39,6 +39,11 @@ export default {
         allowNull: true,
       },
 
+      gateway_payment_id: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
+
       gateway: {
         type: DataTypes.ENUM("BKASH", "NAGAD", "ROCKET", "STRIPE"),
         allowNull: false,
@@ -51,13 +56,30 @@ export default {
       },
 
       status: {
-        type: DataTypes.ENUM("PENDING", "SUCCESS", "FAILED", "CANCELED"),
+        type: DataTypes.ENUM(
+          "PENDING",
+          "PROCESSING",
+          "SUCCESS",
+          "REFUNDED",
+          "CANCELLED",
+          "FAILED",
+        ),
         allowNull: false,
         defaultValue: "PENDING",
       },
 
       paid_at: {
         type: DataTypes.DATE,
+        allowNull: true,
+      },
+
+      gateway_response: {
+        type: DataTypes.JSON,
+        allowNull: true,
+      },
+
+      failureReason: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
 
@@ -78,6 +100,10 @@ export default {
       name: "idx_payments_tenant_id",
     });
 
+    await queryInterface.addIndex("payments", ["subscription_id"], {
+      name: "idx_payments_subscription_id",
+    });
+
     await queryInterface.addIndex("payments", ["status"], {
       name: "idx_payments_status",
     });
@@ -89,6 +115,11 @@ export default {
     await queryInterface.addIndex("payments", ["transaction_id"], {
       unique: true,
       name: "uk_payments_transaction_id",
+    });
+
+    await queryInterface.addIndex("payments", ["gateway_payment_id"], {
+      unique: true,
+      name: "uk_payments_gateway_payment_id",
     });
 
     await queryInterface.addIndex("payments", ["tenant_id", "status"], {

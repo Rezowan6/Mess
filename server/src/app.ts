@@ -26,6 +26,7 @@ import {
   tenantMembershipRouter,
   tenantRoute,
   subscriptionRouter,
+  paymentRouter,
 } from "@/routes/index.js";
 
 const app: Application = express();
@@ -67,6 +68,7 @@ app.use("/api/v1/plan", planRouter);
 app.use("/api/v1/feature", featureRouter);
 app.use("/api/v1/plan-feature", planFeatureRouter);
 app.use("/api/v1/subscription", subscriptionRouter);
+app.use("/api/v1/payment", paymentRouter);
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {

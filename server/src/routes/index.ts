@@ -14,6 +14,7 @@ import planFeatureRouter from "@/modules/planFeature/planFeature.route.js";
 import tenantRoute from "@/modules/tenant/tenant.route.js";
 import tenantMembershipRouter from "@/modules/tenantMembership/tenantMembership.route.js";
 import subscriptionRouter from "@/modules/subscription/subscription.route.js";
+import paymentRouter from "@/modules/payment/payment.route.js";
 
 export {
   authRouter,
@@ -32,4 +33,5 @@ export {
   tenantMembershipRouter,
   tenantRoute,
   subscriptionRouter,
+  paymentRouter,
 };
