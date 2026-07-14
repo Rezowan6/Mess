@@ -1,5 +1,6 @@
 import {
   Attributes,
+  CreateOptions,
   CreationAttributes,
   DestroyOptions,
   FindOptions,
@@ -20,17 +21,34 @@ export abstract class BaseRepository<T extends Model> {
     return this.model.create(data);
   }
 
+  async createWithOptions(
+    data: CreationAttributes<T>,
+    options?: CreateOptions<Attributes<T>>,
+  ): Promise<T> {
+    return this.model.create(data, options);
+  }
+
   async findById(id: number): Promise<T | null> {
     return this.model.findByPk(id);
   }
 
   async findOne(where: WhereOptions<Attributes<T>>): Promise<T | null> {
     return this.model.findOne({
-        where,
+      where,
     });
   }
 
+  async findOneWithOptions(
+    options?: FindOptions<Attributes<T>>,
+  ): Promise<T | null> {
+    return this.model.findOne(options);
+  }
+
   async findAll(options?: FindOptions<Attributes<T>>): Promise<T[]> {
+    return this.model.findAll(options);
+  }
+
+  async findAllWithOptions(options?: FindOptions<Attributes<T>>): Promise<T[]> {
     return this.model.findAll(options);
   }
 

@@ -13,6 +13,7 @@ import planRouter from "@/modules/plan/plan.route.js";
 import planFeatureRouter from "@/modules/planFeature/planFeature.route.js";
 import tenantRoute from "@/modules/tenant/tenant.route.js";
 import tenantMembershipRouter from "@/modules/tenantMembership/tenantMembership.route.js";
+import subscriptionRouter from "@/modules/subscription/subscription.route.js";
 
 export {
   authRouter,
@@ -30,4 +31,5 @@ export {
   planRouter,
   tenantMembershipRouter,
   tenantRoute,
+  subscriptionRouter,
 };

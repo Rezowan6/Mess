@@ -30,7 +30,7 @@ export class Subscription extends Model<
 
   declare status: SubscriptionStatusType;
   
-  declare amount: number;
+  declare amount: string;
 
   declare isFreeTrial: boolean;
 
