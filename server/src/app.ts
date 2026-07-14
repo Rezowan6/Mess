@@ -8,21 +8,24 @@ import { env } from "./configs/env.js";
 // internal import
 import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
 
-import authRouter from "@/modules/auth/auth.routes.js";
-import invitesRouter from "@/modules/invite/invite.route.js";
-import mealEntriesRouter from "@/modules/mealEntry/mealEntry.route.js";
-import mealRequestRouter from "@/modules/mealRequest/mealRequest.route.js";
-import mealSessionRouter from "@/modules/mealSession/mealSession.route.js";
-import tenantRoute from "@/modules/tenant/tenant.route.js";
-import tenantMembershipRouter from "@/modules/tenantMembership/tenantMembership.route.js";
-import expensesRouter from "@/modules/expenses/expenses.route.js";
-import depositRouter from "@/modules/deposit/deposit.route.js";
-import monthlyCalculationRouter from "@/modules/monthlyCalculation/monthlyCalculation.route.js";
-import dashboardRouter from "@/modules/dashboard/dashboard.route.js";
-import noticesRouter from "@/modules/notice/notice.route.js";
-import planRouter from "@/modules/plan/plan.route.js";
-import featureRouter from "@/modules/feature/feature.route.js";
-import planFeatureRouter from "@/modules/planFeature/planFeature.route.js";
+// router:
+import {
+  authRouter,
+  dashboardRouter,
+  depositRouter,
+  expensesRouter,
+  featureRouter,
+  invitesRouter,
+  mealEntriesRouter,
+  mealRequestRouter,
+  mealSessionRouter,
+  monthlyCalculationRouter,
+  noticesRouter,
+  planFeatureRouter,
+  planRouter,
+  tenantMembershipRouter,
+  tenantRoute,
+} from "@/routes/index.js";
 
 const app: Application = express();
 
