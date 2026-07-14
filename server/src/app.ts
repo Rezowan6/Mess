@@ -21,6 +21,7 @@ import monthlyCalculationRouter from "@/modules/monthlyCalculation/monthlyCalcul
 import dashboardRouter from "@/modules/dashboard/dashboard.route.js";
 import noticesRouter from "@/modules/notice/notice.route.js";
 import planRouter from "@/modules/plan/plan.route.js";
+import featureRouter from "@/modules/feature/feature.route.js";
 
 const app: Application = express();
 
@@ -58,6 +59,7 @@ app.use("/api/v1/monthly-calculation", monthlyCalculationRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
 app.use("/api/v1/notices", noticesRouter);
 app.use("/api/v1/plan", planRouter);
+app.use("/api/v1/feature", featureRouter);
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {
