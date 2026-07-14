@@ -22,6 +22,7 @@ import dashboardRouter from "@/modules/dashboard/dashboard.route.js";
 import noticesRouter from "@/modules/notice/notice.route.js";
 import planRouter from "@/modules/plan/plan.route.js";
 import featureRouter from "@/modules/feature/feature.route.js";
+import planFeatureRouter from "@/modules/planFeature/planFeature.route.js";
 
 const app: Application = express();
 
@@ -60,6 +61,7 @@ app.use("/api/v1/dashboard", dashboardRouter);
 app.use("/api/v1/notices", noticesRouter);
 app.use("/api/v1/plan", planRouter);
 app.use("/api/v1/feature", featureRouter);
+app.use("/api/v1/plan-feature", planFeatureRouter);
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {
