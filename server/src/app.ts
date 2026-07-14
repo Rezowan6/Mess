@@ -20,6 +20,7 @@ import depositRouter from "@/modules/deposit/deposit.route.js";
 import monthlyCalculationRouter from "@/modules/monthlyCalculation/monthlyCalculation.route.js";
 import dashboardRouter from "@/modules/dashboard/dashboard.route.js";
 import noticesRouter from "@/modules/notice/notice.route.js";
+import planRouter from "@/modules/plan/plan.route.js";
 
 const app: Application = express();
 
@@ -56,6 +57,7 @@ app.use("/api/v1/deposit", depositRouter);
 app.use("/api/v1/monthly-calculation", monthlyCalculationRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
 app.use("/api/v1/notices", noticesRouter);
+app.use("/api/v1/plan", planRouter);
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {

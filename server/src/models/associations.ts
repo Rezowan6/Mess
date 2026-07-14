@@ -319,11 +319,6 @@ export const setupAssociations = () => {
     as: "plan",
   });
 
-  Payment.hasOne(Subscription, {
-    foreignKey: "paymentId",
-    as: "subscription",
-  });
-
   Subscription.belongsTo(Payment, {
     foreignKey: "paymentId",
     as: "payment",
