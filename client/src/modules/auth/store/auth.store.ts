@@ -1,25 +1,37 @@
+import { tokenStorage } from "@/shared/utils/token";
 import { create } from "zustand";
+import type { IAuthState, IUser } from "../types/auth.types";
 
-interface AuthState {
-  accessToken: string | null;
-  user: unknown | null;
-
-  setAccessToken: (token: string) => void;
-  logout: () => void;
-}
-
-export const useAuthStore = create<AuthState>((set) => ({
-  accessToken: null,
+export const useAuthStore = create<IAuthState>((set) => ({
+  accessToken: tokenStorage.get(),
   user: null,
 
-  setAccessToken: (token) =>
+  isAuthenticated: !!tokenStorage.get(),
+
+  setAccessToken: (token) => {
+    if (token) {
+      tokenStorage.set(token);
+    } else {
+      tokenStorage.remove();
+    }
+
     set({
       accessToken: token,
-    }),
+      isAuthenticated: !!token,
+    });
+  },
 
-  logout: () =>
+  setUser: (user: IUser | null) => {
+    set({ user });
+  },
+
+  logout: () => {
+    tokenStorage.remove();
+
     set({
       accessToken: null,
       user: null,
-    }),
+      isAuthenticated: false,
+    });
+  },
 }));
