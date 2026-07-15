@@ -10,7 +10,10 @@ import { SubscriptionStatus } from "../subscription/subscription.interface.js";
 
 import sequelize from "@/configs/db.js";
 import { PaymentGatewayFactory } from "./gateways/gateway.factory.js";
-import type { ICreatePaymentInput } from "./payment.interface.js";
+import type {
+  ICreatePaymentInput,
+  PaymentGatewayType,
+} from "./payment.interface.js";
 
 export class PaymentService {
   async create(data: ICreatePaymentInput) {
@@ -84,6 +87,100 @@ export class PaymentService {
         gatewayResponse: response,
       },
     );
+    return response;
+  }
+
+  async webhook(gatewayName: string, payload: any) {
+    /**
+     * 1. Gateway validate
+     */
+    const gateway = PaymentGatewayFactory.getGateway(
+      gatewayName as PaymentGatewayType,
+    );
+
+    /**
+     * 2. Get gateway payment id
+     *
+     * bKash:
+     * paymentID
+     *
+     * Stripe:
+     * session id
+     */
+    const gatewayPaymentId = payload.paymentID || payload.gatewayPaymentId;
+
+    if (!gatewayPaymentId) {
+      throw new ApiError(400, "Gateway payment id missing.");
+    }
+
+    /**
+     * 3. Verify with gateway
+     */
+    const response = await gateway.verifyPayment(gatewayPaymentId);
+
+    if (!response.success) {
+      throw new ApiError(
+        400,
+        response.message ?? "Payment verification failed.",
+      );
+    }
+
+    /**
+     * 4. Find payment
+     */
+    const payment = await paymentRepository.findOne({
+      gatewayPaymentId,
+    });
+
+    if (!payment) {
+      throw new ApiError(404, "Payment record not found.");
+    }
+
+    /**
+     * 5. Prevent duplicate success
+     */
+    if (payment.status === PaymentStatus.SUCCESS) {
+      return payment;
+    }
+
+    /**
+     * 6. Update payment
+     */
+    await sequelize.transaction(async (transaction) => {
+      await paymentRepository.update(
+        {
+          id: payment.id,
+        },
+        {
+          status: PaymentStatus.SUCCESS,
+
+          transactionId: response.transactionId ?? null,
+
+          paidAt: response.paidAt ?? new Date(),
+
+          gatewayResponse: response,
+        },
+        {
+          transaction,
+        },
+      );
+
+      /**
+       * Activate subscription
+       */
+      await subscriptionRepository.update(
+        {
+          id: payment.subscriptionId,
+        },
+        {
+          status: SubscriptionStatus.ACTIVE,
+        },
+        {
+          transaction,
+        },
+      );
+    });
+
     return response;
   }
 

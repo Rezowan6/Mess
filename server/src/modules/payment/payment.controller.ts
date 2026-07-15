@@ -25,6 +25,18 @@ export class PaymentController {
     });
   });
 
+  webhook = asyncHandler(async (req: Request, res: Response) => {
+    const gatewayName = req.params.gateway as string;
+    
+    const result = await service.webhook(gatewayName, req.body);
+
+    sendResponse(res, {
+      statusCode: 200,
+      message: "Payment webhook processed successfully.",
+      data: result,
+    });
+  });
+
   verify = asyncHandler(async (req, res) => {
     const result = await service.verifyPayment(Number(req.params.id));
 

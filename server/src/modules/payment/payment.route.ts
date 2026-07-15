@@ -7,19 +7,20 @@ const router = Router();
 
 const controller = new PaymentController();
 
-router.use(...allAccess);
-
 /**
  * Tenant Routes
  */
 
 router.post("/", controller.create);
 
+// router.post("/webhook/:gateway", controller.webhook);
+
 router.post("/:id/verify", controller.verify);
 
 router.get("/my-payments", controller.getMyPayments);
 
 router.get("/:id", controller.getById);
+
 
 /**
  * System Owner Routes
