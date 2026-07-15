@@ -12,4 +12,8 @@ export const tokenStorage = {
   remove() {
     localStorage.removeItem(TOKEN_KEY);
   },
+
+  clear() {
+    localStorage.clear();
+  },
 };

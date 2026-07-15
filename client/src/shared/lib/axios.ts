@@ -1,7 +1,10 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 
-import { env } from "@/config/env";
-import { tokenStorage } from "@/utils/token";
+import { env } from "@/shared/config/env";
+import { tokenStorage } from "@/shared/utils/token";
+import { API_ENDPOINTS } from "../constants/api";
+
+import { forceLogout } from "../utils/logout";
 
 // Production Axios Instance
 export const API = axios.create({
@@ -43,7 +46,7 @@ API.interceptors.response.use(
 
       try {
         const { data } = await axios.post<RefreshResponse>(
-          `${env.apiUrl}/auth/refresh`,
+          `${env.apiUrl}${API_ENDPOINTS.AUTH.REFRESH}`,
           {},
           {
             withCredentials: true,
@@ -52,13 +55,16 @@ API.interceptors.response.use(
 
         tokenStorage.set(data.accessToken);
 
-        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+        if (originalRequest.headers) {
+          originalRequest.headers.set(
+            "Authorization",
+            `Bearer ${data.accessToken}`,
+          );
+        }
 
         return API(originalRequest);
       } catch {
-        tokenStorage.remove();
-
-        window.location.replace("/login");
+        forceLogout();
 
         return Promise.reject(error);
       }
