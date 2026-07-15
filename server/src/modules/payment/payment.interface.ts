@@ -1,4 +1,5 @@
 export const PaymentGateway = {
+  FAKE: "FAKE",
   BKASH: "BKASH",
   NAGAD: "NAGAD",
   ROCKET: "ROCKET",
@@ -84,13 +85,13 @@ export interface IPaymentInitiateResponse {
 export interface IPaymentVerifyResponse {
   success: boolean;
 
-  transactionId?: string;
+  transactionId?: string | null;
 
   gatewayPaymentId?: string;
 
   paidAt?: Date;
 
-  rawResponse?: unknown;
+  gatewayResponse?: unknown;
 
   message?: string;
 }

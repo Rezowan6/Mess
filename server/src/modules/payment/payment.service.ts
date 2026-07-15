@@ -6,10 +6,10 @@ import { paymentRepository } from "./payment.repository.js";
 
 import { subscriptionRepository } from "../subscription/subscription.repository.js";
 
-import { planRepository } from "../plan/plan.repository.js";
-
 import { SubscriptionStatus } from "../subscription/subscription.interface.js";
 
+import sequelize from "@/configs/db.js";
+import { PaymentGatewayFactory } from "./gateways/gateway.factory.js";
 import type { ICreatePaymentInput } from "./payment.interface.js";
 
 export class PaymentService {
@@ -43,24 +43,92 @@ export class PaymentService {
       await paymentRepository.findPendingBySubscription(subscription.id);
 
     if (existingPendingPayment) {
-      return existingPendingPayment;
+      throw new ApiError(
+        400,
+        "Pending payment already exists for this subscription.",
+      );
     }
 
-    const plan = await planRepository.findById(subscription.planId);
+    // if (existingPendingPayment) {
+    //   return {
+    //     success: true,
+    //     paymentId: existingPendingPayment.id,
+    //     gateway: existingPendingPayment.gateway,
+    //     gatewayPaymentId: existingPendingPayment.gatewayPaymentId ?? undefined,
+    //     message: "Pending payment already exists.",
+    //   };
+    // }
 
-    if (!plan) {
-      throw new ApiError(404, "Plan not found.");
-    }
-
-    const payment = await paymentRepository.create({
-      tenantId: subscription.tenantId,
-      subscriptionId: subscription.id,
-      gateway: data.gateway,
-      amount: subscription.amount,
-      status: PaymentStatus.PENDING,
+    const payment = await sequelize.transaction(async (transaction) => {
+      return await paymentRepository.createWithOptions(
+        {
+          tenantId: subscription.tenantId,
+          subscriptionId: subscription.id,
+          gateway: data.gateway,
+          amount: subscription.amount,
+          status: PaymentStatus.PENDING,
+        },
+        { transaction },
+      );
     });
 
-    return payment;
+    const gateway = PaymentGatewayFactory.getGateway(data.gateway);
+
+    const response = await gateway.initiatePayment(payment.id);
+
+    await paymentRepository.update(
+      { id: payment.id },
+      {
+        gatewayPaymentId: response.gatewayPaymentId ?? null,
+
+        gatewayResponse: response,
+      },
+    );
+    return response;
+  }
+
+  async verifyPayment(paymentId: number) {
+    const payment = await paymentRepository.findById(paymentId);
+
+    if (!payment) {
+      throw new ApiError(404, "Payment not found.");
+    }
+
+    if (payment.status === PaymentStatus.SUCCESS) {
+      throw new ApiError(400, "Payment already verified.");
+    }
+
+    const gateway = PaymentGatewayFactory.getGateway(payment.gateway);
+
+    const response = await gateway.verifyPayment(payment.gatewayPaymentId!);
+
+    await sequelize.transaction(async (transaction) => {
+      await paymentRepository.update(
+        {
+          id: payment.id,
+        },
+        {
+          status: PaymentStatus.SUCCESS,
+
+          transactionId: response.transactionId ?? null,
+
+          paidAt: response.paidAt ?? null,
+
+          gatewayResponse: response,
+        },
+        { transaction },
+      );
+
+      await subscriptionRepository.update(
+        { id: payment.subscriptionId },
+        {
+          status: SubscriptionStatus.ACTIVE,
+        },
+        { transaction },
+      );
+    });
+
+    return response;
   }
 
   async getById(id: number) {
@@ -138,4 +206,3 @@ export class PaymentService {
     return paymentRepository.findProcessingPayments();
   }
 }
-

@@ -25,6 +25,16 @@ export class PaymentController {
     });
   });
 
+  verify = asyncHandler(async (req, res) => {
+    const result = await service.verifyPayment(Number(req.params.id));
+
+    sendResponse(res, {
+      statusCode: 200,
+      message: "Payment verified successfully.",
+      data: result,
+    });
+  });
+
   getMyPayments = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 

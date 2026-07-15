@@ -53,22 +53,22 @@ app.use(
 
 // ------------- router -------------
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/tenant", tenantRoute);
-app.use("/api/v1/invite", invitesRouter);
-app.use("/api/v1/tenant-membership", tenantMembershipRouter);
-app.use("/api/v1/meal-session", mealSessionRouter);
-app.use("/api/v1/meal-request", mealRequestRouter);
+app.use("/api/v1/tenants", tenantRoute);
+app.use("/api/v1/invites", invitesRouter);
+app.use("/api/v1/tenant-memberships", tenantMembershipRouter);
+app.use("/api/v1/meal-sessions", mealSessionRouter);
+app.use("/api/v1/meal-requests", mealRequestRouter);
 app.use("/api/v1/meal-entries", mealEntriesRouter);
-app.use("/api/v1/expense", expensesRouter);
-app.use("/api/v1/deposit", depositRouter);
-app.use("/api/v1/monthly-calculation", monthlyCalculationRouter);
-app.use("/api/v1/dashboard", dashboardRouter);
+app.use("/api/v1/expenses", expensesRouter);
+app.use("/api/v1/deposits", depositRouter);
+app.use("/api/v1/monthly-calculations", monthlyCalculationRouter);
+app.use("/api/v1/dashboards", dashboardRouter);
 app.use("/api/v1/notices", noticesRouter);
-app.use("/api/v1/plan", planRouter);
-app.use("/api/v1/feature", featureRouter);
-app.use("/api/v1/plan-feature", planFeatureRouter);
-app.use("/api/v1/subscription", subscriptionRouter);
-app.use("/api/v1/payment", paymentRouter);
+app.use("/api/v1/plans", planRouter);
+app.use("/api/v1/features", featureRouter);
+app.use("/api/v1/plan-features", planFeatureRouter);
+app.use("/api/v1/subscriptions", subscriptionRouter);
+app.use("/api/v1/payments", paymentRouter);
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {

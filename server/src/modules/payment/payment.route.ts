@@ -15,6 +15,8 @@ router.use(...allAccess);
 
 router.post("/", controller.create);
 
+router.post("/:id/verify", controller.verify);
+
 router.get("/my-payments", controller.getMyPayments);
 
 router.get("/:id", controller.getById);
@@ -24,14 +26,26 @@ router.get("/:id", controller.getById);
  * Temporary (development/testing)
  */
 
-router.get("/owner/pending", ...systemOwnerAccess, controller.getPendingPayments);
+router.get(
+  "/owner/pending",
+  ...systemOwnerAccess,
+  controller.getPendingPayments,
+);
 
-router.get("/owner/processing", ...systemOwnerAccess, controller.getProcessingPayments);
+router.get(
+  "/owner/processing",
+  ...systemOwnerAccess,
+  controller.getProcessingPayments,
+);
 
 router.patch("/:id/success", ...systemOwnerAccess, controller.markAsSuccess);
 
 router.patch("/:id/failed", ...systemOwnerAccess, controller.markAsFailed);
 
-router.patch("/:id/cancelled", ...systemOwnerAccess, controller.markAsCancelled);
+router.patch(
+  "/:id/cancelled",
+  ...systemOwnerAccess,
+  controller.markAsCancelled,
+);
 
 export default router;

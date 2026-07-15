@@ -45,7 +45,7 @@ export default {
       },
 
       gateway: {
-        type: DataTypes.ENUM("BKASH", "NAGAD", "ROCKET", "STRIPE"),
+        type: DataTypes.ENUM("FAKE","BKASH", "NAGAD", "ROCKET", "STRIPE"),
         allowNull: false,
       },
 
@@ -78,7 +78,7 @@ export default {
         allowNull: true,
       },
 
-      failureReason: {
+      failure_reason: {
         type: DataTypes.TEXT,
         allowNull: true,
       },

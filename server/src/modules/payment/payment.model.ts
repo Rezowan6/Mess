@@ -38,7 +38,7 @@ export class Payment extends Model<
 
   declare paidAt: Date | null;
 
-  declare gatewayResponse: Record<string, unknown> | null;
+  declare gatewayResponse: unknown | null;
 
   declare failureReason: string | null;
 

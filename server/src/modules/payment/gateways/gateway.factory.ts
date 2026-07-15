@@ -9,12 +9,16 @@ import { BkashGateway } from "./bkash/bkash.gateway.js";
 import { NagadGateway } from "./nagad/nagad.gateway.js";
 import { RocketGateway } from "./rocket/rocket.gateway.js";
 import { StripeGateway } from "./stripe/stripe.gateway.js";
+import { FakeGateway } from "./fake/fake.gateway.js";
 
 import type { PaymentGatewayContract } from "./payment.gateway.interface.js";
 
 export class PaymentGatewayFactory {
   static getGateway(gateway: PaymentGatewayType): PaymentGatewayContract {
     switch (gateway) {
+      case PaymentGateway.FAKE:
+        return new FakeGateway();
+
       case PaymentGateway.BKASH:
         return new BkashGateway();
 
@@ -28,7 +32,7 @@ export class PaymentGatewayFactory {
         return new StripeGateway();
 
       default:
-        throw new ApiError(400, "Unsupported payment gateway.");
+        throw new ApiError(400, `Unsupported payment gateway: ${gateway}`);
     }
   }
 }
