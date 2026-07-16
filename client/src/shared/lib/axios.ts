@@ -4,7 +4,7 @@ import { env } from "@/shared/config/env";
 import { tokenStorage } from "@/shared/utils/token";
 import { API_ENDPOINTS } from "../constants/api";
 
-import { forceLogout } from "../utils/logout";
+import { forceLogout } from "../utils/forceLogout";
 
 // Production Axios Instance
 export const API = axios.create({

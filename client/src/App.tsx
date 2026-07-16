@@ -3,7 +3,7 @@ import { LoginPage } from "./modules/auth/pages/LoginPage";
 
 function App() {
   return (
-    <div data-theme="">
+    <div data-theme="dark">
       <LoginPage />
     </div>
   );
