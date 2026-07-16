@@ -32,6 +32,20 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   res.status(201).json(new ApiResponse(201, message, data));
 });
 
+export const refreshToken = asyncHandler(
+  async (req: Request, res: Response) => {
+    const token = req.cookies.refreshToken;
+
+    const { accessToken } = await authService.refreshToken(token);
+
+    res.status(200).json(
+      new ApiResponse(200, "Token refreshed", {
+        accessToken,
+      }),
+    );
+  },
+);
+
 // logout
 export const logout = asyncHandler(async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refreshToken;

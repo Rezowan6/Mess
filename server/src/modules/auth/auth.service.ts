@@ -1,8 +1,9 @@
 import { env, sequelize } from "@/configs/index.js";
-import { User } from "@/models/index.js";
+import { RefreshToken, User } from "@/models/index.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { comparePassword } from "@/utils/bcrypt.js";
 import { getClientIp } from "@/utils/getClient.ip.js";
+import { hashToken } from "@/utils/hash.util.js";
 import {
   createAccessToken,
   emailVerifyToken,
@@ -22,7 +23,6 @@ import {
   RegisterResponse,
 } from "./auth.interface.js";
 import { findUserByEmail } from "./auth.repository.js";
-
 
 //  service
 export const register = async (
@@ -117,7 +117,7 @@ export const login = async (data: LoginPayload): Promise<LoginResponse> => {
   const user = await findUserByEmail(email);
 
   if (!user) {
-    throw new Error("Invalid credentials");
+    throw new ApiError(401, "Invalid credentials");
   }
 
   if (!user.isVerified) {
@@ -167,7 +167,41 @@ export const login = async (data: LoginPayload): Promise<LoginResponse> => {
   };
 };
 
+export const refreshToken = async (token: string) => {
+  if (!token) {
+    throw new ApiError(401, "Refresh token missing");
+  }
+
+  const decoded = verifyToken(token, env.REFRESH_TOKEN_SECRET);
+
+  const storedToken = await RefreshToken.findOne({
+    where: {
+      tokenHash: hashToken(token),
+    },
+  });
+
+  if (!storedToken) {
+    throw new ApiError(401, "Invalid refresh token");
+  }
+
+  if (storedToken.expiresAt < new Date()) {
+    throw new ApiError(401, "Refresh token expired");
+  }
+
+  const accessToken = createAccessToken({
+    id: decoded.id,
+    email: decoded.email,
+  });
+
+  return {
+    accessToken,
+  };
+};
+
 export const logout = async (refreshToken: string) => {
+  if (!refreshToken) {
+    throw new ApiError(401, "Refresh token missing");
+  }
   if (!refreshToken) {
     throw new ApiError(401, "Refresh token missing");
   }

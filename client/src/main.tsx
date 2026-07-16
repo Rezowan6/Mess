@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
+import { Toaster } from "react-hot-toast";
 import { QueryProvider } from "@/app/providers/query.provider";
 
 import App from "./App.tsx";
@@ -10,6 +11,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryProvider>
       <App />
+      <Toaster position="top-right" />
     </QueryProvider>
   </StrictMode>,
 );

@@ -1,10 +1,10 @@
 import "./App.css";
+import { LoginPage } from "./modules/auth/pages/LoginPage";
 
 function App() {
   return (
     <div data-theme="">
-      <h1>Mess</h1>
-      <button className="btn btn-success"> Mell </button>
+      <LoginPage />
     </div>
   );
 }
