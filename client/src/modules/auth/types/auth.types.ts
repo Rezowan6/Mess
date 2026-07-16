@@ -1,10 +1,30 @@
+export interface IMembership {
+
+ tenantId:number;
+
+ role:string;
+
+}
+
 export interface IUser {
   id: string;
   name: string;
   email: string;
 
-  // পরে /auth/me endpoint থেকে আনবে
-  role?: string;
+  memberships:IMembership[];
+}
+
+
+export interface IAuthUser {
+
+ id:number;
+
+ name:string;
+
+ email:string;
+
+ memberships:IMembership[];
+
 }
 
 export interface IAuthState {
