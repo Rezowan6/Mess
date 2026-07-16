@@ -19,42 +19,42 @@ export const sidebarItems: SidebarItem[] = [
   {
     title: "Users",
     path: ROUTES.USERS,
-    roles: ["OWNER", "MANAGER"],
+    roles: ["admin", "manager"],
   },
 
   {
     title: "Meal Session",
     path: ROUTES.MEAL_SESSION,
-    roles: ["OWNER", "MANAGER", "MEMBER"],
+    roles: ["admin", "manager", "member"],
   },
 
   {
     title: "Meal Entry",
     path: ROUTES.MEAL_ENTRY,
-    roles: ["OWNER", "MANAGER", "MEMBER"],
+    roles: ["admin", "manager", "member"],
   },
 
   {
     title: "Expense",
     path: ROUTES.EXPENSE,
-    roles: ["OWNER", "MANAGER"],
+    roles: ["admin", "manager"],
   },
 
   {
     title: "Subscription",
     path: ROUTES.SUBSCRIPTION,
-    roles: ["OWNER"],
+    roles: ["admin"],
   },
 
   {
     title: "Payment",
     path: ROUTES.PAYMENT,
-    roles: ["OWNER"],
+    roles: ["admin"],
   },
 
   {
     title: "Settings",
     path: ROUTES.SETTINGS,
-    roles: ["OWNER"],
+    roles: ["admin"],
   },
 ];

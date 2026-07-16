@@ -1,5 +1,10 @@
 import { env, sequelize } from "@/configs/index.js";
-import { RefreshToken, User } from "@/models/index.js";
+import {
+  RefreshToken,
+  Tenant,
+  TenantMembership,
+  User,
+} from "@/models/index.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { comparePassword } from "@/utils/bcrypt.js";
 import { getClientIp } from "@/utils/getClient.ip.js";
@@ -217,6 +222,21 @@ export const logout = async (refreshToken: string) => {
 export const getMe = async (userId: number) => {
   const user = await User.findByPk(userId, {
     attributes: ["id", "name", "email"],
+    include: [
+      {
+        model: TenantMembership,
+        as: "tenantMemberships",
+        attributes: ["tenantId", "role", "status"],
+
+        include: [
+          {
+            model: Tenant,
+            as: "tenant",
+            attributes: ["id", "name", "slug"],
+          },
+        ],
+      },
+    ],
   });
 
   if (!user) {

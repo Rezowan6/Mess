@@ -1,39 +1,41 @@
-export interface IMembership {
+import type { Role } from "@/shared/constants/roles";
 
- tenantId:number;
+export interface ITenantMembership {
+  tenantId: number;
 
- role:string;
+  role: Role;
 
+  status: string;
+
+  tenant: {
+    id: number;
+    name: string;
+    slug: string;
+  };
 }
-
 export interface IUser {
   id: string;
   name: string;
   email: string;
-
-  memberships:IMembership[];
 }
 
-
 export interface IAuthUser {
+  id: number;
 
- id:number;
+  name: string;
 
- name:string;
+  email: string;
 
- email:string;
-
- memberships:IMembership[];
-
+  tenantMemberships: ITenantMembership[];
 }
 
 export interface IAuthState {
   accessToken: string | null;
-  user: IUser | null;
+  user: IAuthUser | null;
   isAuthenticated: boolean;
 
   setAccessToken: (token: string | null) => void;
-  setUser: (user: IUser | null) => void;
+  setUser: (user: IAuthUser | null) => void;
 
   logout: () => void;
 }

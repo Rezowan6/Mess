@@ -1,4 +1,8 @@
-import type { IUser, LoginPayload, LoginResponse } from "../types/auth.types";
+import type {
+  IAuthUser,
+  LoginPayload,
+  LoginResponse,
+} from "../types/auth.types";
 
 import { API } from "@/shared/lib/axios";
 
@@ -14,8 +18,8 @@ export const authApi = {
     return data;
   },
 
-  me: async (): Promise<IUser> => {
-    const { data } = await API.get<{ data: IUser }>(API_ENDPOINTS.AUTH.ME);
+  me: async (): Promise<IAuthUser> => {
+    const { data } = await API.get<{ data: IAuthUser }>(API_ENDPOINTS.AUTH.ME);
 
     return data.data;
   },

@@ -1,6 +1,6 @@
 import { tokenStorage } from "@/shared/utils/token";
 import { create } from "zustand";
-import type { IAuthState, IUser } from "../types/auth.types";
+import type { IAuthState, IAuthUser } from "../types/auth.types";
 
 export const useAuthStore = create<IAuthState>((set) => ({
   accessToken: tokenStorage.get(),
@@ -21,7 +21,7 @@ export const useAuthStore = create<IAuthState>((set) => ({
     });
   },
 
-  setUser: (user: IUser | null) => {
+  setUser: (user: IAuthUser | null) => {
     set({ user });
   },
 
