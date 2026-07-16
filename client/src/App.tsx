@@ -1,12 +1,11 @@
+import { RouterProvider } from "react-router-dom";
+
+import { router } from "./app/router";
+
 import "./App.css";
-import { LoginPage } from "./modules/auth/pages/LoginPage";
 
 function App() {
-  return (
-    <div data-theme="dark">
-      <LoginPage />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
