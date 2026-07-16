@@ -55,3 +55,11 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
 
   res.status(200).json(new ApiResponse(201, message, null));
 });
+
+export const me = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user.id;
+
+  const user = await authService.getMe(userId);
+
+  res.status(200).json(new ApiResponse(200, "User fetched successfully", user));
+});

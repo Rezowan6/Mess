@@ -213,3 +213,15 @@ export const logout = async (refreshToken: string) => {
     message: "Logout successful",
   };
 };
+
+export const getMe = async (userId: number) => {
+  const user = await User.findByPk(userId, {
+    attributes: ["id", "name", "email"],
+  });
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  return user;
+};
