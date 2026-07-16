@@ -5,8 +5,11 @@ import { PublicRoute } from "./public.route";
 
 import { LoginPage } from "@/modules/auth/pages/LoginPage";
 import { DashboardPage } from "@/pages/DashboardPage";
+import { NotFoundPage } from "@/pages/errors/NotFoundPage";
+import { DashboardLayout } from "../layouts/Dashboard.layout";
 
 export const router = createBrowserRouter([
+  // Public Routes
   {
     element: <PublicRoute />,
 
@@ -18,13 +21,25 @@ export const router = createBrowserRouter([
     ],
   },
 
+  // Protected Routes
   {
     element: <ProtectedRoute />,
     children: [
       {
-        path: "/dashboard",
-        element: <DashboardPage />,
+        element: <DashboardLayout />,
+        children: [
+          {
+            path: "/dashboard",
+            element: <DashboardPage />,
+          },
+        ],
       },
     ],
+  },
+
+  // Global Error Route
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);
