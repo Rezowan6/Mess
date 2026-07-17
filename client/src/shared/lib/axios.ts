@@ -4,6 +4,8 @@ import { env } from "@/shared/config/env";
 import { tokenStorage } from "@/shared/utils/token";
 import { API_ENDPOINTS } from "../constants/api";
 
+import { useTenantStore } from "@/modules/tenant/store/tenant.store";
+import { HEADERS } from "../constants/headers";
 import { forceLogout } from "../utils/forceLogout";
 
 // Production Axios Instance
@@ -19,8 +21,24 @@ export const API = axios.create({
 API.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = tokenStorage.get();
 
+  const currentTenant = useTenantStore.getState().currentTenant;
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  const skipTenantHeaderRoutes = [
+    API_ENDPOINTS.AUTH.LOGIN,
+    API_ENDPOINTS.AUTH.REFRESH,
+    API_ENDPOINTS.AUTH.ME,
+  ];
+
+  const shouldSkipTenant = skipTenantHeaderRoutes.some((route) =>
+    config.url?.includes(route),
+  );
+
+  if (currentTenant && !shouldSkipTenant) {
+    config.headers[HEADERS.TENANT_ID] = currentTenant.tenantId.toString();
   }
 
   return config;

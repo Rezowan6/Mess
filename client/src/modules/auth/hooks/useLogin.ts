@@ -3,24 +3,23 @@ import tost from "react-hot-toast";
 
 import { authApi } from "../api/auth.api";
 
+import { ROUTES } from "@/shared/constants/routes";
 import { useAuthStore } from "../store/auth.store";
 
 export const useLogin = () => {
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
 
-  const setUser = useAuthStore((state) => state.setUser);
-
   return useMutation({
     mutationFn: authApi.login,
 
     onSuccess: (res) => {
-      const { accessToken, user } = res.data;
+      const { accessToken } = res.data;
 
       setAccessToken(accessToken);
 
-      setUser(user);
-
       tost.success(res.message);
+
+      window.location.replace(ROUTES.DASHBOARD);
     },
 
     onError: (err) => {

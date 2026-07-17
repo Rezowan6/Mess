@@ -8,8 +8,6 @@ import type { Role } from "@/shared/constants/roles";
 export const Sidebar = () => {
   const user = useAuthStore((state) => state.user);
 
-  console.log(user);
-
   const role = user?.tenantMemberships?.[0]?.role as Role;
 
   const menus = sidebarItems.filter(

@@ -14,18 +14,12 @@ export interface ITenantMembership {
   };
 }
 export interface IUser {
-  id: string;
+  id: number;
   name: string;
   email: string;
 }
 
-export interface IAuthUser {
-  id: number;
-
-  name: string;
-
-  email: string;
-
+export interface IAuthUser extends IUser {
   tenantMemberships: ITenantMembership[];
 }
 
@@ -40,12 +34,12 @@ export interface IAuthState {
   logout: () => void;
 }
 
-export interface LoginPayload {
+export interface ILoginPayload {
   email: string;
   password: string;
 }
 
-export interface LoginResponse {
+export interface ILoginResponse {
   statusCode: number;
   success: boolean;
   message: string;
