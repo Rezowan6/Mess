@@ -7,7 +7,10 @@ import { LoginPage } from "@/modules/auth/pages/LoginPage";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { NotFoundPage } from "@/pages/errors/NotFoundPage";
 import { HomePage } from "@/pages/HomePage";
+
+import { ROLES } from "@/shared/constants/roles";
 import { ROUTES } from "@/shared/constants/routes";
+import { RoleGuard } from "@/shared/guards/role.guard";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
 
 export const router = createBrowserRouter([
@@ -19,7 +22,7 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.LOGIN,
         element: <LoginPage />,
-      }
+      },
     ],
   },
 
@@ -32,7 +35,14 @@ export const router = createBrowserRouter([
         children: [
           {
             path: ROUTES.DASHBOARD,
-            element: <DashboardPage />,
+            element: <RoleGuard allowedRoles={[ROLES.MANAGER, ROLES.ADMIN]} />,
+
+            children: [
+              {
+                index: true,
+                element: <DashboardPage />,
+              },
+            ],
           },
           {
             path: ROUTES.HOME,

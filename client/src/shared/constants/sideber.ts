@@ -1,16 +1,16 @@
+import type { Permission } from "./permissions";
+import { PERMISSIONS } from "./permissions";
 import { ROUTES } from "./routes";
 
-export interface SidebarItem {
+export interface ISidebarItem {
   title: string;
-
   path: string;
-
   icon?: string;
 
-  roles?: string[];
+  permission?: Permission;
 }
 
-export const sidebarItems: SidebarItem[] = [
+export const sidebarItems: ISidebarItem[] = [
   {
     title: "Dashboard",
     path: ROUTES.DASHBOARD,
@@ -19,42 +19,42 @@ export const sidebarItems: SidebarItem[] = [
   {
     title: "Users",
     path: ROUTES.USERS,
-    roles: ["admin", "manager"],
+    permission: PERMISSIONS.USER_VIEW,
   },
 
   {
     title: "Meal Session",
     path: ROUTES.MEAL_SESSION,
-    roles: ["admin", "manager", "member"],
+    permission: PERMISSIONS.MEAL_SESSION_VIEW,
   },
 
   {
     title: "Meal Entry",
     path: ROUTES.MEAL_ENTRY,
-    roles: ["admin", "manager", "member"],
+    permission: PERMISSIONS.MEAL_ENTRY_VIEW,
   },
 
   {
     title: "Expense",
     path: ROUTES.EXPENSE,
-    roles: ["admin", "manager"],
+    permission: PERMISSIONS.EXPENSE_VIEW,
   },
 
   {
     title: "Subscription",
     path: ROUTES.SUBSCRIPTION,
-    roles: ["admin"],
+    permission: PERMISSIONS.SUBSCRIPTION_VIEW,
   },
 
   {
     title: "Payment",
     path: ROUTES.PAYMENT,
-    roles: ["admin"],
+    permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
   },
 
   {
     title: "Settings",
     path: ROUTES.SETTINGS,
-    roles: ["admin"],
+    permission: PERMISSIONS.SETTINGS_VIEW,
   },
 ];

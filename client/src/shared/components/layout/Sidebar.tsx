@@ -2,16 +2,13 @@ import { NavLink } from "react-router-dom";
 
 import { sidebarItems } from "@/shared/constants/sideber";
 
-import { useAuthStore } from "@/modules/auth/store/auth.store";
-import type { Role } from "@/shared/constants/roles";
+import { useRBAC } from "@/shared/hooks/useRBAC";
 
 export const Sidebar = () => {
-  const user = useAuthStore((state) => state.user);
-
-  const role = user?.tenantMemberships?.[0]?.role as Role;
+  const { can } = useRBAC();
 
   const menus = sidebarItems.filter(
-    (item) => !item.roles || item.roles.includes(role),
+    (item) => !item.permission || can(item.permission),
   );
 
   return (
@@ -22,7 +19,7 @@ export const Sidebar = () => {
 
       <ul>
         {menus.map((item) => (
-          <li key={item.path}>
+          <li key={item.path} className="glass p-3 mb-2 hover:bg-base-200">
             <NavLink to={item.path}>{item.title}</NavLink>
           </li>
         ))}
