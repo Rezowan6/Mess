@@ -32,14 +32,14 @@ export interface FindByTenantAndUserPayload {
   userId: number;
 }
 
-export interface UpdateRolePayload {
+export interface IUpdateRolePayload {
+  id: number;
+  role: MemberShipRole;
   tenantId: number;
   currentMembershipId: number;
   currentRole: string;
-  targetMembershipId: number;
-  newRole: MemberShipRole;
 }
-export interface DeleteMemberPayload {
+export interface IDeleteMemberPayload {
   tenantId: number;
   currentMembershipId: number;
   currentRole: string;

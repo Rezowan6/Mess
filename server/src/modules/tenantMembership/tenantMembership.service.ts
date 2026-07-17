@@ -1,62 +1,62 @@
-import sequelize from "@/configs/db.js";
 import { MemberRole } from "@/constans/index.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { DeleteMemberPayload, UpdateRolePayload } from "./tenantMembership.interface.js";
-import { TenantMembershipRepository } from "./tenantMembership.repository.js";
+import {
+  IDeleteMemberPayload,
+  IUpdateRolePayload,
+} from "./tenantMembership.interface.js";
+import { MembershipRepository } from "./tenantMembership.repository.js";
 
 export class TenantMembershipService {
-  static async getMembers(tenantId: number) {
-    return await TenantMembershipRepository.getMembers(tenantId);
+  async getMembers(tenantId: number) {
+    const members = await MembershipRepository.findOne({tenantId});
+
+    if (!members) {
+      throw new ApiError(404, "Member not found.");
+    }
+    return await MembershipRepository.getMembers(tenantId);
   }
 
-  static async updateRole(payload: UpdateRolePayload) {
+  async updateRole(payload: IUpdateRolePayload) {
     const {
       tenantId,
       currentMembershipId,
-      targetMembershipId,
-      newRole,
+      id,
+      role,
     } = payload;
-    return await sequelize.transaction(async (trnasaction) => {
+    if (role === MemberRole.ADMIN) {
+      throw new ApiError(400, "The admin role cannot be assigned.");
+    }
 
-      if(newRole === MemberRole.ADMIN) {
-        throw new ApiError(400, "The admin role cannot be assigned.");
-      }
+    const targetMember = await MembershipRepository.findById(id);
 
-      const targetMember =
-        await TenantMembershipRepository.findActiveByUserId(targetMembershipId);
+    if (!targetMember) {
+      throw new ApiError(404, "Member not found");
+    }
 
-      if (!targetMember) {
-        throw new ApiError(404, "Member not found");
-      }
-
-      if (targetMember.tenantId !== tenantId) {
-        throw new ApiError(403, "Access denied");
-      }
-
-      if (targetMember.role === MemberRole.ADMIN) {
-        throw new ApiError(403, "Admin role connot be update");
-      }
-
-      if (currentMembershipId === targetMembershipId) {
-        throw new ApiError(400, "You cannot change your own role");
-      }
-      return await TenantMembershipRepository.updateRole(
-        { targetMembershipId, newRole },
-        trnasaction,
-      );
-    });
-  }
-
-  static async deleteMember (payload: DeleteMemberPayload) {
-    const {tenantId, currentMembershipId, targetMembershipId} = payload;
-
-    const targetMember = await TenantMembershipRepository.findActiveByUserId(targetMembershipId);
-
-    if(targetMember?.tenantId !== tenantId) {
+    if (targetMember.tenantId !== tenantId) {
       throw new ApiError(403, "Access denied");
     }
 
-    if(targetMember.id === currentMembershipId) {
+    if (targetMember.role === MemberRole.ADMIN) {
+      throw new ApiError(403, "Admin role connot be update");
+    }
+
+    if (currentMembershipId === id) {
+      throw new ApiError(400, "You cannot change your own role");
+    }
+    return await MembershipRepository.update({ id }, {role});
+  }
+
+  async deleteMember(payload: IDeleteMemberPayload) {
+    const { tenantId, currentMembershipId, targetMembershipId: id } = payload;
+
+    const targetMember = await MembershipRepository.findById(id);
+
+    if (targetMember?.tenantId !== tenantId) {
+      throw new ApiError(403, "Access denied");
+    }
+
+    if (targetMember.id === currentMembershipId) {
       throw new ApiError(400, "You cannot remove yourself.");
     }
 
@@ -67,12 +67,16 @@ export class TenantMembershipService {
       throw new ApiError(403, "The manager cannot be removed.");
     }
 
-    const count = await TenantMembershipRepository.countByTenant(tenantId);
-    if(count === 1) {
-      throw new ApiError(400, "The last member of the tenant cannot be removed.");
+    const count = await MembershipRepository.countByTenant(tenantId);
+    if (count === 1) {
+      throw new ApiError(
+        400,
+        "The last member of the tenant cannot be removed.",
+      );
     }
 
-    await TenantMembershipRepository.delete(targetMembershipId);
-
+    await MembershipRepository.delete({ id });
   }
 }
+
+export const MembershipService = new TenantMembershipService()

@@ -1,5 +1,5 @@
-import { type ChangeEvent } from "react";
 import { Trash2 } from "lucide-react";
+import { type ChangeEvent } from "react";
 
 import type { ITenantMember } from "../types/userManagement.types";
 
@@ -9,10 +9,10 @@ import { useRBAC } from "@/shared/hooks/useRBAC";
 
 import { PERMISSIONS } from "@/shared/constants/permissions";
 
-import { useUpdateRole } from "../hooks/useUpdateRole";
-
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { useRemoveMember } from "../hooks/useRemoveMember";
+
+import { useUpdateRole } from "../hooks/useUpdateRole";
 
 interface Props {
   member: ITenantMember;
@@ -74,7 +74,7 @@ export const MemberActions = ({ member }: Props) => {
             })
           }
         >
-    Remove
+          Remove
         </Button>
       )}
     </div>

@@ -11,10 +11,10 @@ export const MemberRow = ({ member }: Props) => {
   return (
     <tr>
       <td>
-        <div className="font-semibold">{member.user.name}</div>
+        <div className="font-semibold">{member?.user?.name}</div>
       </td>
 
-      <td>{member.user.email}</td>
+      <td>{member?.user?.email}</td>
 
       <td>
         <span className="badge badge-primary">{member.role}</span>

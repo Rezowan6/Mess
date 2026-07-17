@@ -18,8 +18,8 @@ export const useUpdateRole = () => {
       });
     },
 
-    onError: (err) => {
-      toast.error(err.message ?? "Failed to update role.");
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message ?? "Failed to update role.");
     },
   });
 };

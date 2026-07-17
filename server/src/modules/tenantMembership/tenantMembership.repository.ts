@@ -1,47 +1,30 @@
+import { BaseRepository } from "@/common/base.repository.js";
 import { MemberStatus } from "@/constans/index.js";
 import { TenantMembership, User } from "@/models/index.js";
 import { Transaction } from "sequelize";
-import {
-  FindByTenantAndUserPayload,
-  MembershipCreationAttributes,
-  updateRoleDTO,
-} from "./tenantMembership.interface.js";
+import { FindByTenantAndUserPayload } from "./tenantMembership.interface.js";
 
-export class TenantMembershipRepository {
-  static async findActiveByUserId(userId: number) {
-    return (
-      (await TenantMembership.findOne({
-        where: {
-          id: userId,
-          status: MemberStatus.ACTIVE,
-        },
-      })) || null
-    );
+export class TenantMembershipRepository extends BaseRepository<TenantMembership> {
+  constructor() {
+    super(TenantMembership);
   }
 
-  static async findByTenantAndActiveUser(
+  async findByActiveUser(
     { tenantId, userId }: FindByTenantAndUserPayload,
     transaction: Transaction | null = null,
   ) {
-    return (
-      (await TenantMembership.findOne({
-        where: { tenantId, userId, status: MemberStatus.ACTIVE },
-        transaction: transaction ?? null,
-      })) || null
-    );
-  }
-
-  static async create(
-    data: MembershipCreationAttributes,
-    transaction: Transaction | null = null,
-  ) {
-    return TenantMembership.create(data, {
+    return this.findOneWithOptions({
+      where: {
+        tenantId,
+        userId,
+        status: MemberStatus.ACTIVE
+      },
       transaction: transaction ?? null,
     });
   }
 
-  static async getMembers(tenantId: number) {
-    return await TenantMembership.findAll({
+  async getMembers(tenantId: number) {
+    return await this.findAll({
       where: { tenantId },
       include: [
         {
@@ -54,29 +37,9 @@ export class TenantMembershipRepository {
     });
   }
 
-  static async updateRole(
-    data: updateRoleDTO,
-    trnasaction: Transaction | null = null,
-  ) {
-    const { newRole: role, targetMembershipId: id } = data;
-    return await TenantMembership.update(
-      { role },
-      {
-        where: {
-          userId: id,
-        },
-        transaction: trnasaction ?? null,
-      },
-    );
-  }
-
-  static async delete(id: number) {
-    return TenantMembership.destroy({
-      where: { userId: id },
-    });
-  }
-
-  static async countByTenant(id: number) {
-    return await TenantMembership.count({ where: { tenantId: id } });
+  async countByTenant(id: number) {
+    return this.count({ where: { id } });
   }
 }
+
+export const MembershipRepository = new TenantMembershipRepository();
