@@ -6,4 +6,12 @@ export const API_ENDPOINTS = {
     LOGOUT: "/auth/logout",
     ME: "/auth/me",
   },
+
+  TENANT_MEMBERSHIP: {
+    LIST: "/tenant-memberships",
+
+    UPDATE_ROLE: (id: number) => `/tenant-memberships/${id}/role`,
+
+    REMOVE: (id: number) => `/tenant-memberships/${id}`,
+  },
 };
