@@ -48,7 +48,7 @@ export class TenantMembershipService {
   }
 
   static async deleteMember (payload: DeleteMemberPayload) {
-    const {tenantId, currentMembershipId, currentRole, targetMembershipId} = payload;
+    const {tenantId, currentMembershipId, targetMembershipId} = payload;
 
     const targetMember = await TenantMembershipRepository.findActiveByUserId(targetMembershipId);
 

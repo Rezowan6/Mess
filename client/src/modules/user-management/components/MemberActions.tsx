@@ -1,6 +1,9 @@
-import type { ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
+import { Trash2 } from "lucide-react";
 
 import type { ITenantMember } from "../types/userManagement.types";
+
+import { Button } from "@/shared/components/ui/Button";
 
 import { useRBAC } from "@/shared/hooks/useRBAC";
 
@@ -8,6 +11,7 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 
 import { useUpdateRole } from "../hooks/useUpdateRole";
 
+import { useConfirmStore } from "@/shared/store/confirm.store";
 import { useRemoveMember } from "../hooks/useRemoveMember";
 
 interface Props {
@@ -15,11 +19,13 @@ interface Props {
 }
 
 export const MemberActions = ({ member }: Props) => {
+  const openConfirm = useConfirmStore((state) => state.openConfirm);
+
   const { can } = useRBAC();
 
   const updateRole = useUpdateRole();
 
-  const removeMember = useRemoveMember();
+  const removeMutation = useRemoveMember();
 
   const handleRoleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     updateRole.mutate({
@@ -29,13 +35,7 @@ export const MemberActions = ({ member }: Props) => {
     });
   };
 
-  const handleRemove = () => {
-    const confirm = window.confirm("Are you sure remove this member?");
-
-    if (confirm) {
-      removeMember.mutate(member.id);
-    }
-  };
+  const memberName = member.user?.name ?? "this member";
 
   return (
     <div className="flex items-center gap-2">
@@ -54,9 +54,28 @@ export const MemberActions = ({ member }: Props) => {
       )}
 
       {can(PERMISSIONS.USER_DELETE) && (
-        <button className="btn btn-error btn-sm" onClick={handleRemove}>
-          Remove
-        </button>
+        <Button
+          variant="error"
+          size="sm"
+          leftIcon={<Trash2 size={14} />}
+          onClick={() =>
+            openConfirm({
+              title: "Remove Member",
+              message: (
+                <>
+                  Are you sure you want to remove{" "}
+                  <span className="font-bold text-error">{memberName}</span>{" "}
+                  from this mess?
+                </>
+              ),
+              onConfirm: async () => {
+                await removeMutation.mutateAsync(member.id);
+              },
+            })
+          }
+        >
+    Remove
+        </Button>
       )}
     </div>
   );

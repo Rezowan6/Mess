@@ -12,7 +12,7 @@ export class TenantMembershipRepository {
     return (
       (await TenantMembership.findOne({
         where: {
-          userId,
+          id: userId,
           status: MemberStatus.ACTIVE,
         },
       })) || null

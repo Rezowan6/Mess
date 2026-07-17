@@ -4,6 +4,28 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import type { Permission } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 
+const variantClasses = {
+  primary: "bg-blue-600 hover:bg-blue-700 text-white",
+
+  secondary: "bg-gray-600 hover:bg-gray-700 text-white",
+
+  accent: "bg-purple-600 hover:bg-purple-700 text-white",
+
+  success: "bg-green-600 hover:bg-green-700 text-white",
+
+  warning: "bg-yellow-500 hover:bg-yellow-600 text-white",
+
+  error: "bg-red-600 hover:bg-red-700 text-white",
+
+  ghost: "bg-transparent hover:bg-gray-100 text-gray-700",
+};
+const sizeClasses = {
+  xs: "btn-xs",
+  sm: "btn-sm",
+  md: "",
+  lg: "btn-lg",
+};
+
 type ButtonVariant =
   | "primary"
   | "secondary"
@@ -79,13 +101,14 @@ export const Button = ({
     <button
       className={clsx(
         "btn",
-        `btn-${variant}`,
-        size !== "md" && `btn-${size}`,
+        variantClasses[variant],
+        size !== "md" && `${sizeClasses[size]}`,
         fullWidth && "w-full",
         className,
       )}
       disabled={disabled || loading}
       {...props}
+      onClick={onClick}
     >
       {!loading && leftIcon}
 

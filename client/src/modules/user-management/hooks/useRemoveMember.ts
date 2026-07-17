@@ -18,8 +18,8 @@ export const useRemoveMember = () => {
       });
     },
 
-    onError: (err) => {
-      toast.error(err.message ?? "Member remove failed");
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message ?? "Member remove failed");
     },
   });
 };

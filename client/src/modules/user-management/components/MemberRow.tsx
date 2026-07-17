@@ -7,8 +7,7 @@ interface Props {
 }
 
 export const MemberRow = ({ member }: Props) => {
-  console.log("MemberRow")
-  console.log(member)
+
   return (
     <tr>
       <td>
@@ -23,7 +22,7 @@ export const MemberRow = ({ member }: Props) => {
 
       <td>
         {member.status === "active" ? (
-          <span className="badge badge-success">Active</span>
+          <span className="badge bg-green-500">Active</span>
         ) : (
           <span className="badge badge-warning">Pending</span>
         )}
