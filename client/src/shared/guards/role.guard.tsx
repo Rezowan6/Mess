@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 import { useAuthStore } from "@/modules/auth/store/auth.store";
+import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 
 import type { Role } from "../constants/roles";
 
@@ -11,7 +12,13 @@ interface Props {
 export const RoleGuard = ({ allowedRoles }: Props) => {
   const user = useAuthStore((state) => state.user);
 
-  const role = user?.tenantMemberships?.[0]?.role as Role;
+  const currentTenant = useTenantStore((state) => state.currentTenant);
+
+  const membership = user?.tenantMemberships?.find(
+    (item) => item.tenantId === currentTenant?.tenantId,
+  );
+
+  const role = membership?.role;
 
   if (!role || !allowedRoles.includes(role)) {
     return <Navigate to="/403" replace />;
