@@ -11,7 +11,7 @@ interface Props {
 export const RoleGuard = ({ allowedRoles }: Props) => {
   const user = useAuthStore((state) => state.user);
 
-  const role = user?.memberships?.[0]?.role as Role;
+  const role = user?.tenantMemberships?.[0]?.role as Role;
 
   if (!role || !allowedRoles.includes(role)) {
     return <Navigate to="/403" replace />;
