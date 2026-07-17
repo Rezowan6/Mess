@@ -1,5 +1,5 @@
 import { InviteStatus, MemberRole, MemberStatus } from "@/constans/index.js";
-import * as MembershipRepository from "../tenantMembership/tenantMembership.repository.js";
+import { TenantMembershipRepository } from "../tenantMembership/tenantMembership.repository.js";
 import * as UserRepository from "../user/user.repository.js";
 import * as IDep from "./index.js";
 import { ApiError } from "./index.js";
@@ -19,10 +19,11 @@ export const send = async (payload: SendInvitePayload) => {
   const existingUser = await UserRepository.findByEmail(email);
 
   if (existingUser) {
-    const existingMembership = await MembershipRepository.findByTenantAndUser({
-      tenantId: membership.tenantId,
-      userId: existingUser.id,
-    });
+    const existingMembership =
+      await TenantMembershipRepository.findByTenantAndActiveUser({
+        tenantId: membership.tenantId,
+        userId: existingUser.id,
+      });
 
     if (existingMembership) {
       throw new ApiError(409, "User already belongs to this tenant.");
@@ -60,7 +61,7 @@ export const send = async (payload: SendInvitePayload) => {
   await IDep.sendInviteEmail({
     email,
     recipientName: existingUser?.name ?? "Member",
-    messName: tenant?.name,
+    name: tenant?.name as string,
     inviterName: user?.name ?? "Admin",
     token: rawToken,
   });
@@ -75,7 +76,7 @@ export const validate = async (token: string) => {
   const hashToken = IDep.hashToken(token);
 
   // 2. Find invite
-  const invite = await InviteRepository.findByToken(token);
+  const invite = await InviteRepository.findByToken(hashToken);
 
   if (!invite) {
     throw new ApiError(404, "Invalid invite token.");
@@ -139,7 +140,7 @@ export const accept = async (payload: AcceptInvitePayload) => {
       );
     }
     // Check membership
-    const membership = await MembershipRepository.findByTenantAndUser(
+    const membership = await TenantMembershipRepository.findByTenantAndActiveUser(
       {
         tenantId: invite.tenantId,
         userId: user.id,
@@ -152,7 +153,7 @@ export const accept = async (payload: AcceptInvitePayload) => {
     }
 
     // Create membership
-    await MembershipRepository.create(
+    await TenantMembershipRepository.create(
       {
         tenantId: invite.tenantId,
         userId: user.id,

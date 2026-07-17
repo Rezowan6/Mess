@@ -5,6 +5,7 @@ export interface RequestContext {
   user: {
     id: number;
     email: string;
+    name: string;
   };
 
   membership: {

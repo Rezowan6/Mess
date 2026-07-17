@@ -4,12 +4,12 @@ import { SendInviteEmailPayload } from "../invite/invite.interface.js";
 
 export const sendInviteEmail = async (payload: SendInviteEmailPayload) => {
   
-  const { recipientName, token, messName, email, inviterName } = payload;
+  const { recipientName, token, name, email, inviterName } = payload;
   const inviteLink = `${env.FRONTEND_URL}/accept-invite/${token}`;
 
   const html = `
     <div style="font-family: Arial, sans-serif;">
-      <h2>You are invited to join ${messName ?? "Mess Management System"}</h2>
+      <h2>You are invited to join ${name ?? "Mess Management System"}</h2>
 
       <p>
         An ${inviterName} has invited you to join the system.
@@ -48,7 +48,7 @@ export const sendInviteEmail = async (payload: SendInviteEmailPayload) => {
 
   return await sendEmail(
     email,
-    `You are invited to join ${messName}`,
+    `You are invited to join ${name}`,
     html,
   );
 };

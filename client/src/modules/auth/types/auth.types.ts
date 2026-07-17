@@ -28,6 +28,10 @@ export interface IAuthState {
   user: IAuthUser | null;
   isAuthenticated: boolean;
 
+  isInitialized: boolean;
+
+  setInitialized: (value: boolean) => void;
+
   setAccessToken: (token: string | null) => void;
   setUser: (user: IAuthUser | null) => void;
 

@@ -8,6 +8,11 @@ export const useAuthStore = create<IAuthState>((set) => ({
 
   isAuthenticated: !!tokenStorage.get(),
 
+  isInitialized: false,
+  setInitialized: (value: boolean) => {
+    set({ isInitialized: value });
+  },
+
   setAccessToken: (token) => {
     if (token) {
       tokenStorage.set(token);

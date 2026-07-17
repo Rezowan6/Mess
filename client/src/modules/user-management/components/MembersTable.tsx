@@ -1,9 +1,12 @@
+import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { useMembers } from "../hooks/useMembers";
 
+import { ErrorState } from "@/shared/components/feedback/ErrorState";
+import { InviteMemberModal } from "./InviteMemberModal";
 import { MemberRow } from "./MemberRow";
 
 export const MembersTable = () => {
-  const { data, isLoading, isError } = useMembers();
+  const { data: members = [], isLoading, isError, refetch } = useMembers();
 
   if (isLoading) {
     return (
@@ -19,13 +22,23 @@ export const MembersTable = () => {
   }
 
   if (isError) {
-    return <div className="alert alert-error">Failed to load members</div>;
+    return (
+      <ErrorState
+        title="Failed to Load Members"
+        description="Unable to fetch member list. Please try again."
+        onRetry={refetch}
+      />
+    );
   }
 
-  const members = data?.data.members ?? [];
-
   if (!members.length) {
-    return <div className="alert">No members found</div>;
+    return (
+      <EmptyState
+        title="No Members Found"
+        description="There are no members in this mess yet."
+        action={<InviteMemberModal />}
+      />
+    );
   }
 
   return (
@@ -46,7 +59,7 @@ export const MembersTable = () => {
         </thead>
 
         <tbody>
-          {members.map((member) => (
+          {members?.map((member) => (
             <MemberRow key={member.id} member={member} />
           ))}
         </tbody>

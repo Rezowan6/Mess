@@ -8,6 +8,7 @@ export const API_ENDPOINTS = {
   },
 
   TENANT_MEMBERSHIP: {
+    INVITES: "/invites",
     LIST: "/tenant-memberships",
 
     UPDATE_ROLE: (id: number) => `/tenant-memberships/${id}/role`,

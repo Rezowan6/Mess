@@ -7,6 +7,8 @@ interface Props {
 }
 
 export const MemberRow = ({ member }: Props) => {
+  console.log("MemberRow")
+  console.log(member)
   return (
     <tr>
       <td>

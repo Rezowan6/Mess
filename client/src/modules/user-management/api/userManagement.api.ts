@@ -5,8 +5,16 @@ import { API_ENDPOINTS } from "@/shared/constants/api";
 import type { IMemberListResponse } from "../types/userManagement.types";
 
 export const userManagementApi = {
+  inviteMember: async (payload: { email: string; role: string }) => {
+    const { data } = await API.post(
+      API_ENDPOINTS.TENANT_MEMBERSHIP.INVITES,
+      payload,
+    );
+
+    return data;
+  },
   getMembers: async (): Promise<IMemberListResponse> => {
-    const { data } = await API.get(API_ENDPOINTS.TENANT_MEMBERSHIP.LIST);
+    const { data } = await API.get<IMemberListResponse>(API_ENDPOINTS.TENANT_MEMBERSHIP.LIST);
 
     return data;
   },

@@ -1,11 +1,10 @@
 import type { Role } from "@/shared/constants/roles";
 
 export interface IMemberUser {
-  id: number;
-
-  name: string;
-
-  email: string;
+    id: number;
+    name: string;
+    email: string;
+    avatar: string | null;
 }
 
 export interface ITenantMember {
@@ -31,7 +30,5 @@ export interface IMemberListResponse {
 
   message: string;
 
-  data: {
-    members: ITenantMember[];
-  };
+  data: ITenantMember[]
 }

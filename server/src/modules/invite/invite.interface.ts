@@ -19,7 +19,7 @@ export interface SendInvitePayload {
 export interface SendInviteEmailPayload {
   email: string;
   recipientName: string;
-  messName: string;
+  name: string;
   inviterName: string;
   token: string;
 }
