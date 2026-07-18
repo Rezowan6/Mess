@@ -28,6 +28,10 @@ export const router = createBrowserRouter([
         path: ROUTES.LOGIN,
         element: <LoginPage />,
       },
+      {
+        path: ROUTES.ACCEPT_INVITE,
+        element: <LoginPage />,
+      },
     ],
   },
 

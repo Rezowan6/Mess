@@ -11,12 +11,16 @@ import { ROLES } from "@/shared/constants/roles";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 
 import { Button } from "@/shared/components/ui/Button";
+import { Modal } from "@/shared/components/ui/Modal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { useState } from "react";
 
 export const InviteMemberModal = () => {
   const { can } = useRBAC();
 
   const inviteMutation = useInviteMember();
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const {
     register,
@@ -48,79 +52,71 @@ export const InviteMemberModal = () => {
 
   return (
     <>
-      <button
-        className="btn btn-primary"
-        onClick={() =>
-          (
-            document.getElementById("invite_member_modal") as HTMLDialogElement
-          ).showModal()
-        }
+      <Button
+        variant="primary"
+        permission={PERMISSIONS.USER_INVITE}
+        onClick={() => setIsOpen(true)}
       >
         Invite Member
-      </button>
+      </Button>
 
-      <dialog id="invite_member_modal" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Invite Member</h3>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Invite Member"
+      >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
+          <div>
+            <label className="label">Email</label>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-            <div>
-              <label className="label">Email</label>
+            <input
+              className="input input-bordered w-full"
+              placeholder="member@email.com"
+              {...register("email")}
+            />
 
-              <input
-                className="input input-bordered w-full"
-                placeholder="member@email.com"
-                {...register("email")}
-              />
+            {errors.email && (
+              <p className="text-error text-sm">{errors.email.message}</p>
+            )}
+          </div>
 
-              {errors.email && (
-                <p className="text-error text-sm">{errors.email.message}</p>
-              )}
-            </div>
+          <div>
+            <label className="label">Role</label>
 
-            <div>
-              <label className="label">Role</label>
+            <select
+              className="select select-bordered w-full"
+              {...register("role")}
+            >
+              <option value={ROLES.MEMBER}>Member</option>
 
-              <select
-                className="select select-bordered w-full"
-                {...register("role")}
-              >
-                <option value={ROLES.MEMBER}>Member</option>
+              <option value={ROLES.MANAGER}>Manager</option>
+            </select>
 
-                <option value={ROLES.MANAGER}>Manager</option>
-              </select>
+            {errors.role && (
+              <p className="text-error text-sm">{errors.role.message}</p>
+            )}
+          </div>
 
-              {errors.role && (
-                <p className="text-error text-sm">{errors.role.message}</p>
-              )}
-            </div>
+          <div className="flex justify-end gap-2 pt-4">
+            <Button
+              type="button"
+              variant="error"
+              onClick={() => setIsOpen(false)}
+            >
+              Cancel
+            </Button>
 
-            <div className="modal-action">
-              <button
-                type="button"
-                className="btn"
-                onClick={() =>
-                  (
-                    document.getElementById(
-                      "invite_member_modal",
-                    ) as HTMLDialogElement
-                  ).close()
-                }
-              >
-                Cancel
-              </button>
-              <Button
-                type="submit"
-                loading={inviteMutation.isPending}
-                loadingText="Sending..."
-                permission={PERMISSIONS.USER_INVITE}
-              >
-                Send Invite
-              </Button>
-            </div>
-          </form>
-        </div>
-      </dialog>
+            <Button
+              type="submit"
+              loading={inviteMutation.isPending}
+              loadingText="Sending..."
+              permission={PERMISSIONS.USER_INVITE}
+            >
+              Send Invite
+            </Button>
+          </div>
+        </form>
+      </Modal>
     </>
   );
 };

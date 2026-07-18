@@ -36,7 +36,7 @@ export const Modal = ({
   };
 
   return (
-    <dialog className="modal modal-open">
+    <dialog className="modal modal-open" onCancel={onClose}>
       <div className={`modal-box ${sizeClass[size]}`}>
         {title && <h3 className="text-lg font-bold">{title}</h3>}
 

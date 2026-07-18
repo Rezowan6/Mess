@@ -3,6 +3,8 @@ export const ROUTES = {
 
   LOGIN: "/login",
 
+  ACCEPT_INVITE: "/accept-invite/:token",
+
   REGISTER: "/register",
 
   DASHBOARD: "/dashboard",
