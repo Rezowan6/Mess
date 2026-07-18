@@ -25,7 +25,6 @@ export interface RegisterResponse {
 }
 
 export interface LoginResponse {
-  message: string;
   refreshToken: string;
   data: {
     accessToken: string;

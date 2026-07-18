@@ -157,7 +157,6 @@ class AuthService {
       email: user.email,
     };
     return {
-      message: "Login successfully",
       refreshToken,
       data: {
         accessToken,

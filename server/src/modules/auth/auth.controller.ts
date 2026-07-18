@@ -28,7 +28,7 @@ class AuthController {
   });
 
   login = asyncHandler(async (req: Request, res: Response) => {
-    const { data, message, refreshToken } = await authService.login({
+    const { data, refreshToken } = await authService.login({
       ...req.body,
       ip: req,
       userAgent: req.headers["user-agent"],
@@ -39,7 +39,11 @@ class AuthController {
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(201).json(new ApiResponse(201, message, data));
+    sendResponse(res, {
+      statusCode: 200,
+      message: "Login successfully.",
+      data,
+    })
   });
 
   refreshToken = asyncHandler(async (req: Request, res: Response) => {
