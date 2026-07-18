@@ -7,10 +7,12 @@ export const ConfirmModal = () => {
 
   if (!isOpen || !options) return null;
 
-  const handleConfirm = () => {
-    options.onConfirm();
-
-    closeConfirm();
+  const handleConfirm = async () => {
+    try {
+      await options.onConfirm();
+    } finally {
+      closeConfirm();
+    }
   };
 
   return (
