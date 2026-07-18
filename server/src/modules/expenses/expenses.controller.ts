@@ -1,18 +1,17 @@
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { ApiError } from "@/utils/ApiError.js";
+import { getCurrentDate } from "@/utils/date.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
-import { expensesService } from "../containers/expenses.container.js";
-import { getCurrentDate } from "@/utils/date.util.js";
+import { expenseService } from "./expenses.service.js";
 
-export class ExpensesController {
-  static create = asyncHandler(async (req: Request, res: Response) => {
-    
+class ExpensesController {
+  create = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId, mealSessionId } = getTenantContext(req);
     const expenseDate = getCurrentDate();
 
-    const expenses = await expensesService.create({
+    const expenses = await expenseService.create({
       tenantId,
       mealSessionId,
       createdBy: userId,
@@ -27,10 +26,10 @@ export class ExpensesController {
     });
   });
 
-  static summary = asyncHandler(async (req: Request, res: Response) => {
+  summary = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, session, mealSessionId } = getTenantContext(req);
 
-    const data = await expensesService.summary({
+    const data = await expenseService.summary({
       tenantId,
       mealSessionId,
       session,
@@ -43,10 +42,10 @@ export class ExpensesController {
     });
   });
 
-  static getAll = asyncHandler(async (req: Request, res: Response) => {
+  getAll = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
-    const data = await expensesService.getAll({
+    const data = await expenseService.getAll({
       tenantId,
       mealSessionId,
     });
@@ -58,7 +57,7 @@ export class ExpensesController {
     });
   });
 
-  static getById = asyncHandler(async (req: Request, res: Response) => {
+  getById = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
     const id = Number(req.params.id);
@@ -67,7 +66,7 @@ export class ExpensesController {
       throw new ApiError(400, "Valid expense id is required");
     }
 
-    const data = await expensesService.getById({
+    const data = await expenseService.getById({
       id,
       tenantId,
       mealSessionId,
@@ -80,7 +79,7 @@ export class ExpensesController {
     });
   });
 
-  static update = asyncHandler(async (req: Request, res: Response) => {
+  update = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
     const id = Number(req.params.id);
@@ -88,7 +87,7 @@ export class ExpensesController {
       throw new ApiError(400, "Valid expense id is required");
     }
 
-    const data = await expensesService.update({
+    const data = await expenseService.update({
       id,
       tenantId,
       mealSessionId,
@@ -102,7 +101,7 @@ export class ExpensesController {
     });
   });
 
-  static delete = asyncHandler(async (req: Request, res: Response) => {
+  delete = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
     const id = Number(req.params.id);
@@ -111,7 +110,7 @@ export class ExpensesController {
       throw new ApiError(400, "Valid expense id is required");
     }
 
-    await expensesService.delete({
+    await expenseService.delete({
       id,
       tenantId,
       mealSessionId,
@@ -124,3 +123,5 @@ export class ExpensesController {
     });
   });
 }
+
+export const expenseController = new ExpensesController();

@@ -1,13 +1,11 @@
+import { BaseRepository } from "@/common/base.repository.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { Expenses } from "@/models/index.js";
-import { Op, fn, col } from "sequelize";
-import { CreateExpensesDto, UpdateExpenseDto } from "./expenses.interface.js";
+import { Op, col, fn } from "sequelize";
 
-export class ExpensesRepository {
-  constructor(private readonly expensesModel: typeof Expenses) {}
-
-  async createExpenses(data: CreateExpensesDto): Promise<Expenses> {
-    return await this.expensesModel.create(data);
+class ExpensesRepository extends BaseRepository<Expenses> {
+  constructor() {
+    super(Expenses);
   }
 
   async todayExpensesCount({
@@ -21,13 +19,17 @@ export class ExpensesRepository {
   }) {
     const { start, end } = getRangeTime(expenseDate);
 
-    return await this.expensesModel.count({
-      where: { tenantId, mealSessionId, expenseDate: { [Op.between]: [start, end] } },
+    return await this.count({
+      where: {
+        tenantId,
+        mealSessionId,
+        expenseDate: { [Op.between]: [start, end] },
+      },
     });
   }
 
   async getAll(tenantId: number, mealSessionId: number) {
-    return await this.expensesModel.findAll({
+    return await this.findAll({
       where: {
         tenantId,
         mealSessionId,
@@ -59,11 +61,11 @@ export class ExpensesRepository {
   }
 
   async getById(id: number, tenantId: number, mealSessionId: number) {
-    return this.expensesModel.findOne({
+    return this.findOneWithOptions({
       where: {
         id,
         tenantId,
-        mealSessionId
+        mealSessionId,
       },
 
       include: [
@@ -79,22 +81,8 @@ export class ExpensesRepository {
     });
   }
 
-  async updateExpense(id: number, data: UpdateExpenseDto) {
-    await this.expensesModel.update(data, {
-      where: { id },
-    });
-
-    return this.expensesModel.findByPk(id);
-  }
-
-  async deleteExpense(id: number): Promise<number> {
-    return this.expensesModel.destroy({
-      where: { id },
-    });
-  }
-
   async getTotalExpenseByMealSession(tenantId: number, mealSessionId: number) {
-    return this.expensesModel.sum("amount", {
+    return this.sum("amount", {
       where: {
         tenantId,
         mealSessionId,
@@ -103,7 +91,7 @@ export class ExpensesRepository {
   }
 
   async getExpenseCountByMealSession(tenantId: number, mealSessionId: number) {
-    return this.expensesModel.count({
+    return this.count({
       where: {
         tenantId,
         mealSessionId,
@@ -111,17 +99,15 @@ export class ExpensesRepository {
     });
   }
 
-  async getCategoryWiseExpense (tenantId: number, mealSessionId: number) {
-    return this.expensesModel.findAll({
-      where: {tenantId, mealSessionId},
-      attributes: [
-        "category",
-        [fn("SUM", col("amount")), "totalAmount"]
-      ],
+  async getCategoryWiseExpense(tenantId: number, mealSessionId: number) {
+    return this.findAll({
+      where: { tenantId, mealSessionId },
+      attributes: ["category", [fn("SUM", col("amount")), "totalAmount"]],
       group: ["category"],
 
       raw: true,
-    })
+    });
   }
-
 }
+
+export const expensesRepository = new ExpensesRepository();

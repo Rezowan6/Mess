@@ -5,12 +5,12 @@ import { Invite } from "@/modules/invite/invite.model.js";
 import { MealEntry } from "@/modules/mealEntry/mealEntry.model.js";
 import { MealRequest } from "@/modules/mealRequest/mealRequest.model.js";
 import { MealSession } from "@/modules/mealSession/mealSession.model.js";
-import { Subscription } from "@/modules/subscription/subscription.model.js";
 import { Notice } from "@/modules/notice/notice.model.js";
 import { Payment } from "@/modules/payment/payment.model.js";
 import { Plan } from "@/modules/plan/plan.model.js";
 import { PlanFeature } from "@/modules/planFeature/planFeature.model.js";
 import { RefreshToken } from "@/modules/refreshToken/refreshToken.model.js";
+import { Subscription } from "@/modules/subscription/subscription.model.js";
 import { Tenant } from "@/modules/tenant/tenant.model.js";
 import { TenantMembership } from "@/modules/tenantMembership/tenantMembership.model.js";
 import { User } from "@/modules/user/user.model.js";
@@ -23,12 +23,12 @@ export {
   MealEntry,
   MealRequest,
   MealSession,
-  Subscription,
   Notice,
   Payment,
   Plan,
   PlanFeature,
   RefreshToken,
+  Subscription,
   Tenant,
   TenantMembership,
   User,

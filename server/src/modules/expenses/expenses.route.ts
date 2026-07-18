@@ -1,14 +1,19 @@
 import { allAccess, managerAccess } from "@/helpers/permission.js";
 import express from "express";
-import { ExpensesController } from "./expenses.controller.js";
+import { expenseController } from "./expenses.controller.js";
 
 const router = express.Router();
 
-router.post("/", ...managerAccess, ExpensesController.create);
-router.get("/summary", ...managerAccess, ExpensesController.summary);
-router.get("/", ...allAccess, ExpensesController.getAll);
-router.get("/:id", ...managerAccess, ExpensesController.getById);
-router.patch("/:id", ...managerAccess, ExpensesController.update);
-router.delete("/:id", ...managerAccess, ExpensesController.delete);
+router.post("/", ...managerAccess, expenseController.create);
+
+router.get("/summary", ...managerAccess, expenseController.summary);
+
+router.get("/", ...allAccess, expenseController.getAll);
+
+router.get("/:id", ...managerAccess, expenseController.getById);
+
+router.patch("/:id", ...managerAccess, expenseController.update);
+
+router.delete("/:id", ...managerAccess, expenseController.delete);
 
 export default router;

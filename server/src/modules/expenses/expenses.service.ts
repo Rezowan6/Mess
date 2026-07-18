@@ -4,20 +4,15 @@ import {
   IMealSessionReq,
   MealSessionStatus,
 } from "../mealSession/mealSession.interface.js";
-import { MealSessionRepository } from "../mealSession/mealSession.repository.js";
+import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { CreateExpensesDto, UpdateExpenseDto } from "./expenses.interface.js";
-import { ExpensesRepository } from "./expenses.repository.js";
+import { expensesRepository } from "./expenses.repository.js";
 
-export class ExpensesService {
-  constructor(
-    private readonly expensesRepository: ExpensesRepository,
-    private readonly mealSessionRepository: MealSessionRepository,
-  ) {}
-
+class ExpensesService {
   async create(data: CreateExpensesDto) {
     const { tenantId, expenseDate, mealSessionId } = data;
 
-    const count = await this.expensesRepository.todayExpensesCount({
+    const count = await expensesRepository.todayExpensesCount({
       tenantId,
       expenseDate,
       mealSessionId,
@@ -26,7 +21,7 @@ export class ExpensesService {
     if (count >= 3) {
       throw new ApiError(409, `Today expenses created max limit ${count}.`);
     }
-    return await this.expensesRepository.createExpenses({
+    return await expensesRepository.create({
       ...data,
     });
   }
@@ -38,7 +33,11 @@ export class ExpensesService {
     tenantId: number;
     mealSessionId: number;
   }) {
-    return this.expensesRepository.getAll(tenantId, mealSessionId);
+    const expenses = await expensesRepository.getAll(tenantId, mealSessionId);
+    if (!expenses) {
+      throw new ApiError(404, "Expense not foudn.");
+    }
+    return expenses;
   }
 
   async getById({
@@ -50,7 +49,7 @@ export class ExpensesService {
     tenantId: number;
     mealSessionId: number;
   }) {
-    const expense = await this.expensesRepository.getById(
+    const expense = await expensesRepository.getById(
       id,
       tenantId,
       mealSessionId,
@@ -74,7 +73,7 @@ export class ExpensesService {
     mealSessionId: number;
     data: UpdateExpenseDto;
   }) {
-    const expense = await this.expensesRepository.getById(
+    const expense = await expensesRepository.getById(
       id,
       tenantId,
       mealSessionId,
@@ -88,7 +87,7 @@ export class ExpensesService {
       throw new ApiError(400, "Amount must be greater than zero.");
     }
 
-    const mealSession = await this.mealSessionRepository.findById(
+    const mealSession = await mealSessionRepository.findById(
       expense.mealSessionId,
     );
 
@@ -104,7 +103,9 @@ export class ExpensesService {
         "This expense can only be updated within 24 hours of creation.",
       );
     }
-    return this.expensesRepository.updateExpense(id, data);
+    await expensesRepository.update({ id }, data);
+
+    return await expensesRepository.findById(id);
   }
 
   async delete({
@@ -116,7 +117,7 @@ export class ExpensesService {
     tenantId: number;
     mealSessionId: number;
   }) {
-    const expense = await this.expensesRepository.getById(
+    const expense = await expensesRepository.getById(
       id,
       tenantId,
       mealSessionId,
@@ -133,7 +134,7 @@ export class ExpensesService {
       );
     }
 
-    const mealSession = await this.mealSessionRepository.findById(
+    const mealSession = await mealSessionRepository.findById(
       expense.mealSessionId,
     );
 
@@ -144,7 +145,7 @@ export class ExpensesService {
       );
     }
 
-    await this.expensesRepository.deleteExpense(id);
+    await expensesRepository.delete({ id });
 
     return null;
   }
@@ -158,19 +159,18 @@ export class ExpensesService {
     mealSessionId: number;
     session: IMealSessionReq;
   }) {
-    const totalExpense =
-      await this.expensesRepository.getTotalExpenseByMealSession(
-        tenantId,
-        mealSessionId,
-      );
+    const totalExpense = await expensesRepository.getTotalExpenseByMealSession(
+      tenantId,
+      mealSessionId,
+    );
 
     const totalExpenseCount =
-      await this.expensesRepository.getExpenseCountByMealSession(
+      await expensesRepository.getExpenseCountByMealSession(
         tenantId,
         mealSessionId,
       );
 
-    const categories = await this.expensesRepository.getCategoryWiseExpense(
+    const categories = await expensesRepository.getCategoryWiseExpense(
       tenantId,
       mealSessionId,
     );
@@ -189,3 +189,5 @@ export class ExpensesService {
     };
   }
 }
+
+export const expenseService = new ExpensesService();
