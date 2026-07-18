@@ -22,9 +22,3 @@ export interface CreateMealSessionPayload {
   openedBy: number;
   openedAt: Date;
 }
-
-export interface FindTenantMonthYear {
-  tenantId: number;
-  month: number;
-  year: number;
-}

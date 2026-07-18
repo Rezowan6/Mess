@@ -1,13 +1,12 @@
-
 import { managerAccess } from "@/helpers/permission.js";
 import express from "express";
-import {MealSessionController} from "./mealSession.controller.js";
+import { mealSessionController } from "./mealSession.controller.js";
 
 const router = express.Router();
 
-router.get("/", ...managerAccess, MealSessionController.getAll);
-router.post("/create", ...managerAccess, MealSessionController.create);
-router.get("/current", ...managerAccess, MealSessionController.getCurrent);
-router.patch("/:id/close", ...managerAccess, MealSessionController.close);
+router.post("/", ...managerAccess, mealSessionController.create);
+router.get("/", ...managerAccess, mealSessionController.getCurrentSession);
+router.get("/history", ...managerAccess, mealSessionController.getAll);
+router.patch("/:id/close", ...managerAccess, mealSessionController.close);
 
 export default router;

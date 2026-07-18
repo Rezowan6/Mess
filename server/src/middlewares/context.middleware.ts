@@ -1,6 +1,6 @@
 import { MemberStatus, TenantStatus } from "@/constans/index.js";
 import { Tenant, TenantMembership } from "@/models/index.js";
-import { mealSessionRepository } from "@/modules/containers/mealSession.container.js";
+import { mealSessionRepository } from "@/modules/mealSession/mealSession.repository.js";
 import { MealSessionStatus } from "@/modules/mealSession/mealSession.interface.js";
 import { ApiError } from "@/utils/index.js";
 import { NextFunction, Request, Response } from "express";

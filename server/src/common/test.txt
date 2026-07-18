@@ -1,0 +1,21 @@
+done module:
+1.auth
+2.user
+3.tenant
+4.tenantMembership
+5.plan
+6.feature
+7.planFeature
+8.subscription
+9.payment
+10.
+
+next target:
+1.refreshToken
+2.mealRequest
+3.mealSession
+4.mealEntry
+5.deposit
+6.expense
+7.notice
+8.

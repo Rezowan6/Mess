@@ -2,10 +2,10 @@ import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
-import { mealSessionService } from './../containers/mealSession.container.js';
+import { mealSessionService } from "./MealSession.service.js";
 
-export class MealSessionController {
-  static create = asyncHandler(async (req: Request, res: Response) => {
+class MealSessionController {
+  create = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId } = getTenantContext(req);
 
     const session = await mealSessionService.create(tenantId, userId);
@@ -17,10 +17,10 @@ export class MealSessionController {
     });
   });
 
-  static getCurrent = asyncHandler(async (req: Request, res: Response) => {
+  getCurrentSession = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 
-    const session = await mealSessionService.getCurrent(tenantId);
+    const session = await mealSessionService.getCurrentSession(tenantId);
 
     return sendResponse(res, {
       statusCode: 200,
@@ -29,8 +29,7 @@ export class MealSessionController {
     });
   });
 
-
-  static getAll = asyncHandler(async (req: Request, res: Response) => {
+  getAll = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 
     const session = await mealSessionService.getAll(tenantId);
@@ -42,13 +41,16 @@ export class MealSessionController {
     });
   });
 
-
-  static close = asyncHandler(async (req: Request, res: Response) => {
+  close = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId } = getTenantContext(req);
 
     const sessionId = Number(req.params.id);
 
-    const session = await mealSessionService.close({tenantId, sessionId, userId});
+    const session = await mealSessionService.close({
+      tenantId,
+      sessionId,
+      userId,
+    });
 
     return sendResponse(res, {
       statusCode: 200,
@@ -57,3 +59,5 @@ export class MealSessionController {
     });
   });
 }
+
+export const mealSessionController = new MealSessionController();

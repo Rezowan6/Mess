@@ -1,45 +1,45 @@
-import sequelize from "@/configs/db.js";
 import { ApiError } from "@/utils/ApiError.js";
+import { getCurrentMonthAndYear } from "@/utils/date.util.js";
 import { MealSessionStatus } from "./mealSession.interface.js";
-import { MealSessionRepository } from "./mealSession.repository.js";
+import { mealSessionRepository } from "./mealSession.repository.js";
 
-export class MealSessionService {
-  constructor(private readonly mealSessionRepository: MealSessionRepository){};
-   async create(tenantId: number, userId: number) {
-    const data = await sequelize.transaction(async (transaction) => {
-      const findSession = {
-        tenantId,
-        month: new Date().getMonth(),
-        year: new Date().getFullYear(),
-      };
-      const exsistSession = await this.mealSessionRepository.findByTenantMonthYear(
-        { ...findSession },
-        transaction,
-      );
-      if (exsistSession) {
-        throw new ApiError(409, "Meal session already exists");
-      }
-      const payload = {
-        tenantId,
-        month: new Date().getMonth(),
-        year: new Date().getFullYear(),
-        openedBy: userId,
-        openedAt: new Date(),
-      };
+class MealSessionService {
+  async create(tenantId: number, userId: number) {
+    const { month, year } = getCurrentMonthAndYear();
 
-      const session = await this.mealSessionRepository.create(
-        { ...payload },
-        transaction,
-      );
-      return session;
+    const exsistSession = await mealSessionRepository.exists({
+      tenantId,
+      month,
+      year,
+    });
+    if (exsistSession) {
+      throw new ApiError(409, "Meal session already exists");
+    }
+
+    return await mealSessionRepository.create({
+      tenantId,
+      month,
+      year,
+      openedBy: userId,
+      openedAt: new Date(),
+    });
+  }
+
+  async getCurrentSession(tenantId: number) {
+    const session = await mealSessionRepository.getCurrentSession(tenantId);
+
+    if (!session) {
+      throw new ApiError(404, "No active meal session found.");
+    }
+
+    return session;
+  }
+
+  async getAll(tenantId: number) {
+    const session = await mealSessionRepository.findAll({
+      where: { tenantId },
     });
 
-    return data;
-  }
-
-   async getCurrent(tenantId: number) {
-    const session = await this.mealSessionRepository.getCurrentSession(tenantId);
-
     if (!session) {
       throw new ApiError(404, "No active meal session found.");
     }
@@ -47,38 +47,30 @@ export class MealSessionService {
     return session;
   }
 
-   async getAll(tenantId: number) {
-    const session = await this.mealSessionRepository.getAllByTenant(tenantId);
-
-    if (!session) {
-      throw new ApiError(404, "No active meal session found.");
-    }
-
-    return session;
-  }
-
-   async close(payload: {
+  async close(payload: {
     sessionId: number;
     tenantId: number;
     userId: number;
   }) {
     const { sessionId, tenantId, userId } = payload;
 
-    const session = await this.mealSessionRepository.findById(sessionId);
+    const isExists = await mealSessionRepository.findOne({ id: sessionId });
 
-    if (!session) {
+    if (!isExists) {
       throw new ApiError(404, "Meal session not found.");
     }
-    if (session.tenantId !== tenantId) {
+    if (isExists.tenantId !== tenantId) {
       throw new ApiError(403, "You are not allowed to close this session");
     }
 
-    if (session.status === MealSessionStatus.CLOSED) {
+    if (isExists.status === MealSessionStatus.CLOSED) {
       throw new ApiError(400, "Meal session already closed.");
     }
 
-    await this.mealSessionRepository.closeSession(sessionId, userId);
+    await mealSessionRepository.closeSession(sessionId, userId);
 
-    return this.mealSessionRepository.findById(sessionId);
+    return mealSessionRepository.findById(sessionId);
   }
 }
+
+export const mealSessionService = new MealSessionService();
