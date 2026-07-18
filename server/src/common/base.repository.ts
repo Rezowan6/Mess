@@ -28,6 +28,13 @@ export abstract class BaseRepository<T extends Model> {
     return this.model.create(data, options);
   }
 
+  async bulkCreate(
+    data: CreationAttributes<T>[],
+    options?: CreateOptions<Attributes<T>>,
+  ): Promise<T[]> {
+    return this.model.bulkCreate(data, options);
+  }
+
   async findById(id: number): Promise<T | null> {
     return this.model.findByPk(id);
   }

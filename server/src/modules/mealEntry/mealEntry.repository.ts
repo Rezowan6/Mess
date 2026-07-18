@@ -12,7 +12,7 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
     mealEntryData: CreateMealEntryDto,
     transaction: Transaction | null = null,
   ) {
-    return await this.mealEntryModel.create(mealEntryData, {
+    return await this.createWithOptions(mealEntryData, {
       transaction: transaction ?? null,
     });
   }
@@ -21,7 +21,7 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
     data: any[],
     transaction: Transaction | null = null,
   ) {
-    return this.mealEntryModel.bulkCreate(data, {
+    return this.bulkCreate(data, {
       transaction: transaction ?? null,
     });
   }
@@ -33,7 +33,7 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
     tenantId: number;
     userId: number;
   }): Promise<MealEntry[]> {
-    return await this.mealEntryModel.findAll({
+    return await this.findAll({
       where: { userId, tenantId },
       attributes: [
         "id",
@@ -59,7 +59,7 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
     transaction: Transaction | null = null,
   ) {
     const { start, end } = getRangeTime(date);
-    return await this.mealEntryModel.findAll({
+    return await this.findAll({
       where: {
         tenantId,
         date: {
@@ -97,7 +97,7 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
   async getDailySummary(tenantId: number, date: Date) {
     const { start, end } = getRangeTime(date);
 
-    const summary = await this.mealEntryModel.findOne({
+    const summary = await this.findOneWithOptions({
       where: {
         tenantId,
         date: {
@@ -126,7 +126,7 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
   }
 
   async getMemberSummary(tenantId: number, mealSessionId: number) {
-    return await this.mealEntryModel.findAll({
+    return await this.findAll({
       where: { tenantId, mealSessionId },
       attributes: [
         "userId",
@@ -150,7 +150,7 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
     tenantId: number,
     mealSessionId: number,
   ): Promise<IMealSummary | null> {
-    const result = await this.mealEntryModel.findOne({
+    const result = await this.findOneWithOptions({
       where: {
         tenantId,
         mealSessionId,

@@ -1,18 +1,17 @@
 import sequelize from "@/configs/db.js";
-import { MealEntryRepository } from "./mealEntry.repository.js";
+import { mealEntryRepository } from "./mealEntry.repository.js";
 import { ApiError } from "@/utils/ApiError.js";
 
-export class MealEntryService {
-  constructor(private readonly mealEntryRepository: MealEntryRepository) {}
+class MealEntryService {
 
   async my({ userId, tenantId }: { userId: number; tenantId: number }) {
-    return await this.mealEntryRepository.getMyMeal({ tenantId, userId });
+    return await mealEntryRepository.getMyMeal({ tenantId, userId });
   }
 
   async daily({ date, tenantId }: { date: Date; tenantId: number }) {
 
     return await sequelize.transaction(async (transaction) => {
-      return await this.mealEntryRepository.getDailyEntries(
+      return await mealEntryRepository.getDailyEntries(
         { tenantId, date },
         transaction,
       );
@@ -25,14 +24,16 @@ export class MealEntryService {
       throw new ApiError(400, "Valid date is required");
     }
 
-    return this.mealEntryRepository.getDailySummary(tenantId, date);
+    return mealEntryRepository.getDailySummary(tenantId, date);
   }
 
   async memberSummary({ tenantId, mealSessionId}: { tenantId: number; mealSessionId: number }) {
-    return this.mealEntryRepository.getMemberSummary(tenantId, mealSessionId);
+    return mealEntryRepository.getMemberSummary(tenantId, mealSessionId);
   }
 
   async summary({ tenantId, mealSessionId }: { tenantId: number, mealSessionId: number; }) {
-    return this.mealEntryRepository.getTotalMealByMealSession(tenantId, mealSessionId);
+    return mealEntryRepository.getTotalMealByMealSession(tenantId, mealSessionId);
   }
 }
+
+export const mealEntryService = new MealEntryService()

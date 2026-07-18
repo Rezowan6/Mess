@@ -1,11 +1,11 @@
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
-import { mealEntryService } from "@/modules/containers/mealEntry.container.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
+import { mealEntryService } from "./mealEntry.service.js";
 
-export class MealEntriesController {
-  static my = asyncHandler(async (req: Request, res: Response) => {
+class MealEntriesController {
+  my = asyncHandler(async (req: Request, res: Response) => {
     const { userId, tenantId } = getTenantContext(req);
 
     const data = await mealEntryService.my({ tenantId, userId });
@@ -17,7 +17,7 @@ export class MealEntriesController {
     });
   });
 
-  static daily = asyncHandler(async (req: Request, res: Response) => {
+  daily = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 
     const data = await mealEntryService.daily({
@@ -32,7 +32,7 @@ export class MealEntriesController {
     });
   });
 
-  static dailySummary = asyncHandler(async (req: Request, res: Response) => {
+  dailySummary = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 
     const date = new Date(req.query.date as string);
@@ -49,7 +49,7 @@ export class MealEntriesController {
     });
   });
 
-  static memberSummary = asyncHandler(async (req: Request, res: Response) => {
+  memberSummary = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
     const data = await mealEntryService.memberSummary({
@@ -64,7 +64,7 @@ export class MealEntriesController {
     });
   });
 
-  static summary = asyncHandler(async (req: Request, res: Response) => {
+  summary = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
     const data = await mealEntryService.summary({
@@ -79,3 +79,5 @@ export class MealEntriesController {
     });
   });
 }
+
+export const mealEntryController = new MealEntriesController();
