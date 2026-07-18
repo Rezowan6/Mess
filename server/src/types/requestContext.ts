@@ -23,6 +23,21 @@ export interface RequestContext {
     tenantId: number;
     month: number;
     year: number;
-    status: MealSessionStatus
+    status: MealSessionStatus;
+  };
+}
+
+export interface IGetTenantContentRes {
+  tenantId: number;
+  userId: number;
+  membershipId: number;
+  mealSessionId: number;
+  role: MemberShipRole;
+  session: {
+    id: number;
+    month: number;
+    year: number;
+    status: MealSessionStatus;
+    tenantId: number;
   };
 }

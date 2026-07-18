@@ -42,4 +42,4 @@ export class TenantMembershipRepository extends BaseRepository<TenantMembership>
   }
 }
 
-export const MembershipRepository = new TenantMembershipRepository();
+export const membershipRepository = new TenantMembershipRepository();

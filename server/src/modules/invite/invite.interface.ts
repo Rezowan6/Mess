@@ -1,22 +1,23 @@
-import { RequestContext } from "@/types/requestContext.js";
+import { IGetTenantContentRes } from "@/types/requestContext.js";
 
-export const INVITE_STATUS = [
-  "pending",
-  "accepted",
-  "expired",
-  "revoked",
-  "cancelled",
-] as const;
+export const InviteStatus = {
+  PENDING: "pending",
+  ACCEPTED: "accepted",
+  EXPIRED: "expired",
+  REVOKED: "revoked",
+  CANCELLED: "cancelled",
+} as const;
 
-export type InviteStatus = (typeof INVITE_STATUS)[number];
-export type InviteStatusType = (typeof INVITE_STATUS)[number];
+export const INVITE_STATUS = Object.values(InviteStatus);
 
-export interface SendInvitePayload {
+export type InviteStatusType = (typeof InviteStatus)[keyof typeof InviteStatus];
+
+export interface ISendInvitePayload {
   email: string;
-  context: RequestContext;
+  context: IGetTenantContentRes;
 }
 
-export interface SendInviteEmailPayload {
+export interface ISendInviteEmailPayload {
   email: string;
   recipientName: string;
   name: string;
@@ -24,21 +25,15 @@ export interface SendInviteEmailPayload {
   token: string;
 }
 
-export interface CreateInvitePayload {
-  email: string;
-  tokenHash: string;
-  tenantId: number;
-  createdBy: number;
-  expiresAt: Date;
-}
-
-export interface AcceptInvitePayload {
+export interface IAcceptInvitePayload {
   token: string;
   name: string;
   password: string;
+  context: IGetTenantContentRes;
 }
 
-export interface CancelPayload {
-  inviteId: number;
-  context: RequestContext;
+export interface ICancelPayload {
+  id: number;
+  tenantId: number;
+  userId: number;
 }

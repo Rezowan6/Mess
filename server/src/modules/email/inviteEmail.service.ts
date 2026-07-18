@@ -1,9 +1,8 @@
 import { env } from "@/configs/index.js";
 import { sendEmail } from "@/utils/sendEmail.js";
-import { SendInviteEmailPayload } from "../invite/invite.interface.js";
+import { ISendInviteEmailPayload } from "../invite/invite.interface.js";
 
-export const sendInviteEmail = async (payload: SendInviteEmailPayload) => {
-  
+export const sendInviteEmail = async (payload: ISendInviteEmailPayload) => {
   const { recipientName, token, name, email, inviterName } = payload;
   const inviteLink = `${env.FRONTEND_URL}/accept-invite/${token}`;
 
@@ -46,9 +45,5 @@ export const sendInviteEmail = async (payload: SendInviteEmailPayload) => {
     </div>
   `;
 
-  return await sendEmail(
-    email,
-    `You are invited to join ${name}`,
-    html,
-  );
+  return await sendEmail(email, `You are invited to join ${name}`, html);
 };

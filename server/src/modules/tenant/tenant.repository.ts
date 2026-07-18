@@ -1,26 +1,12 @@
+import { BaseRepository } from "@/common/base.repository.js";
 import { Tenant } from "@/models/index.js";
 
-export const findById = async (id: number) => {
-  return Tenant.findByPk(id);
+class TenantRepository extends BaseRepository<Tenant> {
+  constructor() {
+    super(Tenant);
+  }
 }
 
+export const tenantRepository = new TenantRepository();
 
-export const createTenantDB = (data: any) => {
-  return Tenant.create(data);
-};
 
-export const findTenantBySlugDB = (slug: string) => {
-  return Tenant.findOne({
-    where: {
-      slug,
-    },
-  });
-};
-
-export const findTenantByIdDB = (id: number) => {
-  return Tenant.findByPk(id);
-};
-
-export const getAllTenantDB = () => {
-  return Tenant.findAll();
-};

@@ -6,7 +6,11 @@ import {
   InferCreationAttributes,
   Model,
 } from "sequelize";
-import { INVITE_STATUS, InviteStatus } from "./invite.interface.js";
+import {
+  INVITE_STATUS,
+  InviteStatus,
+  InviteStatusType,
+} from "./invite.interface.js";
 
 export class Invite extends Model<
   InferAttributes<
@@ -20,8 +24,8 @@ export class Invite extends Model<
   declare id: CreationOptional<number>;
   declare email: string;
   declare tokenHash: string;
-  declare status: CreationOptional<InviteStatus>;
-  
+  declare status: CreationOptional<InviteStatusType>;
+
   declare tenantId: number;
   declare createdBy: number;
 
@@ -72,7 +76,7 @@ Invite.init(
 
     status: {
       type: DataTypes.ENUM(...INVITE_STATUS),
-      defaultValue: "pending",
+      defaultValue: InviteStatus.PENDING,
     },
 
     expiresAt: {

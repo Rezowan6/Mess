@@ -1,5 +1,6 @@
 import { MemberShipRole } from "@/middlewares/role.middleware.js";
 import { IMealSessionReq } from "@/modules/mealSession/mealSession.interface.js";
+import { IGetTenantContentRes } from "@/types/requestContext.js";
 import { ApiError } from "@/utils/ApiError.js";
 
 export interface AuthRequest {
@@ -18,7 +19,7 @@ export interface AuthRequest {
   };
 }
 
-export const getTenantContext = (req: AuthRequest) => {
+export const getTenantContext = (req: AuthRequest): IGetTenantContentRes => {
   const { context } = req;
 
   if (!context?.membership || !context?.user || !context?.mealSession) {
