@@ -4,17 +4,16 @@ import { ProtectedRoute } from "./protected.route";
 import { PublicRoute } from "./public.route";
 
 import { LoginPage } from "@/modules/auth/pages/LoginPage";
+import { UserManagementPage } from "@/modules/user-management/pages/UserManagementPage";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { NotFoundPage } from "@/pages/errors/NotFoundPage";
 import { HomePage } from "@/pages/HomePage";
-import { UserManagementPage } 
-from "@/modules/user-management/pages/UserManagementPage";
 
+import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROLES } from "@/shared/constants/roles";
 import { ROUTES } from "@/shared/constants/routes";
-import { RoleGuard } from "@/shared/guards/role.guard";
 import { PermissionGuard } from "@/shared/guards/permission.guard";
-import { PERMISSIONS } from "@/shared/constants/permissions";
+import { RoleGuard } from "@/shared/guards/role.guard";
 
 import { DashboardLayout } from "../layouts/Dashboard.layout";
 
@@ -44,7 +43,11 @@ export const router = createBrowserRouter([
         children: [
           {
             path: ROUTES.DASHBOARD,
-            element: <RoleGuard allowedRoles={[ROLES.MANAGER, ROLES.ADMIN]} />,
+            element: (
+              <RoleGuard
+                allowedRoles={[ROLES.MANAGER, ROLES.ADMIN, ROLES.MEMBER]}
+              />
+            ),
 
             children: [
               {
@@ -57,18 +60,15 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.USERS,
 
-            element: (
-              <PermissionGuard permission={PERMISSIONS.USER_VIEW} />
-            ),
+            element: <PermissionGuard permission={PERMISSIONS.USER_VIEW} />,
 
             children: [
               {
                 index: true,
-                element: <UserManagementPage />
-              }
-            ]
+                element: <UserManagementPage />,
+              },
+            ],
           },
-
 
           {
             path: ROUTES.HOME,
