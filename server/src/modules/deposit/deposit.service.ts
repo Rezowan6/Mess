@@ -9,10 +9,9 @@ import {
   IGetMemberDepositsPayload,
   IUpdateDepositPayload,
 } from "./deposit.interface.js";
-import { DepositRepository } from "./deposit.repository.js";
+import { depositRepository } from "./deposit.repository.js";
 
-export class DepositService {
-  constructor(private readonly depositRepository: DepositRepository) {}
+class DepositService {
 
   async createDeposit(data: ICreateDepositPayload) {
     const { tenantId, memberId, depositDate, mealSessionId } = data;
@@ -23,7 +22,7 @@ export class DepositService {
       throw new ApiError(404, "Member not found.");
     }
 
-    const existingDeposit = await this.depositRepository.getTodayByMemberId({
+    const existingDeposit = await depositRepository.getTodayByMemberId({
       tenantId,
       mealSessionId,
       memberId,
@@ -37,21 +36,21 @@ export class DepositService {
       );
     }
 
-    return await this.depositRepository.createDeposit({
+    return await depositRepository.create({
       ...data,
     });
   }
 
   async getSummary({ tenantId, mealSessionId }: IDepositSummaryPayload) {
 
-    return await this.depositRepository.getSummary({
+    return await depositRepository.getSummary({
       tenantId,
       mealSessionId,
     });
   }
 
   async getAllDeposits(tenantId: number, mealSessionId: number) {
-    return await this.depositRepository.getAll({
+    return await depositRepository.getAll({
       tenantId,
       mealSessionId,
     });
@@ -62,7 +61,7 @@ export class DepositService {
     depositId,
     mealSessionId,
   }: IGetDepositByIdPayload) {
-    const deposit = await this.depositRepository.getById({
+    const deposit = await depositRepository.getById({
       tenantId,
       depositId,
       mealSessionId,
@@ -85,7 +84,7 @@ export class DepositService {
       userId: memberId,
     });
 
-    return await this.depositRepository.getMemberDeposits({
+    return await depositRepository.getMemberDeposits({
       tenantId,
       memberId,
       mealSessionId,
@@ -103,7 +102,7 @@ export class DepositService {
     depositId: number;
     payload: IUpdateDepositPayload;
   }) {
-    const deposit = await this.depositRepository.getById({
+    const deposit = await depositRepository.getById({
       tenantId,
       mealSessionId,
       depositId,
@@ -113,9 +112,9 @@ export class DepositService {
       throw new ApiError(404, "Deposit not found.");
     }
 
-    await this.depositRepository.update(deposit, payload);
+    await depositRepository.update({id: depositId}, payload);
 
-    return await this.depositRepository.getById({
+    return await depositRepository.getById({
       tenantId,
       depositId,
       mealSessionId,
@@ -127,7 +126,7 @@ export class DepositService {
     depositId,
     mealSessionId,
   }: IDeleteDepositPayload) {
-    const deposit = await this.depositRepository.getById({
+    const deposit = await depositRepository.getById({
       tenantId,
       depositId,
       mealSessionId,
@@ -137,8 +136,10 @@ export class DepositService {
       throw new ApiError(404, "Deposit not found.");
     }
 
-    await this.depositRepository.deleteDeposit(deposit);
+    await depositRepository.delete({id: depositId});
 
     return true;
   }
 }
+
+export const depositService = new DepositService();

@@ -91,6 +91,13 @@ export abstract class BaseRepository<T extends Model> {
     return this.model.count(options);
   }
 
+  async sum(
+    field: keyof Attributes<T>,
+    options?: FindOptions<Attributes<T>>,
+  ): Promise<number | null> {
+    return this.model.sum(field as string, options);
+  }
+
   async exists(where: WhereOptions<Attributes<T>>): Promise<boolean> {
     const count = await this.model.count({
       where,

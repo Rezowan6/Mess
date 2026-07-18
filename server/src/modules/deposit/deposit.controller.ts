@@ -3,10 +3,10 @@ import asyncHandler from "@/middlewares/asyncHandler.js";
 import { getCurrentDate } from "@/utils/date.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
-import { depositService } from "../containers/deposit.container.js";
+import { depositService } from "./deposit.service.js";
 
-export class DepositController {
-  static create = asyncHandler(async (req: Request, res: Response) => {
+class DepositController {
+  create = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId, mealSessionId } = getTenantContext(req);
 
     const depositDate = getCurrentDate();
@@ -26,7 +26,7 @@ export class DepositController {
     });
   });
 
-  static summary = asyncHandler(async (req: Request, res: Response) => {
+  summary = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
     const summary = await depositService.getSummary({
@@ -41,7 +41,7 @@ export class DepositController {
     });
   });
 
-  static getAll = asyncHandler(async (req: Request, res: Response) => {
+  getAll = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
     const deposits = await depositService.getAllDeposits(
@@ -56,7 +56,7 @@ export class DepositController {
     });
   });
 
-  static getById = asyncHandler(async (req: Request, res: Response) => {
+  getById = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
     const deposit = await depositService.getDepositById({
@@ -72,25 +72,23 @@ export class DepositController {
     });
   });
 
-  static getMemberDeposits = asyncHandler(
-    async (req: Request, res: Response) => {
-      const { tenantId, mealSessionId } = getTenantContext(req);
+  getMemberDeposits = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
-      const deposits = await depositService.getMemberDeposits({
-        tenantId,
-        mealSessionId,
-        memberId: Number(req.params.memberId),
-      });
+    const deposits = await depositService.getMemberDeposits({
+      tenantId,
+      mealSessionId,
+      memberId: Number(req.params.memberId),
+    });
 
-      return sendResponse(res, {
-        statusCode: 200,
-        message: "Member deposits fetched successfully",
-        data: deposits,
-      });
-    },
-  );
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Member deposits fetched successfully",
+      data: deposits,
+    });
+  });
 
-  static update = asyncHandler(async (req: Request, res: Response) => {
+  update = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
     const deposit = await depositService.updateDeposit({
@@ -107,7 +105,7 @@ export class DepositController {
     });
   });
 
-  static delete = asyncHandler(async (req: Request, res: Response) => {
+  delete = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
     await depositService.deleteDeposit({
@@ -123,3 +121,5 @@ export class DepositController {
     });
   });
 }
+
+export const depositController = new DepositController();

@@ -1,16 +1,12 @@
+import { BaseRepository } from "@/common/base.repository.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { Deposit } from "@/models/index.js";
 import { Op, col, fn } from "sequelize";
-import {
-  ICreateDepositPayload,
-  IUpdateDepositPayload,
-} from "./deposit.interface.js";
+import { ICreateDepositPayload } from "./deposit.interface.js";
 
-export class DepositRepository {
-  constructor(private readonly depositModel: typeof Deposit) {}
-
-  async createDeposit(data: ICreateDepositPayload): Promise<Deposit> {
-    return await this.depositModel.create(data);
+class DepositRepository extends BaseRepository<Deposit> {
+  constructor() {
+    super(Deposit);
   }
 
   async getSummary({
@@ -20,7 +16,7 @@ export class DepositRepository {
     tenantId: number;
     mealSessionId: number;
   }) {
-    const result = await this.depositModel.findAll({
+    const result = await this.findAll({
       where: {
         tenantId,
         mealSessionId,
@@ -59,13 +55,11 @@ export class DepositRepository {
     depositDate: Date;
   }) {
     const { start, end } = getRangeTime(depositDate);
-    return await this.depositModel.findOne({
-      where: {
-        tenantId,
-        memberId,
-        mealSessionId,
-        depositDate: { [Op.between]: [start, end] },
-      },
+    return await this.findOne({
+      tenantId,
+      memberId,
+      mealSessionId,
+      depositDate: { [Op.between]: [start, end] },
     });
   }
 
@@ -76,7 +70,7 @@ export class DepositRepository {
     tenantId: number;
     mealSessionId: number;
   }) {
-    return await this.depositModel.findAll({
+    return await Deposit.findAll({
       where: {
         tenantId,
         mealSessionId,
@@ -108,7 +102,7 @@ export class DepositRepository {
     depositId: number;
     mealSessionId: number;
   }) {
-    return await this.depositModel.findOne({
+    return await this.findOneWithOptions({
       where: {
         id: depositId,
         tenantId,
@@ -131,14 +125,6 @@ export class DepositRepository {
     });
   }
 
-  async update(deposit: Deposit, payload: IUpdateDepositPayload) {
-    return await deposit.update(payload);
-  }
-
-  async deleteDeposit(deposit: Deposit) {
-    return await deposit.destroy();
-  }
-
   async getMemberDeposits({
     tenantId,
     memberId,
@@ -148,7 +134,7 @@ export class DepositRepository {
     memberId: number;
     mealSessionId: number;
   }) {
-    return await this.depositModel.findAll({
+    return await this.findAll({
       where: {
         tenantId,
         memberId,
@@ -174,12 +160,12 @@ export class DepositRepository {
       ],
     });
   }
-  
+
   async getMemberDepositsByMealSession(
     tenantId: number,
     mealSessionId: number,
   ) {
-    return this.depositModel.findAll({
+    return Deposit.findAll({
       where: {
         tenantId,
         mealSessionId,
@@ -199,7 +185,7 @@ export class DepositRepository {
     memberId: number,
   ): Promise<number> {
     return (
-      (await this.depositModel.sum("amount", {
+      (await this.sum("amount", {
         where: {
           tenantId,
           mealSessionId,
@@ -209,3 +195,5 @@ export class DepositRepository {
     );
   }
 }
+
+export const depositRepository = new DepositRepository();

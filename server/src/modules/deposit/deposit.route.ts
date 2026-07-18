@@ -1,15 +1,21 @@
 import { allAccess, managerAccess } from "@/helpers/permission.js";
 import express from "express";
-import { DepositController } from "./deposit.controller.js";
+import { depositController } from "./deposit.controller.js";
 
 const router = express.Router();
 
-router.post("/", ...managerAccess, DepositController.create);
-router.get("/summary", ...managerAccess, DepositController.summary);
-router.get("/member/:memberId", ...allAccess, DepositController.getMemberDeposits);
-router.get("/", ...allAccess, DepositController.getAll);
-router.get("/:id", ...managerAccess, DepositController.getById);
-router.patch("/:id", ...managerAccess, DepositController.update);
-router.delete("/:id", ...managerAccess, DepositController.delete);
+router.post("/", ...managerAccess, depositController.create);
+
+router.get("/summary", ...managerAccess, depositController.summary);
+
+router.get("/member/:memberId", ...allAccess, depositController.getMemberDeposits);
+
+router.get("/", ...allAccess, depositController.getAll);
+
+router.get("/:id", ...managerAccess, depositController.getById);
+
+router.patch("/:id", ...managerAccess, depositController.update);
+
+router.delete("/:id", ...managerAccess, depositController.delete);
 
 export default router;
