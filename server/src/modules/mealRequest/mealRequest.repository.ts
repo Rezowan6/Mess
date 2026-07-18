@@ -1,37 +1,21 @@
+import { BaseRepository } from "@/common/base.repository.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealRequest } from "@/models/index.js";
 import { Op, Transaction } from "sequelize";
 import {
-  ICreateMealRequestDto,
   MealRequestStatus,
   UpdateMealRequestDto,
 } from "./mealRequest.interface.js";
 
-export class MealRequestRepository {
-  constructor(private readonly mealRequestModel: typeof MealRequest) {}
-
-  async createMealRequest(
-    mealRequestData: ICreateMealRequestDto,
-  ): Promise<MealRequest> {
-    return this.mealRequestModel.create(mealRequestData);
+class MealRequestRepository extends BaseRepository<MealRequest> {
+  constructor() {
+    super(MealRequest);
   }
-
-  async getMealRequestById(
-    id: number,
-    mealSessionId: number,
-    transaction: Transaction | null = null,
-  ): Promise<MealRequest | null> {
-    return this.mealRequestModel.findOne({
-      where: { id, mealSessionId },
-      transaction: transaction ?? null,
-    });
-  }
-
   async getPendingRequestsByTenantId(
     tenantId: number,
     mealSessionId: number,
   ): Promise<MealRequest[]> {
-    return await this.mealRequestModel.findAll({
+    return await this.findAll({
       where: { tenantId, mealSessionId, status: MealRequestStatus.PENDING },
       attributes: [
         "id",
@@ -62,7 +46,7 @@ export class MealRequestRepository {
   ) {
     const { start, end } = getRangeTime(date);
 
-    return await this.mealRequestModel.findAll({
+    return await this.findAll({
       where: {
         tenantId,
         date: {
@@ -78,7 +62,7 @@ export class MealRequestRepository {
     userId: number,
     tenantId: number,
   ): Promise<MealRequest[]> {
-    return this.mealRequestModel.findAll({ where: { userId, tenantId } });
+    return this.findAll({ where: { userId, tenantId } });
   }
 
   async getMyMealRequests({
@@ -90,8 +74,13 @@ export class MealRequestRepository {
     userId: number;
     mealSessionId: number;
   }): Promise<MealRequest[]> {
-    return this.mealRequestModel.findAll({
-      where: { userId, tenantId, mealSessionId, status: MealRequestStatus.PENDING },
+    return this.findAll({
+      where: {
+        userId,
+        tenantId,
+        mealSessionId,
+        status: MealRequestStatus.PENDING,
+      },
       attributes: [
         "id",
         "date",
@@ -117,7 +106,7 @@ export class MealRequestRepository {
     date: Date,
     tenantId: number,
   ): Promise<MealRequest[]> {
-    return this.mealRequestModel.findAll({ where: { date, tenantId } });
+    return this.findAll({ where: { date, tenantId } });
   }
 
   async getByTenantMealSessionUserIdAndDate(payload: {
@@ -130,13 +119,11 @@ export class MealRequestRepository {
 
     const { start, end } = getRangeTime(date);
 
-    return this.mealRequestModel.findOne({
-      where: {
-        tenantId,
-        mealSessionId,
-        userId,
-        date: { [Op.between]: [start, end] },
-      },
+    return this.findOne({
+      tenantId,
+      mealSessionId,
+      userId,
+      date: { [Op.between]: [start, end] },
     });
   }
 
@@ -146,8 +133,7 @@ export class MealRequestRepository {
     updateData: UpdateMealRequestDto,
     transaction: Transaction | null = null,
   ): Promise<[affectedCount: number]> {
-    return await this.mealRequestModel.update(updateData, {
-      where: { id, mealSessionId },
+    return await this.update({ id, mealSessionId }, updateData, {
       transaction: transaction ?? null,
     });
   }
@@ -157,24 +143,20 @@ export class MealRequestRepository {
     managerId: number,
     transaction: Transaction | null = null,
   ) {
-    return this.mealRequestModel.update(
+    return this.update(
+      {
+        id: {
+          [Op.in]: requestIds,
+        },
+      },
       {
         status: MealRequestStatus.APPROVED,
         approvedBy: managerId,
         approvedAt: new Date(),
       },
-      {
-        where: {
-          id: {
-            [Op.in]: requestIds,
-          },
-        },
-        transaction: transaction ?? null,
-      },
+      { transaction },
     );
   }
-
-  async deleteMealRequest(id: number): Promise<number> {
-    return this.mealRequestModel.destroy({ where: { id } });
-  }
 }
+
+export const mealRequestRepository = new MealRequestRepository();

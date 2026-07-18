@@ -1,22 +1,13 @@
 import sequelize from "@/configs/db.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { MealEntryRepository } from "../mealEntry/mealEntry.repository.js";
-import {
-  IMealSessionReq,
-  MealSessionStatus,
-} from "../mealSession/mealSession.interface.js";
+import { mealEntryRepository } from "../mealEntry/mealEntry.repository.js";
 import {
   ICreateMealRequestDto,
   MealRequestStatus,
 } from "./mealRequest.interface.js";
-import { MealRequestRepository } from "./mealRequest.repository.js";
+import { mealRequestRepository } from "./mealRequest.repository.js";
 
 export class MealRequestService {
-  constructor(
-    private readonly mealRequestRepository: MealRequestRepository,
-    private readonly mealEntryRepository: MealEntryRepository,
-  ) {}
-
   async create({
     payload,
     tenantId,
@@ -33,7 +24,7 @@ export class MealRequestService {
     const { breakfast, lunch, dinner } = payload;
 
     const existingRequest =
-      await this.mealRequestRepository.getByTenantMealSessionUserIdAndDate({
+      await mealRequestRepository.getByTenantMealSessionUserIdAndDate({
         tenantId,
         mealSessionId,
         userId,
@@ -48,7 +39,7 @@ export class MealRequestService {
       throw new ApiError(400, "Please select at least one meal");
     }
 
-    return this.mealRequestRepository.createMealRequest({
+    return mealRequestRepository.create({
       ...payload,
       tenantId,
       mealSessionId,
@@ -58,21 +49,49 @@ export class MealRequestService {
     });
   }
 
-  async getPendingRequests({ tenantId, mealSessionId }: { tenantId: number, mealSessionId: number }) {
-    const mealRequest =  await this.mealRequestRepository.getPendingRequestsByTenantId(
-      tenantId,
-      mealSessionId,
-    );
+  async getPendingRequests({
+    tenantId,
+    mealSessionId,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+  }) {
+    const mealRequest = await mealRequestRepository.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+        status: MealRequestStatus.PENDING
+      },
+    });
 
-    if(!mealRequest.length) {
-      throw new ApiError(404, "today pending request not found.")
+    if (!mealRequest.length) {
+      throw new ApiError(404, "today pending request not found.");
     }
 
     return mealRequest;
   }
 
-  async my({ tenantId, userId, mealSessionId }: { tenantId: number; userId: number; mealSessionId: number }) {
-    return this.mealRequestRepository.getMyMealRequests({ userId, tenantId, mealSessionId });
+  async myPendingRequest({
+    tenantId,
+    userId,
+    mealSessionId,
+  }: {
+    tenantId: number;
+    userId: number;
+    mealSessionId: number;
+  }) {
+    const request = await mealRequestRepository.findOne({
+      userId,
+      tenantId,
+      mealSessionId,
+      status: MealRequestStatus.PENDING,
+    });
+
+    if (!request) {
+      throw new ApiError(404, "Meal Request not found.");
+    }
+
+    return request;
   }
 
   async approve({
@@ -87,11 +106,10 @@ export class MealRequestService {
     mealSessionId: number;
   }) {
     return await sequelize.transaction(async (transaction) => {
-      const request = await this.mealRequestRepository.getMealRequestById(
+      const request = await mealRequestRepository.findOne({
         id,
         mealSessionId,
-        transaction,
-      );
+      });
 
       if (!request) {
         throw new ApiError(404, "Meal request not found.");
@@ -105,7 +123,7 @@ export class MealRequestService {
         throw new ApiError(400, "Only pending request can be approved");
       }
 
-      await this.mealRequestRepository.updateMealRequest(
+      await mealRequestRepository.updateMealRequest(
         id,
         mealSessionId,
         {
@@ -116,7 +134,7 @@ export class MealRequestService {
         transaction,
       );
 
-      await this.mealEntryRepository.createMealEntry(
+      await mealEntryRepository.createWithOptions(
         {
           tenantId,
           userId: request.userId,
@@ -129,7 +147,7 @@ export class MealRequestService {
 
           mealRequestId: request.id,
         },
-        transaction,
+        { transaction },
       );
 
       return request;
@@ -148,15 +166,14 @@ export class MealRequestService {
     date: Date;
   }) {
     return sequelize.transaction(async (transaction) => {
-      const requests =
-        await this.mealRequestRepository.getPendingRequestsByDate(
-          { tenantId, date },
-          transaction,
-        );
+      const requests = await mealRequestRepository.getPendingRequestsByDate({
+        tenantId,
+        date,
+      });
       if (!requests.length) {
         throw new ApiError(404, "No pending meal requests found.");
       }
-      const mealEntries = requests.map((request) => ({
+      const mealEntries = requests.map((request: any) => ({
         tenantId,
         userId: request.userId,
         mealSessionId,
@@ -169,12 +186,9 @@ export class MealRequestService {
         mealRequestId: request.id,
       }));
 
-      await this.mealEntryRepository.bulkCreateMealEntries(
-        mealEntries,
-        transaction,
-      );
+      await mealEntryRepository.bulkCreateMealEntries(mealEntries, transaction);
 
-      await this.mealRequestRepository.bulkApproveRequests(
+      await mealRequestRepository.bulkApproveRequests(
         requests.map((request) => request.id),
         managerId,
         transaction,
@@ -197,11 +211,10 @@ export class MealRequestService {
     managerId: number;
   }) {
     return sequelize.transaction(async (transaction) => {
-      const request = await this.mealRequestRepository.getMealRequestById(
+      const request = await mealRequestRepository.findOne({
         id,
         mealSessionId,
-        transaction,
-      );
+      });
 
       if (!request) {
         throw new ApiError(404, "Meal request not found.");
@@ -215,7 +228,7 @@ export class MealRequestService {
         throw new ApiError(400, "Only pending request can be rejected.");
       }
 
-      await this.mealRequestRepository.updateMealRequest(
+      await mealRequestRepository.updateMealRequest(
         id,
         mealSessionId,
         {
@@ -233,3 +246,5 @@ export class MealRequestService {
     });
   }
 }
+
+export const mealRequestService = new MealRequestService();

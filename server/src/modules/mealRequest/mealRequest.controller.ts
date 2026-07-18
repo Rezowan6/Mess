@@ -1,13 +1,13 @@
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
-import { mealRequestService } from "@/modules/containers/mealRequest.container.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { getCurrentDate } from "@/utils/date.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
+import { mealRequestService } from "./mealRequest.service.js";
 
 export class MealRequestController {
-  static create = asyncHandler(async (req: Request, res: Response) => {
+  create = asyncHandler(async (req: Request, res: Response) => {
     const { userId, tenantId, mealSessionId } = getTenantContext(req);
     const date = getCurrentDate();
 
@@ -26,10 +26,10 @@ export class MealRequestController {
     });
   });
 
-  static my = asyncHandler(async (req: Request, res: Response) => {
+  mypendingRequest = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId, mealSessionId } = getTenantContext(req);
 
-    const mealRequest = await mealRequestService.my({
+    const mealRequest = await mealRequestService.myPendingRequest({
       tenantId,
       userId,
       mealSessionId,
@@ -42,24 +42,22 @@ export class MealRequestController {
     });
   });
 
-  static getPendingRequests = asyncHandler(
-    async (req: Request, res: Response) => {
-      const { tenantId, mealSessionId } = getTenantContext(req);
+  getPendingRequests = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
-      const mealRequest = await mealRequestService.getPendingRequests({
-        tenantId,
-        mealSessionId,
-      });
+    const mealRequest = await mealRequestService.getPendingRequests({
+      tenantId,
+      mealSessionId,
+    });
 
-      return sendResponse(res, {
-        statusCode: 201,
-        message: "Pending meal requests fetched successfully.",
-        data: mealRequest,
-      });
-    },
-  );
+    return sendResponse(res, {
+      statusCode: 201,
+      message: "Pending meal requests fetched successfully.",
+      data: mealRequest,
+    });
+  });
 
-  static approve = asyncHandler(async (req: Request, res: Response) => {
+  approve = asyncHandler(async (req: Request, res: Response) => {
     const {
       tenantId,
       userId: managerId,
@@ -84,7 +82,7 @@ export class MealRequestController {
     });
   });
 
-  static approveAll = asyncHandler(async (req: Request, res: Response) => {
+  approveAll = asyncHandler(async (req: Request, res: Response) => {
     const {
       tenantId,
       userId: managerId,
@@ -104,7 +102,7 @@ export class MealRequestController {
     });
   });
 
-  static reject = asyncHandler(async (req: Request, res: Response) => {
+  reject = asyncHandler(async (req: Request, res: Response) => {
     const {
       tenantId,
       userId: managerId,
@@ -130,3 +128,5 @@ export class MealRequestController {
     });
   });
 }
+
+export const mealRequestController = new MealRequestController();

@@ -8,12 +8,12 @@ done module:
 7.planFeature
 8.subscription
 9.payment
-10.
+10mealSession
 
 next target:
 1.refreshToken
 2.mealRequest
-3.mealSession
+3.
 4.mealEntry
 5.deposit
 6.expense

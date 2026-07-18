@@ -1,11 +1,13 @@
+import { BaseRepository } from "@/common/base.repository.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealEntry } from "@/models/index.js";
 import { Op, Transaction, col, fn, literal } from "sequelize";
 import { CreateMealEntryDto, IMealSummary } from "./mealEntry.interface.js";
 
-export class MealEntryRepository {
-  constructor(private readonly mealEntryModel: typeof MealEntry) {}
-
+export class MealEntryRepository extends BaseRepository<MealEntry> {
+  constructor() {
+    super(MealEntry);
+  }
   async createMealEntry(
     mealEntryData: CreateMealEntryDto,
     transaction: Transaction | null = null,
@@ -144,7 +146,10 @@ export class MealEntryRepository {
     });
   }
 
-  async getTotalMealByMealSession(tenantId: number, mealSessionId: number): Promise<IMealSummary | null> {
+  async getTotalMealByMealSession(
+    tenantId: number,
+    mealSessionId: number,
+  ): Promise<IMealSummary | null> {
     const result = await this.mealEntryModel.findOne({
       where: {
         tenantId,
@@ -165,6 +170,6 @@ export class MealEntryRepository {
 
     return result as IMealSummary | null;
   }
-
-  
 }
+
+export const mealEntryRepository = new MealEntryRepository();
