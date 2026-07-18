@@ -7,7 +7,7 @@ import { NextFunction, Request, Response } from "express";
 
 export const contextMiddleware = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
   const membership = await TenantMembership.findOne({
@@ -43,8 +43,14 @@ export const contextMiddleware = async (
     throw new ApiError(404, "Open meal session not found.");
   }
 
+  const { id, name, email } = req.user;
+
   req.context = {
-    user: req.user,
+    user: {
+      id,
+      name,
+      email,
+    },
     membership,
     tenant: membership.tenant,
     mealSession,

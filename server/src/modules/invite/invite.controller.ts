@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
-import { ApiResponse } from "@/utils/ApiResponse.js";
 import { getParamString } from "@/utils/index.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { inviteService } from "./invite.service.js";
@@ -43,7 +42,7 @@ class InviteController {
   });
 
   cancel = asyncHandler(async (req: Request, res: Response) => {
-    const {tenantId, userId} = getTenantContext(req);
+    const { tenantId, userId } = getTenantContext(req);
     const id = req.body.inviteId;
 
     const data = await inviteService.cancel({
@@ -56,7 +55,7 @@ class InviteController {
       statusCode: 200,
       message: "Invite cancelled successfully.",
       data,
-    })
+    });
   });
 }
 

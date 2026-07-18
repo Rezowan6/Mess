@@ -1,75 +1,73 @@
-import { findTenantByIdDB, getAllTenantDB } from "./tenant.repository.js";
+import { tenantRepository } from "./tenant.repository.js";
 
 import sequelize from "@/configs/db.js";
 import { MemberRole, MemberStatus } from "@/constans/index.js";
-import { TenantMembership, Tenant } from "@/models/index.js";
+import { Tenant, TenantMembership } from "@/models/index.js";
 import { generateSlug } from "@/utils/generate.slug.js";
 import { ApiError } from "@/utils/index.js";
-import { TenantPayload } from "./tenant.interface.js";
+import { membershipRepository } from "../tenantMembership/tenantMembership.repository.js";
 
-export const create = async (userId: number, payload: TenantPayload) => {
-  const { name } = payload;
+class TenantService {
+  async create(id: number, name: string) {
+    return sequelize.transaction(async (transaction) => {
+      const slug = generateSlug(name);
 
-  return sequelize.transaction(async (transaction) => {
-    const slug = generateSlug(name);
+      const exists = await Tenant.findOne({
+        where: { slug },
+        transaction,
+      });
 
-    const exists = await Tenant.findOne({
-      where: { slug },
-      transaction,
-    });
+      if (exists) {
+        throw new ApiError(409, "Tenant slug already exists");
+      }
 
-    if (exists) {
-      throw new ApiError(409, "Tenant slug already exists");
-    }
+      const existingMembership = await TenantMembership.findOne({
+        where: {
+          userId: id,
+          role: MemberRole.ADMIN,
+        },
+      });
 
-    const existingMembership = await TenantMembership.findOne({
-      where: {
-        userId,
-        role: MemberRole.MANAGER,
-      },
-    });
+      if (existingMembership) {
+        throw new ApiError(409, "One user can own only one mess");
+      }
+      const tenant = await tenantRepository.createWithOptions(
+        {
+          name,
+          slug,
+        },
+        { transaction },
+      );
 
-    if (existingMembership) {
-      throw new ApiError(409, "One user can own only one mess");
-    }
-    const tenant = await Tenant.create(
-      {
-        name,
-        slug,
-      },
-      { transaction },
-    );
+      const membership = await membershipRepository.createWithOptions(
+        {
+          userId: id,
+          tenantId: tenant.id,
+          role: MemberRole.ADMIN,
+          status: MemberStatus.ACTIVE,
+        },
+        { transaction },
+      );
 
-    const membership = await TenantMembership.create(
-      {
-        userId,
-        tenantId: tenant.id,
-        role: MemberRole.ADMIN,
-        status: MemberStatus.ACTIVE,
-      },
-      { transaction },
-    );
-
-    return {
-      message: "Tenant create successfully",
-      data: {
+      return {
         tenant,
         membership,
-      },
-    };
-  });
-};
-
-export const getTenantService = async (id: number) => {
-  const tenant = await findTenantByIdDB(id);
-
-  if (!tenant) {
-    throw new Error("Tenant not found");
+      };
+    });
   }
+}
+export const tenantService = new TenantService();
 
-  return tenant;
-};
+// export const getTenantService = async (id: number) => {
+//   const tenant = await findTenantByIdDB(id);
 
-export const getTenantsService = async () => {
-  return getAllTenantDB();
-};
+//   if (!tenant) {
+//     throw new Error("Tenant not found");
+//   }
+
+//   return tenant;
+// };
+
+// export const getTenantsService = async () => {
+//   return getAllTenantDB();
+// };
