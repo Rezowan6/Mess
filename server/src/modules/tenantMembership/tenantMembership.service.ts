@@ -4,16 +4,16 @@ import {
   IDeleteMemberPayload,
   IUpdateRolePayload,
 } from "./tenantMembership.interface.js";
-import { MembershipRepository } from "./tenantMembership.repository.js";
+import { membershipRepository } from "./tenantMembership.repository.js";
 
 export class TenantMembershipService {
   async getMembers(tenantId: number) {
-    const members = await MembershipRepository.findOne({tenantId});
+    const members = await membershipRepository.findOne({tenantId});
 
     if (!members) {
       throw new ApiError(404, "Member not found.");
     }
-    return await MembershipRepository.getMembers(tenantId);
+    return await membershipRepository.getMembers(tenantId);
   }
 
   async updateRole(payload: IUpdateRolePayload) {
@@ -27,7 +27,7 @@ export class TenantMembershipService {
       throw new ApiError(400, "The admin role cannot be assigned.");
     }
 
-    const targetMember = await MembershipRepository.findById(id);
+    const targetMember = await membershipRepository.findById(id);
 
     if (!targetMember) {
       throw new ApiError(404, "Member not found");
@@ -44,13 +44,13 @@ export class TenantMembershipService {
     if (currentMembershipId === id) {
       throw new ApiError(400, "You cannot change your own role");
     }
-    return await MembershipRepository.update({ id }, {role});
+    return await membershipRepository.update({ id }, {role});
   }
 
   async deleteMember(payload: IDeleteMemberPayload) {
     const { tenantId, currentMembershipId, targetMembershipId: id } = payload;
 
-    const targetMember = await MembershipRepository.findById(id);
+    const targetMember = await membershipRepository.findById(id);
 
     if (targetMember?.tenantId !== tenantId) {
       throw new ApiError(403, "Access denied");
@@ -67,7 +67,7 @@ export class TenantMembershipService {
       throw new ApiError(403, "The manager cannot be removed.");
     }
 
-    const count = await MembershipRepository.countByTenant(tenantId);
+    const count = await membershipRepository.countByTenant(tenantId);
     if (count === 1) {
       throw new ApiError(
         400,
@@ -75,8 +75,8 @@ export class TenantMembershipService {
       );
     }
 
-    await MembershipRepository.delete({ id });
+    await membershipRepository.delete({ id });
   }
 }
 
-export const MembershipService = new TenantMembershipService()
+export const membershipService = new TenantMembershipService()

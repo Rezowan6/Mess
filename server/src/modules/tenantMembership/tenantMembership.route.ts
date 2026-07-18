@@ -2,12 +2,12 @@ import express from "express";
 
 import { adminAccess, allAccess } from "@/helpers/permission.js";
 
-import { MembershipController } from "./tenantMembership.controller.js";
+import { membershipController } from "./tenantMembership.controller.js";
 
 const router = express.Router();
 
-router.get("/", ...allAccess, MembershipController.getMembers);
-router.patch("/:id/role", ...adminAccess, MembershipController.updateRole);
-router.delete("/:id", ...adminAccess, MembershipController.deleteMember);
+router.get("/", ...allAccess, membershipController.getMembers);
+router.patch("/:id/role", ...adminAccess, membershipController.updateRole);
+router.delete("/:id", ...adminAccess, membershipController.deleteMember);
 
 export default router;

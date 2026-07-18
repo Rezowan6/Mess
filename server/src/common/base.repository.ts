@@ -32,6 +32,13 @@ export abstract class BaseRepository<T extends Model> {
     return this.model.findByPk(id);
   }
 
+  async findByIdWithOptions(
+    id: number,
+    options?: Omit<FindOptions<Attributes<T>>, "where">,
+  ): Promise<T | null> {
+    return this.model.findByPk(id, options);
+  }
+
   async findOne(where: WhereOptions<Attributes<T>>): Promise<T | null> {
     return this.model.findOne({
       where,

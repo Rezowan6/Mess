@@ -1,23 +1,25 @@
-import { RegisterPayload } from "../auth/auth.interface.js";
-import { CreateUserResponse } from "./user.interface.js";
-import { createUser } from "./user.repository.js";
+import { IRegisterPayload } from "../auth/auth.interface.js";
+import { ICreateUserResponse } from "./user.interface.js";
+import { userRepository } from "./user.repository.js";
 
-export const createRegisterService = async (
-  data: RegisterPayload,
-): Promise<CreateUserResponse> => {
-  const user = await createUser({
-    name: data?.name,
-    email: data.email,
-    password: data.password,
-    isVerified: false,
-    status: "active",
-  });
+class UserService {
+  async create(data: IRegisterPayload): Promise<ICreateUserResponse> {
+    const user = await userRepository.create({
+      name: data?.name,
+      email: data.email,
+      password: data.password,
+      isVerified: false,
+      status: "active",
+    });
 
-  return {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    isVerified: user.isVerified,
-    status: user.status,
-  };
-};
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      isVerified: user.isVerified,
+      status: user.status,
+    };
+  }
+}
+
+export const userService = new UserService();

@@ -2,13 +2,13 @@ import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import { asyncHandler } from "@/middlewares/index.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
-import { MembershipService } from "./tenantMembership.service.js";
+import { membershipService } from "./tenantMembership.service.js";
 
 export class TenantMembershipController {
-   getMembers = asyncHandler(async (req: Request, res: Response) => {
+  getMembers = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 
-    const members = await MembershipService.getMembers(tenantId);
+    const members = await membershipService.getMembers(tenantId);
 
     return sendResponse(res, {
       statusCode: 200,
@@ -17,13 +17,13 @@ export class TenantMembershipController {
     });
   });
 
-   updateRole = asyncHandler(async (req: Request, res: Response) => {
+  updateRole = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, membershipId, role: currentRole } = getTenantContext(req);
 
     const id = Number(req.params.id);
     const { role } = req.body;
 
-    const members = await MembershipService.updateRole({
+    const members = await membershipService.updateRole({
       tenantId,
       currentMembershipId: membershipId,
       currentRole,
@@ -38,11 +38,11 @@ export class TenantMembershipController {
     });
   });
 
-   deleteMember = asyncHandler(async (req: Request, res: Response) => {
+  deleteMember = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, membershipId, role } = getTenantContext(req);
     const targetMembershipId = Number(req.params.id);
 
-    await MembershipService.deleteMember({
+    await membershipService.deleteMember({
       tenantId,
       currentMembershipId: membershipId,
       currentRole: role,
@@ -56,4 +56,4 @@ export class TenantMembershipController {
   });
 }
 
-export const MembershipController = new TenantMembershipController();
+export const membershipController = new TenantMembershipController();

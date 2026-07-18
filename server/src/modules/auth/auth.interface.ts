@@ -1,6 +1,6 @@
 import { UserStatus } from "../user/user.interface.js";
 
-export interface RegisterPayload {
+export interface IRegisterPayload {
   name: string;
   email: string;
   password: string;

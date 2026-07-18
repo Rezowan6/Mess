@@ -1,39 +1,48 @@
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { ApiResponse, cookieOptions } from "@/utils/index.js";
+import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
-import * as authService from "./auth.service.js";
+import { authService } from "./auth.service.js";
 
-export const register = asyncHandler(async (req: Request, res: Response) => {
-  const { user, message } = await authService.register(req.body);
+class AuthController {
+  register = asyncHandler(async (req: Request, res: Response) => {
+    const data = await authService.register(req.body);
 
-  res.status(201).json(new ApiResponse(201, message, user));
-});
-
-export const verify = asyncHandler(async (req: Request, res: Response) => {
-  const { token } = req.params;
-
-  const { message } = await authService.verify(token);
-
-  res.status(201).json(new ApiResponse(201, message, null));
-});
-
-export const login = asyncHandler(async (req: Request, res: Response) => {
-  const { data, message, refreshToken } = await authService.login({
-    ...req.body,
-    ip: req,
-    userAgent: req.headers["user-agent"],
+    sendResponse(res, {
+      statusCode: 201,
+      message: "",
+      data,
+    });
   });
 
-  res.cookie("refreshToken", refreshToken, {
-    ...cookieOptions,
-    maxAge: 30 * 24 * 60 * 60 * 1000,
+  verify = asyncHandler(async (req: Request, res: Response) => {
+    const { token } = req.params;
+
+    const data = await authService.verify(token);
+
+    sendResponse(res, {
+      statusCode: 201,
+      message: "Email verified successfully",
+      data,
+    });
   });
 
-  res.status(201).json(new ApiResponse(201, message, data));
-});
+  login = asyncHandler(async (req: Request, res: Response) => {
+    const { data, message, refreshToken } = await authService.login({
+      ...req.body,
+      ip: req,
+      userAgent: req.headers["user-agent"],
+    });
 
-export const refreshToken = asyncHandler(
-  async (req: Request, res: Response) => {
+    res.cookie("refreshToken", refreshToken, {
+      ...cookieOptions,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+
+    res.status(201).json(new ApiResponse(201, message, data));
+  });
+
+  refreshToken = asyncHandler(async (req: Request, res: Response) => {
     const token = req.cookies.refreshToken;
 
     const { accessToken } = await authService.refreshToken(token);
@@ -43,23 +52,27 @@ export const refreshToken = asyncHandler(
         accessToken,
       }),
     );
-  },
-);
+  });
 
-// logout
-export const logout = asyncHandler(async (req: Request, res: Response) => {
-  const refreshToken = req.cookies.refreshToken;
-  const { message } = await authService.logout(refreshToken);
+  // logout
+  logout = asyncHandler(async (req: Request, res: Response) => {
+    const refreshToken = req.cookies.refreshToken;
+    const { message } = await authService.logout(refreshToken);
 
-  res.clearCookie("refreshToken", cookieOptions);
+    res.clearCookie("refreshToken", cookieOptions);
 
-  res.status(200).json(new ApiResponse(201, message, null));
-});
+    res.status(200).json(new ApiResponse(201, message, null));
+  });
 
-export const me = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user.id;
+  me = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user.id;
 
-  const user = await authService.getMe(userId);
+    const user = await authService.getMe(userId);
 
-  res.status(200).json(new ApiResponse(200, "User fetched successfully", user));
-});
+    res
+      .status(200)
+      .json(new ApiResponse(200, "User fetched successfully", user));
+  });
+}
+
+export const authController = new AuthController();

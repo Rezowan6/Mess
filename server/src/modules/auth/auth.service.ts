@@ -1,10 +1,5 @@
-import { env, sequelize } from "@/configs/index.js";
-import {
-  RefreshToken,
-  Tenant,
-  TenantMembership,
-  User,
-} from "@/models/index.js";
+import { env } from "@/configs/index.js";
+import { RefreshToken, User } from "@/models/index.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { comparePassword } from "@/utils/bcrypt.js";
 import { getClientIp } from "@/utils/getClient.ip.js";
@@ -20,228 +15,203 @@ import {
   createRefreshToken,
   revokeRefreshToken,
 } from "../refreshToken/refreshToken.service.js";
-import { createRegisterService } from "../user/user.service.js";
+import { userRepository } from "../user/user.repository.js";
+import { userService } from "../user/user.service.js";
 import {
+  IRegisterPayload,
   LoginPayload,
   LoginResponse,
-  RegisterPayload,
-  RegisterResponse,
 } from "./auth.interface.js";
-import { findUserByEmail } from "./auth.repository.js";
+import { authRepository } from "./auth.repository.js";
 
-//  service
-export const register = async (
-  payload: RegisterPayload,
-): Promise<RegisterResponse> => {
-  const exists = await findUserByEmail(payload.email);
+class AuthService {
+  register = async (payload: IRegisterPayload) => {
+    const exists = await authRepository.findOne({ email: payload.email });
 
-  if (exists) {
-    throw new ApiError(409, "User already exists");
-  }
+    if (exists) {
+      throw new ApiError(409, "User already exists");
+    }
 
-  const user = await createRegisterService({
-    ...payload,
-  });
+    const user = await userService.create({
+      ...payload,
+    });
 
-  // OUTSIDE TRANSACTION (IMPORTANT)
-  const token = emailVerifyToken({
-    userId: user?.id,
-    email: user?.email,
-  });
-  const verifyLink = `${env.FRONTEND_URL}/verify-email/${token}`;
+    // OUTSIDE TRANSACTION (IMPORTANT)
+    const token = emailVerifyToken({
+      userId: user?.id,
+      email: user?.email,
+    });
+    const verifyLink = `${env.FRONTEND_URL}/verify-email/${token}`;
 
-  await sendVerificationEmail(user?.email, verifyLink);
+    await sendVerificationEmail(user?.email, verifyLink);
 
-  const saveUser = {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    isVerified: user.isVerified,
-    status: user.status,
-  };
-
-  return {
-    message: "Registration successful. Please verify email.",
-    user: { ...saveUser },
-  };
-};
-
-export const verify = async (token: any) => {
-  if (!token) {
-    throw new ApiError(400, "Verification token is required");
-  }
-
-  let decoded: any;
-
-  try {
-    decoded = verifyToken(token, env.VERIFY_TOKEN_SECRET);
-  } catch (err) {
-    throw new ApiError(401, "Invalid or expired verification token");
-  }
-
-  const { userId, email } = decoded;
-
-  // 2. FIND USER
-  const user = await User.findOne({
-    where: {
-      id: userId,
-      email,
-    },
-  });
-
-  if (!user) {
-    throw new ApiError(404, "User not found");
-  }
-
-  if (user.isVerified) {
-    return {
-      message: "Email already verified",
+    const saveUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      isVerified: user.isVerified,
+      status: user.status,
     };
-  }
 
-  // 4. UPDATE USER (TRANSACTION SAFE)
-  await sequelize.transaction(async (transaction) => {
-    await user.update(
+    return saveUser;
+  };
+
+  verify = async (token: any) => {
+    if (!token) {
+      throw new ApiError(400, "Verification token is required");
+    }
+
+    let decoded: any;
+
+    try {
+      decoded = verifyToken(token, env.VERIFY_TOKEN_SECRET);
+    } catch (err) {
+      throw new ApiError(401, "Invalid or expired verification token");
+    }
+
+    const { userId, email } = decoded;
+
+    // 2. FIND USER
+    const user = await User.findOne({
+      where: {
+        id: userId,
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
+
+    if (user.isVerified) {
+      return {
+        message: "Email already verified",
+      };
+    }
+
+    await userRepository.update(
+      { email: token.email },
       {
         isVerified: true,
       },
-      { transaction },
     );
-  });
 
-  // 5. RESPONSE
-  return {
-    message: "Email verified successfully",
-  };
-};
-
-export const login = async (data: LoginPayload): Promise<LoginResponse> => {
-  const { email, password, ip, userAgent } = data;
-
-  // 2. user check
-  const user = await findUserByEmail(email);
-
-  if (!user) {
-    throw new ApiError(401, "Invalid credentials");
-  }
-
-  if (!user.isVerified) {
-    throw new ApiError(403, "Please verify your email first");
-  }
-
-  // 3. password verify
-  const passwordMatch = await comparePassword(password, user.password);
-
-  if (!passwordMatch) {
-    throw new ApiError(401, "Invalid credentials");
-  }
-
-  // 4. create payload
-  const payload = {
-    id: user.id,
-    email: user.email,
+    return null;
   };
 
-  // 5. access token
-  const accessToken = createAccessToken(payload);
+  getMe = async (userId: number) => {
+    const user = await authRepository.getMeById(userId);
 
-  // 6. refresh token
-  const refreshToken = generateRefreshToken(payload);
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
 
-  const userIp = getClientIp(ip);
-
-  await createRefreshToken({
-    userId: user.id,
-    token: refreshToken,
-    ipAddress: userIp,
-    userAgent,
-  });
-
-  const saveUser = {
-    id: user.id,
-    name: user.name,
-    email: user.email,
+    return user;
   };
-  return {
-    message: "Login successfully",
-    refreshToken,
-    data: {
-      accessToken,
-      user: saveUser || null,
-    },
-  };
-};
 
-export const refreshToken = async (token: string) => {
-  if (!token) {
-    throw new ApiError(401, "Refresh token missing");
-  }
+  login = async (data: LoginPayload): Promise<LoginResponse> => {
+    const { email, password, ip, userAgent } = data;
 
-  const decoded = verifyToken(token, env.REFRESH_TOKEN_SECRET);
+    // 2. user check
+    const user = await authRepository.findOne({ email });
 
-  const storedToken = await RefreshToken.findOne({
-    where: {
-      tokenHash: hashToken(token),
-    },
-  });
+    if (!user) {
+      throw new ApiError(401, "Invalid credentials");
+    }
 
-  if (!storedToken) {
-    throw new ApiError(401, "Invalid refresh token");
-  }
+    if (!user.isVerified) {
+      throw new ApiError(403, "Please verify your email first");
+    }
 
-  if (storedToken.expiresAt < new Date()) {
-    throw new ApiError(401, "Refresh token expired");
-  }
+    // 3. password verify
+    const passwordMatch = await comparePassword(password, user.password);
 
-  const accessToken = createAccessToken({
-    id: decoded.id,
-    email: decoded.email,
-  });
+    if (!passwordMatch) {
+      throw new ApiError(401, "Invalid credentials");
+    }
 
-  return {
-    accessToken,
-  };
-};
+    // 4. create payload
+    const payload = {
+      id: user.id,
+      email: user.email,
+    };
 
-export const logout = async (refreshToken: string) => {
-  if (!refreshToken) {
-    throw new ApiError(401, "Refresh token missing");
-  }
-  if (!refreshToken) {
-    throw new ApiError(401, "Refresh token missing");
-  }
+    // 5. access token
+    const accessToken = createAccessToken(payload);
 
-  // 1. revoke token (DB update)
-  await revokeRefreshToken(refreshToken);
+    // 6. refresh token
+    const refreshToken = generateRefreshToken(payload);
 
-  return {
-    message: "Logout successful",
-  };
-};
+    const userIp = getClientIp(ip);
 
-export const getMe = async (userId: number) => {
-  const user = await User.findByPk(userId, {
-    attributes: ["id", "name", "email"],
-    include: [
-      {
-        model: TenantMembership,
-        as: "tenantMemberships",
-        attributes: ["tenantId", "role", "status"],
+    await createRefreshToken({
+      userId: user.id,
+      token: refreshToken,
+      ipAddress: userIp,
+      userAgent,
+    });
 
-        include: [
-          {
-            model: Tenant,
-            as: "tenant",
-            attributes: ["id", "name", "slug"],
-          },
-        ],
+    const saveUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
+    return {
+      message: "Login successfully",
+      refreshToken,
+      data: {
+        accessToken,
+        user: saveUser || null,
       },
-    ],
-  });
+    };
+  };
 
-  if (!user) {
-    throw new ApiError(404, "User not found");
-  }
+  refreshToken = async (token: string) => {
+    if (!token) {
+      throw new ApiError(401, "Refresh token missing");
+    }
 
-  return user;
-};
+    const decoded = verifyToken(token, env.REFRESH_TOKEN_SECRET);
+
+    const storedToken = await RefreshToken.findOne({
+      where: {
+        tokenHash: hashToken(token),
+      },
+    });
+
+    if (!storedToken) {
+      throw new ApiError(401, "Invalid refresh token");
+    }
+
+    if (storedToken.expiresAt < new Date()) {
+      throw new ApiError(401, "Refresh token expired");
+    }
+
+    const accessToken = createAccessToken({
+      id: decoded.id,
+      email: decoded.email,
+    });
+
+    return {
+      accessToken,
+    };
+  };
+
+  logout = async (refreshToken: string) => {
+    if (!refreshToken) {
+      throw new ApiError(401, "Refresh token missing");
+    }
+    if (!refreshToken) {
+      throw new ApiError(401, "Refresh token missing");
+    }
+
+    // 1. revoke token (DB update)
+    await revokeRefreshToken(refreshToken);
+
+    return {
+      message: "Logout successful",
+    };
+  };
+}
+
+export const authService = new AuthService();

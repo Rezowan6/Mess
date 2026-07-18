@@ -6,18 +6,18 @@ export interface CreateUserDto {
   password: string;
 }
 
+export interface ICreateUserResponse {
+  id: number;
+  name: string | null;
+  email: string;
+  isVerified: boolean;
+  status: UserStatus;
+}
+
 export interface CreateUserPayload {
   name?: string | null;
   email: string;
   password: string;
   status?: UserStatus;
   isVerified?: boolean;
-}
-
-export interface CreateUserResponse {
-  id: number;
-  name: string | null;
-  email: string;
-  isVerified: boolean;
-  status: UserStatus;
 }
