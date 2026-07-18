@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 
 import { userManagementApi } from "../api/userManagement.api";
 
@@ -10,16 +9,10 @@ export const useUpdateRole = () => {
     mutationFn: ({ id, role }: { id: number; role: string }) =>
       userManagementApi.updateRole(id, role),
 
-    onSuccess: (res) => {
-      toast.success(res.message ?? "Role updated successfully");
-
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["tenant-members"],
       });
-    },
-
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message ?? "Failed to update role.");
     },
   });
 };

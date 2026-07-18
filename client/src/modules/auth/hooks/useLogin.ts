@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import tost from "react-hot-toast";
 
 import { authApi } from "../api/auth.api";
 
@@ -17,13 +16,9 @@ export const useLogin = () => {
 
       setAccessToken(accessToken);
 
-      tost.success(res.message);
-
-      window.location.replace(ROUTES.DASHBOARD);
-    },
-
-    onError: (err) => {
-      tost.error(err.message ?? "Something went wrong, Login failed.");
+      setTimeout(() => {
+        window.location.replace(ROUTES.DASHBOARD);
+      }, 1000);
     },
   });
 };
