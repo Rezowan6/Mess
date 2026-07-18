@@ -1,12 +1,13 @@
+import { BaseRepository } from "@/common/base.repository.js";
 import { Notice } from "@/models/index.js";
 
-export class NoticeRepository {
-  async create(payload: any) {
-    return Notice.create(payload);
+class NoticeRepository extends BaseRepository<Notice> {
+  constructor() {
+    super(Notice);
   }
 
   async getAll(tenantId: number, mealSessionId: number) {
-    return Notice.findAll({
+    return this.findAll({
       where: {
         tenantId,
         mealSessionId,
@@ -21,8 +22,8 @@ export class NoticeRepository {
     });
   }
 
-  async getById(id: number, tenantId: number, mealSessionId: number,) {
-    return Notice.findOne({
+  async getById(id: number, tenantId: number, mealSessionId: number) {
+    return this.findOneWithOptions({
       where: {
         id,
         tenantId,
@@ -37,25 +38,6 @@ export class NoticeRepository {
     });
   }
 
-  async update(id: number, tenantId: number,mealSessionId: number, payload: Partial<any>) {
-    await Notice.update(payload, {
-      where: {
-        id,
-        tenantId,
-        mealSessionId,
-      },
-    });
-
-    return this.getById(id, tenantId, mealSessionId);
-  }
-
-  async delete(id: number, tenantId: number, mealSessionId: number) {
-    return Notice.destroy({
-      where: {
-        id,
-        tenantId,
-        mealSessionId,
-      },
-    });
-  }
 }
+
+export const noticeRepository = new NoticeRepository();

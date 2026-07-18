@@ -4,9 +4,7 @@ import { sendResponse } from "@/utils/sendResponse.utils.js";
 
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
-import { NoticeService } from "./notice.service.js";
-
-const noticeService = new NoticeService();
+import { noticeService } from "./notice.service.js";
 
 export class NoticeController {
   create = asyncHandler(async (req: Request, res: Response) => {
@@ -39,11 +37,10 @@ export class NoticeController {
   });
 
   getById = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const id = Number(req.params.id);
 
-    const result = await noticeService.getById(id, tenantId, mealSessionId);
+    const result = await noticeService.findById(id,);
 
     sendResponse(res, {
       statusCode: 200,
@@ -53,11 +50,13 @@ export class NoticeController {
   });
 
   update = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const id = Number(req.params.id);
 
-    const result = await noticeService.update(id, tenantId,mealSessionId, req.body);
+    const result = await noticeService.update(
+      id,
+      req.body,
+    );
 
     sendResponse(res, {
       statusCode: 200,
@@ -67,11 +66,10 @@ export class NoticeController {
   });
 
   delete = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const id = Number(req.params.id);
 
-    await noticeService.delete(id, tenantId, mealSessionId);
+    await noticeService.delete(id);
 
     sendResponse(res, {
       statusCode: 200,
