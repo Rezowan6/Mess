@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { Mail } from "lucide-react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -11,6 +12,7 @@ import { ROLES } from "@/shared/constants/roles";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 
 import { Button } from "@/shared/components/ui/Button";
+import { Input } from "@/shared/components/ui/Input";
 import { Modal } from "@/shared/components/ui/Modal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useState } from "react";
@@ -66,19 +68,14 @@ export const InviteMemberModal = () => {
         title="Invite Member"
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-          <div>
-            <label className="label">Email</label>
-
-            <input
-              className="input input-bordered w-full"
-              placeholder="member@email.com"
-              {...register("email")}
-            />
-
-            {errors.email && (
-              <p className="text-error text-sm">{errors.email.message}</p>
-            )}
-          </div>
+          <Input
+            label="Email"
+            type="email"
+            leftIcon={<Mail size={18} />}
+            placeholder="member@email.com"
+            error={errors?.email?.message}
+            {...register("email")}
+          />
 
           <div>
             <label className="label">Role</label>
