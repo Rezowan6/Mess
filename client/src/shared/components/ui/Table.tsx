@@ -76,7 +76,7 @@ export function Table<T>({
     );
   }
 
-  if (data.length) {
+  if (!data.length) {
     return (
       <EmptyState
         title={message?.empty.title}

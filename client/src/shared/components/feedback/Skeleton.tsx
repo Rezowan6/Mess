@@ -17,7 +17,7 @@ export const Skeleton = ({ className }: SkeletonProps) => {
           absolute inset-0
           -translate-x-full
           animate-[shimmer_1.6s_infinite]
-          bg-gradient-to-r
+          bg-linear-to-r
           from-transparent
           via-teal-300/30
           to-transparent
