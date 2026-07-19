@@ -14,7 +14,9 @@ import { useRBAC } from "@/shared/hooks/useRBAC";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
 import { Modal } from "@/shared/components/ui/Modal";
+import { Select } from "@/shared/components/ui/Select";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { ROLE_OPTIONS } from "@/shared/constants/selectOptions";
 import { useState } from "react";
 
 export const InviteMemberModal = () => {
@@ -77,23 +79,13 @@ export const InviteMemberModal = () => {
             {...register("email")}
           />
 
-          <div>
-            <label className="label">Role</label>
-
-            <select
-              className="p-3 w-full bg-[#1c356b88] rounded-md outline-none"
-              {...register("role")}
-            >
-              <option value={ROLES.MEMBER}>Member</option>
-
-              <option value={ROLES.MANAGER}>Manager</option>
-            </select>
-
-            {errors.role && (
-              <p className="text-error text-sm">{errors.role.message}</p>
-            )}
-          </div>
-
+          <Select
+            tooltip="Select role"
+            label="Role"
+            options={ROLE_OPTIONS}
+            error={errors.role?.message}
+            {...register("role")}
+          />
           <div className="flex justify-end gap-2 pt-4">
             <Button
               type="button"

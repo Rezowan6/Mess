@@ -49,6 +49,7 @@ export const MemberActions = ({ member }: Props) => {
     <div className="flex items-center gap-2">
       {can(PERMISSIONS.USER_UPDATE) && (
         <Select
+        tooltip="Update member role"
           value={member.role}
           options={roleOptions}
           onChange={handleRoleChange}

@@ -9,7 +9,10 @@ export interface SelectOption {
   disabled?: boolean;
 }
 
-interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "size"> {
+interface SelectProps extends Omit<
+  SelectHTMLAttributes<HTMLSelectElement>,
+  "size"
+> {
   label?: string;
 
   error?: string;
@@ -84,7 +87,6 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         data-tip={tooltip}
       >
         {leftIcon && <span className="text-base-content/60">{leftIcon}</span>}
-
         <select
           ref={ref}
           disabled={disabled || isLoading}
@@ -96,7 +98,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           {...props}
         >
           {placeholder && (
-            <option value="" disabled className="cursor-pointer" >
+            <option value="" disabled className="cursor-pointer">
               {isLoading && <option>{loadingText}</option>}
               {placeholder}
             </option>
@@ -130,6 +132,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </span>
           </label>
         )}
+        {select}
 
         {error ? (
           <p className="text-sm text-error">{error}</p>
