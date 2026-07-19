@@ -16,6 +16,24 @@ shared/
         ├── FormField.tsx      ✅
         └── FormLabel.tsx
 
+Future versions-এ add করবো: Table.tsx
+<Table
+    data={members}
+    columns={columns}
+    loading={isLoading}
+    error={isError}
+/>
+
+✅ Pagination
+✅ Sorting
+✅ Search
+✅ Row Selection
+✅ Bulk Action
+✅ Column Visibility
+✅ Export CSV
+✅ Server Side Pagination
+✅ Virtualization
+
 
 ✅ Button
 ✅ Input
