@@ -15,6 +15,7 @@ import { ROUTES } from "@/shared/constants/routes";
 import { PermissionGuard } from "@/shared/guards/permission.guard";
 import { RoleGuard } from "@/shared/guards/role.guard";
 
+import { AcceptInvitePage } from "@/modules/invite/pages/AcceptInvitePage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
 
 export const router = createBrowserRouter([
@@ -25,10 +26,6 @@ export const router = createBrowserRouter([
     children: [
       {
         path: ROUTES.LOGIN,
-        element: <LoginPage />,
-      },
-      {
-        path: ROUTES.ACCEPT_INVITE,
         element: <LoginPage />,
       },
     ],
@@ -83,5 +80,10 @@ export const router = createBrowserRouter([
   {
     path: "*",
     element: <NotFoundPage />,
+  },
+
+  {
+    path: ROUTES.INVITES_ACCEPT,
+    element: <AcceptInvitePage />,
   },
 ]);

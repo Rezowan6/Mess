@@ -29,7 +29,6 @@ export interface IAcceptInvitePayload {
   token: string;
   name: string;
   password: string;
-  context: IGetTenantContentRes;
 }
 
 export interface ICancelPayload {

@@ -74,10 +74,10 @@ class InviteService {
   }
 
   async validate(token: string) {
-    const hashToken = IDep.hashToken(token);
+    const tokenHash = IDep.hashToken(token);
 
     // 2. Find invite
-    const invite = await inviteRepository.findOne({ tokenHash: hashToken });
+    const invite = await inviteRepository.findOne({ tokenHash });
 
     if (!invite) {
       throw new ApiError(404, "Invalid invite token.");
@@ -115,7 +115,7 @@ class InviteService {
   }
 
   async accept(payload: IAcceptInvitePayload) {
-    const { name, password, token } = payload;
+    const { name, password, token, } = payload;
 
     return IDep.sequelize.transaction(async (transaction) => {
       const { invite } = await this.validate(token);
@@ -171,7 +171,7 @@ class InviteService {
 
       // Update invite
       await inviteRepository.update(
-        { id: user.id },
+        { id: invite.id },
         {
           status: InviteStatus.ACCEPTED,
           acceptedAt: new Date(),

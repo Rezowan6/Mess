@@ -4,7 +4,7 @@ import { ISendInviteEmailPayload } from "../invite/invite.interface.js";
 
 export const sendInviteEmail = async (payload: ISendInviteEmailPayload) => {
   const { recipientName, token, name, email, inviterName } = payload;
-  const inviteLink = `${env.FRONTEND_URL}/accept-invite/${token}`;
+  const inviteLink = `${env.FRONTEND_URL}/invite/accept/${token}`;
 
   const html = `
     <div style="font-family: Arial, sans-serif;">

@@ -31,6 +31,7 @@ API.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     API_ENDPOINTS.AUTH.LOGIN,
     API_ENDPOINTS.AUTH.REFRESH,
     API_ENDPOINTS.AUTH.ME,
+    API_ENDPOINTS.INVITE.ACCEPT,
   ];
 
   const shouldSkipTenant = skipTenantHeaderRoutes.some((route) =>

@@ -23,7 +23,7 @@ class InviteController {
   });
 
   accept = asyncHandler(async (req: Request, res: Response) => {
-    const context = getTenantContext(req);
+
     const token = getParamString(req.params.token);
     const { name, password } = req.body;
 
@@ -31,7 +31,6 @@ class InviteController {
       token,
       name,
       password,
-      context,
     });
 
     sendResponse(res, {

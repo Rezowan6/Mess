@@ -15,4 +15,8 @@ export const API_ENDPOINTS = {
 
     REMOVE: (id: number) => `/tenant-memberships/${id}`,
   },
+
+  INVITE: {
+    ACCEPT: "/invites/accept"
+  }
 };
