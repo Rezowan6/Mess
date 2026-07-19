@@ -89,14 +89,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           disabled={disabled || isLoading}
           className={clsx(
-            "select outline-none focus-within:border-none focus-within:outline-none",
+            "p-2 w-full bg-[#1c356b88] cursor-pointer rounded-md outline-none",
 
             className,
           )}
           {...props}
         >
           {placeholder && (
-            <option value="" disabled >
+            <option value="" disabled className="cursor-pointer" >
               {isLoading && <option>{loadingText}</option>}
               {placeholder}
             </option>

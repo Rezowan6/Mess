@@ -81,7 +81,7 @@ export const InviteMemberModal = () => {
             <label className="label">Role</label>
 
             <select
-              className="select w-full focus-within:border-primary focus-within:outline-none"
+              className="p-3 w-full bg-[#1c356b88] rounded-md outline-none"
               {...register("role")}
             >
               <option value={ROLES.MEMBER}>Member</option>
