@@ -12,6 +12,9 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { useRemoveMember } from "../hooks/useRemoveMember";
 
+import { Select } from "@/shared/components/ui/Select";
+import { ROLES } from "@/shared/constants/roles";
+import { ROLE_OPTIONS } from "@/shared/constants/selectOptions";
 import { useUpdateRole } from "../hooks/useUpdateRole";
 
 interface Props {
@@ -21,7 +24,7 @@ interface Props {
 export const MemberActions = ({ member }: Props) => {
   const openConfirm = useConfirmStore((state) => state.openConfirm);
 
-  const { can } = useRBAC();
+  const { can, role } = useRBAC();
 
   const updateRole = useUpdateRole();
 
@@ -35,22 +38,21 @@ export const MemberActions = ({ member }: Props) => {
     });
   };
 
+  const roleOptions =
+    role === ROLES.ADMIN
+      ? ROLE_OPTIONS
+      : ROLE_OPTIONS.filter((item) => item.value !== ROLES.ADMIN);
+
   const memberName = member.user?.name ?? "this member";
 
   return (
     <div className="flex items-center gap-2">
       {can(PERMISSIONS.USER_UPDATE) && (
-        <select
-          className="select select-bordered select-sm"
+        <Select
           value={member.role}
+          options={roleOptions}
           onChange={handleRoleChange}
-        >
-          <option value="admin">Admin</option>
-
-          <option value="manager">Manager</option>
-
-          <option value="member">Member</option>
-        </select>
+        />
       )}
 
       {can(PERMISSIONS.USER_DELETE) && (

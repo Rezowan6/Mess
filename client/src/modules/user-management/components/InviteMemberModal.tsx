@@ -1,5 +1,5 @@
-import { useForm } from "react-hook-form";
 import { Mail } from "lucide-react";
+import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -81,7 +81,7 @@ export const InviteMemberModal = () => {
             <label className="label">Role</label>
 
             <select
-              className="select select-bordered w-full"
+              className="select w-full focus-within:border-primary focus-within:outline-none"
               {...register("role")}
             >
               <option value={ROLES.MEMBER}>Member</option>
