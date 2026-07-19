@@ -12,6 +12,8 @@ import {
 import { useAcceptInvite } from "../hooks/useAcceptInvite";
 
 import { Button } from "@/shared/components/ui/Button";
+import { Input } from "@/shared/components/ui/Input";
+import { PasswordInput } from "@/shared/components/ui/PasswordInput";
 import { ROUTES } from "@/shared/constants/routes";
 
 export const AcceptInvitePage = () => {
@@ -60,40 +62,21 @@ export const AcceptInvitePage = () => {
           </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-            <div>
-              <input
-                className="input input-bordered w-full"
-                placeholder="Full Name"
-                {...register("name")}
-              />
-
-              <p className="text-error text-sm">{errors.name?.message}</p>
-            </div>
-
-            <div>
-              <input
-                type="password"
-                className="input input-bordered w-full"
-                placeholder="Password"
-                {...register("password")}
-              />
-
-              <p className="text-error text-sm">{errors.password?.message}</p>
-            </div>
-
-            <div>
-              <input
-                type="password"
-                className="input input-bordered w-full"
-                placeholder="Confirm Password"
-                {...register("confirmPassword")}
-              />
-
-              <p className="text-error text-sm">
-                {errors.confirmPassword?.message}
-              </p>
-            </div>
-
+            <Input
+              placeholder="Enter full Name"
+              error={errors.name?.message}
+              {...register("name")}
+            />
+            <PasswordInput
+              placeholder="Enter your password"
+              error={errors.password?.message}
+              {...register("password")}
+            />{" "}
+            <PasswordInput
+              placeholder="Enter confirm Password"
+              error={errors.confirmPassword?.message}
+              {...register("confirmPassword")}
+            />
             <Button
               type="submit"
               fullWidth
