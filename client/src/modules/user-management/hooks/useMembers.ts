@@ -18,6 +18,8 @@ export const useMembers = (params: IMemberParams) => {
 
     queryFn: async () => await userManagementApi.getMembers(params),
 
+    placeholderData: (previous) => previous,
+
     enabled: !!currentTenant,
 
     staleTime: 1000 * 60 * 5,

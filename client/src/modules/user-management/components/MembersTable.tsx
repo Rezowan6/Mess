@@ -1,66 +1,127 @@
+import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { Pagination } from "@/shared/components/ui/Pagination";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Table } from "@/shared/components/ui/Table";
-import { useDebounce } from "@/shared/hooks/useDebounce";
 
 import { memberColumns } from "../constants/member.columns";
 import { MEMBER_MESSAGES } from "../constants/member.messages";
+
 import { useMembers } from "../hooks/useMembers";
-import { InviteMemberModal } from "./InviteMemberModal";
+
 import { MembersTableSkeleton } from "./MembersTableSkeleton";
 
 export const MembersTable = () => {
-  const [params, setParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const page = Number(params.get("page")) || 1;
+  /**
+   * URL Query Params
+   */
 
-  const search = params.get("search") || "";
+  const page = Number(searchParams.get("page")) || 1;
 
-  const debouncedSearch = useDebounce(search);
+  const search = searchParams.get("search") || "";
 
-  const { data, isLoading, isError, refetch } = useMembers({
+  /**
+   * Members Query
+   */
+
+  const { data, isPending, isFetching, isError, refetch } = useMembers({
     page,
+
     limit: 10,
-    search: debouncedSearch,
+
+    search,
   });
 
   const members = data?.data ?? [];
 
   const meta = data?.meta;
 
-  const handleSerarch = (value: string) => {
-    setParams({
-      page: "1",
-      search: value,
-    });
+  /**
+   * Search Handler
+   *
+   * SearchInput already debounce করবে
+   */
+
+  const handleSearch = (value: string) => {
+    setSearchParams(
+      {
+        page: "1",
+
+        ...(value && {
+          search: value,
+        }),
+      },
+
+      {
+        replace: true,
+      },
+    );
   };
+
+  /**
+   * Pagination
+   */
 
   const handlePage = (page: number) => {
-    setParams({
+    setSearchParams({
       page: String(page),
-      search,
+
+      ...(search && {
+        search,
+      }),
     });
   };
 
-  if (isLoading) {
+  /**
+   * Reset page when tenant changes
+   * optional safety
+   */
+
+  useEffect(() => {
+    if (page !== 1) {
+      setSearchParams(
+        {
+          page: "1",
+
+          ...(search && {
+            search,
+          }),
+        },
+
+        {
+          replace: true,
+        },
+      );
+    }
+  }, []);
+
+  /**
+   * First Loading
+   */
+
+  if (isPending) {
     return <MembersTableSkeleton />;
   }
 
   return (
-    <>
-      <SearchInput value={search} onChange={handleSerarch} />
+    <div className="space-y-4">
+      <SearchInput value={search} onChange={handleSearch} />
+
+      {/* Table */}
 
       <Table
         columns={memberColumns}
         data={members}
-        loading={isLoading}
+        loading={isFetching}
         error={isError}
         message={MEMBER_MESSAGES}
         refetch={refetch}
-        action={<InviteMemberModal />}
       />
+
+      {/* Pagination */}
 
       {meta && (
         <Pagination
@@ -69,6 +130,6 @@ export const MembersTable = () => {
           onChange={handlePage}
         />
       )}
-    </>
+    </div>
   );
 };

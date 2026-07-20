@@ -89,7 +89,7 @@ export function Table<T>({
   return (
     <div
       className={clsx(
-        "overflow-x-auto rounded-xl border border-border bg-surface",
+        "overflow-x-auto rounded-xl border border-border bg-surface my-4",
         className,
       )}
     >
