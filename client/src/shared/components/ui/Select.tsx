@@ -76,7 +76,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const selectElement = (
       <div
         className={clsx(
-          "flex items-center gap-2 rounded-sm border bg-surface px-3 transition-colors",
+          "flex w-full items-center gap-2 rounded-sm border bg-surface px-3 transition-colors",
           error ? "border-error" : "border-border focus-within:border-primary",
           disabled && "cursor-not-allowed opacity-60",
         )}

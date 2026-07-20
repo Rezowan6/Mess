@@ -1,4 +1,5 @@
 import { useDebounce } from "@/shared/hooks/useDebounce";
+import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Input } from "./Input";
 
@@ -11,7 +12,7 @@ interface Props {
 export const SearchInput = ({ value, onChange }: Props) => {
   const [input, setInput] = useState(value);
 
-  const debouncedValue = useDebounce(input, 500);
+  const debouncedValue = useDebounce(input, 600);
 
   useEffect(() => {
     if (debouncedValue !== value) {
@@ -25,6 +26,7 @@ export const SearchInput = ({ value, onChange }: Props) => {
 
   return (
     <Input
+      leftIcon={<Search size={18} />}
       value={input}
       placeholder="Search member..."
       onChange={(e) => setInput(e.target.value)}
