@@ -1,5 +1,13 @@
-
 @theme {
+  /* Gradient */
+  --background-image-gradient-primary: var(--gradient-primary);
+  --background-image-gradient-success: var(--gradient-success);
+  --background-image-gradient-error: var(--gradient-error);
+  --background-image-gradient-warning: var(--gradient-warning);
+  --background-image-gradient-accent: var(--gradient-accent);
+  --background-image-gradient-info: var(--gradient-info);
+  --background-image-gradient-secondary: var(--gradient-secondary);
+
   /* Brand */
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
@@ -19,12 +27,40 @@
   /* Text */
   --color-text: var(--text);
   --color-text-muted: var(--text-muted);
+
+  /* Badge */
+  --color-badge-success: var(--badge-success);
+  --color-badge-success-content: var(--badge-success-content);
+
+  --color-badge-warning: var(--badge-warning);
+  --color-badge-warning-content: var(--badge-warning-content);
+
+  --color-badge-error: var(--badge-error);
+  --color-badge-error-content: var(--badge-error-content);
+
+  --color-badge-info: var(--badge-info);
+  --color-badge-info-content: var(--badge-info-content);
 }
 /* ------------------------------
    Light Theme (Default)
 ------------------------------ */
 
 :root {
+  /*  Gradients */
+  --gradient-primary: linear-gradient(to right, #2563eb, #4f46e5);
+
+  --gradient-success: linear-gradient(to right, #0d9488, #16a34a);
+
+  --gradient-error: linear-gradient(to right, #ef4444, #db2777);
+
+  --gradient-warning: linear-gradient(to right, #eab308, #f97316);
+
+  --gradient-accent: linear-gradient(to right, #9333ea, #ec4899);
+
+  --gradient-info: linear-gradient(to right, #0c4a6e, #052c67);
+
+  --gradient-secondary: linear-gradient(to right, #0b9f09, #8c0a8c);
+
   /* Brand */
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
@@ -41,7 +77,7 @@
   /* Status */
   --success: #16a34a;
   --warning: #f59e0b;
-  --error: #dc2626;
+  --error: #e63715;
   --info: #0ea5e9;
 
   /* Background */
@@ -90,6 +126,20 @@
   --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.08);
   --shadow-md: 0 4px 10px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 25px rgb(0 0 0 / 0.15);
+
+  /* Badge */
+
+  --badge-success: #dcfce7;
+  --badge-success-content: #166534;
+
+  --badge-warning: #fef3c7;
+  --badge-warning-content: #92400e;
+
+  --badge-error: #fee2e2;
+  --badge-error-content: #991b1b;
+
+  --badge-info: #e0f2fe;
+  --badge-info-content: #075985;
 }
 
 /* ------------------------------
@@ -97,6 +147,21 @@
 ------------------------------ */
 
 [data-theme="dark"] {
+  /*  Gradients */
+  --gradient-primary: linear-gradient(to right, #3b82f6, #0508a7);
+
+  --gradient-success: linear-gradient(to right, #097064, #07a641);
+
+  --gradient-error: linear-gradient(to right, #f87171, #f472b6);
+
+  --gradient-warning: linear-gradient(to right, #facc15, #fb923c);
+
+  --gradient-accent: linear-gradient(to right, #a855f7, #f472b6);
+
+  --gradient-info: linear-gradient(to right, #0a5581, #166ae7);
+  
+  --gradient-secondary: linear-gradient(to right, #8106819d, #058497);
+
   /* Brand */
   --primary: #3b82f6;
   --primary-hover: #2563eb;
@@ -113,7 +178,7 @@
   /* Status */
   --success: #22c55e;
   --warning: #facc15;
-  --error: #ef4444;
+  --error: #e63715;
   --info: #38bdf8;
 
   /* Background */
@@ -151,6 +216,20 @@
   /* Modal */
   --modal: #1e293b;
   --overlay: rgb(0 0 0 / 0.6);
+
+  /* Badge */
+
+  --badge-success: #14532d;
+  --badge-success-content: #bbf7d0;
+
+  --badge-warning: #78350f;
+  --badge-warning-content: #fde68a;
+
+  --badge-error: #7f1d1d;
+  --badge-error-content: #fecaca;
+
+  --badge-info: #0c4a6e;
+  --badge-info-content: #bae6fd;
 }
 
 [data-theme="light"] {

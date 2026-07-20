@@ -39,24 +39,85 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   permission?: Permission;
 }
 
-const variantClasses: Record<ButtonVariant, string> = {
-  primary: "bg-primary text-primary-content hover:brightness-110",
+const variantClasses = {
+  primary: `
+    bg-gradient-to-r 
+    from-blue-600 
+    to-indigo-600
+    hover:from-blue-700 
+    hover:to-indigo-700
+    text-white
+    shadow-md
+    hover:scale-105
+    `,
 
-  secondary: "bg-secondary text-secondary-content hover:brightness-110",
+  success: `
+    bg-gradient-to-r 
+    from-teal-600 
+    to-green-600
+    hover:from-teal-700
+    hover:to-green-700
+    text-white
+    shadow-md
+    hover:scale-105
+    `,
 
-  accent: "bg-accent text-accent-content hover:brightness-110",
+  error: `
+    bg-gradient-to-r
+    from-red-500
+    to-pink-600
+    hover:from-red-600
+    hover:to-pink-700
+    text-white
+    shadow-md
+    hover:scale-105
+    `,
 
-  success: "bg-success text-success-content hover:brightness-110",
+  warning: `
+    bg-gradient-to-r
+    from-yellow-500
+    to-orange-500
+    hover:from-yellow-600
+    hover:to-orange-600
+    text-white
+    shadow-md
+    hover:scale-105
+    `,
 
-  warning: "bg-warning text-warning-content hover:brightness-110",
+  secondary: `
+    bg-gradient-to-r
+    from-slate-500
+    to-slate-700
+    hover:from-slate-600
+    hover:to-slate-800
+    text-white
+    shadow-md
+    `,
 
-  error: "bg-error text-error-content hover:brightness-110",
+  accent: `
+    bg-gradient-to-r
+    from-purple-600
+    to-pink-600
+    hover:from-purple-700
+    hover:to-pink-700
+    text-white
+    shadow-md
+    hover:scale-105
+    `,
 
-  ghost: "bg-transparent text-text hover:bg-surface-hover",
+  ghost: `
+    bg-transparent
+    text-text
+    hover:bg-surface-hover
+    `,
 
-  outline:
-    "border border-border bg-transparent text-text hover:bg-surface-hover",
-};
+  outline: `
+    border
+    border-border
+    text-text
+    hover:bg-surface-hover
+    `,
+} satisfies Record<ButtonVariant, string>;
 
 const sizeClasses: Record<ButtonSize, string> = {
   xs: "h-8 px-3 text-xs",
@@ -112,9 +173,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={clsx(
           "inline-flex items-center justify-center gap-2 cursor-pointer",
 
-          "rounded-lg font-medium",
+          "rounded-md font-medium",
 
-          "transition-all duration-200",
+          "transition-all duration-300",
 
           "focus:outline-none",
 

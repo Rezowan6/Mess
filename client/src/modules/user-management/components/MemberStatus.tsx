@@ -1,13 +1,15 @@
+import { Badge } from "@/shared/components/ui/Badge";
+
 interface Props {
   status: "active" | "inactive" | "pending";
 }
 
 export const MemberStatus = ({ status }: Props) => {
-  const badgeClass = {
-    active: "badge-success text-black",
-    pending: "badge-warning",
-    inactive: "badge-error",
-  };
+  const map = {
+    active: "success",
+    pending: "warning",
+    inactive: "error",
+  } as const;
 
-  return <span className={`badge ${badgeClass[status]}`}>{status}</span>;
+  return <Badge variant={map[status]}>{status}</Badge>;
 };

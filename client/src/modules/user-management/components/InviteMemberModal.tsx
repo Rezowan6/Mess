@@ -57,7 +57,7 @@ export const InviteMemberModal = () => {
   return (
     <>
       <Button
-        variant="primary"
+        variant="success"
         permission={PERMISSIONS.USER_INVITE}
         onClick={() => setIsOpen(true)}
       >
@@ -96,6 +96,7 @@ export const InviteMemberModal = () => {
             </Button>
 
             <Button
+              variant="success"
               type="submit"
               loading={inviteMutation.isPending}
               loadingText="Sending..."
