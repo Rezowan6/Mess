@@ -16,7 +16,7 @@ export const useMembers = (params: IMemberParams) => {
   return useQuery<IMemberListResponse>({
     queryKey: [queryKeys.tenantMembers(currentTenant?.tenantId), params],
 
-    queryFn: () => userManagementApi.getMembers(params),
+    queryFn: async () => await userManagementApi.getMembers(params),
 
     enabled: !!currentTenant,
 

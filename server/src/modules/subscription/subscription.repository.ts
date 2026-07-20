@@ -1,4 +1,4 @@
-import { BaseRepository } from "@/common/base.repository.js";
+import { BaseRepository } from "@/common/repo/base.repository.js";
 
 import { Subscription } from "./subscription.model.js";
 

@@ -1,4 +1,4 @@
-import { BaseRepository } from "@/common/base.repository.js";
+import { BaseRepository } from "@/common/repo/base.repository.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealEntry } from "@/models/index.js";
 import { Op, Transaction, col, fn, literal } from "sequelize";

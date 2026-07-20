@@ -1,6 +1,6 @@
 import { Op } from "sequelize";
 
-import { BaseRepository } from "@/common/base.repository.js";
+import { BaseRepository } from "@/common/repo/base.repository.js";
 
 import { Payment } from "./payment.model.js";
 
@@ -124,7 +124,7 @@ class PaymentRepository extends BaseRepository<Payment> {
         createdAt: {
           [Op.lt]: beforeDate,
         },
-      }
+      },
     });
   }
 }

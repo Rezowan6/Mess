@@ -10,6 +10,11 @@ import {
   WhereOptions,
 } from "sequelize";
 
+import {
+  IPaginatedResult,
+  IPaginationQuery,
+} from "../types/pagination.interface.js";
+
 export abstract class BaseRepository<T extends Model> {
   protected model: ModelStatic<T>;
 
@@ -64,6 +69,42 @@ export abstract class BaseRepository<T extends Model> {
 
   async findAllWithOptions(options?: FindOptions<Attributes<T>>): Promise<T[]> {
     return this.model.findAll(options);
+  }
+
+  async paginate(
+    options: FindOptions<Attributes<T>>,
+
+    pagination: IPaginationQuery,
+  ): Promise<IPaginatedResult<T>> {
+    const page = Number(pagination.page) || 1;
+
+    const limit = Number(pagination.limit) || 10;
+
+    const offset = (page - 1) * limit;
+
+    const { rows, count } = await this.model.findAndCountAll({
+      ...options,
+
+      limit,
+
+      offset,
+
+      distinct: true,
+    });
+
+    return {
+      data: rows,
+
+      meta: {
+        page,
+
+        limit,
+
+        total: count,
+
+        totalPages: Math.ceil(count / limit),
+      },
+    };
   }
 
   async update(

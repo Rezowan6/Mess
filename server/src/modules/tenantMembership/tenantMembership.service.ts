@@ -1,3 +1,4 @@
+import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { MemberRole } from "@/constans/index.js";
 import { ApiError } from "@/utils/ApiError.js";
 import {
@@ -7,22 +8,19 @@ import {
 import { membershipRepository } from "./tenantMembership.repository.js";
 
 export class TenantMembershipService {
-  async getMembers(tenantId: number) {
-    const members = await membershipRepository.findOne({tenantId});
+  async getMembers(tenantId: number, query: IPaginationQuery) {
+    const members = await membershipRepository.findOne({ tenantId });
 
     if (!members) {
       throw new ApiError(404, "Member not found.");
     }
-    return await membershipRepository.getMembers(tenantId);
+    const result = await membershipRepository.getMembers(tenantId, query);
+    
+    return result;
   }
 
   async updateRole(payload: IUpdateRolePayload) {
-    const {
-      tenantId,
-      currentMembershipId,
-      id,
-      role,
-    } = payload;
+    const { tenantId, currentMembershipId, id, role } = payload;
     if (role === MemberRole.ADMIN) {
       throw new ApiError(400, "The admin role cannot be assigned.");
     }
@@ -44,7 +42,7 @@ export class TenantMembershipService {
     if (currentMembershipId === id) {
       throw new ApiError(400, "You cannot change your own role");
     }
-    return await membershipRepository.update({ id }, {role});
+    return await membershipRepository.update({ id }, { role });
   }
 
   async deleteMember(payload: IDeleteMemberPayload) {
@@ -79,4 +77,4 @@ export class TenantMembershipService {
   }
 }
 
-export const membershipService = new TenantMembershipService()
+export const membershipService = new TenantMembershipService();

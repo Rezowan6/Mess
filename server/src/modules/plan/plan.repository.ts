@@ -1,6 +1,6 @@
 // plan.repository.ts
 
-import { BaseRepository } from "@/common/base.repository.js";
+import { BaseRepository } from "@/common/repo/base.repository.js";
 
 import { Plan } from "./plan.model.js";
 

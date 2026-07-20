@@ -3,17 +3,21 @@ import { asyncHandler } from "@/middlewares/index.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { membershipService } from "./tenantMembership.service.js";
+import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 
 export class TenantMembershipController {
   getMembers = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 
-    const members = await membershipService.getMembers(tenantId);
+    const query = req.query as IPaginationQuery;
+
+    const members = await membershipService.getMembers(tenantId, query);
 
     return sendResponse(res, {
       statusCode: 200,
       message: "Members fetched successfully",
-      data: members,
+      data: members.data,
+      meta: members.meta,
     });
   });
 

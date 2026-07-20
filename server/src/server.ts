@@ -24,7 +24,7 @@ const startServer = async (): Promise<void> => {
 
       server.close(() => {
         console.log("HTTP Server Closed");
-        console.log("MongoDB Connection Closed");
+        console.log("DB Connection Closed");
         process.exit(0);
       });
     });

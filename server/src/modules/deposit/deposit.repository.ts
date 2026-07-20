@@ -1,8 +1,7 @@
-import { BaseRepository } from "@/common/base.repository.js";
+import { BaseRepository } from "@/common/repo/base.repository.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { Deposit } from "@/models/index.js";
 import { Op, col, fn } from "sequelize";
-import { ICreateDepositPayload } from "./deposit.interface.js";
 
 class DepositRepository extends BaseRepository<Deposit> {
   constructor() {

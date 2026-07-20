@@ -1,4 +1,4 @@
-import { BaseRepository } from "@/common/base.repository.js";
+import { BaseRepository } from "@/common/repo/base.repository.js";
 import { MealSession } from "@/models/index.js";
 import { MealSessionStatus } from "./mealSession.interface.js";
 

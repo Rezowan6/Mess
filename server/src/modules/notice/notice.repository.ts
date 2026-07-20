@@ -1,4 +1,4 @@
-import { BaseRepository } from "@/common/base.repository.js";
+import { BaseRepository } from "@/common/repo/base.repository.js";
 import { Notice } from "@/models/index.js";
 
 class NoticeRepository extends BaseRepository<Notice> {
@@ -37,7 +37,6 @@ class NoticeRepository extends BaseRepository<Notice> {
       ],
     });
   }
-
 }
 
 export const noticeRepository = new NoticeRepository();
