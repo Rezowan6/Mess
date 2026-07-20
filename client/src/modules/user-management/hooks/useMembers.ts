@@ -14,7 +14,7 @@ export const useMembers = (params: IMemberParams) => {
   const currentTenant = useTenantStore((state) => state.currentTenant);
 
   return useQuery<IMemberListResponse>({
-    queryKey: [queryKeys.tenantMembers(currentTenant?.tenantId), params],
+    queryKey: [...queryKeys.tenantMembers(currentTenant?.tenantId), params],
 
     queryFn: async () => await userManagementApi.getMembers(params),
 

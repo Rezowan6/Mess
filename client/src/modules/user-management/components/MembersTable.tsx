@@ -27,7 +27,7 @@ export const MembersTable = () => {
    * Members Query
    */
 
-  const { data, isPending, isFetching, isError, refetch } = useMembers({
+  const { data, isPending, isError, refetch } = useMembers({
     page,
 
     limit: 10,
@@ -115,7 +115,7 @@ export const MembersTable = () => {
       <Table
         columns={memberColumns}
         data={members}
-        loading={isFetching}
+        loading={isPending}
         error={isError}
         message={MEMBER_MESSAGES}
         refetch={refetch}
