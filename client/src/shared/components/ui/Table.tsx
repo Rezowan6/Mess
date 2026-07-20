@@ -34,7 +34,7 @@ interface TableProps<T> {
     };
   };
 
-  refetch?: any;
+  refetch?: () => void;
 
   action?: React.ReactNode;
 
@@ -89,7 +89,7 @@ export function Table<T>({
   return (
     <div
       className={clsx(
-        "overflow-x-auto rounded-xl border border-base-300 bg-base-100",
+        "overflow-x-auto rounded-xl border border-border bg-surface",
         className,
       )}
     >
@@ -97,7 +97,7 @@ export function Table<T>({
         <thead>
           <tr>
             {columns.map((column) => (
-              <th key={String(column.key)} className={column.className}>
+              <th key={String(column.key)}>
                 {column.title}
               </th>
             ))}
