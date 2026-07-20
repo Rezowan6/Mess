@@ -1,0 +1,39 @@
+:root {
+  --primary: #32323a;
+  --line: #70708b;
+}
+
+select {
+  appearance: base-select;
+}
+
+::picker(select) {
+  appearance: base-select;
+  border-radius: 0.25rem;
+  background-color: var(--primary);
+  color: white;
+  border: 1px solid var(--line);
+}
+
+select::picker-icon{
+    font-size: .65rem;
+    align-items: center;
+    transition: 150ms ease;
+}
+
+select:open::picker-icon {
+    rotate: 180deg;
+}
+
+select option {
+    padding: .25rem;
+}
+
+select option:checked {
+    background-color: var(--line);
+}
+
+select option::checkmark {
+    color: greenyellow;
+    content: "✅";
+}

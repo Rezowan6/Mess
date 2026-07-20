@@ -4,7 +4,7 @@ interface Props {
 
 export const MemberStatus = ({ status }: Props) => {
   const badgeClass = {
-    active: "badge-success",
+    active: "badge-success text-black",
     pending: "badge-warning",
     inactive: "badge-error",
   };

@@ -1,4 +1,5 @@
 import { TenantSwitcher } from "@/modules/tenant/components/TenantSwitcher";
+import { ThemeSwitcher } from "../../ui/ThemeSwitcher";
 
 export const Header = () => {
   return (
@@ -6,7 +7,8 @@ export const Header = () => {
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Dashboard</h1>
 
-        <div>
+        <div className="flex">
+          <ThemeSwitcher />
           <TenantSwitcher />
         </div>
       </div>

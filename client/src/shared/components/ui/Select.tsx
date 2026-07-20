@@ -1,7 +1,9 @@
-import type { Permission } from "@/shared/constants/permissions";
-import { useRBAC } from "@/shared/hooks/useRBAC";
 import clsx from "clsx";
 import { forwardRef, type ReactNode, type SelectHTMLAttributes } from "react";
+
+import type { Permission } from "@/shared/constants/permissions";
+import { useRBAC } from "@/shared/hooks/useRBAC";
+import "@/styles/modules/select.module.css";
 
 export interface SelectOption {
   label: string;
@@ -14,9 +16,7 @@ interface SelectProps extends Omit<
   "size"
 > {
   label?: string;
-
   error?: string;
-
   helperText?: string;
 
   options: SelectOption[];
@@ -28,6 +28,7 @@ interface SelectProps extends Omit<
   fullWidth?: boolean;
 
   permission?: Permission;
+
   tooltip?: string;
 
   isLoading?: boolean;
@@ -38,9 +39,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   (
     {
       label,
-
       error,
-
       helperText,
 
       options,
@@ -56,6 +55,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       disabled,
 
       permission,
+
       tooltip,
 
       isLoading = false,
@@ -73,54 +73,53 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       return null;
     }
 
-    const select = (
+    const selectElement = (
       <div
         className={clsx(
-          "tooltip",
-          "flex items-center gap-2 rounded-lg border bg-base-100",
-          error
-            ? "border-error"
-            : "border-base-300 focus-within:border-primary",
-
+          "flex items-center gap-2 rounded-sm border bg-surface px-3 transition-colors",
+          error ? "border-error" : "border-border focus-within:border-primary",
           disabled && "cursor-not-allowed opacity-60",
         )}
-        data-tip={tooltip}
       >
-        {leftIcon && <span className="text-base-content/60">{leftIcon}</span>}
+        {leftIcon && <span className="text-text-muted">{leftIcon}</span>}
+
         <select
           ref={ref}
           disabled={disabled || isLoading}
           className={clsx(
-            "p-2 w-full bg-[#1c356b88] cursor-pointer rounded-md outline-none",
-
+            "w-full bg-transparent py-2 outline-none",
+            "text-text",
+            disabled && "cursor-not-allowed",
+            !disabled && "cursor-pointer",
             className,
           )}
           {...props}
         >
-          {placeholder && (
-            <option value="" disabled className="cursor-pointer">
-              {isLoading && <option>{loadingText}</option>}
-              {placeholder}
-            </option>
-          )}
+          {isLoading ? (
+            <option value="">{loadingText}</option>
+          ) : (
+            <>
+              {placeholder && (
+                <option value="" disabled>
+                  {placeholder}
+                </option>
+              )}
 
-          {!isLoading &&
-            options.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
-                disabled={option.disabled}
-              >
-                {option.label}
-              </option>
-            ))}
+              {options.map((option) => (
+                <option
+                  key={option.value}
+                  value={String(option.value)}
+                  disabled={option.disabled}
+                >
+                  {option.label}
+                </option>
+              ))}
+            </>
+          )}
         </select>
       </div>
     );
 
-    if (!tooltip) {
-      return select;
-    }
     return (
       <div className={clsx("space-y-1", fullWidth && "w-full")}>
         {label && (
@@ -132,14 +131,19 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </span>
           </label>
         )}
-        {select}
+
+        {tooltip ? (
+          <div className="tooltip w-full" data-tip={tooltip}>
+            {selectElement}
+          </div>
+        ) : (
+          selectElement
+        )}
 
         {error ? (
           <p className="text-sm text-error">{error}</p>
         ) : (
-          helperText && (
-            <p className="text-sm text-base-content/60">{helperText}</p>
-          )
+          helperText && <p className="text-sm text-text-muted">{helperText}</p>
         )}
       </div>
     );
