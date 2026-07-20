@@ -1,30 +1,9 @@
 import clsx from "clsx";
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { Loader2 } from "lucide-react";
+import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react";
 
 import type { Permission } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
-
-const variantClasses = {
-  primary: "bg-blue-600 hover:bg-blue-700 text-white",
-
-  secondary: "bg-gray-600 hover:bg-gray-700 text-white",
-
-  accent: "bg-purple-600 hover:bg-purple-700 text-white",
-
-  success: "bg-green-600 hover:bg-green-700 text-white",
-
-  warning: "bg-yellow-500 hover:bg-yellow-600 text-white",
-
-  error: "bg-red-600 hover:bg-red-700 text-white",
-
-  ghost: "bg-transparent hover:bg-gray-100 text-gray-700",
-};
-const sizeClasses = {
-  xs: "btn-xs",
-  sm: "btn-sm",
-  md: "",
-  lg: "btn-lg",
-};
 
 type ButtonVariant =
   | "primary"
@@ -33,7 +12,8 @@ type ButtonVariant =
   | "success"
   | "warning"
   | "error"
-  | "ghost";
+  | "ghost"
+  | "outline";
 
 type ButtonSize = "xs" | "sm" | "md" | "lg";
 
@@ -45,6 +25,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
 
   loading?: boolean;
+
   loadingText?: string;
 
   fullWidth?: boolean;
@@ -56,74 +37,131 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   tooltip?: string;
 
   permission?: Permission;
-
-  confirmAction?: boolean;
-
-  confirmMessage?: string;
 }
 
-export const Button = ({
-  children,
+const variantClasses: Record<ButtonVariant, string> = {
+  primary: "bg-primary text-primary-content hover:brightness-110",
 
-  variant = "primary",
+  secondary: "bg-secondary text-secondary-content hover:brightness-110",
 
-  size = "md",
+  accent: "bg-accent text-accent-content hover:brightness-110",
 
-  loading = false,
+  success: "bg-success text-success-content hover:brightness-110",
 
-  loadingText = "Loading...",
+  warning: "bg-warning text-warning-content hover:brightness-110",
 
-  fullWidth = false,
+  error: "bg-error text-error-content hover:brightness-110",
 
-  leftIcon,
+  ghost: "bg-transparent text-text hover:bg-surface-hover",
 
-  rightIcon,
-
-  tooltip,
-
-  permission,
-
-  className,
-
-  onClick,
-
-  disabled,
-
-  ...props
-}: ButtonProps) => {
-  const { can } = useRBAC();
-
-  if (permission && !can(permission)) {
-    return null;
-  }
-
-  const button = (
-    <button
-      className={clsx(
-        "btn",
-        variantClasses[variant],
-        size !== "md" && `${sizeClasses[size]}`,
-        fullWidth && "w-full",
-        className,
-      )}
-      disabled={disabled || loading}
-      {...props}
-      onClick={onClick}
-    >
-      {!loading && leftIcon}
-
-      {loading ? loadingText : children}
-
-      {!loading && rightIcon}
-    </button>
-  );
-
-  if (!tooltip) {
-    return button;
-  }
-  return (
-    <div className="tooltip" data-tip={tooltip}>
-      {button}
-    </div>
-  );
+  outline:
+    "border border-border bg-transparent text-text hover:bg-surface-hover",
 };
+
+const sizeClasses: Record<ButtonSize, string> = {
+  xs: "h-8 px-3 text-xs",
+
+  sm: "h-9 px-4 text-sm",
+
+  md: "h-10 px-5 text-sm",
+
+  lg: "h-12 px-6 text-base",
+};
+
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      children,
+
+      variant = "primary",
+
+      size = "md",
+
+      loading = false,
+
+      loadingText = "Loading...",
+
+      fullWidth = false,
+
+      leftIcon,
+
+      rightIcon,
+
+      tooltip,
+
+      permission,
+
+      disabled,
+
+      className,
+
+      ...props
+    },
+    ref,
+  ) => {
+    const { can } = useRBAC();
+
+    if (permission && !can(permission)) {
+      return null;
+    }
+
+    const button = (
+      <button
+        ref={ref}
+        disabled={disabled || loading}
+        className={clsx(
+          "inline-flex items-center justify-center gap-2 cursor-pointer",
+
+          "rounded-lg font-medium",
+
+          "transition-all duration-200",
+
+          "focus:outline-none",
+
+          "focus:ring-4 focus:ring-primary/20",
+
+          "disabled:pointer-events-none",
+
+          "disabled:opacity-50",
+
+          sizeClasses[size],
+
+          variantClasses[variant],
+
+          fullWidth && "w-full",
+
+          className,
+        )}
+        {...props}
+      >
+        {loading ? (
+          <>
+            <Loader2 size={16} className="animate-spin" />
+
+            <span>{loadingText}</span>
+          </>
+        ) : (
+          <>
+            {leftIcon}
+
+            <span>{children}</span>
+
+            {rightIcon}
+          </>
+        )}
+      </button>
+    );
+
+    if (!tooltip) {
+      return button;
+    }
+
+    return (
+      <div className="tooltip tooltip-top" data-tip={tooltip}>
+        {button}
+      </div>
+    );
+  },
+);
+
+Button.displayName = "Button";
