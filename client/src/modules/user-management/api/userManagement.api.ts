@@ -2,7 +2,10 @@ import { API } from "@/shared/lib/axios";
 
 import { API_ENDPOINTS } from "@/shared/constants/api";
 
-import type { IMemberListResponse } from "../types/userManagement.types";
+import type {
+  IMemberListResponse,
+  MemberParams,
+} from "../types/userManagement.types";
 
 export const userManagementApi = {
   inviteMember: async (payload: { email: string; role: string }) => {
@@ -13,8 +16,11 @@ export const userManagementApi = {
 
     return data;
   },
-  getMembers: async (): Promise<IMemberListResponse> => {
-    const { data } = await API.get<IMemberListResponse>(API_ENDPOINTS.TENANT_MEMBERSHIP.LIST);
+  getMembers: async (params: MemberParams): Promise<IMemberListResponse> => {
+    const { data } = await API.get<IMemberListResponse>(
+      API_ENDPOINTS.TENANT_MEMBERSHIP.LIST,
+      { params },
+    );
 
     return data;
   },

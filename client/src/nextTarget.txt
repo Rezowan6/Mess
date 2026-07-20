@@ -1,22 +1,4 @@
-shared/
-└── components/
-    ├── ui/
-    │   ├── Button.tsx
-    │   ├── Input.tsx          ✅
-    │   ├── PasswordInput.tsx  ✅
-    │   ├── Select.tsx         ✅
-    │   ├── Textarea.tsx       ✅
-    │   ├── Checkbox.tsx
-    │   ├── Switch.tsx
-    │   ├── Modal.tsx
-    │   ├── Table.tsx
-    │   └── EmptyState.tsx
 
-    └── forms/
-        ├── FormField.tsx      ✅
-        └── FormLabel.tsx
-
-Future versions-এ add করবো: Table.tsx
 <Table
     data={members}
     columns={columns}
@@ -24,8 +6,10 @@ Future versions-এ add করবো: Table.tsx
     error={isError}
 />
 
-✅ Pagination
+RemoveMemberDialog.tsx
+
 ✅ Sorting
+✅ Pagination
 ✅ Search
 ✅ Row Selection
 ✅ Bulk Action
