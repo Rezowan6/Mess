@@ -4,7 +4,7 @@ import { API_ENDPOINTS } from "@/shared/constants/api";
 
 import type {
   IMemberListResponse,
-  MemberParams,
+  IMemberParams,
 } from "../types/userManagement.types";
 
 export const userManagementApi = {
@@ -16,7 +16,7 @@ export const userManagementApi = {
 
     return data;
   },
-  getMembers: async (params: MemberParams): Promise<IMemberListResponse> => {
+  getMembers: async (params: IMemberParams): Promise<IMemberListResponse> => {
     const { data } = await API.get<IMemberListResponse>(
       API_ENDPOINTS.TENANT_MEMBERSHIP.LIST,
       { params },

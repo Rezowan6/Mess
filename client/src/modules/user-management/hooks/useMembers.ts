@@ -6,21 +6,17 @@ import { queryKeys } from "@/shared/constants/queryKeys";
 
 import { userManagementApi } from "../api/userManagement.api";
 import type {
-  ITenantMember,
-  MemberParams,
+  IMemberListResponse,
+  IMemberParams,
 } from "../types/userManagement.types";
 
-export const useMembers = (params: MemberParams) => {
+export const useMembers = (params: IMemberParams) => {
   const currentTenant = useTenantStore((state) => state.currentTenant);
 
-  return useQuery<ITenantMember[]>({
-    queryKey: queryKeys.tenantMembers(currentTenant?.tenantId),
+  return useQuery<IMemberListResponse>({
+    queryKey: [queryKeys.tenantMembers(currentTenant?.tenantId), params],
 
-    queryFn: async () => {
-      const res = await userManagementApi.getMembers(params);
-
-      return res.data;
-    },
+    queryFn: () => userManagementApi.getMembers(params),
 
     enabled: !!currentTenant,
 

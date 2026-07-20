@@ -8,15 +8,22 @@
 
 RemoveMemberDialog.tsx
 
-✅ Sorting
 ✅ Pagination
 ✅ Search
+✅ Sorting
 ✅ Row Selection
 ✅ Bulk Action
 ✅ Column Visibility
 ✅ Export CSV
 ✅ Server Side Pagination
 ✅ Virtualization
+
+✅ Sorting
+✅ Filter system
+✅ URL state management
+✅ Column visibility
+✅ Export CSV
+✅ Server side filtering
 
 
 ✅ Button

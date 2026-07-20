@@ -1,4 +1,5 @@
 import type { Role } from "@/shared/constants/roles";
+import type { IPaginationMeta } from "@/shared/types/pagination.types";
 
 export interface IMemberUser {
   id: number;
@@ -31,9 +32,11 @@ export interface IMemberListResponse {
   message: string;
 
   data: ITenantMember[];
+  
+  meta: IPaginationMeta;
 }
 
-export interface MemberParams {
+export interface IMemberParams {
   page: number;
 
   limit: number;
