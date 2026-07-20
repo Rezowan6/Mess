@@ -7,7 +7,7 @@ export const Header = () => {
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Dashboard</h1>
 
-        <div className="flex">
+        <div className="flex gap-3">
           <ThemeSwitcher />
           <TenantSwitcher />
         </div>

@@ -43,5 +43,6 @@ select option:checked {
 }
 
 select option::checkmark {
-  content: "✅";
+  color: greenyellow;
+  content: "✓";
 }

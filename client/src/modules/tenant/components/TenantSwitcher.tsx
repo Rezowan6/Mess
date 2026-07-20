@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 import type { IAuthUser } from "@/modules/auth/types/auth.types";
+import { Select } from "@/shared/components/ui/Select";
 import { useTenantStore } from "../store/tenant.store";
 
 export const TenantSwitcher = () => {
@@ -13,9 +14,23 @@ export const TenantSwitcher = () => {
 
   const setTenant = useTenantStore((state) => state.setTenant);
 
-  const handleTenantChange = (
-    tenantMembership: (typeof user.tenantMemberships)[number],
-  ) => {
+  if (!user?.tenantMemberships?.length) {
+    return null;
+  }
+
+  const tenantOptions =
+    user?.tenantMemberships?.map((tenantMembership) => ({
+      label: tenantMembership.tenant.name,
+      value: tenantMembership.tenantId,
+    })) ?? [];
+
+  const handleTenantChange = (tenantId: number) => {
+    const tenantMembership = user.tenantMemberships.find(
+      (item) => item.tenantId === tenantId,
+    );
+
+    if (!tenantMembership) return;
+
     setTenant({
       tenantId: tenantMembership?.tenantId,
       role: tenantMembership?.role,
@@ -30,27 +45,12 @@ export const TenantSwitcher = () => {
     return null;
   }
   return (
-    <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn btn-ghost">
-        {currentTenant?.tenant?.name ?? "Switch Tenant"}
-      </label>
-
-      <ul
-        tabIndex={0}
-        className="menu dropdown-content w-64 rounded-box bg-base-100 p-2 shadow"
-      >
-        {user?.tenantMemberships?.map((tenantMembership) => (
-          <li key={tenantMembership.tenantId}>
-            <button onClick={() => handleTenantChange(tenantMembership)}>
-              {tenantMembership?.tenant?.name}
-
-              {currentTenant?.tenantId === tenantMembership?.tenantId && (
-                <span className="text-green-500 font-bold">✓</span>
-              )}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Select
+      value={currentTenant?.tenantId ?? ""}
+      options={tenantOptions}
+      onChange={(e) => handleTenantChange(Number(e.target.value))}
+      placeholder="Switch Tenant"
+      className="w 64"
+    />
   );
 };
