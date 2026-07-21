@@ -1,4 +1,21 @@
+pages/
 
+    SettingsPage.tsx
+
+components/settings/
+
+    ThemeCard.tsx
+
+    TenantCard.tsx
+
+    ProfileCard.tsx
+
+    SecurityCard.tsx
+
+
+✅ Settings page-এর মধ্যে Theme Switcher ও Tenant Switcher
+✅ Active menu indicator
+✅ সুন্দর animations (Tailwind + DaisyUI)
 <Table
     data={members}
     columns={columns}

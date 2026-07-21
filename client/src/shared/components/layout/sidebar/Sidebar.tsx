@@ -4,7 +4,7 @@ import { SidebarProfile } from "./SidebarProfile";
 export const Sidebar = () => {
   return (
     <aside className="w-64 border-r bg-base-100">
-      <div className="border-b p-5">
+      <div className="border-b p-4">
         <h2 className="text-xl font-bold">Mess SaaS</h2>
       </div>
 

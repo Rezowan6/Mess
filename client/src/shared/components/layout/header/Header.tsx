@@ -1,15 +1,22 @@
-import { TenantSwitcher } from "@/modules/tenant/components/TenantSwitcher";
-import { ThemeSwitcher } from "../../ui/ThemeSwitcher";
+import { MobileSidebarButton } from "../sidebar/MobileSidebarButton";
+import { HeaderProfile } from "./HeaderProfile";
 
 export const Header = () => {
   return (
-    <header className="border-b bg-base-100 px-6 py-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Dashboard</h1>
+    <header className="sticky top-0 z-30 border-b bg-base-100">
+      <div className="flex h-16 items-center justify-between px-4 lg:px-6">
+        {/* Left */}
 
-        <div className="flex gap-3">
-          <ThemeSwitcher />
-          <TenantSwitcher />
+        <div className="flex items-center gap-3">
+          <MobileSidebarButton />
+
+          <h1 className="text-xl font-semibold">Dashboard</h1>
+        </div>
+
+        {/* Right */}
+
+        <div className="flex items-center">
+          <HeaderProfile />
         </div>
       </div>
     </header>

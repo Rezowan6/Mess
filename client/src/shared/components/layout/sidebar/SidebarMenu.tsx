@@ -1,11 +1,14 @@
 import { sidebarItems } from "./sidebar.config";
 
 import { useRBAC } from "@/shared/hooks/useRBAC";
+import { useSidebarStore } from "@/store/sidebar.store";
 
 import { NavLink } from "react-router-dom";
 
 export const SidebarMenu = () => {
   const { can } = useRBAC();
+
+  const close = useSidebarStore((state) => state.close);
 
   const menus = sidebarItems.filter(
     (item) => !item.permission || can(item.permission),
@@ -20,6 +23,7 @@ export const SidebarMenu = () => {
           return (
             <li key={item.path}>
               <NavLink
+                onClick={close}
                 to={item.path}
                 className={({ isActive }) => `flex items-center gap-3
                   rounded-md px-4 py-2
