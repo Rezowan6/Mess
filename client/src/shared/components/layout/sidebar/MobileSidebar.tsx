@@ -23,18 +23,19 @@ export const MobileSidebar = () => {
     }
   }, [location.pathname]);
 
-  if (!isOpen) return null;
-
   return (
     <>
       {/* Overlay */}
 
-      <div onClick={close} className="fixed inset-0 z-40 lg:hidden" />
+      <div
+        onClick={close}
+        className={`fixed inset-0 z-40 transition-opacity duration-300 lg:hidden ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"}`}
+      />
 
       {/* Drawer */}
 
       <aside
-        className="
+        className={`
           fixed
           left-0
           top-0
@@ -45,8 +46,14 @@ export const MobileSidebar = () => {
           flex-col
           bg-base-100
           shadow-xl
+          transform
+          transition-transform
+          duration-300
+          ease-in-out
+
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
           lg:hidden
-        "
+  `}
       >
         {/* Header */}
 

@@ -16,9 +16,9 @@ export const HeaderProfile = () => {
     <div className="dropdown dropdown-end">
       {/* Trigger */}
 
-      <button tabIndex={0} className="btn bg-background gap-3 px-2">
+      <button tabIndex={0} className="flex items-center justify-center gap-3 px-2 cursor-pointer border border-success py-1 rounded-md">
         <div className="avatar placeholder">
-          <div className="bg-primary text-primary-content w-10 rounded-full">
+          <div className="bg-gradient-success text-primary-content w-10 rounded-full flex items-center justify-center">
             <span className="text-sm font-semibold">
               {user?.name?.charAt(0).toUpperCase()}
             </span>
