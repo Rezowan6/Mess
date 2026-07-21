@@ -23,6 +23,26 @@ export const MobileSidebar = () => {
     }
   }, [location.pathname]);
 
+  /**
+   * close drawer after esc key down
+   */
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        close();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
+
   return (
     <>
       {/* Overlay */}
