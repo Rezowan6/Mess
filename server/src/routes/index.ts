@@ -15,8 +15,10 @@ import planFeatureRouter from "@/modules/planFeature/planFeature.route.js";
 import subscriptionRouter from "@/modules/subscription/subscription.route.js";
 import tenantRoute from "@/modules/tenant/tenant.route.js";
 import tenantMembershipRouter from "@/modules/tenantMembership/tenantMembership.route.js";
+import notificationRouter from "@/modules/notification/notification.route.js";
 
 export {
+  notificationRouter,
   authRouter,
   dashboardRouter,
   depositRouter,

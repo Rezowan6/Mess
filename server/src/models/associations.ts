@@ -7,6 +7,7 @@ import {
   MealRequest,
   MealSession,
   Notice,
+  Notification,
   Payment,
   Plan,
   PlanFeature,
@@ -338,5 +339,26 @@ export const setupAssociations = () => {
   Payment.belongsTo(Subscription, {
     foreignKey: "subscriptionId",
     as: "subscription",
+  });
+
+  // notification
+  Notification.belongsTo(User, {
+    foreignKey: "userId",
+    as: "user",
+  });
+
+  Notification.belongsTo(User, {
+    foreignKey: "createdBy",
+    as: "creator",
+  });
+
+  Notification.belongsTo(Tenant, {
+    foreignKey: "tenantId",
+    as: "tenant",
+  });
+
+  Tenant.hasMany(Notification, {
+    foreignKey: "tenantId",
+    as: "notifications",
   });
 };

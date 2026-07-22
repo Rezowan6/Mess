@@ -37,10 +37,6 @@ class NoticeService {
   async update(id: number, payload: any) {
     const notice = await this.findById(id);
 
-    if (!notice) {
-      throw new ApiError(404, "Notice not foudn.");
-    }
-
     return await noticeRepository.update({ id }, payload);
   }
 

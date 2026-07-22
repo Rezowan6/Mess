@@ -6,6 +6,7 @@ import { MealEntry } from "@/modules/mealEntry/mealEntry.model.js";
 import { MealRequest } from "@/modules/mealRequest/mealRequest.model.js";
 import { MealSession } from "@/modules/mealSession/mealSession.model.js";
 import { Notice } from "@/modules/notice/notice.model.js";
+import { Notification } from "@/modules/notification/notification.model.js";
 import { Payment } from "@/modules/payment/payment.model.js";
 import { Plan } from "@/modules/plan/plan.model.js";
 import { PlanFeature } from "@/modules/planFeature/planFeature.model.js";
@@ -24,6 +25,7 @@ export {
   MealRequest,
   MealSession,
   Notice,
+  Notification,
   Payment,
   Plan,
   PlanFeature,

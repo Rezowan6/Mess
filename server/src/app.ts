@@ -21,12 +21,13 @@ import {
   mealSessionRouter,
   monthlyCalculationRouter,
   noticesRouter,
+  notificationRouter,
+  paymentRouter,
   planFeatureRouter,
   planRouter,
+  subscriptionRouter,
   tenantMembershipRouter,
   tenantRoute,
-  subscriptionRouter,
-  paymentRouter,
 } from "@/routes/index.js";
 
 const app: Application = express();
@@ -69,6 +70,7 @@ app.use("/api/v1/features", featureRouter);
 app.use("/api/v1/plan-features", planFeatureRouter);
 app.use("/api/v1/subscriptions", subscriptionRouter);
 app.use("/api/v1/payments", paymentRouter);
+app.use("/api/v1/notifications", notificationRouter);
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {
