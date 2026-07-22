@@ -15,7 +15,7 @@ export const MemberRole = ({ role }: Props) => {
   } as const;
 
   return (
-    <Badge variant={roleVariant[role]} size="md">
+    <Badge variant={roleVariant[role]} size="sm" className="md:px-3 md:py-1 md:text-sm" >
       {role.replaceAll("_", " ").replace(/\b\w/g, (char) => char.toUpperCase())}
     </Badge>
   );

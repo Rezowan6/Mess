@@ -11,5 +11,13 @@ export const MemberStatus = ({ status }: Props) => {
     inactive: "error",
   } as const;
 
-  return <Badge variant={map[status]}>{status}</Badge>;
+  return (
+    <Badge
+      variant={map[status]}
+      size="sm"
+      className="md:px-3 md:py-1 md:text-sm"
+    >
+      {status}
+    </Badge>
+  );
 };

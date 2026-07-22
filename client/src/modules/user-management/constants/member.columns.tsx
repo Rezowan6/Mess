@@ -6,18 +6,20 @@ import { MemberActions } from "../components/MemberActions";
 import { MemberRole } from "../components/MemberRole";
 import { MemberStatus } from "../components/MemberStatus";
 
+
 export const memberColumns: TableColumn<ITenantMember>[] = [
   {
     key: "name",
     title: "Name",
-
+    className: "text-xs sm:text-md md:text-md",
     render: (member) => <div className="font-semibold">{member.user.name}</div>,
   },
 
   {
     key: "email",
     title: "Email",
-
+    hideOnMobile: true,
+    className: "text-xs",
     render: (member) => member.user.email,
   },
 
@@ -38,7 +40,7 @@ export const memberColumns: TableColumn<ITenantMember>[] = [
   {
     key: "actions",
     title: "Actions",
-
+    className:"w-20 md:w-auto",
     render: (member) => <MemberActions member={member} />,
   },
 ];

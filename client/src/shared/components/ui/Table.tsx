@@ -11,6 +11,8 @@ export interface TableColumn<T> {
 
   className?: string;
 
+  hideOnMobile?: boolean;
+
   render?: (row: T, index: number) => ReactNode;
 }
 
@@ -97,7 +99,13 @@ export function Table<T>({
         <thead>
           <tr>
             {columns.map((column) => (
-              <th key={String(column.key)}>
+              <th
+                key={String(column.key)}
+                className={clsx(
+                  column.className,
+                  column.hideOnMobile && "hidden md:table-cell",
+                )}
+              >
                 {column.title}
               </th>
             ))}
@@ -114,7 +122,13 @@ export function Table<T>({
             return (
               <tr key={key} className="hover">
                 {columns.map((column) => (
-                  <td key={String(column.key)} className={column.className}>
+                  <td
+                    key={String(column.key)}
+                    className={clsx(
+                      column.className,
+                      column.hideOnMobile && "hidden md:table-cell",
+                    )}
+                  >
                     {column.render
                       ? column.render(row, index)
                       : String(row[column.key as keyof T] ?? "")}

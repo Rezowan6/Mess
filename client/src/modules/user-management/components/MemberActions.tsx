@@ -46,13 +46,14 @@ export const MemberActions = ({ member }: Props) => {
   const memberName = member.user?.name ?? "this member";
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-4">
       {can(PERMISSIONS.USER_UPDATE) && (
         <Select
-        tooltip="Update member role"
+          tooltip="Update member role"
           value={member.role}
           options={roleOptions}
           onChange={handleRoleChange}
+          className="text-xs sm:text-sm px-6 sm:px-0 flex items-center justify-center"
         />
       )}
 
@@ -61,6 +62,7 @@ export const MemberActions = ({ member }: Props) => {
           variant="error"
           size="sm"
           leftIcon={<Trash2 size={14} />}
+          className="px-2 sm:px-3 h-8"
           onClick={() =>
             openConfirm({
               title: "Remove Member",
@@ -77,7 +79,7 @@ export const MemberActions = ({ member }: Props) => {
             })
           }
         >
-          Remove
+          <span className="hidden sm:inline">Remove</span>
         </Button>
       )}
     </div>
