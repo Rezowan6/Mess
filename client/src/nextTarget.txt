@@ -1,4 +1,49 @@
+SettingsPage
+
+      │
+
+      ├── ThemeSettings
+
+      ├── TenantSettings
+
+      ├── ProfileSettings
+
+      ├── NotificationSettings
+
+      ├── SecuritySettings
+
+      ├── AccountSettings
+
+      ├── BillingSettings
+
+      ├── APIKeysSettings
+
+      └── PreferencesSettings
 pages/
+
+আমরা Build Order রাখব
+Step 1
+SettingsCard
+
+↓
+
+Step 2
+ThemeSettings
+
+↓
+
+Step 3
+TenantSettings
+
+↓
+
+Step 4
+SettingsPage
+
+↓
+
+Step 5
+Route Add
 
     SettingsPage.tsx
 

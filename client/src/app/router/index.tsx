@@ -17,6 +17,7 @@ import { RoleGuard } from "@/shared/guards/role.guard";
 
 import { AcceptInvitePage } from "@/modules/invite/pages/AcceptInvitePage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
+import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -65,6 +66,11 @@ export const router = createBrowserRouter([
                 element: <UserManagementPage />,
               },
             ],
+          },
+
+          {
+            path: ROUTES.SETTINGS,
+            element: <SettingsPage />
           },
 
           {

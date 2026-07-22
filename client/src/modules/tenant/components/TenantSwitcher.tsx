@@ -49,7 +49,7 @@ export const TenantSwitcher = () => {
       value={currentTenant?.tenantId ?? ""}
       options={tenantOptions}
       onChange={(e) => handleTenantChange(Number(e.target.value))}
-      placeholder="Switch Tenant"
+      placeholder="Switch Mess"
       className="w 64"
     />
   );
