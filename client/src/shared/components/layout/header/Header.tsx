@@ -1,3 +1,4 @@
+import { NotificationBell } from "@/modules/notification/components/NotificationBell";
 import { MobileSidebarButton } from "../sidebar/MobileSidebarButton";
 import { HeaderProfile } from "./HeaderProfile";
 
@@ -15,7 +16,9 @@ export const Header = () => {
 
         {/* Right */}
 
-        <div className="flex items-center">
+        <div className="flex items-center justify-center gap-6">
+          <NotificationBell />
+
           <HeaderProfile />
         </div>
       </div>

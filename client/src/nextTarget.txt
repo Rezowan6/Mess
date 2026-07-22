@@ -1,3 +1,28 @@
+src/
+|
+├── modules/
+│
+│── notification/
+│   |
+│   ├── api/
+│   │   └── notification.api.ts
+│   |
+│   ├── hooks/
+│   │   ├── useNotifications.ts
+│   │   ├── useUnreadCount.ts
+│   │   └── useMarkAsRead.ts
+│   |
+│   ├── components/
+│   │   ├── NotificationBell.tsx
+│   │   ├── NotificationDropdown.tsx
+│   │   └── NotificationItem.tsx
+│   |
+│   ├── pages/
+│   │   └── NotificationPage.tsx
+│   |
+│   └── types/
+│       └── notification.types.ts
+
 SettingsPage
 
       │

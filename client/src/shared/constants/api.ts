@@ -18,5 +18,10 @@ export const API_ENDPOINTS = {
 
   INVITE: {
     ACCEPT: "/invites/accept"
+  },
+  NOTIFICATION: {
+    LIST: "/notifications",
+    UNREAD_COUNT: "/notifications/unread-count",
+    MARK_AS_READ: (id: number) => `/notifications/${id}/read`,
   }
 };

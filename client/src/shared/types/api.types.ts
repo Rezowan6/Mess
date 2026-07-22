@@ -1,4 +1,4 @@
-import type { PaginationMeta } from "./pagination.types";
+import type { IPaginationMeta } from "./pagination.types";
 
 export interface ApiResponse<T = unknown> {
   success: boolean;
@@ -7,5 +7,5 @@ export interface ApiResponse<T = unknown> {
 
   data: T;
 
-  meta?: PaginationMeta;
+  meta?: IPaginationMeta;
 }
