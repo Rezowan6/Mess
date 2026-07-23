@@ -22,7 +22,7 @@ export class TenantMembershipService {
   }
 
   async updateRole(payload: IUpdateRolePayload) {
-    const { tenantId, currentMembershipId, id, role, userId } = payload;
+    const { tenantId, currentMembershipId, id, role, userId: adminId } = payload;
 
     if (role === MemberRole.ADMIN) {
       throw new ApiError(400, "The admin role cannot be assigned.");
@@ -54,7 +54,7 @@ export class TenantMembershipService {
     /**
      * Create Notification
      */
-    await notificationService.create(tenantId, targetMember?.userId, userId, {
+    await notificationService.create(tenantId, targetMember?.userId, adminId, {
       title: "Role Updated",
       message: `Your role has been changed from ${oldRole} to ${role}.`,
 

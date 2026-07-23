@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { notificationApi } from "../api/notification.api";
+import { queryKeys } from "@/shared/constants/queryKeys";
 
 export const useMarkAsRead = () => {
   const queryClient = useQueryClient();
@@ -10,11 +11,11 @@ export const useMarkAsRead = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["notifications"],
+        queryKey: queryKeys.notifications.all,
       });
 
       queryClient.invalidateQueries({
-        queryKey: ["notification-count"],
+        queryKey: queryKeys.notifications.count,
       });
     },
   });

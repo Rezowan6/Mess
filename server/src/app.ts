@@ -29,6 +29,8 @@ import {
   tenantMembershipRouter,
   tenantRoute,
 } from "@/routes/index.js";
+import { socketService } from "./socket/socket.service.js";
+import { getIO } from "./socket/socket.js";
 
 const app: Application = express();
 
@@ -71,6 +73,22 @@ app.use("/api/v1/plan-features", planFeatureRouter);
 app.use("/api/v1/subscriptions", subscriptionRouter);
 app.use("/api/v1/payments", paymentRouter);
 app.use("/api/v1/notifications", notificationRouter);
+
+// app.get("/api/test/socket", (req, res) => {
+//   const io = getIO();
+
+//   console.log(io.sockets.adapter.rooms);
+//   socketService.emitToUser(8, "love", {
+//     message: "I Love Allah, I Love Muhammad sol. ﷺ",
+//   });
+
+//   res.json({
+//     success: true,
+//     message: "Socket event emitted.",
+//   });
+// });
+
+
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {

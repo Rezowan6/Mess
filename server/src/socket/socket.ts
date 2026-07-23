@@ -1,6 +1,8 @@
+import { SocketRoom } from "@/helpers/socket-room.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { Server as HttpServer } from "http";
 import { Server } from "socket.io";
+import { SocketEvent } from "./socket-event.js";
 
 let io: Server;
 
@@ -19,6 +21,20 @@ export const initSocket = (server: HttpServer) => {
     console.log("🟢 Client Connected");
 
     console.log("Socket ID:", socket.id);
+
+    socket.on(SocketEvent.JOIN, (payload: { userId: number; tenantId: number }) => {
+      const { tenantId, userId } = payload;
+
+      socket.join(SocketRoom.user(userId));
+
+      socket.join(SocketRoom.tenant(tenantId));
+
+      console.log(socket.rooms);
+
+      console.log(`✅ User ${userId} joined room user:${userId}`);
+
+      console.log(`✅ User ${userId} joined tenant:${tenantId}`);
+    });
 
     /**
      * Client Disconnected

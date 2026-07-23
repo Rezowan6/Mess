@@ -3,17 +3,12 @@ import { useNotifications } from "../hooks/useNotifications";
 import { NotificationItem } from "./NotificationItem";
 
 export const NotificationDropdown = ({ isOpen }: { isOpen: boolean }) => {
-  const { data, isPending } = useNotifications({
+  const { data } = useNotifications({
     limit: 5,
   });
 
+
   const notifications = data?.data || [];
-
-  console.log(notifications);
-
-  if (isPending) {
-    return "Loading...";
-  }
 
   return (
     <div
@@ -24,7 +19,9 @@ export const NotificationDropdown = ({ isOpen }: { isOpen: boolean }) => {
           <NotificationItem key={item.id} notification={item} />
         ))}
 
-      {notifications.length === 0 && <span className="">Notification not found.</span>}
+      {notifications.length === 0 && (
+        <span className="">Notification not found.</span>
+      )}
     </div>
   );
 };

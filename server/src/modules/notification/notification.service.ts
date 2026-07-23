@@ -2,6 +2,9 @@ import { ApiError } from "@/utils/ApiError.js";
 
 import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 
+import { SocketRoom } from "@/helpers/socket-room.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 import { notificationRepository } from "./notification.repository.js";
 
 class NotificationService {
@@ -19,16 +22,19 @@ class NotificationService {
       type: string;
     },
   ) {
-    return notificationRepository.create({
+    const notification = await notificationRepository.create({
       ...payload,
       tenantId,
       userId,
       createdBy,
     });
+
+    socketService.emitToUser(userId, SocketEvent.NOTIFICATION, notification);
+
+    return notification;
   }
 
   async getAll(tenantId: number, userId: number, pagination: IPaginationQuery) {
-
     return await notificationRepository.getAll(tenantId, userId, pagination);
   }
 
