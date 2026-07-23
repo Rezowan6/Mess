@@ -22,7 +22,7 @@ export class TenantMembershipController {
   });
 
   updateRole = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, membershipId, role: currentRole } = getTenantContext(req);
+    const { tenantId, membershipId, role: currentRole, userId } = getTenantContext(req);
 
     const id = Number(req.params.id);
     const { role } = req.body;
@@ -31,6 +31,7 @@ export class TenantMembershipController {
       tenantId,
       currentMembershipId: membershipId,
       currentRole,
+      userId,
       id,
       role,
     });

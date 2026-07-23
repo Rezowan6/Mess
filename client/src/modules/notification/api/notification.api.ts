@@ -5,16 +5,19 @@ import type { INotificationResponse } from "../types/notification.types";
 
 export const notificationApi = {
   getAll: async (params?: { page?: number; limit?: number }) => {
-    const res = await API.get<INotificationResponse>(API_ENDPOINTS.NOTIFICATION.LIST, {
-      params,
-    });
+    const res = await API.get<INotificationResponse>(
+      API_ENDPOINTS.NOTIFICATION.LIST,
+      {
+        params,
+      },
+    );
 
     return res.data;
   },
 
   unreadCount: async () => {
     const res = await API.get<{
-      count: number;
+      data: { count: number };
     }>(API_ENDPOINTS.NOTIFICATION.UNREAD_COUNT);
 
     return res.data;

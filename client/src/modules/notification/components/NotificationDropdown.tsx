@@ -2,14 +2,22 @@ import { useNotifications } from "../hooks/useNotifications";
 
 import { NotificationItem } from "./NotificationItem";
 
-export const NotificationDropdown = () => {
-  const { data } = useNotifications({
+export const NotificationDropdown = ({ isOpen }: { isOpen: boolean }) => {
+  const { data, isPending } = useNotifications({
     limit: 5,
   });
 
+  const notifications = data?.data || [];
+
+  if (isPending) {
+    return "Loading...";
+  }
+
   return (
-    <div className="absolute right-0 mt-2 w-80 bg-base-100 shadow-xl rounded-md border py-8">
-      {data?.data.map((item) => (
+    <div
+      className={`absolute right-0 top-full mt-3 z-50 w-80 bg-base-100 shadow-xl rounded-md border transition-all duration-300 ease-in-out ${isOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"}`}
+    >
+      {notifications.map((item) => (
         <NotificationItem key={item.id} notification={item} />
       ))}
     </div>

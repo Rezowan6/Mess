@@ -20,7 +20,8 @@ class NotificationController {
     sendResponse(res, {
       statusCode: 200,
       message: "Notifications retrieved successfully.",
-      data: result,
+      data: result.data,
+      meta: result.meta
     });
   });
 

@@ -36,6 +36,7 @@ export interface IUpdateRolePayload {
   id: number;
   role: MemberShipRole;
   tenantId: number;
+  userId: number;
   currentMembershipId: number;
   currentRole: string;
 }

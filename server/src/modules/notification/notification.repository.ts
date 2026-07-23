@@ -1,5 +1,5 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
-import { Notification } from "@/models/index.js";
+import { Notification, User } from "@/models/index.js";
 
 import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 
@@ -18,6 +18,7 @@ class NotificationRepository extends BaseRepository<Notification> {
 
         include: [
           {
+            model: User,
             association: "creator",
             attributes: ["id", "name", "email", "avatar"],
           },

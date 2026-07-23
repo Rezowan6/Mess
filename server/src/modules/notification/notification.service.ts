@@ -28,7 +28,8 @@ class NotificationService {
   }
 
   async getAll(tenantId: number, userId: number, pagination: IPaginationQuery) {
-    return notificationRepository.getAll(tenantId, userId, pagination);
+
+    return await notificationRepository.getAll(tenantId, userId, pagination);
   }
 
   async getUnreadCount(tenantId: number, userId: number) {

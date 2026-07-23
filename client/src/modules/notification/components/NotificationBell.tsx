@@ -10,20 +10,24 @@ export const NotificationBell = () => {
 
   const { data } = useUnreadCount();
 
+  const count: number = data?.data?.count || 0;
+
   return (
     <div className="relative">
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="relative p-3 bg-gradient-accent rounded-full text-text cursor-pointer"
+        onClick={() => setIsOpen((prev) => !prev)}
+        className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-accent hover:bg-gradient-success cursor-pointer transition-all duration-300"
       >
         <Bell size={20} />
 
-        {data?.count! > 0 && (
-          <span className="absolute top-1 right-1 badge badge-error badge-xs"></span>
+        {count > 0 && (
+          <span className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-error px-1 text-[10px] font-bold text-white">
+            {count > 99 ? "99+" : count}
+          </span>
         )}
       </button>
 
-      {isOpen && <NotificationDropdown />}
+      <NotificationDropdown isOpen={isOpen} />
     </div>
   );
 };

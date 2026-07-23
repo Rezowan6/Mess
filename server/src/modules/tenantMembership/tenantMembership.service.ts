@@ -1,5 +1,7 @@
 import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { MemberRole } from "@/constans/index.js";
+import { Notification } from "@/modules/notification/notification.interface.js";
+import { notificationService } from "@/modules/notification/notification.service.js";
 import { ApiError } from "@/utils/ApiError.js";
 import {
   IDeleteMemberPayload,
@@ -15,12 +17,13 @@ export class TenantMembershipService {
       throw new ApiError(404, "Member not found.");
     }
     const result = await membershipRepository.getMembers(tenantId, query);
-    
+
     return result;
   }
 
   async updateRole(payload: IUpdateRolePayload) {
-    const { tenantId, currentMembershipId, id, role } = payload;
+    const { tenantId, currentMembershipId, id, role, userId } = payload;
+
     if (role === MemberRole.ADMIN) {
       throw new ApiError(400, "The admin role cannot be assigned.");
     }
@@ -42,7 +45,23 @@ export class TenantMembershipService {
     if (currentMembershipId === id) {
       throw new ApiError(400, "You cannot change your own role");
     }
-    return await membershipRepository.update({ id }, { role });
+
+    // Old role save
+    const oldRole = targetMember.role;
+
+    const result = await membershipRepository.update({ id }, { role });
+
+    /**
+     * Create Notification
+     */
+    await notificationService.create(tenantId, targetMember?.userId, userId, {
+      title: "Role Updated",
+      message: `Your role has been changed from ${oldRole} to ${role}.`,
+
+      type: Notification.ROLE_UPDATED,
+    });
+
+    return result;
   }
 
   async deleteMember(payload: IDeleteMemberPayload) {
