@@ -9,6 +9,7 @@ import App from "./App.tsx";
 
 import "@/styles/globals.css";
 import "@/styles/theme.css";
+import { SocketProvider } from "./app/providers/SocketProvider.tsx";
 import { ThemeProvider } from "./app/providers/ThemeProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
@@ -16,8 +17,10 @@ createRoot(document.getElementById("root")!).render(
     <QueryProvider>
       <ThemeProvider>
         <AuthProvider>
-          <App />
-          <Toaster position="top-right" />
+          <SocketProvider>
+            <App />
+            <Toaster position="top-right" />
+          </SocketProvider>
         </AuthProvider>
       </ThemeProvider>
     </QueryProvider>

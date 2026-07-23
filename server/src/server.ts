@@ -1,8 +1,10 @@
 import { env, sequelize } from "@/configs/index.js";
 import { setupAssociations } from "@/models/associations.js";
 import "dotenv/config";
+import http from "http";
 import mongoose from "mongoose";
 import app from "./app.js";
+import { initSocket } from "./socket/socket.js";
 
 const PORT = env.PORT || 4000;
 
@@ -12,7 +14,12 @@ const startServer = async (): Promise<void> => {
     setupAssociations();
     console.log("Database connected successfully");
 
-    const server = app.listen(PORT, () => {
+    const httpServer = http.createServer(app);
+
+    // init socket 
+    initSocket(httpServer);
+
+    httpServer.listen(PORT, () => {
       console.log(`Server running on port http://localhost:${PORT}`);
     });
 
@@ -22,7 +29,7 @@ const startServer = async (): Promise<void> => {
 
       await mongoose.connection.close();
 
-      server.close(() => {
+      httpServer.close(() => {
         console.log("HTTP Server Closed");
         console.log("DB Connection Closed");
         process.exit(0);
