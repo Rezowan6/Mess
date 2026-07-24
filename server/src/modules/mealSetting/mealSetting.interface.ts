@@ -1,18 +1,18 @@
 export interface ICreateMealSettingDto {
   tenantId: number;
 
-  breakfastCutoffMinute: number;
-  breakfastPreviousDay: boolean;
+  breakfastCutoffMinute?: number;
+  breakfastPreviousDay?: boolean;
 
-  lunchCutoffMinute: number;
+  lunchCutoffMinute?: number;
 
-  dinnerCutoffMinute: number;
+  dinnerCutoffMinute?: number;
 
-  allowGuestMeal: boolean;
+  allowGuestMeal?: boolean;
 
-  autoApproveMealRequest: boolean;
+  autoApproveMealRequest?: boolean;
 
-  timezone: string;
+  timezone?: string;
 }
 
 export interface IUpdateMealSettingDto {
