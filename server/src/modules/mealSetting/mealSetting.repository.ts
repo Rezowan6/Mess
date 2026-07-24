@@ -1,5 +1,6 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
 import { MealSetting } from "./mealSetting.model.js";
+import { ApiError } from "@/utils/ApiError.js";
 
 class MealSettingRepository extends BaseRepository<MealSetting> {
   constructor() {
@@ -23,6 +24,18 @@ class MealSettingRepository extends BaseRepository<MealSetting> {
       payload,
     );
   }
+
+  async getRequiredByTenantId(tenantId: number): Promise<MealSetting> {
+    const setting = await this.getByTenantId(tenantId);
+
+    if (!setting) {
+      throw new ApiError(404, "Meal setting not configured for this tenant");
+    }
+
+    return setting;
+  }
+
+  
 }
 
 export const mealSettingRepository = new MealSettingRepository();

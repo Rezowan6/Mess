@@ -20,18 +20,18 @@ export class MealSetting extends Model<
 
   declare tenantId: number;
 
-  declare breakfastCutoffMinute?: number;
-  declare breakfastPreviousDay?: boolean;
+  declare breakfastCutoffMinute: CreationOptional<number>;
+  declare breakfastPreviousDay: CreationOptional<boolean>;
 
-  declare lunchCutoffMinute?: number;
+  declare lunchCutoffMinute: CreationOptional<number>;
 
-  declare dinnerCutoffMinute?: number;
+  declare dinnerCutoffMinute: CreationOptional<number>;
 
-  declare allowGuestMeal?: boolean;
+  declare allowGuestMeal: CreationOptional<boolean>;
 
-  declare autoApproveMealRequest?: boolean;
+  declare autoApproveMealRequest: CreationOptional<boolean>;
 
-  declare timezone?: string;
+  declare timezone: CreationOptional<string>;
 
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
