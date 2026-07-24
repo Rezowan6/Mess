@@ -5,6 +5,7 @@ import { Invite } from "@/modules/invite/invite.model.js";
 import { MealEntry } from "@/modules/mealEntry/mealEntry.model.js";
 import { MealRequest } from "@/modules/mealRequest/mealRequest.model.js";
 import { MealSession } from "@/modules/mealSession/mealSession.model.js";
+import { MealSetting } from "@/modules/mealSetting/mealSetting.model.js";
 import { Notice } from "@/modules/notice/notice.model.js";
 import { Notification } from "@/modules/notification/notification.model.js";
 import { Payment } from "@/modules/payment/payment.model.js";
@@ -24,6 +25,7 @@ export {
   MealEntry,
   MealRequest,
   MealSession,
+  MealSetting,
   Notice,
   Notification,
   Payment,

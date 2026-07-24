@@ -6,6 +6,7 @@ import {
   MealEntry,
   MealRequest,
   MealSession,
+  MealSetting,
   Notice,
   Notification,
   Payment,
@@ -360,5 +361,17 @@ export const setupAssociations = () => {
   Tenant.hasMany(Notification, {
     foreignKey: "tenantId",
     as: "notifications",
+  });
+
+  /** MealSetting */
+
+  Tenant.hasOne(MealSetting, {
+    foreignKey: "tenantId",
+    as: "mealSetting",
+  });
+
+  MealSetting.belongsTo(Tenant, {
+    foreignKey: "tenantId",
+    as: "tenant",
   });
 };
