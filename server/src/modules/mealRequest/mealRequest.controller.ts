@@ -1,7 +1,6 @@
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { getCurrentDate } from "@/utils/date.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { mealRequestService } from "./mealRequest.service.js";
@@ -9,14 +8,12 @@ import { mealRequestService } from "./mealRequest.service.js";
 export class MealRequestController {
   create = asyncHandler(async (req: Request, res: Response) => {
     const { userId, tenantId, mealSessionId } = getTenantContext(req);
-    const date = getCurrentDate();
 
     const mealRequest = await mealRequestService.create({
       payload: req.body,
       userId,
       tenantId,
       mealSessionId,
-      date: new Date(date),
     });
 
     return sendResponse(res, {
@@ -54,6 +51,30 @@ export class MealRequestController {
       statusCode: 201,
       message: "Pending meal requests fetched successfully.",
       data: mealRequest,
+    });
+  });
+
+  approveRange = asyncHandler(async (req: Request, res: Response) => {
+    const {
+      tenantId,
+      userId: managerId,
+      mealSessionId,
+    } = getTenantContext(req);
+
+    const { fromDate, toDate } = req.body;
+
+    const result = await mealRequestService.approveRange({
+      tenantId,
+      managerId,
+      mealSessionId,
+      fromDate: new Date(fromDate),
+      toDate: new Date(toDate),
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Meal requests approved successfully.",
+      data: result,
     });
   });
 

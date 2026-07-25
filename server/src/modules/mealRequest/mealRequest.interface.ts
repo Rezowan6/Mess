@@ -11,19 +11,18 @@ export const MEAL_REQUEST_STATUSES = Object.values(MealRequestStatus);
 export type MealRequestStatus =
   (typeof MealRequestStatus)[keyof typeof MealRequestStatus];
 
-export interface ICreateMealRequestDto {
+export interface ICreateMealRequestDbDto {
   tenantId: number;
   mealSessionId: number;
   userId: number;
-  session: IMealSessionReq
+  
   date: Date;
+
   breakfast?: number;
   lunch?: number;
   dinner?: number;
+
   status?: MealRequestStatus;
-  approvedBy?: number;
-  approvedAt?: Date;
-  note?: string;
 }
 
 export interface UpdateMealRequestDto {
@@ -40,6 +39,15 @@ export interface UpdateMealRequestDto {
   rejectedBy?: number;
   rejectedAt?: Date;
   note?: string;
+}
+
+export interface ICreateMealRequestDto {
+  fromDate: Date;
+  toDate: Date;
+
+  breakfast?: number;
+  lunch?: number;
+  dinner?: number;
 }
 
 export interface CreateMealRequestDto {

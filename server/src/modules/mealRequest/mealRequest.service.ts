@@ -2,10 +2,16 @@ import sequelize from "@/configs/db.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { mealEntryRepository } from "../mealEntry/mealEntry.repository.js";
 import {
+  ICreateMealRequestDbDto,
   ICreateMealRequestDto,
   MealRequestStatus,
 } from "./mealRequest.interface.js";
 import { mealRequestRepository } from "./mealRequest.repository.js";
+
+import { formatDate } from "@/utils/date.util.js";
+import { mealCutoffService } from "../mealSetting/mealCutoff.service.js";
+import { mealSettingRepository } from "../mealSetting/mealSetting.repository.js";
+import { MealRequest } from "./mealRequest.model.js";
 
 export class MealRequestService {
   async create({
@@ -13,39 +19,148 @@ export class MealRequestService {
     tenantId,
     userId,
     mealSessionId,
-    date,
   }: {
     payload: ICreateMealRequestDto;
     tenantId: number;
     userId: number;
     mealSessionId: number;
-    date: Date;
   }) {
-    const { breakfast, lunch, dinner } = payload;
-
-    const existingRequest =
-      await mealRequestRepository.getByTenantMealSessionUserIdAndDate({
-        tenantId,
-        mealSessionId,
-        userId,
-        date,
-      });
-
-    if (existingRequest) {
-      throw new ApiError(409, "Meal request already exists for this date");
-    }
+    const { fromDate, toDate, breakfast, lunch, dinner } = payload;
 
     if (!breakfast && !lunch && !dinner) {
       throw new ApiError(400, "Please select at least one meal");
     }
 
-    return mealRequestRepository.create({
-      ...payload,
-      tenantId,
-      mealSessionId,
-      userId,
-      status: MealRequestStatus.PENDING,
-      date,
+    if (fromDate > toDate) {
+      throw new ApiError(400, "From date cannot be greater than to date.");
+    }
+
+    const mealSetting =
+      await mealSettingRepository.getRequiredByTenantId(tenantId);
+
+    return await sequelize.transaction(async (transaction) => {
+      const createdRequests: ICreateMealRequestDbDto[] = [];
+
+      const skippedRequests: {
+        date: Date;
+        reason: string;
+      }[] = [];
+
+      const startDate = new Date(fromDate);
+      const endDate = new Date(toDate);
+
+      const currentDate = new Date(startDate);
+
+      const existingRequests =
+        await mealRequestRepository.getExistingRequestsInRange(
+          {
+            tenantId,
+            mealSessionId,
+            userId,
+            fromDate,
+            toDate,
+          },
+          transaction,
+        );
+
+      const existingRequestMap = new Map(
+        existingRequests.map((request) => [formatDate(request.date), request]),
+      );
+
+      while (currentDate <= endDate) {
+        const requestDate = new Date(currentDate);
+
+        const existingRequest = existingRequestMap.get(formatDate(requestDate));
+
+        if (existingRequest) {
+          skippedRequests.push({
+            date: requestDate,
+            reason: "Already exists.",
+          });
+
+          currentDate.setDate(currentDate.getDate() + 1);
+
+          continue;
+        }
+
+        if (
+          breakfast &&
+          !mealCutoffService.canTakeBreakfast(mealSetting, requestDate)
+        ) {
+          skippedRequests.push({
+            date: requestDate,
+            reason: "Breakfast cutoff time passed.",
+          });
+
+          currentDate.setDate(currentDate.getDate() + 1);
+
+          continue;
+        }
+
+        if (
+          lunch &&
+          !mealCutoffService.canTakeLunch(mealSetting, requestDate)
+        ) {
+          skippedRequests.push({
+            date: requestDate,
+            reason: "Lunch cutoff time passed.",
+          });
+
+          currentDate.setDate(currentDate.getDate() + 1);
+
+          continue;
+        }
+
+        if (
+          dinner &&
+          !mealCutoffService.canTakeDinner(mealSetting, requestDate)
+        ) {
+          skippedRequests.push({
+            date: requestDate,
+            reason: "Dinner cutoff time passed.",
+          });
+
+          currentDate.setDate(currentDate.getDate() + 1);
+
+          continue;
+        }
+        const requestData: ICreateMealRequestDbDto = {
+          tenantId,
+          mealSessionId,
+          userId,
+
+          date: requestDate,
+
+          breakfast: breakfast ?? 0,
+          lunch: lunch ?? 0,
+          dinner: dinner ?? 0,
+
+          status: MealRequestStatus.PENDING,
+        };
+
+        createdRequests.push(requestData);
+
+        existingRequestMap.set(
+          formatDate(requestDate),
+          requestData as MealRequest,
+        );
+
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      if (createdRequests.length) {
+        await mealRequestRepository.bulkCreate(createdRequests, {
+          transaction,
+        });
+      }
+
+      return {
+        createdCount: createdRequests.length,
+
+        skippedCount: skippedRequests.length,
+
+        skippedRequests,
+      };
     });
   }
 
@@ -60,7 +175,7 @@ export class MealRequestService {
       where: {
         tenantId,
         mealSessionId,
-        status: MealRequestStatus.PENDING
+        status: MealRequestStatus.PENDING,
       },
     });
 
@@ -151,6 +266,66 @@ export class MealRequestService {
       );
 
       return request;
+    });
+  }
+
+  async approveRange({
+    tenantId,
+    managerId,
+    mealSessionId,
+    fromDate,
+    toDate,
+  }: {
+    tenantId: number;
+    managerId: number;
+    mealSessionId: number;
+    fromDate: Date;
+    toDate: Date;
+  }) {
+    return await sequelize.transaction(async (transaction) => {
+      const requests =
+        await mealRequestRepository.getPendingRequestsByDateRange({
+          tenantId,
+          mealSessionId,
+          fromDate,
+          toDate,
+        });
+
+      if (!requests.length) {
+        throw new ApiError(404, "No pending meal requests found.");
+      }
+
+      const mealEntries = requests.map((request) => ({
+        tenantId,
+
+        userId: request.userId,
+
+        mealSessionId: request.mealSessionId,
+
+        date: request.date,
+
+        breakfast: request.breakfast,
+
+        lunch: request.lunch,
+
+        dinner: request.dinner,
+
+        mealRequestId: request.id,
+      }));
+
+      await mealEntryRepository.bulkCreateMealEntries(mealEntries, transaction);
+
+      await mealRequestRepository.bulkApproveRequests(
+        requests.map((request) => request.id),
+
+        managerId,
+
+        transaction,
+      );
+
+      return {
+        approvedCount: requests.length,
+      };
     });
   }
 

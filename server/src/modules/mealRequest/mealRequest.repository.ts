@@ -11,6 +11,45 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
   constructor() {
     super(MealRequest);
   }
+  async getExistingRequestsInRange(
+    {
+      tenantId,
+      mealSessionId,
+      userId,
+      fromDate,
+      toDate,
+    }: {
+      tenantId: number;
+      mealSessionId: number;
+      userId: number;
+      fromDate: Date;
+      toDate: Date;
+    },
+    transaction: Transaction | null = null,
+  ): Promise<MealRequest[]> {
+    const startDate = new Date(fromDate);
+
+    startDate.setHours(0, 0, 0, 0);
+
+    const endDate = new Date(toDate);
+
+    endDate.setHours(23, 59, 59, 999);
+
+    return this.findAllWithOptions({
+      where: {
+        tenantId,
+        mealSessionId,
+        userId,
+        date: {
+          [Op.between]: [startDate, endDate],
+        },
+      },
+      attributes: ["id", "date"],
+
+      transaction: transaction ?? null,
+    });
+  }
+
   async getPendingRequestsByTenantId(
     tenantId: number,
     mealSessionId: number,
@@ -37,6 +76,40 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
         },
       ],
       order: [["createdAt", "ASC"]],
+    });
+  }
+
+  async getPendingRequestsByDateRange({
+    tenantId,
+    mealSessionId,
+    fromDate,
+    toDate,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    fromDate: Date;
+    toDate: Date;
+  }): Promise<MealRequest[]> {
+    const startDate = new Date(fromDate);
+
+    startDate.setHours(0, 0, 0, 0);
+
+    const endDate = new Date(toDate);
+
+    endDate.setHours(23, 59, 59, 999);
+    return this.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+
+        status: MealRequestStatus.PENDING,
+
+        date: {
+          [Op.between]: [startDate, endDate],
+        },
+      },
+
+      order: [["date", "ASC"]],
     });
   }
 
