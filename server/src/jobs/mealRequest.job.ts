@@ -1,4 +1,4 @@
-import { mealGeneratorService } from "@/modules/meal-generator/mealGenerator.service.js";
+import { mealGeneratorService } from "@/modules/mealGenerator/mealGenerator.service.js";
 import { tenantRepository } from "@/modules/tenant/tenant.repository.js";
 import cron from "node-cron";
 
