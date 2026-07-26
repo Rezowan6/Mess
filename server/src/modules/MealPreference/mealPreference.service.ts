@@ -1,3 +1,6 @@
+import { checkMealCutoff } from "@/helpers/checkMealCutoff.helper.js";
+import { ApiError } from "@/utils/ApiError.js";
+import { mealSettingRepository } from "../mealSetting/mealSetting.repository.js";
 import { IUpsertPayload } from "./mealPreference.interface.js";
 import { mealPreferenceRepository } from "./mealPreference.repository.js";
 
@@ -5,14 +8,22 @@ class MealPreferenceService {
   async upsert({ tenantId, userId, payload }: IUpsertPayload) {
     const { breakfast, lunch, dinner, guestMeal } = payload;
 
-    const existingPreference =
-      await mealPreferenceRepository.findOneWithOptions({
-        where: {
-          tenantId,
-          userId,
-        },
-      });
+    const existingPreference = await mealPreferenceRepository.findOne({
+      tenantId,
+      userId,
+    });
 
+    const mealSetting = await mealSettingRepository.findOne({
+      tenantId,
+    });
+
+    if (!mealSetting) {
+      throw new ApiError(404, "Meal setting not found");
+    }
+
+    /**
+     * First time create
+     */
     if (!existingPreference) {
       return await mealPreferenceRepository.create({
         tenantId,
@@ -27,6 +38,32 @@ class MealPreferenceService {
       });
     }
 
+    /**
+     * Check OFF action
+     */ if (existingPreference.breakfast > 0 && breakfast === 0) {
+      checkMealCutoff({
+        mealSetting,
+        meal: "breakfast",
+      });
+    }
+
+    if (existingPreference.lunch > 0 && lunch === 0) {
+      checkMealCutoff({
+        mealSetting,
+        meal: "lunch",
+      });
+    }
+
+    if (existingPreference.dinner > 0 && dinner === 0) {
+      checkMealCutoff({
+        mealSetting,
+        meal: "dinner",
+      });
+    }
+
+      /**
+   * Update preference
+   */
     return await mealPreferenceRepository.update(
       { id: existingPreference.id },
       {
