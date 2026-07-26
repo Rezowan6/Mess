@@ -1,7 +1,7 @@
 import { mealSessionRepository } from "@/modules/mealSession/mealSession.repository.js";
 
 import sequelize from "@/configs/db.js";
-import { mealEntryRepository } from "../mealEntry/mealEntry.repository.js";
+import { mealEntryGenerator } from "../mealEntry/mealEntry.generator.js";
 import { IGenerateDailyMealRequestPayload } from "../MealPreference/mealPreference.interface.js";
 import { mealPreferenceRepository } from "../MealPreference/mealPreference.repository.js";
 import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
@@ -32,10 +32,9 @@ class MealGeneratorService {
 
     return sequelize.transaction(async (transaction) => {
       const requests = [];
-      const entries = [];
 
       const isAutoApproved = mealSetting?.autoApproveMealRequest ?? false;
-      
+
       // meal preference
       for (const preference of preferences) {
         const exists = await mealRequestRepository.existsByDate({
@@ -83,41 +82,15 @@ class MealGeneratorService {
         : [];
 
       // meal entries
-      for (const request of createdRequests) {
-        if (request.status !== MealRequestStatus.APPROVED) {
-          continue;
-        }
-
-        entries.push({
-          tenantId: request.tenantId,
-
-          mealSessionId: request.mealSessionId,
-
-          mealRequestId: request.id,
-
-          userId: request.userId,
-
-          date: request.date,
-
-          breakfast: request.breakfast,
-
-          lunch: request.lunch,
-
-          dinner: request.dinner,
-
-          guestMeal: request.guestMeal,
-        });
-      }
-
-      if (entries.length) {
-        await mealEntryRepository.bulkCreate(entries, {
+      if (isAutoApproved && createdRequests.length) {
+        await mealEntryGenerator.bulkCreateFromMealRequests(
+          createdRequests,
           transaction,
-        });
+        );
       }
 
       return {
         createdRequests: createdRequests.length,
-        createdMealEntries: entries.length,
       };
     });
   }

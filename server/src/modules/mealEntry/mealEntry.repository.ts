@@ -2,14 +2,28 @@ import { BaseRepository } from "@/common/repo/base.repository.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealEntry } from "@/models/index.js";
 import { Op, Transaction, col, fn, literal } from "sequelize";
-import { CreateMealEntryDto, IMealSummary } from "./mealEntry.interface.js";
+import { ICreateMealEntryDto, IMealSummary } from "./mealEntry.interface.js";
 
 export class MealEntryRepository extends BaseRepository<MealEntry> {
   constructor() {
     super(MealEntry);
   }
+
+  async existsByRequest({
+    tenantId,
+    mealRequestId,
+  }: {
+    tenantId: number;
+    mealRequestId: number;
+  }) {
+    return this.findOne({
+      tenantId,
+      mealRequestId,
+    });
+  }
+  
   async createMealEntry(
-    mealEntryData: CreateMealEntryDto,
+    mealEntryData: ICreateMealEntryDto,
     transaction: Transaction | null = null,
   ) {
     return await this.createWithOptions(mealEntryData, {

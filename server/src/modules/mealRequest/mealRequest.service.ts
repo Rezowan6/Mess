@@ -1,6 +1,5 @@
 import sequelize from "@/configs/db.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { mealEntryRepository } from "../mealEntry/mealEntry.repository.js";
 import {
   ICreateMealRequestDbDto,
   ICreateMealRequestDto,
@@ -9,6 +8,7 @@ import {
 import { mealRequestRepository } from "./mealRequest.repository.js";
 
 import { formatDate } from "@/utils/date.util.js";
+import { mealEntryGenerator } from "../mealEntry/mealEntry.generator.js";
 import { mealCutoffService } from "../mealSetting/mealCutoff.service.js";
 import { mealSettingRepository } from "../mealSetting/mealSetting.repository.js";
 import { MealRequest } from "./mealRequest.model.js";
@@ -249,21 +249,7 @@ export class MealRequestService {
         transaction,
       );
 
-      await mealEntryRepository.createWithOptions(
-        {
-          tenantId,
-          userId: request.userId,
-          mealSessionId: request.mealSessionId,
-          date: request.date,
-
-          breakfast: request.breakfast,
-          lunch: request.lunch,
-          dinner: request.dinner,
-
-          mealRequestId: request.id,
-        },
-        { transaction },
-      );
+      await mealEntryGenerator.createFromMealRequest(request, transaction);
 
       return request;
     });
@@ -295,31 +281,16 @@ export class MealRequestService {
         throw new ApiError(404, "No pending meal requests found.");
       }
 
-      const mealEntries = requests.map((request) => ({
-        tenantId,
-
-        userId: request.userId,
-
-        mealSessionId: request.mealSessionId,
-
-        date: request.date,
-
-        breakfast: request.breakfast,
-
-        lunch: request.lunch,
-
-        dinner: request.dinner,
-
-        mealRequestId: request.id,
-      }));
-
-      await mealEntryRepository.bulkCreateMealEntries(mealEntries, transaction);
-
       await mealRequestRepository.bulkApproveRequests(
         requests.map((request) => request.id),
 
         managerId,
 
+        transaction,
+      );
+
+      await mealEntryGenerator.bulkCreateFromMealRequests(
+        requests,
         transaction,
       );
 
@@ -332,12 +303,10 @@ export class MealRequestService {
   async approveAllPending({
     tenantId,
     managerId,
-    mealSessionId,
     date,
   }: {
     tenantId: number;
     managerId: number;
-    mealSessionId: number;
     date: Date;
   }) {
     return sequelize.transaction(async (transaction) => {
@@ -348,26 +317,18 @@ export class MealRequestService {
       if (!requests.length) {
         throw new ApiError(404, "No pending meal requests found.");
       }
-      const mealEntries = requests.map((request: any) => ({
-        tenantId,
-        userId: request.userId,
-        mealSessionId,
-        date: request.date,
-
-        breakfast: request.breakfast,
-        lunch: request.lunch,
-        dinner: request.dinner,
-
-        mealRequestId: request.id,
-      }));
-
-      await mealEntryRepository.bulkCreateMealEntries(mealEntries, transaction);
 
       await mealRequestRepository.bulkApproveRequests(
         requests.map((request) => request.id),
         managerId,
         transaction,
       );
+
+      await mealEntryGenerator.bulkCreateFromMealRequests(
+        requests,
+        transaction,
+      );
+
       return {
         approvedCount: requests.length,
       };
