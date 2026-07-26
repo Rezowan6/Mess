@@ -18,7 +18,7 @@ export const useMe = (options?: UseMeOptions) => {
   const setTenant = useTenantStore((state) => state.setTenant);
 
   const query = useQuery({
-    queryKey: queryKeys.authMe,
+    queryKey: queryKeys.auth.me,
 
     queryFn: authApi.getMe,
 

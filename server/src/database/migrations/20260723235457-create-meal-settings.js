@@ -23,6 +23,27 @@ export default {
         onDelete: "CASCADE",
       },
 
+      default_breakfast_meal: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+      },
+      default_lunch_meal: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+      },
+      default_dinner_meal: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+      },
+      max_meal_per_request: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 5,
+      },
+
       breakfast_cutoff_minute: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,

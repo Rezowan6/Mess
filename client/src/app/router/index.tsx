@@ -16,6 +16,7 @@ import { PermissionGuard } from "@/shared/guards/permission.guard";
 import { RoleGuard } from "@/shared/guards/role.guard";
 
 import { AcceptInvitePage } from "@/modules/invite/pages/AcceptInvitePage";
+import { MealRequestPage } from "@/modules/meal-request/pages/MealRequestPage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
@@ -75,12 +76,17 @@ export const router = createBrowserRouter([
           },
 
           {
-            path: "notifications",
+            path: ROUTES.NOTIFICATIONS,
             element: <NotificationPage />,
           },
           {
             path: ROUTES.HOME,
             element: <HomePage />,
+          },
+
+          {
+            path: ROUTES.MEAL_ENTRY,
+            element: <MealRequestPage />,
           },
         ],
       },

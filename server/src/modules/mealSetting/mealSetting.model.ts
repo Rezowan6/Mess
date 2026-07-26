@@ -20,6 +20,12 @@ export class MealSetting extends Model<
 
   declare tenantId: number;
 
+  declare defaultBreakfastMeal: CreationOptional<number>;
+  declare defaultLunchMeal: CreationOptional<number>;
+  declare defaultDinnerMeal: CreationOptional<number>;
+
+  declare maxMealPerRequest: CreationOptional<number>;
+
   declare breakfastCutoffMinute: CreationOptional<number>;
   declare breakfastPreviousDay: CreationOptional<boolean>;
 
@@ -50,6 +56,27 @@ MealSetting.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       unique: true,
+    },
+
+    defaultBreakfastMeal: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+    },
+    defaultLunchMeal: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+    },
+    defaultDinnerMeal: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+    },
+    maxMealPerRequest: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 10,
     },
 
     breakfastCutoffMinute: {

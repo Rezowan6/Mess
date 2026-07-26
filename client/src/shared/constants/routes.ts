@@ -15,6 +15,8 @@ export const ROUTES = {
 
   MEAL_ENTRY: "/meal-entries",
 
+  NOTIFICATIONS: "notifications",
+
   EXPENSE: "/expenses",
 
   DEPOSIT: "/deposits",

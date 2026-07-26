@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { userManagementApi } from "../api/userManagement.api";
 import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 import { queryKeys } from "@/shared/constants/queryKeys";
+import { userManagementApi } from "../api/userManagement.api";
 
 export const useUpdateRole = () => {
   const queryClient = useQueryClient();
@@ -14,7 +14,7 @@ export const useUpdateRole = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [...queryKeys.tenantMembers(currentTenant?.tenantId)],
+        queryKey: [...queryKeys.tenants.members(currentTenant?.tenantId)],
       });
     },
   });

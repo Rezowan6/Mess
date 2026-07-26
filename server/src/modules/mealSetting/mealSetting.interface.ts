@@ -1,6 +1,12 @@
 export interface ICreateMealSettingDto {
   tenantId: number;
 
+  defaultBreakfastMeal: number;
+  defaultLunchMeal: number;
+  defaultDinnerMeal: number;
+  
+  maxMealPerRequest: number;
+
   breakfastCutoffMinute?: number;
   breakfastPreviousDay?: boolean;
 

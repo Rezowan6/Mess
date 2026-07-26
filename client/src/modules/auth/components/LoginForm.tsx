@@ -3,16 +3,20 @@ import { useForm } from "react-hook-form";
 
 import { useLogin } from "../hooks/useLogin";
 
-import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
+import { Button } from "@/shared/components/ui/Button";
+import { Input } from "@/shared/components/ui/Input";
+import { PasswordInput } from "@/shared/components/ui/PasswordInput";
+import { loginSchema, type ILoginFormData } from "../schemas/auth.schema";
 
 export const LoginForm = () => {
-  const loginMutation = useLogin();
+  const { mutate, isPending } = useLogin();
 
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>({
+  } = useForm<ILoginFormData>({
     resolver: zodResolver(loginSchema),
 
     defaultValues: {
@@ -21,30 +25,24 @@ export const LoginForm = () => {
     },
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    loginMutation.mutate(data);
+  const onSubmit = (data: ILoginFormData) => {
+    mutate(data, {
+      onSuccess: () => {
+        reset();
+      },
+    });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {/* Email */}
-
-      <div>
-        <label className="label">
-          <span className="label-text">Email:</span>
-        </label>
-
-        <input
-          type="email"
-          placeholder="Enter your email: "
-          className="input input-bordered w-full"
-          {...register("email")}
-        />
-
-        {errors.email && (
-          <p className="mt-1 text-sm text-error">{errors.email.message}</p>
-        )}
-      </div>
+      <Input
+        label="Email"
+        type="email"
+        placeholder="Enter your email"
+        error={errors.email?.message}
+        {...register("email")}
+      />
 
       {/* Password */}
       <div>
@@ -52,25 +50,23 @@ export const LoginForm = () => {
           <span className="label-text">Password</span>
         </label>
 
-        <input
-          type="password"
+        <PasswordInput
           placeholder="Enter your password"
-          className="input input-bordered w-full"
+          error={errors.password?.message}
           {...register("password")}
         />
-
-        {errors.password && (
-          <p className="mt-1 text-sm text-error">{errors.password.message}</p>
-        )}
       </div>
 
-      <button
+      <Button
         type="submit"
-        className="btn btn-primary w-full"
-        disabled={loginMutation.isPending}
+        variant="success"
+        disabled={isPending}
+        className="w-full"
+        loading={isPending}
+        loadingText="Singing In..."
       >
-        {loginMutation.isPending ? "Singing In..." : "Sign In"}
-      </button>
+        Sign In
+      </Button>
     </form>
   );
 };

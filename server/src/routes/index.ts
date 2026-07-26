@@ -17,8 +17,10 @@ import planFeatureRouter from "@/modules/planFeature/planFeature.route.js";
 import subscriptionRouter from "@/modules/subscription/subscription.route.js";
 import tenantRoute from "@/modules/tenant/tenant.route.js";
 import tenantMembershipRouter from "@/modules/tenantMembership/tenantMembership.route.js";
+import mealPreferenceRouter from "@/modules/MealPreference/mealPreference.route.js"
 
 export {
+  mealPreferenceRouter,
   authRouter,
   dashboardRouter,
   depositRouter,

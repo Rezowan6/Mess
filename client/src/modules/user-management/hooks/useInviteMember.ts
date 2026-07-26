@@ -14,7 +14,7 @@ export const useInviteMember = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.tenantMembers(currenttenant?.tenantId),
+        queryKey: queryKeys.tenants.invites(currenttenant?.tenantId),
       });
     },
   });

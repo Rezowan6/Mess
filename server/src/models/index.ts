@@ -16,8 +16,10 @@ import { Subscription } from "@/modules/subscription/subscription.model.js";
 import { Tenant } from "@/modules/tenant/tenant.model.js";
 import { TenantMembership } from "@/modules/tenantMembership/tenantMembership.model.js";
 import { User } from "@/modules/user/user.model.js";
+import { MealPreference } from "@/modules/MealPreference/mealPreference.model.js";
 
 export {
+  MealPreference,
   Deposit,
   Expenses,
   Feature,

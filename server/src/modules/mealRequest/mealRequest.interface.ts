@@ -1,5 +1,3 @@
-import { IMealSessionReq } from "../mealSession/mealSession.interface.js";
-
 export const MealRequestStatus = {
   PENDING: "pending",
   APPROVED: "approved",
@@ -15,7 +13,7 @@ export interface ICreateMealRequestDbDto {
   tenantId: number;
   mealSessionId: number;
   userId: number;
-  
+
   date: Date;
 
   breakfast?: number;

@@ -14,7 +14,7 @@ export const useRemoveMember = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [...queryKeys.tenantMembers(currentTenant?.tenantId)],
+        queryKey: [...queryKeys.tenants.members(currentTenant?.tenantId)],
       });
     },
   });

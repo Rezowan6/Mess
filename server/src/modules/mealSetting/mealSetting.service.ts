@@ -20,8 +20,9 @@ class MealSettingService {
   }
 
   async getMySetting(tenantId: number) {
+    console.log(tenantId)
     const setting = await mealSettingRepository.getByTenantId(tenantId);
-
+    console.log(setting)
     if (!setting) {
       throw new ApiError(404, "Meal setting not found.");
     }

@@ -29,6 +29,7 @@ import {
   subscriptionRouter,
   tenantMembershipRouter,
   tenantRoute,
+  mealPreferenceRouter,
 } from "@/routes/index.js";
 
 const app: Application = express();
@@ -73,6 +74,7 @@ app.use("/api/v1/subscriptions", subscriptionRouter);
 app.use("/api/v1/payments", paymentRouter);
 app.use("/api/v1/notifications", notificationRouter);
 app.use("/api/v1/meal-settings", mealSettingRouter);
+app.use("/api/v1/meal-preferences", mealPreferenceRouter);
 
 // app.get("/api/test/socket", (req, res) => {
 //   const io = getIO();

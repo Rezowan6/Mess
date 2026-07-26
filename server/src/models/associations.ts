@@ -4,6 +4,7 @@ import {
   Feature,
   Invite,
   MealEntry,
+  MealPreference,
   MealRequest,
   MealSession,
   MealSetting,
@@ -371,6 +372,27 @@ export const setupAssociations = () => {
   });
 
   MealSetting.belongsTo(Tenant, {
+    foreignKey: "tenantId",
+    as: "tenant",
+  });
+
+  /** meal_preferences */
+  User.hasOne(MealPreference, {
+    foreignKey: "userId",
+    as: "mealPreference",
+  });
+
+  MealPreference.belongsTo(User, {
+    foreignKey: "userId",
+    as: "user",
+  });
+
+  Tenant.hasMany(MealPreference, {
+    foreignKey: "tenantId",
+    as: "mealPreferences",
+  });
+
+  MealPreference.belongsTo(Tenant, {
     foreignKey: "tenantId",
     as: "tenant",
   });

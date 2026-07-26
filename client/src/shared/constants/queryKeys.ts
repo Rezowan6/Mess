@@ -1,23 +1,45 @@
 export const queryKeys = {
-  auth: ["auth"] as const,
+  auth: {
+    all: ["auth"] as const,
 
-  authMe: ["auth_me"] as const,
+    me: ["auth", "me"] as const,
+  },
 
-  tenantMembers: (tenantId?: number) => ["tenant-members", tenantId] as const,
+  tenants: {
+    all: ["tenants"] as const,
 
-  invites: (tenantId?: number) => ["invites", tenantId] as const,
+    members: (tenantId?: number) => ["tenants", tenantId, "members"] as const,
 
-  mealSessions: (tenantId?: number) => ["meal-sessions", tenantId] as const,
+    invites: (tenantId?: number) => ["tenants", tenantId, "invites"] as const,
+  },
 
-  expenses: (tenantId?: number) => ["expenses", tenantId] as const,
+  mealSessions: {
+    all: (tenantId?: number) => ["meal-sessions", tenantId] as const,
+  },
+
+  mealRequests: {
+    all: (tenantId?: number) => ["meal-requests", tenantId] as const,
+
+    myRequests: (tenantId?: number) =>
+      ["meal-requests", tenantId, "my"] as const,
+
+    pending: (tenantId?: number) =>
+      ["meal-requests", tenantId, "pending"] as const,
+  },
+
+  mealSetting: {
+    current: ["meal-setting"] as const,
+  },
+
+  expenses: {
+    all: (tenantId?: number) => ["expenses", tenantId] as const,
+  },
 
   notifications: {
     all: ["notifications"] as const,
 
     list: (params?: { page?: number; limit?: number }) =>
       ["notifications", "list", params] as const,
-
-    lists:["notifications","list"] as const,
 
     count: ["notifications", "count"] as const,
   },
