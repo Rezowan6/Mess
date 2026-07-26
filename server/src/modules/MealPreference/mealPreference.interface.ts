@@ -9,3 +9,8 @@ export interface IUpsertPayload {
   userId: number;
   payload: IUpsertDto;
 }
+
+export interface IGenerateDailyMealRequestPayload {
+  tenantId: number;
+  date: Date;
+}

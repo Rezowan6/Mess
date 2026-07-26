@@ -21,11 +21,8 @@ export class MealSettingController {
 
   getMySetting = asyncHandler(async (req, res) => {
     const { tenantId } = getTenantContext(req);
-    console.log(tenantId)
 
     const result = await mealSettingService.getMySetting(tenantId);
-
-    console.log(result)
 
     return sendResponse(res, {
       statusCode: 200,

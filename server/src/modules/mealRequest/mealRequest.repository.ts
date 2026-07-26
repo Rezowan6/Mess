@@ -50,6 +50,27 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     });
   }
 
+  async existsByDate({
+    tenantId,
+    mealSessionId,
+    userId,
+    date,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    userId: number;
+    date: Date;
+  }) {
+    return this.findOneWithOptions({
+      where: {
+        tenantId,
+        mealSessionId,
+        userId,
+        date,
+      },
+    });
+  }
+
   async getPendingRequestsByTenantId(
     tenantId: number,
     mealSessionId: number,

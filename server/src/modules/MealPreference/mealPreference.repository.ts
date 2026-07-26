@@ -20,6 +20,15 @@ class MealPreferencRepository extends BaseRepository<MealPreference> {
       },
     });
   }
+
+  async getActivePreferences(tenantId: number) {
+    return this.findAllWithOptions({
+      where: {
+        tenantId,
+        isActive: true,
+      },
+    });
+  }
 }
 
 export const mealPreferenceRepository = new MealPreferencRepository();

@@ -5,6 +5,7 @@ import http from "http";
 import mongoose from "mongoose";
 import app from "./app.js";
 import { initSocket } from "./socket/socket.js";
+import { startMealRequestJob } from "./jobs/mealRequest.job.js";
 
 const PORT = env.PORT || 4000;
 
@@ -18,6 +19,9 @@ const startServer = async (): Promise<void> => {
 
     // init socket 
     initSocket(httpServer);
+
+    // cron job
+    startMealRequestJob()
 
     httpServer.listen(PORT, () => {
       console.log(`Server running on port http://localhost:${PORT}`);
