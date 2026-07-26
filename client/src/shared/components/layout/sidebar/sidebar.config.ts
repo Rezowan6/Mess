@@ -1,6 +1,6 @@
 import { PERMISSIONS, type Permission } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon, } from "lucide-react";
 
 import {
   ClipboardList,
@@ -12,6 +12,7 @@ import {
   Settings,
   Users,
   UtensilsCrossed,
+  Utensils,
 } from "lucide-react";
 
 export interface ISidebarItem {
@@ -34,6 +35,12 @@ export const sidebarItems: ISidebarItem[] = [
     path: ROUTES.USERS,
     icon: Users,
     permission: PERMISSIONS.USER_VIEW,
+  },
+  {
+    title: "Meal Preference",
+    path: ROUTES.PREFERENCE,
+    icon: Utensils,
+    permission: PERMISSIONS.MEAL_PREFERENCE_VIEW,
   },
 
   {

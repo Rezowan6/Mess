@@ -1,3 +1,17 @@
+MealPreference
+        |
+        |
+Daily Scheduler (Cron)
+        |
+        |
+Create MealRequest
+        |
+        |
+Manager Approval
+        |
+        |
+MealEntry
+
 src/
 |
 ├── modules/

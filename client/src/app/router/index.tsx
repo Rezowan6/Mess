@@ -20,6 +20,7 @@ import { MealRequestPage } from "@/modules/meal-request/pages/MealRequestPage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
+import { MealPreferencePage } from "@/modules/meal-preference/pages/MealPreferencePage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -87,6 +88,10 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.MEAL_ENTRY,
             element: <MealRequestPage />,
+          },
+          {
+            path: ROUTES.PREFERENCE,
+            element: <MealPreferencePage />,
           },
         ],
       },

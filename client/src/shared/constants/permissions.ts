@@ -6,6 +6,10 @@ export const PERMISSIONS = {
   USER_DELETE: "user.delete",
   USER_INVITE: "user.invite",
 
+  // meal preference
+  MEAL_PREFERENCE_VIEW: "meal_preference.view",
+  MEAL_PREFERENCE_UPDATE: "meal_preference.update",
+
   // Meal Session
   MEAL_SESSION_VIEW: "meal_session.view",
   MEAL_SESSION_CREATE: "meal_session.create",

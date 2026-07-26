@@ -55,7 +55,6 @@ export default function MealRequestForm() {
   const { mutate, isPending } = useCreateMealRequest();
 
   const onSubmit = (values: IMealRequestFormValues) => {
-    console.log(values);
 
     mutate(values, {
       onSuccess: () => {

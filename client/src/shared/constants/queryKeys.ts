@@ -27,6 +27,10 @@ export const queryKeys = {
       ["meal-requests", tenantId, "pending"] as const,
   },
 
+  mealPreference: {
+    myPreference: ["meal-preference"],
+  },
+
   mealSetting: {
     current: ["meal-setting"] as const,
   },

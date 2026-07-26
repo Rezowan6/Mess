@@ -11,6 +11,8 @@ export const ROUTES = {
 
   USERS: "/users",
 
+  PREFERENCE: "/preferences",
+
   MEAL_SESSION: "/meal-sessions",
 
   MEAL_ENTRY: "/meal-entries",

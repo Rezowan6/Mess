@@ -16,7 +16,7 @@ class MealPreferenceController {
 
     return sendResponse(res, {
       statusCode: 200,
-      message: "My meal preference create successfully.",
+      message: "My meal preference update successfully.",
       data,
     });
   });

@@ -35,4 +35,9 @@ export const API_ENDPOINTS = {
     UPDATE: "/meal-settings",
     DELETE: (id: number) => `/meal-settings/${id}`,
   },
+
+  MEAL_PREFERENCE: {
+    LIST_ME: "meal-preferences/me",
+    UPSERT: "/meal-preferences"
+  }
 };
