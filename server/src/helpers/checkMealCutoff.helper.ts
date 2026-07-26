@@ -61,7 +61,7 @@ export const checkMealCutoff = ({
   cutoff.setHours(hours, minutes, 0, 0);
 
   if (now > cutoff) {
-    throw new ApiError(400, `${meal} cutoff time exceeded`);
+    throw new ApiError(400, `${meal} modification time has expired.`);
   }
 
   return true;

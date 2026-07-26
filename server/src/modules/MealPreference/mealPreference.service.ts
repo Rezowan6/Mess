@@ -39,31 +39,31 @@ class MealPreferenceService {
     }
 
     /**
-     * Check OFF action
-     */ if (existingPreference.breakfast > 0 && breakfast === 0) {
+     * Check ON OFF action
+     */ if (existingPreference.breakfast !== breakfast) {
       checkMealCutoff({
         mealSetting,
         meal: "breakfast",
       });
     }
 
-    if (existingPreference.lunch > 0 && lunch === 0) {
+    if (existingPreference.lunch !== lunch) {
       checkMealCutoff({
         mealSetting,
         meal: "lunch",
       });
     }
 
-    if (existingPreference.dinner > 0 && dinner === 0) {
+    if (existingPreference.dinner !== dinner) {
       checkMealCutoff({
         mealSetting,
         meal: "dinner",
       });
     }
 
-      /**
-   * Update preference
-   */
+    /**
+     * Update preference
+     */
     return await mealPreferenceRepository.update(
       { id: existingPreference.id },
       {
