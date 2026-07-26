@@ -1,7 +1,7 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealRequest } from "@/models/index.js";
-import { Op, Transaction } from "sequelize";
+import { Op, Sequelize, Transaction } from "sequelize";
 import {
   MealRequestStatus,
   UpdateMealRequestDto,
@@ -61,14 +61,22 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     userId: number;
     date: Date;
   }) {
-    return this.findOneWithOptions({
+    const result = await MealRequest.findOne({
       where: {
         tenantId,
         mealSessionId,
         userId,
-        date,
+        [Op.and]: [
+          Sequelize.where(
+            Sequelize.fn("DATE", Sequelize.col("date")),
+            "=",
+            date.toISOString().slice(0, 10),
+          ),
+        ],
       },
     });
+
+    return !!result;
   }
 
   async getPendingRequestsByTenantId(
