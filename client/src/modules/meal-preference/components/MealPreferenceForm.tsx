@@ -58,6 +58,15 @@ export const MealPreferenceForm = () => {
           guestMeal: Number(preferenceData.data.guestMeal),
         });
       },
+
+      onError: () => {
+        reset({
+          breakfast: Number(preferenceData.data.breakfast),
+          lunch: Number(preferenceData.data.lunch),
+          dinner: Number(preferenceData.data.dinner),
+          guestMeal: Number(preferenceData.data.guestMeal),
+        });
+      },
     });
   };
 
@@ -69,8 +78,12 @@ export const MealPreferenceForm = () => {
     <div>
       {!hasPreference && (
         <div>
-          <p className="text-text-muted">You haven't set your meal preference yet.</p>
-          <p className="text-xs text-success">Save your preference to enable automatic meal requests.</p>
+          <p className="text-text-muted">
+            You haven't set your meal preference yet.
+          </p>
+          <p className="text-xs text-success">
+            Save your preference to enable automatic meal requests.
+          </p>
         </div>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>

@@ -8,7 +8,7 @@ export const mealRequestSchema = z
 
     dinner: z.number().min(0).optional(),
 
-    note: z.string().max(255, "Note cannot exceed 255 characters").optional(),
+    // note: z.string().max(255, "Note cannot exceed 255 characters").optional(),
   })
   .refine(
     (data) => data.breakfast || data.lunch || data.dinner,

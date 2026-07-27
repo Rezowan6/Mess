@@ -1,11 +1,11 @@
+import type { IUpsertMealPreferenceDto } from "@/modules/meal-preference/types/mealPreference.types";
 import { ToggleCounter } from "@/shared/components/ui/ToggleCounter";
 import { Controller, type Control } from "react-hook-form";
-import type { IMealRequestFormValues } from "../schemas/mealRequest.schema";
 
-interface MealCounterFieldProps {
+interface IMealCounterFieldProps {
   name: "breakfast" | "lunch" | "dinner";
   label: string;
-  control: Control<IMealRequestFormValues>;
+  control: Control<IUpsertMealPreferenceDto>;
   max?: number;
   error?: string;
 }
@@ -16,7 +16,7 @@ export function MealCounterField({
   control,
   max,
   error,
-}: MealCounterFieldProps) {
+}: IMealCounterFieldProps) {
   return (
     <Controller
       name={name}
