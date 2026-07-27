@@ -39,5 +39,11 @@ export const API_ENDPOINTS = {
   MEAL_PREFERENCE: {
     LIST_ME: "meal-preferences/me",
     UPSERT: "/meal-preferences"
+  },
+
+  MEAL_SESSION: {
+    GET_OPEN: "/meal-sessions",
+    OPEN: "/meal-sessions",
+    CLOSE: (id: number) => `/meal-sessions/${id}/close`,
   }
 };
