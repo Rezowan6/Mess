@@ -6,11 +6,12 @@ import { mealPreferenceService } from "./mealPreference.service.js";
 
 class MealPreferenceController {
   upsert = asyncHandler(async (req: Request, res: Response) => {
-    const { userId, tenantId } = getTenantContext(req);
+    const { userId, tenantId, mealSessionId, } = getTenantContext(req);
 
     const data = await mealPreferenceService.upsert({
       tenantId,
       userId,
+      mealSessionId,
       payload: req.body,
     });
 
@@ -22,10 +23,11 @@ class MealPreferenceController {
   });
 
   getMyPreference = asyncHandler(async (req: Request, res: Response) => {
-    const { userId, tenantId } = getTenantContext(req);
+    const { userId, tenantId, mealSessionId, } = getTenantContext(req);
 
     const data = await mealPreferenceService.getMyPreference({
       tenantId,
+      mealSessionId,
       userId,
     });
 

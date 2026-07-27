@@ -92,10 +92,10 @@ export default {
 
     await queryInterface.addIndex(
       "meal_preferences",
-      ["tenant_id", "user_id",],
+      ["tenant_id", "meal_session_id", "user_id",],
       {
         unique: true,
-        name: "meal_preferences_tenant_id_user_id_unique",
+        name: "meal_preferences_tenant_id_meal_session_id_user_id_unique",
       },
     );
 

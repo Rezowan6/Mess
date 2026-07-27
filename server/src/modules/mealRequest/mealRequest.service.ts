@@ -25,8 +25,6 @@ export class MealRequestService {
     userId: number;
     mealSessionId: number;
   }) {
-
-    console.log(payload)
     const { fromDate, toDate, breakfast, lunch, dinner } = payload;
 
     if (!breakfast && !lunch && !dinner) {

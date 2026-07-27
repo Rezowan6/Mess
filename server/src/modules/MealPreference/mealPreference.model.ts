@@ -91,7 +91,7 @@ MealPreference.init(
     indexes: [
       {
         unique: true,
-        fields: ["tenant_id", "user_id"],
+        fields: ["tenant_id", "meal_session_id", "user_id"],
       },
       {
         fields: ["tenant_id"],

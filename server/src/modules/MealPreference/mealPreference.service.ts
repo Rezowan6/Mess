@@ -7,11 +7,14 @@ import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
 import { mealRequestRepository } from "../mealRequest/mealRequest.repository.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { mealSettingRepository } from "../mealSetting/mealSetting.repository.js";
-import { IUpsertPayload } from "./mealPreference.interface.js";
+import {
+  ICopyMealPreferencePayload,
+  IUpsertPayload,
+} from "./mealPreference.interface.js";
 import { mealPreferenceRepository } from "./mealPreference.repository.js";
 
 class MealPreferenceService {
-  async upsert({ tenantId, userId, payload }: IUpsertPayload) {
+  async upsert({ tenantId, userId, mealSessionId, payload }: IUpsertPayload) {
     const { breakfast, lunch, dinner, guestMeal } = payload;
 
     const date = getCurrentDate();
@@ -30,8 +33,7 @@ class MealPreferenceService {
         throw new ApiError(404, "Meal setting not found");
       }
 
-      const mealSession =
-        await mealSessionRepository.getCurrentSession(tenantId);
+      const mealSession = await mealSessionRepository.findById(mealSessionId);
 
       if (!mealSession) {
         throw new ApiError(404, "Meal session not found");
@@ -45,7 +47,7 @@ class MealPreferenceService {
           {
             tenantId,
             userId,
-            mealSessionId: mealSession.id,
+            mealSessionId,
 
             breakfast,
             lunch,
@@ -142,14 +144,63 @@ class MealPreferenceService {
 
   async getMyPreference({
     tenantId,
+    mealSessionId,
     userId,
   }: {
     tenantId: number;
     userId: number;
+    mealSessionId: number;
   }) {
     return await mealPreferenceRepository.getMyPreference({
       tenantId,
+      mealSessionId,
       userId,
+    });
+  }
+
+  // baki ace pore korbo ingsa-allah-----
+
+  async copyFromPreviousSession({
+    tenantId,
+    previousMealSessionId,
+    currentMealSessionId,
+  }: ICopyMealPreferencePayload) {
+    return sequelize.transaction(async (transaction) => {
+      const previousPreferences =
+        await mealPreferenceRepository.getByMealSession({
+          tenantId,
+          mealSessionId: previousMealSessionId,
+        });
+
+      if (!previousPreferences.length) {
+        return {
+          copiedCount: 0,
+        };
+      }
+
+      const newPreferences = previousPreferences.map((preference) => ({
+        tenantId,
+
+        mealSessionId: currentMealSessionId,
+
+        userId: preference.userId,
+
+        breakfast: preference.breakfast,
+
+        lunch: preference.lunch,
+
+        dinner: preference.dinner,
+
+        guestMeal: preference.guestMeal,
+
+        isActive: true,
+      }));
+
+      await mealPreferenceRepository.bulkCreate(newPreferences, {transaction});
+
+      return {
+        copiedCount: newPreferences.length,
+      }
     });
   }
 }
