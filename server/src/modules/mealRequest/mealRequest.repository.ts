@@ -3,6 +3,7 @@ import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealRequest } from "@/models/index.js";
 import { Op, Sequelize, Transaction } from "sequelize";
 import {
+  IFindTodayMealRequest,
   MealRequestStatus,
   UpdateMealRequestDto,
 } from "./mealRequest.interface.js";
@@ -77,6 +78,23 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     });
 
     return !!result;
+  }
+
+  async findTodayRequest({ tenantId, userId, date }: IFindTodayMealRequest) {
+
+    const { start, end } = getRangeTime(date);
+
+    return await this.findOneWithOptions({
+      where: {
+        tenantId,
+
+        userId,
+
+        date: {
+          [Op.between]: [start, end],
+        },
+      },
+    });
   }
 
   async getPendingRequestsByTenantId(

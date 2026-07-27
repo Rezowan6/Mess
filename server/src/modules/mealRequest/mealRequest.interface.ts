@@ -56,3 +56,10 @@ export interface CreateMealRequestDto {
   lunch?: number;
   dinner?: number;
 }
+
+export interface IFindTodayMealRequest {
+  tenantId: number;
+  mealSessionId?: number;
+  userId: number;
+  date: Date | string;
+}

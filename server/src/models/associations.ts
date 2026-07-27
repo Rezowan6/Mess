@@ -396,4 +396,14 @@ export const setupAssociations = () => {
     foreignKey: "tenantId",
     as: "tenant",
   });
+
+  MealSession.hasMany(MealPreference, {
+    foreignKey: "mealSessionId",
+    as: "mealPreferences",
+  });
+
+  MealPreference.belongsTo(MealSession, {
+    foreignKey: "mealSessionId",
+    as: "mealSession",
+  });
 };

@@ -19,6 +19,7 @@ export class MealPreference extends Model<
   declare id: CreationOptional<number>;
   declare tenantId: number;
   declare userId: number;
+  declare mealSessionId: number;
 
   declare breakfast: CreationOptional<number>;
   declare lunch: CreationOptional<number>;
@@ -45,6 +46,10 @@ MealPreference.init(
       allowNull: false,
     },
     userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    mealSessionId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -95,7 +100,7 @@ MealPreference.init(
         fields: ["user_id"],
       },
       {
-        fields: ["is_active",],
+        fields: ["is_active"],
       },
     ],
   },

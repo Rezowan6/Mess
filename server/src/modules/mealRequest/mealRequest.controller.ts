@@ -107,12 +107,10 @@ export class MealRequestController {
     const {
       tenantId,
       userId: managerId,
-      mealSessionId,
     } = getTenantContext(req);
     const { approvedCount } = await mealRequestService.approveAllPending({
       tenantId,
       managerId,
-      mealSessionId,
       date: new Date(req.query.date as string),
     });
 
