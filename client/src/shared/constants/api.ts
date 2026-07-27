@@ -45,5 +45,14 @@ export const API_ENDPOINTS = {
     GET_OPEN: "/meal-sessions",
     OPEN: "/meal-sessions",
     CLOSE: (id: number) => `/meal-sessions/${id}/close`,
+  },
+
+  EXPENSE: {
+    GET_ALL: "/expenses",
+    CREATE: "/expenses",
+    SUMMARY: "/expenses/summary",
+    GET_BY_ID: (id: number) => `/expenses/${id}`,
+    UPDATE: (id: number) => `/expenses/${id}`,
+    DELETE: (id: number) => `/expenses/${id}`,
   }
 };

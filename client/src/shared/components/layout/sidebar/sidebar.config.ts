@@ -1,6 +1,6 @@
 import { PERMISSIONS, type Permission } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
-import type { LucideIcon, } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 import {
   ClipboardList,
@@ -9,9 +9,7 @@ import {
   Landmark,
   LayoutDashboard,
   Receipt,
-  Settings,
   Users,
-  UtensilsCrossed,
   Utensils,
 } from "lucide-react";
 
@@ -41,13 +39,6 @@ export const sidebarItems: ISidebarItem[] = [
     path: ROUTES.PREFERENCE,
     icon: Utensils,
     permission: PERMISSIONS.MEAL_PREFERENCE_VIEW,
-  },
-
-  {
-    title: "Meal Session",
-    path: ROUTES.MEAL_SESSION,
-    icon: UtensilsCrossed,
-    permission: PERMISSIONS.MEAL_SESSION_VIEW,
   },
 
   {
@@ -82,12 +73,5 @@ export const sidebarItems: ISidebarItem[] = [
     path: ROUTES.PAYMENT,
     icon: HandCoins,
     permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
-  },
-
-  {
-    title: "Settings",
-    path: ROUTES.SETTINGS,
-    icon: Settings,
-    permission: PERMISSIONS.SETTINGS_VIEW,
   },
 ];

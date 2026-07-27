@@ -1,6 +1,8 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
+import { IPaginationQuery } from "@/common/types/pagination.interface.js";
+import { buildSearchCondition } from "@/common/utils/search.util.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
-import { Expenses } from "@/models/index.js";
+import { Expenses, User } from "@/models/index.js";
 import { Op, col, fn } from "sequelize";
 
 class ExpensesRepository extends BaseRepository<Expenses> {
@@ -28,36 +30,105 @@ class ExpensesRepository extends BaseRepository<Expenses> {
     });
   }
 
-  async getAll(tenantId: number, mealSessionId: number) {
-    return await this.findAll({
-      where: {
-        tenantId,
-        mealSessionId,
+  // async getAlls(
+  //   tenantId: number,
+  //   mealSessionId: number,
+  //   query: IPaginationQuery,
+  // ) {
+  //   return this.paginate(
+  //     {
+  //       where: {
+  //         tenantId,
+  //         mealSessionId,
+  //       },
+
+  //       include: [
+  //         {
+  //           model: User,
+  //           as: "creator",
+
+  //           attributes: ["id", "name", "email", "avatar"],
+
+  //           required: !!query.search,
+
+  //           ...(query.search && {
+  //             where: {
+  //               [Op.or]: [
+  //                 {
+  //                   name: {
+  //                     [Op.like]: `%${query.search}%`,
+  //                   },
+  //                 },
+  //                 {
+  //                   email: {
+  //                     [Op.like]: `%${query.search}%`,
+  //                   },
+  //                 },
+  //               ],
+  //             },
+  //           }),
+  //         },
+
+  //         {
+  //           association: "mealSession",
+  //           attributes: ["id", "month", "year", "status"],
+  //         },
+  //       ],
+
+  //       attributes: [
+  //         "id",
+  //         "amount",
+  //         "category",
+  //         "description",
+  //         "signature",
+  //         "expenseDate",
+  //         "createdAt",
+  //       ],
+
+  //       order: [["expenseDate", "DESC"]],
+  //     },
+
+  //     query,
+  //   );
+  // }
+
+  async getAll(
+    tenantId: number,
+    mealSessionId: number,
+    query: IPaginationQuery,
+  ) {
+    return await this.paginate(
+      {
+        where: {
+          tenantId,
+          mealSessionId,
+          ...buildSearchCondition(["signature", "expenseDate"], query.search),
+        },
+
+        attributes: [
+          "id",
+          "amount",
+          "category",
+          "description",
+          "signature",
+          "expenseDate",
+          "createdAt",
+        ],
+
+        include: [
+          {
+            association: "creator",
+            attributes: ["id", "name", "email", "avatar"],
+          },
+          {
+            association: "mealSession",
+            attributes: ["id", "month", "year", "status"],
+          },
+        ],
+        order: [["expenseDate", "DESC"]],
       },
-
-      attributes: [
-        "id",
-        "amount",
-        "category",
-        "description",
-        "signature",
-        "expenseDate",
-        "createdAt",
-      ],
-
-      include: [
-        {
-          association: "creator",
-          attributes: ["id", "name", "email", "avatar"],
-        },
-        {
-          association: "mealSession",
-          attributes: ["id", "month", "year", "status"],
-        },
-      ],
-
-      order: [["expenseDate", "DESC"]],
-    });
+      query,
+    );
   }
 
   async getById(id: number, tenantId: number, mealSessionId: number) {

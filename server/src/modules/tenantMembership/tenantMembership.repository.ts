@@ -26,7 +26,7 @@ export class TenantMembershipRepository extends BaseRepository<TenantMembership>
     });
   }
 
-  // async getMembers(tenantId: number, query: IPaginationQuery) {
+  // async getMemberss(tenantId: number, query: IPaginationQuery) {
   //   return await this.paginate(
   //     {
   //       where: {

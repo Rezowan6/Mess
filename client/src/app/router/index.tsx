@@ -15,12 +15,13 @@ import { ROUTES } from "@/shared/constants/routes";
 import { PermissionGuard } from "@/shared/guards/permission.guard";
 import { RoleGuard } from "@/shared/guards/role.guard";
 
+import { ExpensePage } from "@/modules/expense/pages/ExpensePage";
 import { AcceptInvitePage } from "@/modules/invite/pages/AcceptInvitePage";
+import { MealPreferencePage } from "@/modules/meal-preference/pages/MealPreferencePage";
 import { MealRequestPage } from "@/modules/meal-request/pages/MealRequestPage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
-import { MealPreferencePage } from "@/modules/meal-preference/pages/MealPreferencePage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -69,6 +70,11 @@ export const router = createBrowserRouter([
                 element: <UserManagementPage />,
               },
             ],
+          },
+
+          {
+            path: ROUTES.EXPENSE,
+            element: <ExpensePage />,
           },
 
           {

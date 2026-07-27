@@ -1,3 +1,4 @@
+import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { isWithinHours } from "@/utils/date.util.js";
 import {
@@ -29,11 +30,18 @@ class ExpensesService {
   async getAll({
     tenantId,
     mealSessionId,
+    query,
   }: {
     tenantId: number;
     mealSessionId: number;
+    query: IPaginationQuery;
   }) {
-    const expenses = await expensesRepository.getAll(tenantId, mealSessionId);
+    const expenses = await expensesRepository.getAll(
+      tenantId,
+      mealSessionId,
+      query,
+    );
+    
     if (!expenses) {
       throw new ApiError(404, "Expense not foudn.");
     }

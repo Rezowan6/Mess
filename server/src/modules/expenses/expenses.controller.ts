@@ -1,3 +1,4 @@
+import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { ApiError } from "@/utils/ApiError.js";
@@ -45,15 +46,19 @@ class ExpensesController {
   getAll = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
-    const data = await expenseService.getAll({
+    const query = req.query as IPaginationQuery;
+
+    const expense = await expenseService.getAll({
       tenantId,
       mealSessionId,
+      query,
     });
 
     return sendResponse(res, {
       statusCode: 200,
       message: "Expenses fetched successfully.",
-      data,
+      data: expense.data,
+      meta: expense.meta,
     });
   });
 
