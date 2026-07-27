@@ -81,7 +81,6 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
   }
 
   async findTodayRequest({ tenantId, userId, date }: IFindTodayMealRequest) {
-
     const { start, end } = getRangeTime(date);
 
     return await this.findOneWithOptions({
@@ -276,6 +275,10 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
       },
       { transaction },
     );
+  }
+
+  async hasPendingRequests(tenantId: number, mealSessionId: number) {
+    return await this.findAll({ where: { tenantId, mealSessionId, status: MealRequestStatus.PENDING } });
   }
 }
 

@@ -14,9 +14,9 @@ export class MealSessionRepository extends BaseRepository<MealSession> {
     });
   }
 
-  async closeSession(id: number, userId: number) {
+  async closeSession(id: number, tenantId: number, userId: number) {
     return this.update(
-      { id },
+      { id, tenantId },
       {
         status: MealSessionStatus.CLOSED,
         closedBy: userId,

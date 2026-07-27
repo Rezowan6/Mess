@@ -1,3 +1,4 @@
+import { MealSessionSettings } from "@/modules/meal-session/components/MealSessionSettings";
 import { TenantSettings } from "../components/TenantSettings";
 import { ThemeSettings } from "../components/ThemeSettings";
 
@@ -17,8 +18,9 @@ export const SettingsPage = () => {
       {/* Settings Sections */}
 
       <div className="space-y-6">
-        <ThemeSettings />
+        <MealSessionSettings/>
         <TenantSettings />
+        <ThemeSettings />
       </div>
     </div>
   );

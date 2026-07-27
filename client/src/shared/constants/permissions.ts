@@ -12,7 +12,7 @@ export const PERMISSIONS = {
 
   // Meal Session
   MEAL_SESSION_VIEW: "meal_session.view",
-  MEAL_SESSION_CREATE: "meal_session.create",
+  MEAL_SESSION_OPEN: "meal_session.create",
   MEAL_SESSION_UPDATE: "meal_session.update",
   MEAL_SESSION_CLOSE: "meal_session.close",
 

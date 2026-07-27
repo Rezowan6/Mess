@@ -140,7 +140,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
       loading = false,
 
-      loadingText = "Loading...",
+      loadingText = "Processing...",
 
       fullWidth = false,
 
