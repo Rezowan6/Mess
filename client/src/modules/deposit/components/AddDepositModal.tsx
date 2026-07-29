@@ -1,4 +1,3 @@
-import { DollarSign } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -20,9 +19,10 @@ import {
   type DepositFormValues,
 } from "../schemas/deposit.schema";
 
-import { Link } from "react-router-dom";
-import type { IDeposit } from "../types/deposit.types";
 import { ROUTES } from "@/shared/constants/routes";
+import { Link } from "react-router-dom";
+import { depositFields } from "../configs/depositFields";
+import type { IDeposit } from "../types/deposit.types";
 
 interface Props {
   isOpen: boolean;
@@ -50,8 +50,8 @@ export const AddDepositModal = ({ isOpen, onClose, deposit }: Props) => {
     resolver: zodResolver(depositSchema),
 
     defaultValues: {
-      memberId: 0,
-      amount: 0,
+      memberId: undefined,
+      amount: undefined,
       paymentMethod: "",
       note: "",
     },
@@ -67,8 +67,8 @@ export const AddDepositModal = ({ isOpen, onClose, deposit }: Props) => {
       });
     } else {
       reset({
-        memberId: 0,
-        amount: 0,
+        memberId: undefined,
+        amount: undefined,
         paymentMethod: "",
         note: "",
       });
@@ -110,41 +110,29 @@ export const AddDepositModal = ({ isOpen, onClose, deposit }: Props) => {
       title={isEdit ? "Update Deposit" : "Add Deposit"}
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-        <Link  to={`${ROUTES.DEPOSIT}/quick-add`} className="text-xs border-b border-primary text-info">Quick Add</Link>
-        <Input
-          label="Member ID"
-          type="number"
-          placeholder="Enter member id"
-          error={errors.memberId?.message}
-          {...register("memberId", {
-            valueAsNumber: true,
-          })}
-        />
+        {depositFields &&
+          depositFields.map((field) => (
+            <Input
+              key={field.name}
+              label={field.label}
+              type={field.type}
+              placeholder={field.placeholder}
+              leftIcon={field.leftIcon && field.leftIcon}
+              error={errors[field.name]?.message}
+              {...register(field.name, {
+                valueAsNumber: field.valueAsNumber,
+              })}
+            />
+          ))}
 
-        <Input
-          label="Amount"
-          type="number"
-          leftIcon={<DollarSign size={18} />}
-          placeholder="Enter amount"
-          error={errors.amount?.message}
-          {...register("amount", {
-            valueAsNumber: true,
-          })}
-        />
-
-        <Input
-          label="Payment Method"
-          placeholder="Cash, bKash..."
-          error={errors.paymentMethod?.message}
-          {...register("paymentMethod")}
-        />
-
-        <Input
-          label="Note (Optional)"
-          placeholder="Deposit note"
-          error={errors.note?.message}
-          {...register("note")}
-        />
+        <div className="pt-1">
+          <Link
+            to={`${ROUTES.DEPOSIT}/quick-add`}
+            className="text-sm text-info hover:underline"
+          >
+            Quick Add
+          </Link>
+        </div>
 
         <div className="flex justify-end gap-2 pt-4">
           <Button type="button" variant="error" onClick={onClose}>
