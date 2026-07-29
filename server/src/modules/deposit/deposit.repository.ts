@@ -1,4 +1,6 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
+import { IPaginationQuery } from "@/common/types/pagination.interface.js";
+import { buildSearchCondition } from "@/common/utils/search.util.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { Deposit } from "@/models/index.js";
 import { Op, col, fn } from "sequelize";
@@ -62,34 +64,65 @@ class DepositRepository extends BaseRepository<Deposit> {
     });
   }
 
-  async getAll({
+  async getDepodits({
     tenantId,
     mealSessionId,
+    query,
   }: {
     tenantId: number;
     mealSessionId: number;
+    query: IPaginationQuery;
   }) {
-    return await Deposit.findAll({
-      where: {
-        tenantId,
-        mealSessionId,
+    const memberInclude = {
+      association: "member",
+
+      attributes: ["id", "name", "email", "avatar"],
+
+      required: !!query.search,
+
+      ...(query.search && {
+        where: {
+          name: {
+            [Op.like]: `%${query.search}%`,
+          },
+        },
+      }),
+    };
+
+    return await this.paginate(
+      {
+        where: {
+          tenantId,
+          mealSessionId,
+          ...buildSearchCondition(["depositDate"], query.search),
+        },
+
+        attributes: [
+          "id",
+          "memberId",
+          "amount",
+          "paymentMethod",
+          "depositDate",
+          "note",
+          "createdAt",
+        ],
+
+        include: [
+          memberInclude,
+          {
+            association: "creator",
+            attributes: ["id", "name", "email", "avatar"],
+          },
+          {
+            association: "mealSession",
+            attributes: ["id", "month", "year", "status"],
+          },
+        ],
+
+        order: [["depositDate", "DESC"]],
       },
-      include: [
-        {
-          association: "member",
-          attributes: ["id", "name", "email"],
-        },
-        {
-          association: "creator",
-          attributes: ["id", "name"],
-        },
-        {
-          association: "mealSession",
-          attributes: ["id", "month", "year", "status"],
-        },
-      ],
-      order: [["createdAt", "DESC"]],
-    });
+      query,
+    );
   }
 
   async getById({

@@ -43,6 +43,12 @@ export const queryKeys = {
     summary: (tenantId?: number) => ["expenses", tenantId, "summary"] as const,
   },
 
+  deposits: {
+    all: (tenantId?: number) => ["deposits", tenantId] as const,
+
+    list: (tenantId?: number) => ["deposits", tenantId, "list"] as const,
+  },
+
   notifications: {
     all: ["notifications"] as const,
 

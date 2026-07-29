@@ -31,6 +31,7 @@ export const PERMISSIONS = {
   DEPOSIT_VIEW: "deposit.view",
   DEPOSIT_CREATE: "deposit.create",
   DEPOSIT_UPDATE: "deposit.update",
+  DEPOSIT_DELETE: "deposit.delete",
 
   // Calculation
   CALCULATION_VIEW: "calculation.view",

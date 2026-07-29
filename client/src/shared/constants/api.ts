@@ -38,7 +38,7 @@ export const API_ENDPOINTS = {
 
   MEAL_PREFERENCE: {
     LIST_ME: "meal-preferences/me",
-    UPSERT: "/meal-preferences"
+    UPSERT: "/meal-preferences",
   },
 
   MEAL_SESSION: {
@@ -54,5 +54,11 @@ export const API_ENDPOINTS = {
     GET_BY_ID: (id: number) => `/expenses/${id}`,
     UPDATE: (id: number) => `/expenses/${id}`,
     DELETE: (id: number) => `/expenses/${id}`,
-  }
+  },
+  DEPOSIT: {
+    GET_ALL: "/deposits",
+    CREATE: "/deposits",
+    UPDATE: (id: number) => `/deposits/${id}`,
+    DELETE: (id: number) => `/deposits/${id}`,
+  },
 };

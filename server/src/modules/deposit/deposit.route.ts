@@ -10,7 +10,7 @@ router.get("/summary", ...managerAccess, depositController.summary);
 
 router.get("/member/:memberId", ...allAccess, depositController.getMemberDeposits);
 
-router.get("/", ...allAccess, depositController.getAll);
+router.get("/", ...allAccess, depositController.getDeposits);
 
 router.get("/:id", ...managerAccess, depositController.getById);
 

@@ -1,6 +1,6 @@
 import { MemberStatus } from "@/constans/index.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { TenantMembershipRepository } from "./tenantMembership.repository.js";
+import { membershipRepository } from "./tenantMembership.repository.js";
 
 export const getActiveMember = async ({
   tenantId,
@@ -9,7 +9,7 @@ export const getActiveMember = async ({
   tenantId: number;
   userId: number;
 }) => {
-  const member = await TenantMembershipRepository.findByTenantAndActiveUser({
+  const member = await membershipRepository.findByActiveUser({
     tenantId,
     userId,
   });

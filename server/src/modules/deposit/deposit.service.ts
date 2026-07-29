@@ -1,3 +1,4 @@
+import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { MemberStatus } from "@/constans/index.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { getActiveMember } from "../tenantMembership/tenantMembership.helper.js";
@@ -12,7 +13,6 @@ import {
 import { depositRepository } from "./deposit.repository.js";
 
 class DepositService {
-
   async createDeposit(data: ICreateDepositPayload) {
     const { tenantId, memberId, depositDate, mealSessionId } = data;
 
@@ -42,17 +42,25 @@ class DepositService {
   }
 
   async getSummary({ tenantId, mealSessionId }: IDepositSummaryPayload) {
-
     return await depositRepository.getSummary({
       tenantId,
       mealSessionId,
     });
   }
 
-  async getAllDeposits(tenantId: number, mealSessionId: number) {
-    return await depositRepository.getAll({
+  async getDeposits({
+    tenantId,
+    mealSessionId,
+    query,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    query: IPaginationQuery;
+  }) {
+    return await depositRepository.getDepodits({
       tenantId,
       mealSessionId,
+      query,
     });
   }
 
@@ -112,7 +120,7 @@ class DepositService {
       throw new ApiError(404, "Deposit not found.");
     }
 
-    await depositRepository.update({id: depositId}, payload);
+    await depositRepository.update({ id: depositId }, payload);
 
     return await depositRepository.getById({
       tenantId,
@@ -136,7 +144,7 @@ class DepositService {
       throw new ApiError(404, "Deposit not found.");
     }
 
-    await depositRepository.delete({id: depositId});
+    await depositRepository.delete({ id: depositId });
 
     return true;
   }

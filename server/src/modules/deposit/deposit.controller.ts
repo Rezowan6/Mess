@@ -1,3 +1,4 @@
+import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { getCurrentDate } from "@/utils/date.util.js";
@@ -16,6 +17,7 @@ class DepositController {
       createdBy: userId,
       depositDate,
       mealSessionId,
+
       ...req.body,
     });
 
@@ -41,18 +43,22 @@ class DepositController {
     });
   });
 
-  getAll = asyncHandler(async (req: Request, res: Response) => {
+  getDeposits = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
-    const deposits = await depositService.getAllDeposits(
+    const query = req.query as IPaginationQuery;
+
+    const deposits = await depositService.getDeposits({
       tenantId,
       mealSessionId,
-    );
+      query,
+    });
 
     return sendResponse(res, {
       statusCode: 200,
       message: "Deposits fetched successfully",
-      data: deposits,
+      data: deposits.data,
+      meta: deposits.meta,
     });
   });
 

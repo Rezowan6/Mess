@@ -22,6 +22,7 @@ import { MealRequestPage } from "@/modules/meal-request/pages/MealRequestPage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
+import { DepositPage } from "@/modules/deposit/pages/DepositPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -75,6 +76,10 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.EXPENSE,
             element: <ExpensePage />,
+          },
+          {
+            path: ROUTES.DEPOSIT,
+            element: <DepositPage />,
           },
 
           {
