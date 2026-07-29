@@ -20,7 +20,9 @@ import {
   type DepositFormValues,
 } from "../schemas/deposit.schema";
 
+import { Link } from "react-router-dom";
 import type { IDeposit } from "../types/deposit.types";
+import { ROUTES } from "@/shared/constants/routes";
 
 interface Props {
   isOpen: boolean;
@@ -108,6 +110,7 @@ export const AddDepositModal = ({ isOpen, onClose, deposit }: Props) => {
       title={isEdit ? "Update Deposit" : "Add Deposit"}
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
+        <Link  to={`${ROUTES.DEPOSIT}/quick-add`} className="text-xs border-b border-primary text-info">Quick Add</Link>
         <Input
           label="Member ID"
           type="number"

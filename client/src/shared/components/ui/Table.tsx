@@ -13,13 +13,19 @@ export interface TableColumn<T> {
 
   hideOnMobile?: boolean;
 
-  render?: (row: T, index: number) => ReactNode;
+  render?: (row: T, index: number, actions?: TableActions<T>) => ReactNode;
+}
+
+interface TableActions<T> {
+  onAddDeposit?: (deposit: T, amount: number) => void;
 }
 
 interface TableProps<T> {
   columns: TableColumn<T>[];
 
   data: T[];
+
+  actions?: TableActions<T>;
 
   loading?: boolean;
 
@@ -49,6 +55,8 @@ export function Table<T>({
   columns,
 
   data,
+
+  actions,
 
   loading = false,
 
@@ -130,7 +138,7 @@ export function Table<T>({
                     )}
                   >
                     {column.render
-                      ? column.render(row, index)
+                      ? column.render(row, index, actions)
                       : String(row[column.key as keyof T] ?? "")}
                   </td>
                 ))}

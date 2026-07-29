@@ -1,4 +1,4 @@
-import { allAccess, managerAccess } from "@/helpers/permission.js";
+import { adminAndManagerAccess, allAccess, managerAccess } from "@/helpers/permission.js";
 import express from "express";
 import { depositController } from "./deposit.controller.js";
 
@@ -6,7 +6,9 @@ const router = express.Router();
 
 router.post("/", ...managerAccess, depositController.create);
 
-router.get("/summary", ...managerAccess, depositController.summary);
+router.get("/member-summary", ...adminAndManagerAccess, depositController.getMemberDepositSummary);
+
+router.get("/summary", ...adminAndManagerAccess, depositController.summary);
 
 router.get("/member/:memberId", ...allAccess, depositController.getMemberDeposits);
 

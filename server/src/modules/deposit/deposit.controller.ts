@@ -28,12 +28,36 @@ class DepositController {
     });
   });
 
+  getMemberDepositSummary = asyncHandler(
+    async (req: Request, res: Response) => {
+      const { tenantId, mealSessionId } = getTenantContext(req);
+
+      const query = req.query as IPaginationQuery;
+
+      const depositSummary = await depositService.getMemberDepositSummary({
+        tenantId,
+        mealSessionId,
+        query,
+      });
+
+      return sendResponse(res, {
+        statusCode: 200,
+        message: "Deposit member summary fetched successfully",
+        data: depositSummary.data,
+        meta: depositSummary.meta,
+      });
+    },
+  );
+
   summary = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
+
+    const query = req.query as IPaginationQuery;
 
     const summary = await depositService.getSummary({
       tenantId,
       mealSessionId,
+      query,
     });
 
     return sendResponse(res, {

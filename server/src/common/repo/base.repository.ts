@@ -107,6 +107,37 @@ export abstract class BaseRepository<T extends Model> {
     };
   }
 
+  async paginateGrouped(
+    options: FindOptions<Attributes<T>>,
+    pagination: IPaginationQuery,
+  ): Promise<IPaginatedResult<T>> {
+    const page = Number(pagination.page) || 1;
+
+    const limit = Number(pagination.limit) || 10;
+
+    const offset = (page - 1) * limit;
+
+    const { rows, count } = await this.model.findAndCountAll({
+      ...options,
+      limit,
+      offset,
+      distinct: true,
+    });
+
+    const total = Array.isArray(count) ? count.length : count;
+
+    return {
+      data: rows,
+
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
   async update(
     where: WhereOptions<Attributes<T>>,
     data: Partial<Attributes<T>>,

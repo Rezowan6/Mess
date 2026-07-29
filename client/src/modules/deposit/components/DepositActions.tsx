@@ -48,7 +48,7 @@ export const DepositActions = ({ deposit, onEdit }: Props) => {
           onClick={() =>
             openConfirm({
               title: "Delete Deposit",
-              message: <>Are you sure you want to delete this deposit?</>,
+              message: <>Are you sure you want to delete <strong className="text-success">{deposit.member.name}</strong> this deposit?</>,
               onConfirm: async () => {
                 await deleteMutation.mutateAsync(deposit.id);
               },

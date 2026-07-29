@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 
 import { AddDepositModal } from "../components/AddDepositModal";
-import { DepositTable } from "../components/DepositTable";
 
 import { Button } from "@/shared/components/ui/Button";
 
@@ -10,6 +10,11 @@ import { PermissionGuard } from "@/shared/guards/permission.guard";
 
 export const DepositPage = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   return (
     <PermissionGuard permission={PERMISSIONS.DEPOSIT_VIEW}>
@@ -33,12 +38,7 @@ export const DepositPage = () => {
 
           <AddDepositModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
         </div>
-
-        <div className="card bg-base-100 shadow">
-          <div className="card-body">
-            <DepositTable />
-          </div>
-        </div>
+        <Outlet />
       </div>
     </PermissionGuard>
   );

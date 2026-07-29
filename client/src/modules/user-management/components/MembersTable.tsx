@@ -5,7 +5,7 @@ import { Pagination } from "@/shared/components/ui/Pagination";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Table } from "@/shared/components/ui/Table";
 
-import { memberColumns } from "../constants/member.columns";
+import { useMemberColumns } from "../constants/member.columns";
 import { MEMBER_MESSAGES } from "../constants/member.messages";
 
 import { useMembers } from "../hooks/useMembers";
@@ -98,6 +98,8 @@ export const MembersTable = () => {
     }
   }, []);
 
+  const columns = useMemberColumns();
+
   /**
    * First Loading
    */
@@ -113,7 +115,7 @@ export const MembersTable = () => {
       {/* Table */}
 
       <Table
-        columns={memberColumns}
+        columns={columns}
         data={members}
         loading={isPending}
         error={isError}

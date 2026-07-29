@@ -49,6 +49,9 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
   ],
 
   [ROLES.MANAGER]: [
+    // user
+    PERMISSIONS.USER_VIEW,
+
     // meal preference
     PERMISSIONS.MEAL_PREFERENCE_UPDATE,
     PERMISSIONS.MEAL_PREFERENCE_VIEW,

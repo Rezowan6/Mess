@@ -20,6 +20,30 @@ export const depositApi = {
     return data;
   },
 
+  summary: async (params?: IDepositQuery): Promise<IDepositListResponse> => {
+    const { data } = await API.get<IDepositListResponse>(
+      API_ENDPOINTS.DEPOSIT.SUMMARY,
+      {
+        params,
+      },
+    );
+
+    return data;
+  },
+
+  memberDepositSummary: async (
+    params?: IDepositQuery,
+  ): Promise<IDepositListResponse> => {
+    const { data } = await API.get<IDepositListResponse>(
+      API_ENDPOINTS.DEPOSIT.MEMBER_DEPOSIT_SUMMARY,
+      {
+        params,
+      },
+    );
+
+    return data;
+  },
+
   create: async (payload: ICreateDepositDto) => {
     const { data } = await API.post(API_ENDPOINTS.DEPOSIT.CREATE, payload);
 

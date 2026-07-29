@@ -32,7 +32,7 @@ export interface IMemberListResponse {
   message: string;
 
   data: ITenantMember[];
-  
+
   meta: IPaginationMeta;
 }
 
@@ -42,4 +42,8 @@ export interface IMemberParams {
   limit: number;
 
   search?: string;
+}
+
+export interface ITenantMemberDeposit extends ITenantMember {
+  totalDeposit?: number;
 }

@@ -3,6 +3,12 @@ import type { IPaginationMeta } from "@/shared/types/pagination.types";
 export interface IDeposit {
   id: number;
 
+  member: {
+    id: number;
+    name: string;
+    email: string;
+  };
+
   tenantId: number;
 
   mealSessionId: number;
@@ -12,6 +18,8 @@ export interface IDeposit {
   createdBy: number;
 
   amount: number;
+
+  totalDeposit?: number;
 
   paymentMethod: string;
 

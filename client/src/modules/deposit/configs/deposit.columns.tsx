@@ -32,8 +32,7 @@ export const useDepositColumns = (
     {
       key: "depositDate",
       title: "Date",
-      render: (deposit) =>
-        new Date(deposit.depositDate).toLocaleDateString(),
+      render: (deposit) => new Date(deposit.depositDate).toLocaleDateString(),
     },
   ];
 
@@ -42,9 +41,7 @@ export const useDepositColumns = (
       key: "actions",
       title: "Actions",
       className: "w-24",
-      render: (deposit) => (
-        <DepositActions deposit={deposit} onEdit={onEdit} />
-      ),
+      render: (deposit) => <DepositActions deposit={deposit} onEdit={onEdit} />,
     });
   }
 

@@ -1,3 +1,5 @@
+import { IPaginationQuery } from "@/common/types/pagination.interface.js";
+
 export const DepositPaymentMethod = {
   CASH: "cash",
   BKASH: "bkash",
@@ -46,4 +48,5 @@ export interface IGetMemberDepositsPayload {
 export interface IDepositSummaryPayload {
   tenantId: number;
   mealSessionId: number;
+  query: IPaginationQuery
 }

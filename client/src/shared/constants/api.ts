@@ -57,6 +57,8 @@ export const API_ENDPOINTS = {
   },
   DEPOSIT: {
     GET_ALL: "/deposits",
+    MEMBER_DEPOSIT_SUMMARY: "/deposits/member-summary",
+    SUMMARY: "/deposits/summary",
     CREATE: "/deposits",
     UPDATE: (id: number) => `/deposits/${id}`,
     DELETE: (id: number) => `/deposits/${id}`,

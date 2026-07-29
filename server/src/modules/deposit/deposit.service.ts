@@ -41,7 +41,15 @@ class DepositService {
     });
   }
 
-  async getSummary({ tenantId, mealSessionId }: IDepositSummaryPayload) {
+  async getMemberDepositSummary({ tenantId, mealSessionId, query }: IDepositSummaryPayload) {
+    return await depositRepository.getMemberDepositSummary({
+      tenantId,
+      mealSessionId,
+      query,
+    });
+  }
+
+  async getSummary({ tenantId, mealSessionId, query }: IDepositSummaryPayload) {
     return await depositRepository.getSummary({
       tenantId,
       mealSessionId,

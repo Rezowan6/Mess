@@ -3,7 +3,7 @@ import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { buildSearchCondition } from "@/common/utils/search.util.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { Deposit } from "@/models/index.js";
-import { Op, col, fn } from "sequelize";
+import { Op, col, fn, literal } from "sequelize";
 
 class DepositRepository extends BaseRepository<Deposit> {
   constructor() {
@@ -42,6 +42,49 @@ class DepositRepository extends BaseRepository<Deposit> {
       totalMembers,
       averageDeposit: totalMembers > 0 ? totalDeposit / totalMembers : 0,
     };
+  }
+
+  async getMemberDepositSummary({
+    tenantId,
+    mealSessionId,
+    query,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    query: IPaginationQuery;
+  }) {
+    const memberInclude = {
+      association: "member",
+
+      attributes: ["id", "name"],
+
+      required: !!query.search,
+
+      ...(query.search && {
+        where: {
+          name: {
+            [Op.like]: `%${query.search}%`,
+          },
+        },
+      }),
+    };
+    return this.paginateGrouped(
+      {
+        where: {
+          tenantId,
+          mealSessionId,
+        },
+
+        attributes: ["memberId", [fn("SUM", col("amount")), "totalDeposit"]],
+
+        include: [memberInclude],
+
+        group: ["memberId", "member.id", "member.name"],
+
+        order: [[literal("totalDeposit"), "DESC"]],
+      },
+      query,
+    );
   }
 
   async getTodayByMemberId({
