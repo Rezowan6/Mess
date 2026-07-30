@@ -17,6 +17,28 @@ export const queryKeys = {
     all: (tenantId?: number) => ["meal-sessions", tenantId] as const,
   },
 
+  mealEntries: {
+    all: (tenantId?: number) => ["mealEntries", tenantId] as const,
+
+    membersMealSummary: (tenantId?: number) =>
+      ["mealEntries", tenantId, "member-meal-summary"] as const,
+
+    list: (tenantId?: number) => ["mealEntries", tenantId, "list"] as const,
+
+    my: (tenantId?: number) => ["mealEntries", tenantId, "my"] as const,
+
+    daily: (tenantId?: number) => ["mealEntries", tenantId, "daily"] as const,
+
+    dailySummary: (tenantId?: number) =>
+      ["mealEntries", tenantId, "daily-summary"] as const,
+
+    summary: (tenantId?: number) =>
+      ["mealEntries", tenantId, "summary"] as const,
+
+    memberSummary: (tenantId?: number) =>
+      ["mealEntries", tenantId, "member-summary"] as const,
+  },
+
   mealRequests: {
     all: (tenantId?: number) => ["meal-requests", tenantId] as const,
 

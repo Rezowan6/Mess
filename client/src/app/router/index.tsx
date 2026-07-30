@@ -21,8 +21,9 @@ import { DepositHistoryPage } from "@/modules/deposit/pages/DepositHistoryPage";
 import { DepositPage } from "@/modules/deposit/pages/DepositPage";
 import { ExpensePage } from "@/modules/expense/pages/ExpensePage";
 import { AcceptInvitePage } from "@/modules/invite/pages/AcceptInvitePage";
+import { MealEntryPage } from "@/modules/meal-entry/pages/MealEntryPage";
+import { MembersMealSummaryPage } from "@/modules/meal-entry/pages/MembersMealSummaryPage";
 import { MealPreferencePage } from "@/modules/meal-preference/pages/MealPreferencePage";
-import { MealRequestPage } from "@/modules/meal-request/pages/MealRequestPage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
@@ -116,7 +117,14 @@ export const router = createBrowserRouter([
 
           {
             path: ROUTES.MEAL_ENTRY,
-            element: <MealRequestPage />,
+            element: <MealEntryPage />,
+
+            children: [
+              {
+                index: true,
+                element: <MembersMealSummaryPage />,
+              },
+            ],
           },
           {
             path: ROUTES.PREFERENCE,

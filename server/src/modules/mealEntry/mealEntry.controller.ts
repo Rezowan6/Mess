@@ -1,3 +1,4 @@
+import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
@@ -46,6 +47,25 @@ class MealEntriesController {
       statusCode: 200,
       message: "Daily meal summary fetched successfully.",
       data,
+    });
+  });
+
+  getMemberMealSummary = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
+
+    const query = req.query as IPaginationQuery;
+
+    const mealSummary = await mealEntryService.getMemberMealSummary({
+      tenantId,
+      mealSessionId,
+      query,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Member meal summary fetched successfully",
+      data: mealSummary.data,
+      meta: mealSummary.meta,
     });
   });
 

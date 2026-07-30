@@ -25,6 +25,15 @@ export const API_ENDPOINTS = {
     MARK_AS_READ: (id: number) => `/notifications/${id}/read`,
   },
 
+  MEAL_ENTRY: {
+    MY: "/meal-entries/my",
+    DAILY: "/meal-entries/daily",
+    DAILY_SUMMARY: "/meal-entries/daily-summary",
+    MEMBERS_MEAL_SUMMARY: "/meal-entries/members-meal-summary",
+    SUMMARY: "/meal-entries/summary",
+    MEMBER_SUMMARY: "/meal-entries/member-summary",
+  },
+
   MEAL_REQUEST: {
     CREATE: "/meal-requests",
   },

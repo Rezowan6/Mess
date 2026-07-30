@@ -1,4 +1,5 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
+import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealEntry } from "@/models/index.js";
 import { Op, Transaction, col, fn, literal } from "sequelize";
@@ -21,7 +22,7 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
       mealRequestId,
     });
   }
-  
+
   async createMealEntry(
     mealEntryData: ICreateMealEntryDto,
     transaction: Transaction | null = null,
@@ -66,6 +67,67 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
       ],
       order: [["date", "DESC"]],
     });
+  }
+
+  async getMemberMealSummary({
+    tenantId,
+    mealSessionId,
+    query,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    query: IPaginationQuery;
+  }) {
+    const userInclude = {
+      association: "user",
+
+      attributes: ["id", "name", "email", "avatar"],
+
+      required: !!query.search,
+
+      ...(query.search && {
+        where: {
+          name: {
+            [Op.like]: `%${query.search}%`,
+          },
+        },
+      }),
+    };
+
+    return this.paginateGrouped(
+      {
+        where: {
+          tenantId,
+          mealSessionId,
+        },
+
+        attributes: [
+          "userId",
+
+          [fn("SUM", col("breakfast")), "totalBreakfast"],
+
+          [fn("SUM", col("lunch")), "totalLunch"],
+
+          [fn("SUM", col("dinner")), "totalDinner"],
+
+          [fn("SUM", col("guest_meal")), "totalGuestMeal"],
+
+          [fn("SUM", literal("breakfast + lunch + dinner")), "totalMeals"],
+
+          [
+            fn("SUM", literal("breakfast + lunch + dinner + guest_meal")),
+            "grandTotalMeals",
+          ],
+        ],
+
+        include: [userInclude],
+
+        group: ["userId", "user.id", "user.name", "user.email", "user.avatar"],
+
+        order: [[literal("grandTotalMeals"), "DESC"]],
+      },
+      query,
+    );
   }
 
   async getDailyEntries(

@@ -1,59 +1,40 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-
 import { Pagination } from "@/shared/components/ui/Pagination";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Table } from "@/shared/components/ui/Table";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { MEAL_ENTRY_MESSAGES } from "../configs/meal.entries.message";
+import { useMembersMealSummaryColumns } from "../configs/members.meal.summary.columns";
+import { useMembersMealSummary } from "../hooks/useMembersMealSummary";
 
-import { DEPOSIT_MESSAGES } from "../configs/deposit.messages";
-
-import type { IDeposit } from "../types/deposit.types";
-
-import { useDepositMemberSummaryColumns } from "../configs/deposit.member.summary.columns";
-import { useMemberDepositSummary } from "../hooks/useMemberDepositSummary";
-import { AddDepositModal } from "./AddDepositModal";
-import { DepositTableSkeleton } from "./DepositTableSkeleton";
-
-export const DepositTable = () => {
+export const MembersMealSummaryPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [selectedDeposit, setSelectedDeposit] = useState<IDeposit | null>(null);
-
-  const [isEditOpen, setIsEditOpen] = useState(false);
-
   /**
-   * URL Query Params
+   * URL Params
    */
-
   const page = Number(searchParams.get("page")) || 1;
 
   const search = searchParams.get("search") || "";
 
-  /**
-   * Deposit Query
-   */
-
-  const { data, isPending, isError, refetch } = useMemberDepositSummary({
+  const { data, isPending, isError, refetch } = useMembersMealSummary({
     page,
-
     limit: 10,
-
     search,
   });
+  const columns = useMembersMealSummaryColumns();
 
-  const deposits = data?.data ?? [];
+  const membersMeals = data?.data ?? [];
 
   const meta = data?.meta;
 
   /**
-   * Search Handler
+   * Search
    */
-
   const handleSearch = (value: string) => {
     setSearchParams(
       {
         page: "1",
-
         ...(value && {
           search: value,
         }),
@@ -67,11 +48,9 @@ export const DepositTable = () => {
   /**
    * Pagination
    */
-
   const handlePage = (page: number) => {
     setSearchParams({
       page: String(page),
-
       ...(search && {
         search,
       }),
@@ -79,15 +58,13 @@ export const DepositTable = () => {
   };
 
   /**
-   * Reset page when tenant changes
+   * Reset page
    */
-
   useEffect(() => {
     if (page !== 1) {
       setSearchParams(
         {
           page: "1",
-
           ...(search && {
             search,
           }),
@@ -99,27 +76,15 @@ export const DepositTable = () => {
     }
   }, []);
 
-
-  const columns = useDepositMemberSummaryColumns();
-
-  /**
-   * First Loading
-   */
-
-  if (isPending) {
-    return <DepositTableSkeleton />;
-  }
-
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <SearchInput value={search} onChange={handleSearch} />
-
       <Table
         columns={columns}
-        data={deposits}
+        data={membersMeals}
         loading={isPending}
         error={isError}
-        message={DEPOSIT_MESSAGES}
+        message={MEAL_ENTRY_MESSAGES}
         refetch={refetch}
       />
 
@@ -130,15 +95,6 @@ export const DepositTable = () => {
           onChange={handlePage}
         />
       )}
-
-      <AddDepositModal
-        isOpen={isEditOpen}
-        onClose={() => {
-          setIsEditOpen(false);
-          setSelectedDeposit(null);
-        }}
-        deposit={selectedDeposit ?? undefined}
-      />
     </div>
   );
 };
