@@ -15,6 +15,7 @@ import type { ITenantMember } from "@/modules/user-management/types/userManageme
 import { ROUTES } from "@/shared/constants/routes";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { useCreateDeposit } from "../hooks/useCreateDeposit";
+import { BackButton } from "@/shared/components/ui/BackButton";
 
 export const DepositAddPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -135,6 +136,7 @@ export const DepositAddPage = () => {
 
   return (
     <div className="space-y-4">
+      <BackButton to={ROUTES.DEPOSIT} />
       <SearchInput value={search} onChange={handleSearch} />
 
       <Table

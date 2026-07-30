@@ -17,6 +17,7 @@ import { RoleGuard } from "@/shared/guards/role.guard";
 
 import { DepositTable } from "@/modules/deposit/components/DepositTable";
 import { DepositAddPage } from "@/modules/deposit/pages/DepositAddPage";
+import { DepositHistoryPage } from "@/modules/deposit/pages/DepositHistoryPage";
 import { DepositPage } from "@/modules/deposit/pages/DepositPage";
 import { ExpensePage } from "@/modules/expense/pages/ExpensePage";
 import { AcceptInvitePage } from "@/modules/invite/pages/AcceptInvitePage";
@@ -91,6 +92,10 @@ export const router = createBrowserRouter([
               {
                 path: "quick-add",
                 element: <DepositAddPage />,
+              },
+              {
+                path: "history",
+                element: <DepositHistoryPage />,
               },
             ],
           },
