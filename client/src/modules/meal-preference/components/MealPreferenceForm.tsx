@@ -10,6 +10,7 @@ import { MealCounterField } from "@/modules/meal-request/components/MealCounterF
 import { mealFields } from "@/modules/meal-request/configs/mealFields";
 import { useMealSetting } from "@/modules/meal-setting/hooks/useMealSetting";
 import type { IUpsertMealPreferenceDto } from "../types/mealPreference.types";
+import { MealPreferenceSkeleton } from "./MealPreferenceSkeleton";
 
 export const MealPreferenceForm = () => {
   const {
@@ -71,7 +72,7 @@ export const MealPreferenceForm = () => {
   };
 
   if (isLoading) {
-    return "Loading...";
+    return <MealPreferenceSkeleton />;
   }
 
   return (
