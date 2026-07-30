@@ -9,6 +9,9 @@ const envSchema = z.object({
   DB_USER: z.string(),
   DB_PASS: z.string(),
   DB_HOST: z.string(),
+  DB_PORT: z.string(),
+
+
   PORT: z.string(),
 
   ACCESS_TOKEN_SECRET: z.string(),

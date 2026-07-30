@@ -1,3 +1,4 @@
+import { MoveRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
@@ -14,18 +15,14 @@ export const ActionLink = ({ to, state, children, className }: Props) => {
       state={state}
       to={to}
       className={`
-        inline-flex items-center justify-center
-        rounded-md
-        px-3 py-1.5
-        text-xs font-medium
-        border border-primary
-        text-warning
-        hover:bg-warning/10
-        transition
+        text-info 
+        flex justify-center items-center gap-1
+        hover:border-b border-info
+        w-fit
         ${className ?? ""}
       `}
     >
-      {children}
+      view details <MoveRight size={16} />
     </Link>
   );
 };

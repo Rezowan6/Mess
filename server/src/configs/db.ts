@@ -1,6 +1,28 @@
-import { env } from "@/configs/env.js";
-import {Sequelize} from "sequelize"
+// import { env } from "@/configs/env.js";
+// import { Sequelize } from "sequelize";
 
+// const sequelize = new Sequelize(
+//   env.DB_NAME as string,
+//   env.DB_USER as string,
+//   env.DB_PASS as string,
+//   {
+//     host: env.DB_HOST,
+//     port: Number(env.DB_PORT),
+//     dialect: "mysql",
+
+//     dialectOptions: {
+//       ssl: {
+//         require: true,
+//         rejectUnauthorized: false,
+//       },
+//     },
+//   },
+// );
+
+// export default sequelize;
+
+import { env } from "@/configs/env.js";
+import { Sequelize } from "sequelize";
 
 const sequelize = new Sequelize(
   env.DB_NAME as string,
@@ -9,7 +31,7 @@ const sequelize = new Sequelize(
   {
     host: env.DB_HOST,
     dialect: "mysql",
-  }
+  },
 );
 
 export default sequelize;

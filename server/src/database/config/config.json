@@ -1,4 +1,3 @@
-
 {
   "development": {
     "username": "root",
@@ -15,10 +14,17 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "avnadmin",
+    "password": "AVNS_TwTcD7vXFFmGAedSQCH",
+    "database": "defaultdb",
+    "host": "mysql-3d0ec3d5-mdrezowanmiya6-5d54.j.aivencloud.com",
+    "port": 11302,
+    "dialect": "mysql",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   }
 }
