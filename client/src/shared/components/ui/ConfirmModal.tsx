@@ -3,7 +3,7 @@ import { Button } from "./Button";
 import { Modal } from "./Modal";
 
 export const ConfirmModal = () => {
-  const { isOpen, options, closeConfirm } = useConfirmStore();
+  const { isOpen, options, isLoading, closeConfirm } = useConfirmStore();
 
   if (!isOpen || !options) return null;
 
@@ -26,7 +26,7 @@ export const ConfirmModal = () => {
             {options.cancelText ?? "Cancel"}
           </Button>
 
-          <Button variant="error" onClick={handleConfirm}>
+          <Button variant="error" onClick={handleConfirm} loading={isLoading}>
             {options.confirmText ?? "Confirm"}
           </Button>
         </>

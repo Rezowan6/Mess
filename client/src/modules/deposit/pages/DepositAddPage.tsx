@@ -12,10 +12,10 @@ import { DEPOSIT_MESSAGES } from "../configs/deposit.messages";
 import { useMembers } from "@/modules/user-management/hooks/useMembers";
 import type { ITenantMember } from "@/modules/user-management/types/userManagement.types";
 
+import { BackButton } from "@/shared/components/ui/BackButton";
 import { ROUTES } from "@/shared/constants/routes";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { useCreateDeposit } from "../hooks/useCreateDeposit";
-import { BackButton } from "@/shared/components/ui/BackButton";
 
 export const DepositAddPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,6 +23,7 @@ export const DepositAddPage = () => {
   const navigate = useNavigate();
 
   const openConfirm = useConfirmStore((state) => state.openConfirm);
+  const setLoading = useConfirmStore((state) => state.setLoading);
 
   const quickDepositMutation = useCreateDeposit();
 
@@ -104,26 +105,28 @@ export const DepositAddPage = () => {
         <>
           Are you sure you want to add{" "}
           <strong className="text-success">{amount}</strong> to{" "}
-          <strong className="text-success">{member.user.name}</strong>'s
-          deposit?
+          <strong className="text-success">{member.user.name}</strong>
+          's deposit?
         </>
       ),
+
       onConfirm: async () => {
-        await quickDepositMutation.mutateAsync(
-          {
+        try {
+          setLoading(true);
+
+          await quickDepositMutation.mutateAsync({
             memberId: member.user.id,
             amount,
             paymentMethod: "Cash",
             note: "Quick Deposit",
-          },
-          {
-            onSuccess: () => {
-              setTimeout(() => {
-                navigate(ROUTES.DEPOSIT);
-              }, 600);
-            },
-          },
-        );
+          });
+
+          setTimeout(() => {
+            navigate(ROUTES.DEPOSIT);
+          }, 500);
+        } finally {
+          setLoading(false);
+        }
       },
     });
   };

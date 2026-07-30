@@ -18,7 +18,11 @@ interface ConfirmState {
 
   options: ConfirmOptions | null;
 
+  isLoading: boolean;
+
   openConfirm: (options: ConfirmOptions) => void;
+
+  setLoading: (value: boolean) => void;
 
   closeConfirm: () => void;
 }
@@ -28,6 +32,8 @@ export const useConfirmStore = create<ConfirmState>((set) => ({
 
   options: null,
 
+  isLoading: false,
+
   openConfirm: (options) => {
     set({
       isOpen: true,
@@ -36,11 +42,19 @@ export const useConfirmStore = create<ConfirmState>((set) => ({
     });
   },
 
+  setLoading: (value) => {
+    set({
+      isLoading: value,
+    });
+  },
+
   closeConfirm: () => {
     set({
       isOpen: false,
 
       options: null,
+
+      isLoading: false,
     });
   },
 }));
