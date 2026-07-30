@@ -1,9 +1,36 @@
+# Git
+.git
+.gitignore
+
+# Node
+node_modules
 **/node_modules
+
+# Build
+dist
+**/dist
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docs
+README.md
+
+
 server/dist
 client/dist
-.git
-**/.env
-**/.env.*
-!**/.env.example
-*.log
-.DS_Store

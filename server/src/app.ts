@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import express, { Application, NextFunction, Request, Response } from "express";
 import morgan from "morgan";
+import path from "path";
 import { env } from "./configs/env.js";
 
 // internal import
@@ -17,6 +18,7 @@ import {
   featureRouter,
   invitesRouter,
   mealEntriesRouter,
+  mealPreferenceRouter,
   mealRequestRouter,
   mealSessionRouter,
   mealSettingRouter,
@@ -29,7 +31,6 @@ import {
   subscriptionRouter,
   tenantMembershipRouter,
   tenantRoute,
-  mealPreferenceRouter,
 } from "@/routes/index.js";
 
 const app: Application = express();
@@ -43,6 +44,12 @@ app.use(cookieParser());
 if (env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+
+app.use(express.static(path.join(__dirname, "../public")));
+
+app.get("*", (_, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
+});
 
 // CORS
 app.use(
