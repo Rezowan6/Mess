@@ -1,9 +1,9 @@
 import type { TableColumn } from "@/shared/components/ui/Table";
 
+import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
 import { useRBAC } from "@/shared/hooks/useRBAC";
-import { Link } from "react-router-dom";
 import type { IDeposit } from "../types/deposit.types";
 
 export const useDepositMemberSummaryColumns = (): TableColumn<IDeposit>[] => {
@@ -27,13 +27,9 @@ export const useDepositMemberSummaryColumns = (): TableColumn<IDeposit>[] => {
       key: "history",
       title: "History",
       render: (deposit) => (
-        <Link
-          state={deposit}
-          to={`${ROUTES.DEPOSIT}/history`}
-          className="text-xs hover:border-b border-primary text-yellow-300"
-        >
+        <ActionLink state={deposit} to={`${ROUTES.DEPOSIT}/history`}>
           History
-        </Link>
+        </ActionLink>
       ),
     });
   }
