@@ -10,6 +10,27 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
     super(MealEntry);
   }
 
+  async getAllMembersMeals({
+    tenantId,
+    mealSessionId,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+  }) {
+    return await this.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+      },
+      include: [
+        {
+          association: "user",
+          attributes: ["id", "name", "email", "avatar"],
+        },
+      ],
+    });
+  }
+
   async existsByRequest({
     tenantId,
     mealRequestId,

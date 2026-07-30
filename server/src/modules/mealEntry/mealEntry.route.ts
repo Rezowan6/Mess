@@ -4,6 +4,8 @@ import { mealEntryController } from "./mealEntry.controller.js";
 
 const router = express.Router();
 
+router.get("/", ...allAccess, mealEntryController.getAllMembersMeal);
+
 router.get("/my", ...allAccess, mealEntryController.my);
 
 router.get("/daily", ...adminAndManagerAccess, mealEntryController.daily);

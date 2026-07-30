@@ -26,6 +26,7 @@ export const API_ENDPOINTS = {
   },
 
   MEAL_ENTRY: {
+    LIST: "meal-entries",
     MY: "/meal-entries/my",
     DAILY: "/meal-entries/daily",
     DAILY_SUMMARY: "/meal-entries/daily-summary",

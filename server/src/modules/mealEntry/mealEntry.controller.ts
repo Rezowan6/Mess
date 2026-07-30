@@ -18,6 +18,21 @@ class MealEntriesController {
     });
   });
 
+  getAllMembersMeal = asyncHandler(async (req: Request, res: Response) => {
+    const { mealSessionId, tenantId } = getTenantContext(req);
+
+    const data = await mealEntryService.getAllMembersMeal({
+      tenantId,
+      mealSessionId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "All members meal featch successfully.",
+      data,
+    });
+  });
+
   daily = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 

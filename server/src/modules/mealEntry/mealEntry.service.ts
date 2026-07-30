@@ -1,11 +1,24 @@
+import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import sequelize from "@/configs/db.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { mealEntryRepository } from "./mealEntry.repository.js";
-import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 
 class MealEntryService {
   async my({ userId, tenantId }: { userId: number; tenantId: number }) {
     return await mealEntryRepository.getMyMeal({ tenantId, userId });
+  }
+
+  async getAllMembersMeal({
+    mealSessionId,
+    tenantId,
+  }: {
+    mealSessionId: number;
+    tenantId: number;
+  }) {
+    return await mealEntryRepository.getAllMembersMeals({
+      tenantId,
+      mealSessionId,
+    });
   }
 
   async daily({ date, tenantId }: { date: Date; tenantId: number }) {

@@ -18,6 +18,17 @@ export const mealEntryApi = {
     return data;
   },
 
+  getAllMembersMeal: async (params?: IMealEntryQuery): Promise<IMealEntryListResponse> => {
+    const { data } = await API.get<IMealEntryListResponse>(
+      API_ENDPOINTS.MEAL_ENTRY.LIST,
+      {
+        params,
+      },
+    );
+
+    return data;
+  },
+
   membersMealSummary: async (
     params?: IMealEntryQuery,
   ): Promise<IMealEntryListResponse> => {
