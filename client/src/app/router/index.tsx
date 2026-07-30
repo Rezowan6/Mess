@@ -77,29 +77,59 @@ export const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: ROUTES.DEPOSIT,
+
+            element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+
+            children: [
+              {
+                element: <DepositPage />,
+
+                children: [
+                  {
+                    index: true,
+                    element: <DepositTable />,
+                  },
+                  {
+                    path: "quick-add",
+                    element: <DepositAddPage />,
+                  },
+                  {
+                    path: "history",
+                    element: <DepositHistoryPage />,
+                  },
+                ],
+              },
+            ],
+          },
+
+          {
+            path: ROUTES.MEAL_ENTRY,
+
+            element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+
+            children: [
+              {
+                element: <MealEntryPage />,
+
+                children: [
+                  {
+                    index: true,
+                    element: <MembersMealSummaryPage />,
+                  },
+                  {
+                    path: "history",
+                    element: <MealHistoryPage />,
+                  },
+                ],
+              },
+            ],
+          },
 
           {
             path: ROUTES.EXPENSE,
             element: <ExpensePage />,
-          },
-          {
-            path: ROUTES.DEPOSIT,
-            element: <DepositPage />,
-
-            children: [
-              {
-                index: true,
-                element: <DepositTable />,
-              },
-              {
-                path: "quick-add",
-                element: <DepositAddPage />,
-              },
-              {
-                path: "history",
-                element: <DepositHistoryPage />,
-              },
-            ],
           },
 
           {
@@ -114,22 +144,6 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.HOME,
             element: <HomePage />,
-          },
-
-          {
-            path: ROUTES.MEAL_ENTRY,
-            element: <MealEntryPage />,
-
-            children: [
-              {
-                index: true,
-                element: <MembersMealSummaryPage />,
-              },
-              {
-                path: "history",
-                element: <MealHistoryPage />,
-              },
-            ],
           },
           {
             path: ROUTES.PREFERENCE,

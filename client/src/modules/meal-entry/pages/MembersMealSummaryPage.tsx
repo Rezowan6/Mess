@@ -3,6 +3,7 @@ import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Table } from "@/shared/components/ui/Table";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import { MealEntryTableSkeleton } from "../components/MealEntryTableSkeleton";
 import { MEAL_ENTRY_MESSAGES } from "../configs/meal.entries.message";
 import { useMembersMealSummaryColumns } from "../configs/members.meal.summary.columns";
 import { useMembersMealSummary } from "../hooks/useMembersMealSummary";
@@ -75,6 +76,10 @@ export const MembersMealSummaryPage = () => {
       );
     }
   }, []);
+
+  if (isPending) {
+    return <MealEntryTableSkeleton />;
+  }
 
   return (
     <div className="space-y-6">

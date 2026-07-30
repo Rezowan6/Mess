@@ -45,7 +45,7 @@ export const sidebarItems: ISidebarItem[] = [
     title: "Meal Entry",
     path: ROUTES.MEAL_ENTRY,
     icon: ClipboardList,
-    permission: PERMISSIONS.MEAL_ENTRY_VIEW,
+    permission: PERMISSIONS.MEAL_ENTRY_CREATE,
   },
 
   {
@@ -58,7 +58,7 @@ export const sidebarItems: ISidebarItem[] = [
     title: "Deposit",
     path: ROUTES.DEPOSIT,
     icon: Landmark,
-    permission: PERMISSIONS.DEPOSIT_VIEW,
+    permission: PERMISSIONS.DEPOSIT_CREATE,
   },
 
   {
