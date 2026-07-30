@@ -9,9 +9,7 @@ import { DEPOSIT_MESSAGES } from "../configs/deposit.messages";
 
 import type { IDeposit } from "../types/deposit.types";
 
-import { useConfirmStore } from "@/shared/store/confirm.store";
 import { useDepositMemberSummaryColumns } from "../configs/deposit.member.summary.columns";
-import { useCreateDeposit } from "../hooks/useCreateDeposit";
 import { useMemberDepositSummary } from "../hooks/useMemberDepositSummary";
 import { AddDepositModal } from "./AddDepositModal";
 import { DepositTableSkeleton } from "./DepositTableSkeleton";

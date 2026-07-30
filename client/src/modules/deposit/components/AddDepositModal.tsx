@@ -129,6 +129,7 @@ export const AddDepositModal = ({ isOpen, onClose, deposit }: Props) => {
           <Link
             to={`${ROUTES.DEPOSIT}/quick-add`}
             className="text-sm text-info hover:underline"
+            onClick={onClose}
           >
             Quick Add
           </Link>

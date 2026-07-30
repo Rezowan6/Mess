@@ -1,22 +1,25 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { Pagination } from "@/shared/components/ui/Pagination";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Table } from "@/shared/components/ui/Table";
 
 import { DepositTableSkeleton } from "../components/DepositTableSkeleton";
-import { useDepositAddColumns } from "../configs/deposit.Add.columns";
+import { useDepositAddColumns } from "../configs/deposit.add.columns";
 import { DEPOSIT_MESSAGES } from "../configs/deposit.messages";
 
 import { useMembers } from "@/modules/user-management/hooks/useMembers";
 import type { ITenantMember } from "@/modules/user-management/types/userManagement.types";
 
+import { ROUTES } from "@/shared/constants/routes";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { useCreateDeposit } from "../hooks/useCreateDeposit";
 
 export const DepositAddPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const navigate = useNavigate();
 
   const openConfirm = useConfirmStore((state) => state.openConfirm);
 
@@ -105,12 +108,21 @@ export const DepositAddPage = () => {
         </>
       ),
       onConfirm: async () => {
-        await quickDepositMutation.mutateAsync({
-          memberId: member.user.id,
-          amount,
-          paymentMethod: "Cash",
-          note: "Quick Deposit",
-        });
+        await quickDepositMutation.mutateAsync(
+          {
+            memberId: member.user.id,
+            amount,
+            paymentMethod: "Cash",
+            note: "Quick Deposit",
+          },
+          {
+            onSuccess: () => {
+              setTimeout(() => {
+                navigate(ROUTES.DEPOSIT);
+              }, 600);
+            },
+          },
+        );
       },
     });
   };
