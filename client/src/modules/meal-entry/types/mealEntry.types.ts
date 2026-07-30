@@ -60,34 +60,6 @@ export interface ICreateMealEntryDto {
   guestMeal: number;
 }
 
-export interface IUpdateMealEntryDto {
-  breakfast?: number;
-
-  lunch?: number;
-
-  dinner?: number;
-
-  guestMeal?: number;
-}
-
-export interface IMealEntryQuery {
-  page?: number;
-
-  limit?: number;
-
-  search?: string;
-
-  memberId?: number;
-
-  mealSessionId?: number;
-
-  fromDate?: string;
-
-  toDate?: string;
-
-  date?: string;
-}
-
 export interface IMealSummary {
   totalMeals: string;
 
@@ -118,4 +90,18 @@ export interface IMealEntrySummaryResponse {
   message: string;
 
   data: IMealSummary;
+}
+
+export interface ITodayMealEntry extends IMealEntry {
+  mealRequest?: {
+    id: number;
+    status: string;
+  };
+
+  mealSession?: {
+    id: number;
+    month: number;
+    year: number;
+    status: string;
+  };
 }

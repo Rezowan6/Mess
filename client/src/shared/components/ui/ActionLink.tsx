@@ -1,3 +1,4 @@
+import type { LucideIcon } from "lucide-react";
 import { MoveRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
@@ -7,22 +8,39 @@ interface Props {
   state?: unknown;
   children: ReactNode;
   className?: string;
+  icon?: LucideIcon;
+  iconPosition?: "left" | "right";
+  iconSize?: number;
 }
 
-export const ActionLink = ({ to, state, children, className }: Props) => {
+export const ActionLink = ({
+  to,
+  state,
+  children,
+  className,
+  icon: Icon = MoveRight,
+  iconPosition = "right",
+  iconSize = 16,
+}: Props) => {
   return (
     <Link
-      state={state}
       to={to}
+      state={state}
       className={`
-        text-info 
-        flex justify-center items-center gap-1
-        hover:border-b border-info
+        text-info
+        inline-flex items-center gap-1
+        border-b border-transparent
+        hover:border-info
+        transition-all duration-300 ease-in-out
         w-fit
         ${className ?? ""}
       `}
     >
-      view details <MoveRight size={16} />
+      {iconPosition === "left" && <Icon size={iconSize} className="shrink-0 relative mt-1" />}
+
+      {children}
+
+      {iconPosition === "right" && <Icon size={iconSize} className="shrink-0 relative mt-1" />}
     </Link>
   );
 };

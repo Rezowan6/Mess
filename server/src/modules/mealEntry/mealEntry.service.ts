@@ -21,9 +21,9 @@ class MealEntryService {
     });
   }
 
-  async daily({ date, tenantId }: { date: Date; tenantId: number }) {
+  async todayMealEntries({ date, tenantId }: { date: Date; tenantId: number }) {
     return await sequelize.transaction(async (transaction) => {
-      return await mealEntryRepository.getDailyEntries(
+      return await mealEntryRepository.todayMealEntries(
         { tenantId, date },
         transaction,
       );

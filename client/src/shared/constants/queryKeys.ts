@@ -27,7 +27,7 @@ export const queryKeys = {
 
     my: (tenantId?: number) => ["mealEntries", tenantId, "my"] as const,
 
-    daily: (tenantId?: number) => ["mealEntries", tenantId, "daily"] as const,
+    todayMeals: (tenantId?: number) => ["mealEntries", tenantId, "daily"] as const,
 
     dailySummary: (tenantId?: number) =>
       ["mealEntries", tenantId, "daily-summary"] as const,

@@ -28,6 +28,7 @@ import { MealPreferencePage } from "@/modules/meal-preference/pages/MealPreferen
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
+import { TodayMealEntries } from "@/modules/meal-entry/pages/MealEntryToday";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -121,6 +122,10 @@ export const router = createBrowserRouter([
                   {
                     path: "history",
                     element: <MealHistoryPage />,
+                  },
+                  {
+                    path: "today-meals",
+                    element: <TodayMealEntries />,
                   },
                 ],
               },

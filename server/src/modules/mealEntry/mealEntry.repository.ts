@@ -151,7 +151,7 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
     );
   }
 
-  async getDailyEntries(
+  async todayMealEntries(
     { tenantId, date }: { tenantId: number; date: Date },
     transaction: Transaction | null = null,
   ) {

@@ -42,9 +42,9 @@ export const mealEntryApi = {
     return data;
   },
 
-  daily: async (params?: IMealEntryQuery): Promise<IMealEntryListResponse> => {
+  todayMealEntries: async (params?: IMealEntryQuery): Promise<IMealEntryListResponse> => {
     const { data } = await API.get<IMealEntryListResponse>(
-      API_ENDPOINTS.MEAL_ENTRY.DAILY,
+      API_ENDPOINTS.MEAL_ENTRY.TODAY_MEALS,
       {
         params,
       },

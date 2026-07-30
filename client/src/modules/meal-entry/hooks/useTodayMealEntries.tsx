@@ -11,13 +11,13 @@ import type {
   IMealEntryQuery,
 } from "../types/mealEntry.types";
 
-export const useDailyMealEntries = (params?: IMealEntryQuery) => {
+export const useTodayMealEntries = (params?: IMealEntryQuery) => {
   const currentTenant = useTenantStore((state) => state.currentTenant);
 
   return useQuery<IMealEntryListResponse>({
-    queryKey: [...queryKeys.mealEntries.daily(currentTenant?.tenantId), params],
+    queryKey: [...queryKeys.mealEntries.todayMeals(currentTenant?.tenantId), params],
 
-    queryFn: async () => await mealEntryApi.daily(params),
+    queryFn: async () => await mealEntryApi.todayMealEntries(params),
 
     enabled: !!currentTenant,
 

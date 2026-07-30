@@ -8,7 +8,7 @@ router.get("/", ...allAccess, mealEntryController.getAllMembersMeal);
 
 router.get("/my", ...allAccess, mealEntryController.my);
 
-router.get("/daily", ...adminAndManagerAccess, mealEntryController.daily);
+router.get("/today-meals", ...adminAndManagerAccess, mealEntryController.todayMealEntries);
 
 router.get("/daily-summary", ...adminAndManagerAccess, mealEntryController.dailySummary);
 

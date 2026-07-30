@@ -1,5 +1,5 @@
 export * from "./useMyMealEntries";
-export * from "./useDailyMealEntries";
+export * from "./useTodayMealEntries";
 export * from "./useDailyMealSummary";
 export * from "./useMealEntrySummary";
 export * from "./useMemberMealSummary";

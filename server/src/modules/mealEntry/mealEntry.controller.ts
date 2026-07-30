@@ -33,10 +33,10 @@ class MealEntriesController {
     });
   });
 
-  daily = asyncHandler(async (req: Request, res: Response) => {
+  todayMealEntries = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 
-    const data = await mealEntryService.daily({
+    const data = await mealEntryService.todayMealEntries({
       tenantId,
       date: new Date(req.query.date as string),
     });
