@@ -80,7 +80,7 @@ export const RegisterForm = () => {
       >
         Create Account
       </Button>
-      <ActionLink to={`${ROUTES.LOGIN}`}>Login In</ActionLink>
+      <ActionLink to={`${ROUTES.LOGIN}`}>Sign In</ActionLink>
     </form>
   );
 };

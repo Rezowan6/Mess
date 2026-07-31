@@ -3,7 +3,7 @@ import { RegisterForm } from "../components/RegisterForm";
 
 export const RegisterPage = () => {
   return (
-    <AuthCard subtitle="Create your account">
+    <AuthCard title="Create Your Account" subtitle="Join the Mess Management System">
       <RegisterForm />
     </AuthCard>
   );
