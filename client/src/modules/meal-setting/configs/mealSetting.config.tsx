@@ -50,7 +50,7 @@ export const getMealSettingConfigs = (setting: any) => [
       {
         label: "Auto Approve",
         value: (
-          <span className="badge bg-gradient-success px-2">
+          <span className={`badge px-2 ${setting.autoApproveMealRequest ? "bg-gradient-success" : "bg-gradient-accent"}`}>
             {setting.autoApproveMealRequest ? "Enabled" : "Disabled"}
           </span>
         ),
