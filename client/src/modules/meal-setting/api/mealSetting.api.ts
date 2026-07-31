@@ -30,13 +30,4 @@ export const mealSettingApi = {
     return res.data;
   },
 
-  delete: async (id: number) => {
-    const res = await API.delete<{
-      statusCode: number;
-      success: boolean;
-      message: string;
-    }>(API_ENDPOINTS.MEAL_SETTING.DELETE(id));
-
-    return res.data;
-  },
 };

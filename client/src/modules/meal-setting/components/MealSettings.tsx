@@ -2,16 +2,18 @@ import { Utensils } from "lucide-react";
 
 import { SettingsCard } from "@/modules/settings/components/SettingsCard";
 
+import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { ROUTES } from "@/shared/constants/routes";
 import { PermissionGate } from "@/shared/guards/PermissionGate";
+import { useRBAC } from "@/shared/hooks/useRBAC";
 import { getMealSettingConfigs } from "../configs/mealSetting.config";
 import { useMealSetting } from "../hooks/useMealSetting";
 import { MealSettingItem } from "./MealSettingItem";
-import { ActionLink } from "@/shared/components/ui/ActionLink";
-import { ROUTES } from "@/shared/constants/routes";
 
 export const MealSettings = () => {
   const { data, isLoading } = useMealSetting();
+  const { can } = useRBAC();
 
   const setting = data?.data ?? [];
 
@@ -23,9 +25,14 @@ export const MealSettings = () => {
         title="Meal Settings"
         description="Configure meal rules, cutoff times and preferences."
         icon={<Utensils size={22} />}
-        actionLink={<ActionLink to={`${ROUTES.SETTINGS}/meal-setting`}>Manage meal setting</ActionLink>}
+        actionLink={
+          can(PERMISSIONS.MEAL_SETTING_CREATE) && (
+            <ActionLink to={`${ROUTES.SETTINGS}/meal-setting`}>
+              Manage meal setting
+            </ActionLink>
+          )
+        }
       >
-        
         <div className="p-2">
           {isLoading ? (
             <p>Loading...</p>

@@ -1,3 +1,33 @@
+modules/
+└── meal-setting/
+    │
+    ├── pages/
+    │   ├── MealSettingPage.tsx
+    │   └── MealSettingManagePage.tsx
+    │
+    ├── components/
+    │   ├── MealSettingCard.tsx
+    │   ├── MealSettingFormModal.tsx
+    │   └── MealSettingActions.tsx
+    │
+    ├── configs/
+    │   └── mealSettingFields.tsx
+    │
+    ├── hooks/
+    │   ├── useCreateMealSetting.ts
+    │   ├── useUpdateMealSetting.ts
+    │   └── useDeleteMealSetting.ts
+    │
+    ├── schemas/
+    │   └── mealSetting.schema.ts
+    │
+    ├── api/
+    │   └── mealSetting.api.ts
+    │
+    └── types/
+        └── mealSetting.types.ts
+
+
 MealPreference
         |
         |

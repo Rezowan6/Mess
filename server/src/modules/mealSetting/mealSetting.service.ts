@@ -22,10 +22,6 @@ class MealSettingService {
   async getMySetting(tenantId: number) {
     const setting = await mealSettingRepository.getByTenantId(tenantId);
 
-    if (!setting) {
-      throw new ApiError(404, "Meal setting not found.");
-    }
-
     return setting;
   }
 
@@ -45,15 +41,6 @@ class MealSettingService {
     return updateSetting as MealSetting;
   }
 
-  async delete(tenantId: number): Promise<void> {
-    const existingSetting = await mealSettingRepository.getByTenantId(tenantId);
-
-    if (!existingSetting) {
-      throw new ApiError(404, "Meal setting not found");
-    }
-
-    await mealSettingRepository.delete({ tenantId });
-  }
 }
 
 export const mealSettingService = new MealSettingService();

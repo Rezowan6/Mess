@@ -43,7 +43,7 @@ export const API_ENDPOINTS = {
     CURRENT: "/meal-settings",
     CREATE: "/meal-settings",
     UPDATE: "/meal-settings",
-    DELETE: (id: number) => `/meal-settings/${id}`,
+    DELETE: `/meal-settings`,
   },
 
   MEAL_PREFERENCE: {

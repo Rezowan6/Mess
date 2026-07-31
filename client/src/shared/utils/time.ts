@@ -13,6 +13,14 @@ export const minutesToTime = (minutes: number) => {
   });
 };
 
+export const nationalMinutesToTime = (minutes: number) => {
+  const hours = Math.floor(minutes / 60);
+
+  const mins = minutes % 60;
+
+  return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
+};
+
 export const timeToMinutes = (time: string) => {
   const [hours, minutes] = time.split(":").map(Number);
 

@@ -43,17 +43,6 @@ export class MealSettingController {
     });
   });
 
-  delete = asyncHandler(async (req, res) => {
-    const { tenantId } = getTenantContext(req);
-
-    await mealSettingService.delete(tenantId);
-
-    return sendResponse(res, {
-      statusCode: 200,
-      message: "Meal setting deleted successfully.",
-      data: null,
-    });
-  });
 }
 
 export const mealSettingController = new MealSettingController();

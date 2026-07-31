@@ -11,6 +11,4 @@ router.get("/", ...adminAndManagerAccess, mealSettingController.getMySetting);
 
 router.patch("/", ...adminAndManagerAccess, mealSettingController.update);
 
-router.delete("/", ...adminAndManagerAccess, mealSettingController.delete);
-
 export default router;
