@@ -5,7 +5,7 @@ import http from "http";
 import mongoose from "mongoose";
 import app from "./app.js";
 import { initSocket } from "./socket/socket.js";
-import { startMealRequestJob } from "./jobs/mealRequest.job.js";
+import { startMealRequestJob } from "./jobs/mealRequest/mealRequest.job.js";
 
 const PORT = env.PORT || 4000;
 
