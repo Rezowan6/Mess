@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 interface SettingsCardProps {
   title: string;
   description?: string;
+  actionLink?: ReactNode;
   icon?: ReactNode;
   children: ReactNode;
 }
@@ -11,6 +12,7 @@ interface SettingsCardProps {
 export const SettingsCard = ({
   title,
   description,
+  actionLink,
   icon,
   children,
 }: SettingsCardProps) => {
@@ -19,12 +21,19 @@ export const SettingsCard = ({
       {/* Header */}
       <div className="flex items-center justify-center p-6">
         <div className="flex gap-4">
-          {icon && <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-success text-text">{icon}</div>}
+          {icon && (
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-success text-text">
+              {icon}
+            </div>
+          )}
 
           <div>
             <h2 className="text-lg font-semibold">{title}</h2>
 
-            {description && <p className="mt-1 text-sm text-text">{description}</p>}
+            {description && (
+              <p className="mt-1 text-sm text-text">{description}</p>
+            )}
+            {actionLink && actionLink}
           </div>
         </div>
 

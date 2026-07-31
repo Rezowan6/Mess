@@ -27,7 +27,8 @@ export const queryKeys = {
 
     my: (tenantId?: number) => ["mealEntries", tenantId, "my"] as const,
 
-    todayMeals: (tenantId?: number) => ["mealEntries", tenantId, "daily"] as const,
+    todayMeals: (tenantId?: number) =>
+      ["mealEntries", tenantId, "daily"] as const,
 
     dailySummary: (tenantId?: number) =>
       ["mealEntries", tenantId, "daily-summary"] as const,
@@ -53,16 +54,11 @@ export const queryKeys = {
     myPreference: ["meal-preference"],
   },
 
-  mealSetting: {
-    current: ["meal-setting"] as const,
-  },
+  mealSettings: {
+    all: (tenantId?: number) => ["meal-settings", tenantId] as const,
 
-  expenses: {
-    all: (tenantId?: number) => ["expenses", tenantId] as const,
-
-    list: (tenantId?: number) => ["expenses", tenantId, "list"] as const,
-
-    summary: (tenantId?: number) => ["expenses", tenantId, "summary"] as const,
+    detail: (tenantId?: number) =>
+      ["meal-settings", tenantId, "detail"] as const,
   },
 
   deposits: {

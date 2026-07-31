@@ -21,6 +21,9 @@ export const PERMISSIONS = {
   MEAL_ENTRY_CREATE: "meal_entry.create",
   MEAL_ENTRY_UPDATE: "meal_entry.update",
 
+  // meal setting
+  MEAL_SETTING_VIEW: "meal_setting.view",
+
   // Expense
   EXPENSE_VIEW: "expense.view",
   EXPENSE_CREATE: "expense.create",

@@ -4,6 +4,7 @@ import { SettingsCard } from "@/modules/settings/components/SettingsCard";
 
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { PermissionGate } from "@/shared/guards/PermissionGate";
+import { useRBAC } from "@/shared/hooks/useRBAC";
 import { useMealSession } from "../hooks/useMealSession";
 import { CloseSessionButton } from "./CloseSessionButton";
 import { OpenMealSessionButton } from "./OpenMealSessionButton";
@@ -11,9 +12,9 @@ import { OpenMealSessionButton } from "./OpenMealSessionButton";
 export const MealSessionSettings = () => {
   const { data, isLoading } = useMealSession();
 
-  const session = data?.data?.data;
+  const { can } = useRBAC();
 
-  console.log(session);
+  const session = data?.data?.data;
 
   return (
     <PermissionGate permission={PERMISSIONS.MEAL_SESSION_VIEW}>
@@ -53,9 +54,9 @@ export const MealSessionSettings = () => {
                 </div>
               </div>
               <div className="flex items-end">
-                <PermissionGate permission={PERMISSIONS.MEAL_SESSION_CLOSE}>
+                {can(PERMISSIONS.MEAL_SESSION_CLOSE) && (
                   <CloseSessionButton sessionId={session.id} />
-                </PermissionGate>
+                )}
               </div>
             </div>
           ) : (
@@ -63,9 +64,9 @@ export const MealSessionSettings = () => {
               <p>No active meal session.</p>
 
               <div className="flex items-end">
-                <PermissionGate permission={PERMISSIONS.MEAL_SESSION_OPEN}>
+                {can(PERMISSIONS.MEAL_SESSION_OPEN) && (
                   <OpenMealSessionButton />
-                </PermissionGate>
+                )}
               </div>
             </div>
           )}

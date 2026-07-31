@@ -1,6 +1,6 @@
 import express from "express";
 
-import { managerAccess, adminAndManagerAccess } from "@/helpers/permission.js";
+import { adminAndManagerAccess } from "@/helpers/permission.js";
 import { mealSettingController } from "./mealSetting.controller.js";
 
 const router = express.Router();
