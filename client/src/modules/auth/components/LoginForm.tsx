@@ -7,6 +7,8 @@ import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
 import { PasswordInput } from "@/shared/components/ui/PasswordInput";
 import { loginSchema, type ILoginFormData } from "../schemas/auth.schema";
+import { ActionLink } from "@/shared/components/ui/ActionLink";
+import { ROUTES } from "@/shared/constants/routes";
 
 export const LoginForm = () => {
   const { mutate, isPending } = useLogin();
@@ -67,6 +69,8 @@ export const LoginForm = () => {
       >
         Sign In
       </Button>
+
+      <ActionLink to={`${ROUTES.REGISTER}`}>Create Account</ActionLink>
     </form>
   );
 };

@@ -1,3 +1,10 @@
+import { AuthCard } from "../components/AuthCard";
+import { RegisterForm } from "../components/RegisterForm";
+
 export const RegisterPage = () => {
-  return <div>RegisterPage</div>;
+  return (
+    <AuthCard subtitle="Create your account">
+      <RegisterForm />
+    </AuthCard>
+  );
 };

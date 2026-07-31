@@ -1,6 +1,5 @@
 import type {
   IAuthUser,
-  ILoginPayload,
   ILoginResponse,
 } from "../types/auth.types";
 
@@ -8,9 +7,10 @@ import { API } from "@/shared/lib/axios";
 
 import { API_ENDPOINTS } from "@/shared/constants/api";
 import type { ApiResponse } from "@/shared/types/api.types";
+import type { IRegisterFormData, ILoginFormData } from "../schemas/auth.schema";
 
 export const authApi = {
-  login: async (payload: ILoginPayload): Promise<ILoginResponse> => {
+  login: async (payload: ILoginFormData): Promise<ILoginResponse> => {
     const { data } = await API.post<ILoginResponse>(
       API_ENDPOINTS.AUTH.LOGIN,
       payload,
@@ -29,6 +29,12 @@ export const authApi = {
     const { data } = await API.post<ApiResponse<null>>(
       API_ENDPOINTS.AUTH.LOGOUT,
     );
+
+    return data;
+  },
+
+  register: async (payload: IRegisterFormData) => {
+    const { data } = await API.post(API_ENDPOINTS.AUTH.REGISTER, payload);
 
     return data;
   },

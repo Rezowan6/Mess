@@ -26,10 +26,11 @@ import { TodayMealEntries } from "@/modules/meal-entry/pages/MealEntryToday";
 import { MealHistoryPage } from "@/modules/meal-entry/pages/MealHistoryPage";
 import { MembersMealSummaryPage } from "@/modules/meal-entry/pages/MembersMealSummaryPage";
 import { MealPreferencePage } from "@/modules/meal-preference/pages/MealPreferencePage";
+import { MealSettingManagePage } from "@/modules/meal-setting/pages/MealSettingManagePage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
-import { MealSettingManagePage } from "@/modules/meal-setting/pages/MealSettingManagePage";
+import { RegisterPage } from "@/modules/auth/pages/RegisterPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.LOGIN,
         element: <LoginPage />,
+      },
+      {
+        path: ROUTES.REGISTER,
+        element: <RegisterPage />,
       },
     ],
   },

@@ -38,11 +38,6 @@ export interface IAuthState {
   logout: () => void;
 }
 
-export interface ILoginPayload {
-  email: string;
-  password: string;
-}
-
 export interface ILoginResponse {
   statusCode: number;
   success: boolean;
