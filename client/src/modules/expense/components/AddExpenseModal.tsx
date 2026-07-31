@@ -46,7 +46,7 @@ export const AddExpenseModal = ({ isOpen, onClose, expense }: Props) => {
     resolver: zodResolver(expenseSchema),
 
     defaultValues: {
-      amount: 0,
+      amount: undefined,
       signature: "",
       category: "",
       description: "",
@@ -63,7 +63,7 @@ export const AddExpenseModal = ({ isOpen, onClose, expense }: Props) => {
       });
     } else {
       reset({
-        amount: 0,
+        amount: undefined,
         signature: "",
         category: "",
         description: "",
