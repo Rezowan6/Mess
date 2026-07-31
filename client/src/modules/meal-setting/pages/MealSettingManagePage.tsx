@@ -4,14 +4,13 @@ import { Button } from "@/shared/components/ui/Button";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { PermissionGuard } from "@/shared/guards/permission.guard";
 
-import { MoveLeft, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 
+import { BackButton } from "@/shared/components/ui/BackButton.tsx";
 import { MealSettingActions } from "../components/MealSettingActions.tsx";
 import { MealSettingCard } from "../components/MealSettingCard";
 import { MealSettingFormModal } from "../components/MealSettingFormModal";
 import { useMealSetting } from "../hooks/useMealSetting";
-import { ActionLink } from "@/shared/components/ui/ActionLink.tsx";
-import { ROUTES } from '@/shared/constants/routes';
 
 export const MealSettingManagePage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +34,7 @@ export const MealSettingManagePage = () => {
             <p className="text-sm opacity-70">
               Manage meal rules, cutoff times and preferences.
             </p>
-            <ActionLink to={`${ROUTES.SETTINGS}`} icon={MoveLeft} iconPosition="left">Back</ActionLink>
+            <BackButton />
           </div>
 
           <Button

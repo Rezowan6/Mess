@@ -1,4 +1,7 @@
 export const PERMISSIONS = {
+  // tenant
+  TENANT_CREATE: "tenant.create",
+  
   // User
   USER_VIEW: "user.view",
   USER_CREATE: "user.create",

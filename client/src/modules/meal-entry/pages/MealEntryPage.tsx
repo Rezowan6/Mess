@@ -3,10 +3,10 @@ import { Outlet, useLocation } from "react-router-dom";
 import { Button } from "@/shared/components/ui/Button";
 
 import { ActionLink } from "@/shared/components/ui/ActionLink";
+import { BackButton } from "@/shared/components/ui/BackButton";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
 import { PermissionGuard } from "@/shared/guards/permission.guard";
-import { MoveLeft } from "lucide-react";
 
 export const MealEntryPage = () => {
   const location = useLocation();
@@ -28,13 +28,7 @@ export const MealEntryPage = () => {
                 View Today Meals
               </ActionLink>
             ) : (
-              <ActionLink
-                to={`${ROUTES.MEAL_ENTRY}`}
-                icon={MoveLeft}
-                iconPosition="left"
-              >
-                Back
-              </ActionLink>
+              <BackButton />
             )}
           </div>
 

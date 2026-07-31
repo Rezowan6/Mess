@@ -5,7 +5,7 @@ import { tenantController } from "./tenant.controller.js";
 
 const router = express.Router();
 
-router.post("/create", ...adminAccess, tenantController.create);
+router.post("/", ...adminAccess, tenantController.create);
 // router.get("/", ...systemOwnerAccess, getTenants);
 // router.get("/:id", auth, getTenant);
 

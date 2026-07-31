@@ -1,7 +1,5 @@
 import { useLocation } from "react-router-dom";
 
-import { ROUTES } from "@/shared/constants/routes";
-
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { BackButton } from "@/shared/components/ui/BackButton";
 import { Table } from "@/shared/components/ui/Table";
@@ -11,7 +9,6 @@ import { MealEntryTableSkeleton } from "../components/MealEntryTableSkeleton";
 import { MEAL_ENTRY_MESSAGES } from "../configs/meal.entries.message";
 import { useMealHistoryColumns } from "../configs/meal.history.columns";
 import { useAllMembersMeal } from "../hooks/useAllMembersMeal";
-
 
 export const MealHistoryPage = () => {
   const location = useLocation();
@@ -58,10 +55,13 @@ export const MealHistoryPage = () => {
           <p className="text-sm opacity-70">View all meals for this member.</p>
         </div>
 
-        <BackButton to={ROUTES.MEAL_ENTRY} />
+        <BackButton />
       </div>
 
-      <MealEntryInfoCard memberName={member?.name ?? ""} totalMeals={totalMeals} />
+      <MealEntryInfoCard
+        memberName={member?.name ?? ""}
+        totalMeals={totalMeals}
+      />
 
       <Table
         columns={columns}

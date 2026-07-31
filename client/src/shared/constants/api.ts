@@ -7,6 +7,10 @@ export const API_ENDPOINTS = {
     ME: "/auth/me",
   },
 
+  TENANT: {
+    CREATE: "/tenants",
+  },
+
   TENANT_MEMBERSHIP: {
     INVITES: "/invites",
     LIST: "/tenant-memberships",

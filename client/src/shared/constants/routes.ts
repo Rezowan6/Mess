@@ -9,6 +9,8 @@ export const ROUTES = {
 
   DASHBOARD: "/dashboard",
 
+  TENANT: "/create-mess",
+
   USERS: "/users",
 
   PREFERENCE: "/preferences",

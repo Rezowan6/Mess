@@ -5,6 +5,8 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
   [ROLES.SYSTEM_OWNER]: ["*"],
 
   [ROLES.ADMIN]: [
+    // tenant
+    PERMISSIONS.TENANT_CREATE,
     // user
     PERMISSIONS.USER_VIEW,
     PERMISSIONS.USER_CREATE,

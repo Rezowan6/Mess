@@ -1,7 +1,5 @@
 import { useLocation } from "react-router-dom";
 
-import { ROUTES } from "@/shared/constants/routes";
-
 import { BackButton } from "@/shared/components/ui/BackButton";
 import { Table } from "@/shared/components/ui/Table";
 import { DepositInfoCard } from "../components/DepositInfoCard";
@@ -66,7 +64,7 @@ export const DepositHistoryPage = () => {
           </p>
         </div>
 
-        <BackButton to={ROUTES.DEPOSIT} />
+        <BackButton />
       </div>
 
       <DepositInfoCard memberName={member.name} totalDeposit={totalDeposit} />

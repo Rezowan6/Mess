@@ -31,6 +31,7 @@ import { NotificationPage } from "@/modules/notification/pages/NotificationPage"
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
 import { RegisterPage } from "@/modules/auth/pages/RegisterPage";
+import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -136,6 +137,11 @@ export const router = createBrowserRouter([
                 ],
               },
             ],
+          },
+
+          {
+            path: ROUTES.TENANT,
+            element: <TenantPage />,
           },
 
           {
