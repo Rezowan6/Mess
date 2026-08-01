@@ -1,14 +1,10 @@
 import { Router } from "express";
 
-import { adminAccess, managerAccess } from "@/helpers/permission.js";
-import { DashboardController } from "./dashboard.controller.js";
+import { managerAccess } from "@/helpers/permission.js";
+import { dashboardController } from "./dashboard.controller.js";
 
 const router = Router();
 
-router.get(
-  "/manager",
-  ...adminAccess,
-  DashboardController.getManagerDashboard,
-);
+router.get("/today", ...managerAccess, dashboardController.getTodayDashboard);
 
 export default router;

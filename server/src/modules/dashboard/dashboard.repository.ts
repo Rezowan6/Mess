@@ -11,8 +11,8 @@ import {
 import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
 import { ITodayToalMeals } from "./dashboard.interface.js";
 
-export class DashboardRepository {
-  static async getTotalMembers(tenantId: number) {
+class DashboardRepository {
+   async getTotalMembers(tenantId: number) {
     return TenantMembership.count({
       where: {
         tenantId,
@@ -20,7 +20,7 @@ export class DashboardRepository {
     });
   }
 
-  static async getTodayExpense(
+   async getTodayExpense(
     tenantId: number,
     mealSessionId: number,
     date: string,
@@ -37,7 +37,7 @@ export class DashboardRepository {
     );
   }
 
-  static async getTodayDeposit(
+   async getTodayDeposit(
     tenantId: number,
     mealSessionId: number,
     date: string,
@@ -54,7 +54,7 @@ export class DashboardRepository {
     );
   }
 
-  static async getTodayMeals(
+   async getTodayMeals(
     tenantId: number,
     mealSessionId: number,
     date: string,
@@ -79,7 +79,7 @@ export class DashboardRepository {
     return result as ITodayToalMeals | null;
   }
 
-  static async getTodayPendingMealReq(
+   async getTodayPendingMealReq(
     tenantId: number,
     mealSessionId: number,
     date: string,
@@ -109,7 +109,7 @@ export class DashboardRepository {
     });
   }
 
-  static async getTodayPendingMealReqCount(
+   async getTodayPendingMealReqCount(
     tenantId: number,
     mealSessionId: number,
     date: string,
@@ -125,3 +125,4 @@ export class DashboardRepository {
     });
   }
 }
+export const dashboardRepository = new DashboardRepository()

@@ -2,14 +2,14 @@ import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
-import { DashboardService } from "./dashboard.service.js";
+import { dashboardService } from "./dashboard.service.js";
 
 
-export class DashboardController {
-    static getManagerDashboard = asyncHandler(async (req: Request, res: Response) => {
-        const {tenantId, mealSessionId, session} = getTenantContext(req);
+ class DashboardController {
+     getTodayDashboard = asyncHandler(async (req: Request, res: Response) => {
+        const {tenantId, mealSessionId,} = getTenantContext(req);
 
-        const result = await DashboardService.getManagerDashboard(tenantId, mealSessionId, session);
+        const result = await dashboardService.getTodayDashboard(tenantId, mealSessionId);
 
         return sendResponse(res, {
             statusCode: 200,
@@ -18,3 +18,5 @@ export class DashboardController {
         })
     })
 }
+
+export const dashboardController = new DashboardController();

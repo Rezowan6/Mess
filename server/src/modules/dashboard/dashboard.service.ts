@@ -1,13 +1,8 @@
 import { getCurrentDate } from "@/utils/date.util.js";
-import { IMealSessionReq } from "../mealSession/mealSession.interface.js";
-import { DashboardRepository } from "./dashboard.repository.js";
+import { dashboardRepository } from "./dashboard.repository.js";
 
-export class DashboardService {
-  static async getManagerDashboard(
-    tenantId: number,
-    mealSessionId: number,
-    session: IMealSessionReq,
-  ) {
+class DashboardService {
+  async getTodayDashboard(tenantId: number, mealSessionId: number) {
     const date = getCurrentDate();
 
     const [
@@ -18,12 +13,12 @@ export class DashboardService {
       todayPendingMealReq,
       todayTotalPendingMealReq,
     ] = await Promise.all([
-      DashboardRepository.getTotalMembers(tenantId),
-      DashboardRepository.getTodayMeals(tenantId, mealSessionId, date),
-      DashboardRepository.getTodayExpense(tenantId, mealSessionId, date),
-      DashboardRepository.getTodayDeposit(tenantId, mealSessionId, date),
-      DashboardRepository.getTodayPendingMealReq(tenantId, mealSessionId, date),
-      DashboardRepository.getTodayPendingMealReqCount(
+      dashboardRepository.getTotalMembers(tenantId),
+      dashboardRepository.getTodayMeals(tenantId, mealSessionId, date),
+      dashboardRepository.getTodayExpense(tenantId, mealSessionId, date),
+      dashboardRepository.getTodayDeposit(tenantId, mealSessionId, date),
+      dashboardRepository.getTodayPendingMealReq(tenantId, mealSessionId, date),
+      dashboardRepository.getTodayPendingMealReqCount(
         tenantId,
         mealSessionId,
         date,
@@ -40,3 +35,5 @@ export class DashboardService {
     };
   }
 }
+
+export const dashboardService = new DashboardService()
