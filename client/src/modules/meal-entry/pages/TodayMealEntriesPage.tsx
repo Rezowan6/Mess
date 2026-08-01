@@ -6,7 +6,7 @@ import { MEAL_ENTRY_MESSAGES } from "../configs/meal.entries.message";
 import { useTodayMealEntryColumns } from "../configs/todayMealEntry.columns";
 import { useTodayMealEntries } from "../hooks";
 
-export const TodayMealEntries = () => {
+export const TodayMealEntriesPage = () => {
   const columns = useTodayMealEntryColumns();
 
   const today = new Date().toISOString().split("T")[0];
@@ -42,7 +42,7 @@ export const TodayMealEntries = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <>
       {/* Summary card */}
       <TodayMealEntryInfoCard summary={summary} memberCount={entries.length} />
       {/* Table */}
@@ -54,6 +54,6 @@ export const TodayMealEntries = () => {
         refetch={refetch}
         message={MEAL_ENTRY_MESSAGES}
       />
-    </div>
+    </>
   );
 };

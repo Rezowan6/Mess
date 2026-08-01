@@ -82,7 +82,7 @@ export const MembersMealSummaryPage = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <>
       <SearchInput value={search} onChange={handleSearch} />
       <Table
         columns={columns}
@@ -100,6 +100,6 @@ export const MembersMealSummaryPage = () => {
           onChange={handlePage}
         />
       )}
-    </div>
+    </>
   );
 };

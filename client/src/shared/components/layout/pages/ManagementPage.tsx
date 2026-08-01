@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 interface Props {
   title: string;
   description: string;
+  footer?: ReactNode;
   children: ReactNode;
   action?: ReactNode;
 }
@@ -10,6 +11,7 @@ interface Props {
 export const ManagementPage = ({
   title,
   description,
+  footer,
   children,
   action,
 }: Props) => {
@@ -20,6 +22,8 @@ export const ManagementPage = ({
           <h1 className="text-2xl font-bold">{title}</h1>
 
           <p className="text-sm opacity-70">{description}</p>
+
+          {footer}
         </div>
 
         {action && action}

@@ -12,7 +12,6 @@ import { DEPOSIT_MESSAGES } from "../configs/deposit.messages";
 import { useMembers } from "@/modules/user-management/hooks/useMembers";
 import type { ITenantMember } from "@/modules/user-management/types/userManagement.types";
 
-import { BackButton } from "@/shared/components/ui/BackButton";
 import { ROUTES } from "@/shared/constants/routes";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { useCreateDeposit } from "../hooks/useCreateDeposit";
@@ -138,8 +137,7 @@ export const DepositAddPage = () => {
   }
 
   return (
-    <div className="space-y-4">
-      <BackButton to={ROUTES.DEPOSIT} />
+    <>
       <SearchInput value={search} onChange={handleSearch} />
 
       <Table
@@ -161,6 +159,6 @@ export const DepositAddPage = () => {
           onChange={handlePage}
         />
       )}
-    </div>
+    </>
   );
 };

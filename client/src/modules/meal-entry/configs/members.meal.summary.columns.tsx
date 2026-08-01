@@ -49,11 +49,11 @@ export const useMembersMealSummaryColumns = (): TableColumn<IMealEntry>[] => {
 
   if (can(PERMISSIONS.MEAL_ENTRY_VIEW)) {
     columns.push({
-      key: "history",
-      title: "History",
+      key: "details",
+      title: "Details",
       render: (meal) => (
         <ActionLink state={meal} to={`${ROUTES.MEAL_ENTRY}/history`}>
-          History
+          View Details
         </ActionLink>
       ),
     });

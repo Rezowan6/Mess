@@ -24,11 +24,11 @@ export const useDepositMemberSummaryColumns = (): TableColumn<IDeposit>[] => {
 
   if (can(PERMISSIONS.DEPOSIT_DELETE || PERMISSIONS.DEPOSIT_UPDATE)) {
     columns.push({
-      key: "history",
-      title: "History",
+      key: "details",
+      title: "Details",
       render: (deposit) => (
         <ActionLink state={deposit} to={`${ROUTES.DEPOSIT}/history`}>
-          History
+          View Details
         </ActionLink>
       ),
     });

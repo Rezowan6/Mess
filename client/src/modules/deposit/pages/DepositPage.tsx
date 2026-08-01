@@ -3,10 +3,10 @@ import { Outlet, useLocation } from "react-router-dom";
 
 import { AddDepositModal } from "../components/AddDepositModal";
 
-import { Button } from "@/shared/components/ui/Button";
-
+import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { PermissionGuard } from "@/shared/guards/permission.guard";
+import { getDepositPageConfig } from "../configs/deposit.page.config";
 
 export const DepositPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,34 +16,21 @@ export const DepositPage = () => {
     setIsOpen(false);
   }, [location.pathname]);
 
+  const currentPage = getDepositPageConfig({
+    pathname: location.pathname,
+    onAddDeposit: () => setIsOpen(true),
+  });
+
   return (
     <PermissionGuard permission={PERMISSIONS.DEPOSIT_VIEW}>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold">Deposit Management</h1>
-
-            <p className="text-sm opacity-70">
-              Manage member deposits and payment records
-            </p>
-          </div>
-
-          <Button
-            variant="success"
-            permission={PERMISSIONS.DEPOSIT_CREATE}
-            onClick={() => setIsOpen(true)}
-          >
-            Add Deposit
-          </Button>
-        </div>
-
-        <AddDepositModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-        <div className="card bg-base-100 shadow">
-          <div className="card-body">
-            <Outlet />
-          </div>
-        </div>
-      </div>
+      <ManagementPage
+        title={currentPage.title}
+        description={currentPage.description}
+        action={currentPage.action}
+      >
+        <Outlet />
+      </ManagementPage>
+      <AddDepositModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </PermissionGuard>
   );
 };

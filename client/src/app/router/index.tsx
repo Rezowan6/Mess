@@ -23,16 +23,17 @@ import { DepositPage } from "@/modules/deposit/pages/DepositPage";
 import { ExpensePage } from "@/modules/expense/pages/ExpensePage";
 import { AcceptInvitePage } from "@/modules/invite/pages/AcceptInvitePage";
 import { MealEntryPage } from "@/modules/meal-entry/pages/MealEntryPage";
-import { TodayMealEntries } from "@/modules/meal-entry/pages/MealEntryToday";
 import { MealHistoryPage } from "@/modules/meal-entry/pages/MealHistoryPage";
 import { MembersMealSummaryPage } from "@/modules/meal-entry/pages/MembersMealSummaryPage";
+import { TodayMealEntriesPage } from "@/modules/meal-entry/pages/TodayMealEntriesPage";
 import { MealPreferencePage } from "@/modules/meal-preference/pages/MealPreferencePage";
 import { MealSettingManagePage } from "@/modules/meal-setting/pages/MealSettingManagePage";
+import { MonthlyCalculationPage } from "@/modules/monthly-calculation/pages/MonthlyCalculationPage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
+import { GeneralSettingsPage } from "@/modules/settings/pages/GeneralSettingsPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
-import { MonthlyCalculationPage } from "@/modules/monthly-calculation/pages/MonthlyCalculationPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -133,7 +134,7 @@ export const router = createBrowserRouter([
                   },
                   {
                     path: "today-meals",
-                    element: <TodayMealEntries />,
+                    element: <TodayMealEntriesPage />,
                   },
                 ],
               },
@@ -165,11 +166,11 @@ export const router = createBrowserRouter([
 
           {
             path: ROUTES.SETTINGS,
-
+            element: <SettingsPage />,
             children: [
               {
                 index: true,
-                element: <SettingsPage />,
+                element: <GeneralSettingsPage />,
               },
               {
                 path: "meal-setting",

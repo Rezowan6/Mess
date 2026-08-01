@@ -2,25 +2,6 @@ import { minutesToTime } from "@/shared/utils/time";
 
 export const getMealSettingConfigs = (setting: any) => [
   {
-    title: "Default Meals",
-
-    items: [
-      {
-        label: "Breakfast",
-        value: setting.defaultBreakfastMeal,
-      },
-      {
-        label: "Lunch",
-        value: setting.defaultLunchMeal,
-      },
-      {
-        label: "Dinner",
-        value: setting.defaultDinnerMeal,
-      },
-    ],
-  },
-
-  {
     title: "Cutoff Times",
 
     items: [

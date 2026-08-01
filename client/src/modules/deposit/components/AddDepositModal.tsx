@@ -19,8 +19,8 @@ import {
   type DepositFormValues,
 } from "../schemas/deposit.schema";
 
+import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { ROUTES } from "@/shared/constants/routes";
-import { Link } from "react-router-dom";
 import { depositFields } from "../configs/depositFields";
 import type { IDeposit } from "../types/deposit.types";
 
@@ -125,15 +125,7 @@ export const AddDepositModal = ({ isOpen, onClose, deposit }: Props) => {
             />
           ))}
 
-        <div className="pt-1">
-          <Link
-            to={`${ROUTES.DEPOSIT}/quick-add`}
-            className="text-sm text-info hover:underline"
-            onClick={onClose}
-          >
-            Quick Add
-          </Link>
-        </div>
+        <ActionLink to={`${ROUTES.DEPOSIT}/quick-add`}>Quick Add</ActionLink>
 
         <div className="flex justify-end gap-2 pt-4">
           <Button type="button" variant="error" onClick={onClose}>

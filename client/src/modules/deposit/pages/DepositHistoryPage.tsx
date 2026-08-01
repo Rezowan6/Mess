@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 
-import { BackButton } from "@/shared/components/ui/BackButton";
 import { Table } from "@/shared/components/ui/Table";
 import { DepositInfoCard } from "../components/DepositInfoCard";
 import { DepositTableSkeleton } from "../components/DepositTableSkeleton";
@@ -54,19 +53,7 @@ export const DepositHistoryPage = () => {
   );
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-bold">Deposit History</h2>
-
-          <p className="text-sm opacity-70">
-            View all deposits for this member.
-          </p>
-        </div>
-
-        <BackButton />
-      </div>
-
+    <>
       <DepositInfoCard memberName={member.name} totalDeposit={totalDeposit} />
 
       <Table
@@ -84,6 +71,6 @@ export const DepositHistoryPage = () => {
         }}
         deposit={selectedDeposit ?? undefined}
       />
-    </div>
+    </>
   );
 };

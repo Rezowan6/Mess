@@ -1,7 +1,6 @@
 import { useLocation } from "react-router-dom";
 
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
-import { BackButton } from "@/shared/components/ui/BackButton";
 import { Table } from "@/shared/components/ui/Table";
 
 import { MealEntryInfoCard } from "../components/MealEntryInfoCard";
@@ -47,17 +46,7 @@ export const MealHistoryPage = () => {
   );
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-bold">Meal History</h2>
-
-          <p className="text-sm opacity-70">View all meals for this member.</p>
-        </div>
-
-        <BackButton />
-      </div>
-
+    <>
       <MealEntryInfoCard
         memberName={member?.name ?? ""}
         totalMeals={totalMeals}
@@ -69,6 +58,6 @@ export const MealHistoryPage = () => {
         loading={isPending}
         message={MEAL_ENTRY_MESSAGES}
       />
-    </div>
+    </>
   );
 };
