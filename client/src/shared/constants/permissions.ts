@@ -1,6 +1,9 @@
 export const PERMISSIONS = {
   // tenant
   TENANT_CREATE: "tenant.create",
+
+  // monthly-calculation
+  MONTHLY_CALCULATION_VIEW: "monthly_calculation.view",
   
   // User
   USER_VIEW: "user.view",

@@ -12,7 +12,10 @@ export const queryKeys = {
 
     invites: (tenantId?: number) => ["tenants", tenantId, "invites"] as const,
   },
-
+  monthlyCalculations: {
+    current: (tenantId?: number) =>
+      ["monthly-calculations", tenantId, "current"] as const,
+  },
   mealSessions: {
     all: (tenantId?: number) => ["meal-sessions", tenantId] as const,
   },

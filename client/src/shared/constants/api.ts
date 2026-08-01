@@ -10,7 +10,9 @@ export const API_ENDPOINTS = {
   TENANT: {
     CREATE: "/tenants",
   },
-
+  MONTHLY_CALCULATION: {
+    CURRENT: "/monthly-calculations/current",
+  },
   TENANT_MEMBERSHIP: {
     INVITES: "/invites",
     LIST: "/tenant-memberships",

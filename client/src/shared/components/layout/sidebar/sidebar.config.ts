@@ -3,6 +3,7 @@ import { ROUTES } from "@/shared/constants/routes";
 import type { LucideIcon } from "lucide-react";
 
 import {
+  Calculator,
   ClipboardList,
   CreditCard,
   HandCoins,
@@ -59,6 +60,12 @@ export const sidebarItems: ISidebarItem[] = [
     path: ROUTES.DEPOSIT,
     icon: Landmark,
     permission: PERMISSIONS.DEPOSIT_CREATE,
+  },
+  {
+    title: "Monthly Calculation",
+    path: ROUTES.MONTHLY_CALCULATION,
+    icon: Calculator,
+    permission: PERMISSIONS.MONTHLY_CALCULATION_VIEW,
   },
 
   {

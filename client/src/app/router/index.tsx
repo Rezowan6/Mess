@@ -15,6 +15,7 @@ import { ROUTES } from "@/shared/constants/routes";
 import { PermissionGuard } from "@/shared/guards/permission.guard";
 import { RoleGuard } from "@/shared/guards/role.guard";
 
+import { RegisterPage } from "@/modules/auth/pages/RegisterPage";
 import { DepositTable } from "@/modules/deposit/components/DepositTable";
 import { DepositAddPage } from "@/modules/deposit/pages/DepositAddPage";
 import { DepositHistoryPage } from "@/modules/deposit/pages/DepositHistoryPage";
@@ -29,9 +30,9 @@ import { MealPreferencePage } from "@/modules/meal-preference/pages/MealPreferen
 import { MealSettingManagePage } from "@/modules/meal-setting/pages/MealSettingManagePage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
-import { DashboardLayout } from "../layouts/Dashboard.layout";
-import { RegisterPage } from "@/modules/auth/pages/RegisterPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
+import { DashboardLayout } from "../layouts/Dashboard.layout";
+import { MonthlyCalculationPage } from "@/modules/monthly-calculation/pages/MonthlyCalculationPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -135,6 +136,19 @@ export const router = createBrowserRouter([
                     element: <TodayMealEntries />,
                   },
                 ],
+              },
+            ],
+          },
+
+          {
+            path: ROUTES.MONTHLY_CALCULATION,
+
+            element: <RoleGuard allowedRoles={[ROLES.MANAGER]} />,
+
+            children: [
+              {
+                index: true,
+                element: <MonthlyCalculationPage />,
               },
             ],
           },

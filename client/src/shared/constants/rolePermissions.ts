@@ -14,6 +14,9 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     PERMISSIONS.USER_DELETE,
     PERMISSIONS.USER_INVITE,
 
+    // meal setting
+    PERMISSIONS.MEAL_SETTING_VIEW,
+
     // meal preference
     PERMISSIONS.MEAL_PREFERENCE_UPDATE,
     PERMISSIONS.MEAL_PREFERENCE_VIEW,
@@ -52,6 +55,8 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
   ],
 
   [ROLES.MANAGER]: [
+    // monthly calculation
+    PERMISSIONS.MONTHLY_CALCULATION_VIEW,
     // user
     PERMISSIONS.USER_VIEW,
 
@@ -99,6 +104,7 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
   ],
 
   [ROLES.MEMBER]: [
+    PERMISSIONS.MEAL_SETTING_VIEW,
     PERMISSIONS.MEAL_ENTRY_VIEW,
     PERMISSIONS.MEAL_SESSION_VIEW,
     PERMISSIONS.DEPOSIT_VIEW,

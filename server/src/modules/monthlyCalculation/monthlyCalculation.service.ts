@@ -1,9 +1,9 @@
 import { getMonthName } from "@/utils/date.util.js";
 import { IMealSessionReq } from "../mealSession/mealSession.interface.js";
-import { MonthlyCalculationRepository } from "./monthlyCalculation.repository.js";
+import { monthlyCalculationRepository } from "./monthlyCalculation.repository.js";
 
-export class MonthlyCalculationService {
-  static async getCurrentMonthCalculation({
+class MonthlyCalculationService {
+  async getCurrentMonthCalculation({
     tenantId,
     mealSessionId,
     session,
@@ -13,12 +13,12 @@ export class MonthlyCalculationService {
     session: IMealSessionReq;
   }) {
     const totalExpense =
-      (await MonthlyCalculationRepository.getTotalExpense(
+      (await monthlyCalculationRepository.getTotalExpense(
         tenantId,
         mealSessionId,
       )) || 0;
 
-    const mealSummary = await MonthlyCalculationRepository.getTotalMeal(
+    const mealSummary = await monthlyCalculationRepository.getTotalMeal(
       tenantId,
       mealSessionId,
     );
@@ -26,12 +26,15 @@ export class MonthlyCalculationService {
 
     const mealRate = grandTotalMeals > 0 ? totalExpense / grandTotalMeals : 0;
 
-    const memberMeals = await MonthlyCalculationRepository.getMemberMeals(
+    const activeMembers =
+      await monthlyCalculationRepository.getActiveMembers(tenantId);
+
+    const memberMeals = await monthlyCalculationRepository.getMemberMeals(
       tenantId,
       mealSessionId,
     );
 
-    const memberDeposits = await MonthlyCalculationRepository.getMemberDeposits(
+    const memberDeposits = await monthlyCalculationRepository.getMemberDeposits(
       tenantId,
       mealSessionId,
     );
@@ -42,8 +45,11 @@ export class MonthlyCalculationService {
       depositMap.set(deposit.memberId, Number(deposit.totalDeposit));
     });
 
-    const members = memberMeals.map((member: any) => {
-      const totalMeal = Number(member.get("totalMeal")) || 0;
+    const members = activeMembers.map((member: any) => {
+      const mealData = memberMeals.find(
+        (item: any) => item.userId === member.userId,
+      );
+      const totalMeal = mealData ? Number(mealData.get("totalMeal")) : 0;
 
       const deposit = depositMap.get(member.userId);
 
@@ -86,3 +92,5 @@ export class MonthlyCalculationService {
     };
   }
 }
+
+export const monthlyCalculationService = new MonthlyCalculationService();

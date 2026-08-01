@@ -1,13 +1,13 @@
 import { adminAndManagerAccess } from "@/helpers/permission.js";
 import express from "express";
-import { MonthlyCalculationController } from "./monthlyCalculation.controller.js";
+import { monthlyCalculationController } from "./monthlyCalculation.controller.js";
 
 const router = express.Router();
 
 router.get(
   "/current",
   ...adminAndManagerAccess,
-  MonthlyCalculationController.getCurrentMonthCalculation,
+  monthlyCalculationController.getCurrentMonthCalculation,
 );
 
 export default router;

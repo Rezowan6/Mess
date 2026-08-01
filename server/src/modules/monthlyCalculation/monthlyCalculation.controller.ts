@@ -2,14 +2,14 @@ import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
-import { MonthlyCalculationService } from "./monthlyCalculation.service.js";
+import { monthlyCalculationService } from "./monthlyCalculation.service.js";
 
-export class MonthlyCalculationController {
-  static getCurrentMonthCalculation = asyncHandler(
+class MonthlyCalculationController {
+   getCurrentMonthCalculation = asyncHandler(
     async (req: Request, res: Response) => {
       const { mealSessionId, tenantId, session } = getTenantContext(req);
 
-      const data = await MonthlyCalculationService.getCurrentMonthCalculation({
+      const data = await monthlyCalculationService.getCurrentMonthCalculation({
         tenantId,
         mealSessionId,
         session,
@@ -23,3 +23,5 @@ export class MonthlyCalculationController {
     },
   );
 }
+
+export const monthlyCalculationController = new MonthlyCalculationController();

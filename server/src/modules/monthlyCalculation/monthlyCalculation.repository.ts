@@ -1,9 +1,28 @@
+import { MemberStatus } from "@/constans/index.js";
 import { Deposit, Expenses, MealEntry } from "@/models/index.js";
 import { col, fn, literal } from "sequelize";
 import { IMealSummary } from "../mealEntry/mealEntry.interface.js";
+import { membershipRepository } from "../tenantMembership/tenantMembership.repository.js";
 
-export class MonthlyCalculationRepository {
-  static async getTotalExpense(
+class MonthlyCalculationRepository {
+  async getActiveMembers(tenantId: number) {
+    return await membershipRepository.findAll({
+      where: {
+        tenantId,
+        status: MemberStatus.ACTIVE,
+      },
+
+      attributes: ["userId"],
+
+      include: [
+        {
+          association: "user",
+          attributes: ["id", "name", "email", "avatar"],
+        },
+      ],
+    });
+  }
+  async getTotalExpense(
     tenantId: number,
     mealSessionId: number,
   ): Promise<number> {
@@ -17,7 +36,7 @@ export class MonthlyCalculationRepository {
     );
   }
 
-  static async getTotalMeal(
+  async getTotalMeal(
     tenantId: number,
     mealSessionId: number,
   ): Promise<IMealSummary | null> {
@@ -42,7 +61,7 @@ export class MonthlyCalculationRepository {
     return result as IMealSummary | null;
   }
 
-  static async getMemberMeals(tenantId: number, mealSessionId: number) {
+  async getMemberMeals(tenantId: number, mealSessionId: number) {
     return await MealEntry.findAll({
       where: { tenantId, mealSessionId },
       attributes: [
@@ -63,10 +82,7 @@ export class MonthlyCalculationRepository {
     });
   }
 
-  static async getMemberDeposits(
-    tenantId: number,
-    mealSessionId: number,
-  ) {
+  async getMemberDeposits(tenantId: number, mealSessionId: number) {
     return Deposit.findAll({
       where: {
         tenantId,
@@ -81,3 +97,5 @@ export class MonthlyCalculationRepository {
     });
   }
 }
+
+export const monthlyCalculationRepository = new MonthlyCalculationRepository();
