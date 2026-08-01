@@ -1,6 +1,6 @@
+import { getMaghribTime } from "@/helpers/getPrayerTime.helper.js";
 import { MealSetting } from "@/models/index.js";
 import { ApiError } from "@/utils/ApiError.js";
-
 
 interface ICheckMealCutoffPayload {
   mealSetting: MealSetting;
@@ -16,11 +16,6 @@ export const checkMealCutoff = ({
   date = new Date(),
 }: ICheckMealCutoffPayload) => {
   const now = new Date();
-
-  /**
-   * Current timezone handle
-   * পরে চাইলে dayjs timezone add করতে পারি
-   */
 
   let cutoffMinute: number;
 
@@ -44,15 +39,35 @@ export const checkMealCutoff = ({
       throw new ApiError(400, "Invalid meal type");
   }
 
-  const cutoff = new Date(date);
+  if (meal === "breakfast") {
+    const requestDate = new Date(date);
 
-  /**
-   * breakfast previous day হলে
-   */
+    const previousDay = new Date(requestDate);
 
-  if (meal === "breakfast" && mealSetting.breakfastPreviousDay) {
-    cutoff.setDate(cutoff.getDate() - 1);
+    previousDay.setDate(previousDay.getDate() - 1);
+
+    const startTime = getMaghribTime(previousDay);
+
+    const endTime = new Date(requestDate);
+
+    const hours = Math.floor(cutoffMinute / 60);
+
+    const minutes = cutoffMinute % 60;
+
+    endTime.setHours(hours, minutes, 0, 0);
+
+    if (now < startTime) {
+      throw new ApiError(400, "Breakfast modification has not started yet.");
+    }
+
+    if (now > endTime) {
+      throw new ApiError(400, "Breakfast modification time has expired.");
+    }
+
+    return true;
   }
+
+  const cutoff = new Date(date);
 
   const hours = Math.floor(cutoffMinute / 60);
 
