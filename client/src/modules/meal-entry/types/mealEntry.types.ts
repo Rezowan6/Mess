@@ -1,4 +1,13 @@
 import type { IPaginationMeta } from "@/shared/types/pagination.types";
+export interface IMealEntryQuery {
+  page?: number;
+
+  limit?: number;
+
+  search?: string;
+
+  date?: string;
+}
 
 export interface IMealEntry {
   id: number;
