@@ -47,7 +47,7 @@ class AuthService {
 
     const saveUser = {
       id: user.id,
-      name: user.name,
+      name: user.name ?? null,
       email: user.email,
       isVerified: user.isVerified,
       status: user.status,

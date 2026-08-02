@@ -2,7 +2,7 @@ import { RequestContext } from "./requestContext.ts";
 
 interface User {
   id: number;
-  name?: string | null | undefined;
+  name: string | null | undefined;
   email: string;
 }
 
