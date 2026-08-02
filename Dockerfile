@@ -8,7 +8,7 @@ WORKDIR /app/client
 
 # Install dependencies first (better Docker cache)
 COPY client/package*.json ./
-RUN npm ci --no-audit --no-fund
+RUN npm install --no-audit --no-fund
 
 # Copy source code
 COPY client/ ./
