@@ -4,6 +4,7 @@ import "dotenv/config";
 import express, { Application, NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import path from "path";
+import { fileURLToPath } from "url";
 import { env } from "./configs/env.js";
 
 // internal import
@@ -34,6 +35,9 @@ import {
   tenantRoute,
 } from "@/routes/index.js";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app: Application = express();
 
 // ------------------- GLOBAL MIDDLEWARE -------------------
@@ -55,12 +59,6 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization", "X-Tenant-ID"],
   }),
 );
-
-app.use(express.static(path.join(__dirname, "../public")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/index.html"));
-});
 
 // ------------- router -------------
 app.use("/api/v1/auth", authRouter);
