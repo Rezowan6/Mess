@@ -1,5 +1,6 @@
 import { Table } from "@/shared/components/ui/Table";
 
+import { getLocalDate } from "@/shared/utils/date.utils";
 import { TodayMealEntryInfoCard } from "../components/TodayMealEntryInfoCard";
 import { TodayMealEntrySummarySkeleton } from "../components/TodayMealEntrySummarySkeleton";
 import { MEAL_ENTRY_MESSAGES } from "../configs/meal.entries.message";
@@ -9,13 +10,14 @@ import { useTodayMealEntries } from "../hooks";
 export const TodayMealEntriesPage = () => {
   const columns = useTodayMealEntryColumns();
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = getLocalDate();
 
   const { data, isPending, refetch } = useTodayMealEntries({
     date: today,
   });
 
   const entries = data?.data ?? [];
+  const createdAt = entries[0]?.createdAt;
 
   const summary = entries.reduce(
     (acc, item) => {
@@ -43,6 +45,12 @@ export const TodayMealEntriesPage = () => {
 
   return (
     <>
+      {createdAt && (
+        <p className="text-xs sm:text-sm">
+           Created At:{" "}
+          <span className="text-info">{createdAt.split("T")[0]}</span>
+        </p>
+      )}
       {/* Summary card */}
       <TodayMealEntryInfoCard summary={summary} memberCount={entries.length} />
       {/* Table */}
