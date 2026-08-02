@@ -5,10 +5,12 @@ import expensesRouter from "@/modules/expenses/expenses.route.js";
 import featureRouter from "@/modules/feature/feature.route.js";
 import invitesRouter from "@/modules/invite/invite.route.js";
 import mealEntriesRouter from "@/modules/mealEntry/mealEntry.route.js";
+import mealPreferenceRouter from "@/modules/MealPreference/mealPreference.route.js";
 import mealRequestRouter from "@/modules/mealRequest/mealRequest.route.js";
 import mealSessionRouter from "@/modules/mealSession/mealSession.route.js";
 import mealSettingRouter from "@/modules/mealSetting/mealSetting.route.js";
 import monthlyCalculationRouter from "@/modules/monthlyCalculation/monthlyCalculation.route.js";
+import myProfileRouter from "@/modules/myProfile/myProfile.route.js";
 import noticesRouter from "@/modules/notice/notice.route.js";
 import notificationRouter from "@/modules/notification/notification.route.js";
 import paymentRouter from "@/modules/payment/payment.route.js";
@@ -17,10 +19,8 @@ import planFeatureRouter from "@/modules/planFeature/planFeature.route.js";
 import subscriptionRouter from "@/modules/subscription/subscription.route.js";
 import tenantRoute from "@/modules/tenant/tenant.route.js";
 import tenantMembershipRouter from "@/modules/tenantMembership/tenantMembership.route.js";
-import mealPreferenceRouter from "@/modules/MealPreference/mealPreference.route.js"
 
 export {
-  mealPreferenceRouter,
   authRouter,
   dashboardRouter,
   depositRouter,
@@ -28,10 +28,12 @@ export {
   featureRouter,
   invitesRouter,
   mealEntriesRouter,
+  mealPreferenceRouter,
   mealRequestRouter,
   mealSessionRouter,
   mealSettingRouter,
   monthlyCalculationRouter,
+  myProfileRouter,
   noticesRouter,
   notificationRouter,
   paymentRouter,

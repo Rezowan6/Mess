@@ -22,6 +22,7 @@ import {
   mealSessionRouter,
   mealSettingRouter,
   monthlyCalculationRouter,
+  myProfileRouter,
   noticesRouter,
   notificationRouter,
   paymentRouter,
@@ -76,6 +77,7 @@ app.use("/api/v1/payments", paymentRouter);
 app.use("/api/v1/notifications", notificationRouter);
 app.use("/api/v1/meal-settings", mealSettingRouter);
 app.use("/api/v1/meal-preferences", mealPreferenceRouter);
+app.use("/api/v1/my-profile", myProfileRouter);
 
 // app.get("/api/test/socket", (req, res) => {
 //   const io = getIO();
