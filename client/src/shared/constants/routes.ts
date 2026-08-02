@@ -9,6 +9,8 @@ export const ROUTES = {
 
   DASHBOARD: "/dashboard",
 
+  MY_PROFILE: "/my-profile",
+
   TENANT: "/create-mess",
 
   USERS: "/users",

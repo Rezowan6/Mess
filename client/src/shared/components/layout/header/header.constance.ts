@@ -9,7 +9,7 @@ interface IHeaderMenu {
 
 export const HeaderMenuItem: IHeaderMenu[] = [
   {
-    path: ROUTES.DASHBOARD,
+    path: ROUTES.MY_PROFILE,
     label: "Profile",
     icon: User,
   },

@@ -10,6 +10,9 @@ export const API_ENDPOINTS = {
   TENANT: {
     CREATE: "/tenants",
   },
+  MY_PROFILE: {
+    INFO: "/my-profile",
+  },
   MONTHLY_CALCULATION: {
     CURRENT: "/monthly-calculations/current",
   },

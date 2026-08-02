@@ -21,7 +21,7 @@ export const InfoCard = ({
   return (
     <div
       className={clsx(
-        "rounded-xl border border-primary bg-transparent p-5 shadow-sm",
+        "rounded-xl border border-primary bg-transparent p-5 shadow-s transition-all duration-300 hover:-translate-y-1 hover:border-primary/70 hover:bg-base-200 hover:shadow-lg",
         className,
       )}
     >

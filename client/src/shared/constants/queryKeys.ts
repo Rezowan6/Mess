@@ -16,6 +16,10 @@ export const queryKeys = {
     current: (tenantId?: number) =>
       ["monthly-calculations", tenantId, "current"] as const,
   },
+  myProfile: {
+    current: (tenantId?: number) =>
+      ["my-profile", tenantId, "current"] as const,
+  },
   mealSessions: {
     all: (tenantId?: number) => ["meal-sessions", tenantId] as const,
   },

@@ -34,6 +34,7 @@ import { GeneralSettingsPage } from "@/modules/settings/pages/GeneralSettingsPag
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
+import { MyProfilePage } from "@/modules/my-profile/pages/MyProfilePage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -178,6 +179,23 @@ export const router = createBrowserRouter([
               },
             ],
           },
+
+          {
+  path: ROUTES.MY_PROFILE,
+
+  element: (
+    <RoleGuard
+      allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER]}
+    />
+  ),
+
+  children: [
+    {
+      index: true,
+      element: <MyProfilePage />,
+    },
+  ],
+},
 
           {
             path: ROUTES.NOTIFICATIONS,
