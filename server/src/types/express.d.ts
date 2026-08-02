@@ -2,14 +2,14 @@ import { RequestContext } from "./requestContext.ts";
 
 interface User {
   id: number;
-  name: string;
+  name?: string | null | undefined;
   email: string;
 }
 
 declare global {
   namespace Express {
     interface Request {
-      user?: User;
+      user: User;
       context: RequestContext;
     }
   }
