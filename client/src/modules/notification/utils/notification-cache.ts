@@ -16,16 +16,14 @@ export const addNotificationToCache = (
     queryKeys.notifications.list({ limit: 5 }),
     (old: INotificationResponse | undefined) => {
       if (!old) return old;
+      const total = old.meta?.total ?? 0;
 
       return {
         ...old,
-        data: {
-          ...old.data,
-          data: [notification, ...old.data.data],
-          meta: {
-            ...old.data.meta,
-            total: old.data.meta.total + 1,
-          },
+        data: [notification, ...old.data],
+        meta: {
+          ...old.meta,
+          total: total + 1,
         },
       };
     },

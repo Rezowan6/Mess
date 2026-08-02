@@ -31,6 +31,8 @@ export interface INotificationResponse {
 
   meta?: {
     page: number;
-    totalPages: number;
+    limit?: number;
+    totalPages?: number;
+    total?: number;
   };
 }

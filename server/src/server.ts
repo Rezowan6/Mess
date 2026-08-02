@@ -2,7 +2,6 @@ import { env, sequelize } from "@/configs/index.js";
 import { setupAssociations } from "@/models/associations.js";
 import "dotenv/config";
 import http from "http";
-import mongoose from "mongoose";
 import app from "./app.js";
 import { initSocket } from "./socket/socket.js";
 import { startMealRequestJob } from "./jobs/mealRequest/mealRequest.job.js";
@@ -30,8 +29,6 @@ const startServer = async (): Promise<void> => {
     // shutdown
     process.on("SIGINT", async () => {
       console.log("\nShutting down server...");
-
-      await mongoose.connection.close();
 
       httpServer.close(() => {
         console.log("HTTP Server Closed");
