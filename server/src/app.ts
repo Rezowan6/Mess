@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import express, { Application, NextFunction, Request, Response } from "express";
 import morgan from "morgan";
+import path from "path";
 import { env } from "./configs/env.js";
 
 // internal import
@@ -45,7 +46,6 @@ if (env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-
 // CORS
 app.use(
   cors({
@@ -55,6 +55,12 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization", "X-Tenant-ID"],
   }),
 );
+
+app.use(express.static(path.join(__dirname, "../public")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
+});
 
 // ------------- router -------------
 app.use("/api/v1/auth", authRouter);
@@ -92,6 +98,13 @@ app.use("/api/v1/my-profile", myProfileRouter);
 //     message: "Socket event emitted.",
 //   });
 // });
+
+// frontend serve last
+app.use(express.static(path.join(__dirname, "../public")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
+});
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {
