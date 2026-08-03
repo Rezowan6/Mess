@@ -82,6 +82,12 @@ app.use("/api/v1/meal-settings", mealSettingRouter);
 app.use("/api/v1/meal-preferences", mealPreferenceRouter);
 app.use("/api/v1/my-profile", myProfileRouter);
 
+app.use("/api/v1/my", (req, res)=> {
+  res.status(200).json({
+    mesage: "I Love Allah",
+  })
+});
+
 // app.get("/api/test/socket", (req, res) => {
 //   const io = getIO();
 
