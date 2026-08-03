@@ -8,10 +8,16 @@ import { HEADERS } from "../constants/headers";
 import { forceLogout } from "../utils/forceLogout";
 
 // Production Axios Instance
+<<<<<<< HEAD
 const apiUrl = "/api/v1";
 
 export const API = axios.create({
   baseURL: apiUrl,
+=======
+
+export const API = axios.create({
+  baseURL: `${env.apiUrl}`,
+>>>>>>> b82acedd0ffaadfda26a2cfeffee6cb47a55778b
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

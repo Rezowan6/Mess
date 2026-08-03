@@ -42,16 +42,15 @@ export const checkMealCutoff = ({
   if (meal === "breakfast") {
     const requestDate = new Date(date);
 
-    const previousDay = new Date(requestDate);
+    // same day maghrib
+    const startTime = getMaghribTime(requestDate);
 
-    previousDay.setDate(previousDay.getDate() - 1);
-
-    const startTime = getMaghribTime(previousDay);
-
+    // next day cutoff
     const endTime = new Date(requestDate);
 
-    const hours = Math.floor(cutoffMinute / 60);
+    endTime.setDate(endTime.getDate() + 1);
 
+    const hours = Math.floor(cutoffMinute / 60);
     const minutes = cutoffMinute % 60;
 
     endTime.setHours(hours, minutes, 0, 0);
