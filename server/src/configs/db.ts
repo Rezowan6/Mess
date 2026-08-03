@@ -1,25 +1,58 @@
 import { env } from "@/configs/env.js";
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize(
-  env.DB_NAME as string,
-  env.DB_USER as string,
-  env.DB_PASS as string,
-  {
-    host: env.DB_HOST,
-    port: Number(env.DB_PORT),
-    dialect: "mysql",
-
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
-  },
-);
+const sequelize =
+  env.NODE_ENV === "production"
+    ? new Sequelize(
+        env.DB_NAME as string,
+        env.DB_USER as string,
+        env.DB_PASS as string,
+        {
+          host: env.DB_HOST,
+          port: Number(env.DB_PORT),
+          dialect: "mysql",
+          dialectOptions: {
+            ssl: {
+              require: true,
+              rejectUnauthorized: false,
+            },
+          },
+        },
+      )
+    : new Sequelize(
+        env.DB_NAME as string,
+        env.DB_USER as string,
+        env.DB_PASS as string,
+        {
+          host: env.DB_HOST,
+          dialect: "mysql",
+        },
+      );
 
 export default sequelize;
+
+// import { env } from "@/configs/env.js";
+// import { Sequelize } from "sequelize";
+
+// const sequelize = new Sequelize(
+//   env.DB_NAME as string,
+//   env.DB_USER as string,
+//   env.DB_PASS as string,
+//   {
+//     host: env.DB_HOST,
+//     port: Number(env.DB_PORT),
+//     dialect: "mysql",
+
+//     dialectOptions: {
+//       ssl: {
+//         require: true,
+//         rejectUnauthorized: false,
+//       },
+//     },
+//   },
+// );
+
+// export default sequelize;
 
 // import { env } from "@/configs/env.js";
 // import { Sequelize } from "sequelize";
