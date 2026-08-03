@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { authApi } from "../api/auth.api";
 
 import { useAuthStore } from "../store/auth.store";
+import { ROUTES } from "@/shared/constants/routes";
 
 export const useLogin = () => {
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -11,8 +12,6 @@ export const useLogin = () => {
     mutationFn: authApi.login,
 
     onSuccess: (res) => {
-      console.log("LOGIN RESPONSE:", res);
-      console.log("LOGIN DATA:", res.data);
 
       if (!res.data) {
         throw new Error("Login response data is undefined");
@@ -21,9 +20,9 @@ export const useLogin = () => {
 
       setAccessToken(accessToken);
 
-      // setTimeout(() => {
-      //   window.location.replace(ROUTES.DASHBOARD);
-      // }, 1000);
+      setTimeout(() => {
+        window.location.replace(ROUTES.DASHBOARD);
+      }, 1000);
     },
   });
 };

@@ -9,9 +9,9 @@ import { HEADERS } from "../constants/headers";
 import { forceLogout } from "../utils/forceLogout";
 
 // Production Axios Instance
-const apiV1 = "/api/v1";
+
 export const API = axios.create({
-  baseURL: `${env.apiUrl,apiV1}`,
+  baseURL: `${env.apiUrl}`,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -66,7 +66,7 @@ API.interceptors.response.use(
 
       try {
         const { data } = await axios.post<RefreshResponse>(
-          `${env.apiUrl,apiV1}${API_ENDPOINTS.AUTH.REFRESH}`,
+          `${env.apiUrl}${API_ENDPOINTS.AUTH.REFRESH}`,
           {},
           {
             withCredentials: true,
