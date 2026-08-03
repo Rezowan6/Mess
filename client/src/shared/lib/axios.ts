@@ -9,15 +9,14 @@ import { HEADERS } from "../constants/headers";
 import { forceLogout } from "../utils/forceLogout";
 
 // Production Axios Instance
+const apiV1 = "/api/v1";
 export const API = axios.create({
-  baseURL: env.apiUrl,
+  baseURL: `${env.apiUrl,apiV1}`,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
-
-console.log(env.apiUrl);
 
 // Request Interceptor
 API.interceptors.request.use((config: InternalAxiosRequestConfig) => {
@@ -67,7 +66,7 @@ API.interceptors.response.use(
 
       try {
         const { data } = await axios.post<RefreshResponse>(
-          `${env.apiUrl}${API_ENDPOINTS.AUTH.REFRESH}`,
+          `${env.apiUrl,apiV1}${API_ENDPOINTS.AUTH.REFRESH}`,
           {},
           {
             withCredentials: true,
