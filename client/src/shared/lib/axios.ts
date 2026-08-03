@@ -17,6 +17,8 @@ export const API = axios.create({
   },
 });
 
+console.log(env.apiUrl);
+
 // Request Interceptor
 API.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = tokenStorage.get();
