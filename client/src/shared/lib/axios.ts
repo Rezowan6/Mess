@@ -1,6 +1,5 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 
-import { env } from "@/shared/config/env";
 import { tokenStorage } from "@/shared/utils/token";
 import { API_ENDPOINTS } from "../constants/api";
 
@@ -9,15 +8,15 @@ import { HEADERS } from "../constants/headers";
 import { forceLogout } from "../utils/forceLogout";
 
 // Production Axios Instance
+const apiUrl = "/api/v1";
+
 export const API = axios.create({
-  baseURL: env.apiUrl,
+  baseURL: apiUrl,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
-
-console.log(env.apiUrl);
 
 // Request Interceptor
 API.interceptors.request.use((config: InternalAxiosRequestConfig) => {
@@ -67,7 +66,7 @@ API.interceptors.response.use(
 
       try {
         const { data } = await axios.post<RefreshResponse>(
-          `${env.apiUrl}${API_ENDPOINTS.AUTH.REFRESH}`,
+          `${apiUrl}${API_ENDPOINTS.AUTH.REFRESH}`,
           {},
           {
             withCredentials: true,
