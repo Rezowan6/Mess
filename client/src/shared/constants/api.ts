@@ -1,17 +1,17 @@
 export const API_ENDPOINTS = {
   AUTH: {
-    LOGIN: "/api/v1/auth/login",
-    REGISTER: "/api/v1/auth/register",
-    REFRESH: "/api/v1/auth/refresh",
-    LOGOUT: "/api/v1/auth/logout",
-    ME: "/api/v1/auth/me",
+    LOGIN: "/auth/login",
+    REGISTER: "/auth/register",
+    REFRESH: "/auth/refresh",
+    LOGOUT: "/auth/logout",
+    ME: "/auth/me",
   },
 
   TENANT: {
     CREATE: "/tenants",
   },
   MY_PROFILE: {
-    INFO: "/api/v1/my-profile",
+    INFO: "/my-profile",
   },
   MONTHLY_CALCULATION: {
     CURRENT: "/monthly-calculations/current",
