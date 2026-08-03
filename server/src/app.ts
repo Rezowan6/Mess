@@ -3,7 +3,8 @@ import cors from "cors";
 import "dotenv/config";
 import express, { Application, NextFunction, Request, Response } from "express";
 import morgan from "morgan";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 import { fileURLToPath } from "url";
 import { env } from "./configs/env.js";
 
@@ -35,8 +36,6 @@ import {
   tenantRoute,
 } from "@/routes/index.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app: Application = express();
 
@@ -98,15 +97,26 @@ app.use("/api/v1/my-profile", myProfileRouter);
 // });
 
 // frontend serve last
-app.use(express.static(path.join(__dirname, "../public")));
+const publicDir = path.join(process.cwd(), "public");
 
-app.use((req, res, next) => {
-  if (req.path.startsWith("/api")) {
-    return next();
-  }
+// frontend serve last
+if (fs.existsSync(publicDir)) {
+  app.use(express.static(publicDir));
 
-  res.sendFile(path.join(__dirname, "../public/index.html"));
-});
+  app.get("/{*any}", (req, res, next) => {
+    if (req.method !== "GET" && req.method !== "HEAD") {
+      return next();
+    }
+
+    if (req.path.startsWith("/api")) {
+      return next();
+    }
+
+    res.sendFile(path.join(publicDir, "index.html"), (err) => {
+      if (err) next(err);
+    });
+  });
+}
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {
