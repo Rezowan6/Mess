@@ -5,7 +5,7 @@ import { Deposit } from "../deposit/deposit.model.js";
 import { MealEntry } from "../mealEntry/mealEntry.model.js";
 import { TenantMembership } from "../tenantMembership/tenantMembership.model.js";
 
-import { IMyMealSummary } from "./myProfile.interface.js";
+import { IMealSummary, IMyMealSummary } from "./myProfile.interface.js";
 
 class MyProfileRepository {
   async getMyProfileUser({
@@ -31,6 +31,28 @@ class MyProfileRepository {
     });
   }
 
+  async getMyMeals({
+    tenantId,
+    mealSessionId,
+    userId,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    userId: number;
+  }) {
+    return MealEntry.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+        userId,
+      },
+
+      attributes: ["date", "breakfast", "lunch", "dinner", "guestMeal"],
+
+      order: [["date", "ASC"]],
+    });
+  }
+
   async getMyMealSummary({
     tenantId,
     mealSessionId,
@@ -48,6 +70,9 @@ class MyProfileRepository {
       },
 
       attributes: [
+        [fn("SUM", literal("breakfast")), "breakfast"],
+        [fn("SUM", literal("lunch")), "lunch"],
+        [fn("SUM", literal("dinner")), "dinner"],
         [
           fn("SUM", literal("breakfast + lunch + dinner + guest_meal")),
           "totalMeal",
@@ -73,6 +98,28 @@ class MyProfileRepository {
         mealSessionId,
         memberId,
       },
+    });
+  }
+
+  async getMyDeposits({
+    tenantId,
+    mealSessionId,
+    memberId,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    memberId: number;
+  }) {
+    return Deposit.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+        memberId,
+      },
+
+      attributes: ["id", "amount", "paymentMethod", "createdAt"],
+
+      order: [["createdAt", "DESC"]],
     });
   }
 }

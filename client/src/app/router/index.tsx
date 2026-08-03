@@ -29,12 +29,15 @@ import { TodayMealEntriesPage } from "@/modules/meal-entry/pages/TodayMealEntrie
 import { MealPreferencePage } from "@/modules/meal-preference/pages/MealPreferencePage";
 import { MealSettingManagePage } from "@/modules/meal-setting/pages/MealSettingManagePage";
 import { MonthlyCalculationPage } from "@/modules/monthly-calculation/pages/MonthlyCalculationPage";
+import { MyProfileLayout } from "@/modules/my-profile/layout/MyProfileLayout";
+import { MyDepositHistoryPage } from "@/modules/my-profile/pages/MyDepositHistoryPage";
+import { MyMealHistoryPage } from "@/modules/my-profile/pages/MyMealHistoryPage";
+import { MyProfilePage } from "@/modules/my-profile/pages/MyProfilePage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
 import { GeneralSettingsPage } from "@/modules/settings/pages/GeneralSettingsPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
-import { MyProfilePage } from "@/modules/my-profile/pages/MyProfilePage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -181,21 +184,37 @@ export const router = createBrowserRouter([
           },
 
           {
-  path: ROUTES.MY_PROFILE,
+            path: ROUTES.MY_PROFILE,
 
-  element: (
-    <RoleGuard
-      allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER]}
-    />
-  ),
+            element: (
+              <RoleGuard
+                allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER]}
+              />
+            ),
 
-  children: [
-    {
-      index: true,
-      element: <MyProfilePage />,
-    },
-  ],
-},
+            children: [
+              {
+                element: <MyProfileLayout />,
+
+                children: [
+                  {
+                    index: true,
+                    element: <MyProfilePage />,
+                  },
+
+                  {
+                    path: "deposit-history",
+                    element: <MyDepositHistoryPage />,
+                  },
+
+                  {
+                    path: "meal-history",
+                    element: <MyMealHistoryPage />,
+                  },
+                ],
+              },
+            ],
+          },
 
           {
             path: ROUTES.NOTIFICATIONS,

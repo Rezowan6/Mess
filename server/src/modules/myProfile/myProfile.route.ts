@@ -4,6 +4,6 @@ import { myProfileController } from "./myProfile.controller.js";
 
 const router = express.Router();
 
-router.get("/", ...allAccess, myProfileController.getMyProfileInfo);
+router.get("/", ...allAccess, myProfileController.getMyProfile);
 
 export default router;

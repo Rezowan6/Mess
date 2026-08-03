@@ -3,7 +3,6 @@ import {
   Calculator,
   CircleDollarSign,
   Scale,
-  Utensils,
   Wallet,
 } from "lucide-react";
 
@@ -24,14 +23,6 @@ export const getMyProfileInfoCards = (summary: {
   balance: number;
   status: string;
 }): MyProfileInfoCardConfig[] => [
-  {
-    key: "totalMeal",
-    title: "Total Meals",
-    value: summary.totalMeal,
-    icon: <Utensils size={22} />,
-    iconClassName: "text-warning",
-    valueClassName: "text-warning",
-  },
   {
     key: "deposit",
     title: "Total Deposit",

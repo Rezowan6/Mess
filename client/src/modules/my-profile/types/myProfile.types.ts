@@ -14,4 +14,26 @@ export interface IMyProfile {
     balance: number;
     status: "Received" | "Settled" | "Payable";
   };
+
+  mealSummary: {
+    breakfast: number;
+    lunch: number;
+    dinner: number;
+    total: number;
+  };
+
+  deposits: {
+    id: number;
+    amount: number;
+    paymentMethod: string;
+    createdAt: string;
+  }[];
+
+  meals: {
+    date: string;
+    breakfast: string;
+    lunch: string;
+    dinner: string;
+    guestMeal: string;
+  }[];
 }

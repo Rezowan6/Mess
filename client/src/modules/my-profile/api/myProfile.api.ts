@@ -8,7 +8,7 @@ import type { IMyProfile } from "../types/myProfile.types";
 export const myProfileApi = {
   getMyProfile: async () => {
     const { data } = await API.get<ApiResponse<IMyProfile>>(
-      API_ENDPOINTS.MY_PROFILE.INFO,
+      API_ENDPOINTS.MY_PROFILE.ALL,
     );
 
     return data;

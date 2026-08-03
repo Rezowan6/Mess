@@ -6,4 +6,13 @@ export interface IProfilePayload {
 
 export interface IMyMealSummary {
   totalMeal: number;
+  breakfast: number;
+  lunch: number;
+  dinner: number;
+}
+export interface IMealSummary {
+  breakfast: number;
+  lunch: number;
+  dinner: number;
+  total: number;
 }

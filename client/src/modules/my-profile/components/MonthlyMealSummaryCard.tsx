@@ -1,24 +1,22 @@
 import { InfoCard } from "@/shared/components/ui/InfoCard";
 
-import { getMyProfileInfoCards } from "../configs/myProfileInfoCards.config";
+import { getMonthlyMealSummaryCards } from "../configs/monthlyMealSummaryCards.config";
 
 interface Props {
   summary: {
-    totalMeal: number;
-    deposit: number;
-    mealRate: number;
-    memberCost: number;
-    balance: number;
-    status: string;
+    breakfast: number;
+    lunch: number;
+    dinner: number;
+    total: number;
   };
 }
 
-export const MyProfileInfoCards = ({ summary }: Props) => {
-  const infoCards = getMyProfileInfoCards(summary);
+export const MonthlyMealSummaryCard = ({ summary }: Props) => {
+  const cards = getMonthlyMealSummaryCards(summary);
 
   return (
     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-      {infoCards.map((card) => (
+      {cards.map((card) => (
         <InfoCard
           key={card.key}
           icon={card.icon}

@@ -1,12 +1,9 @@
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
 
-import { ActionLink } from "@/shared/components/ui/ActionLink";
-import { ROUTES } from "@/shared/constants/routes";
-import { MonthlyMealSummaryCard } from "../components/MonthlyMealSummaryCard";
 import { MyProfileInfoCards } from "../components/MyProfileInfoCards";
 import { useMyProfile } from "../hooks/useMyProfile";
 
-export const MyProfilePage = () => {
+export const MyProfileOverviewPage = () => {
   const { data, isPending } = useMyProfile();
 
   const profile = data?.data;
@@ -19,9 +16,9 @@ export const MyProfilePage = () => {
     return (
       <ManagementPage
         title="My Profile"
-        description="View your meal, deposit and balance information."
+        description="View your profile information."
       >
-        <p>No profile information found.</p>
+        <p>No profile found.</p>
       </ManagementPage>
     );
   }
@@ -30,18 +27,7 @@ export const MyProfilePage = () => {
     <ManagementPage
       title="My Profile"
       description="View your meal, deposit and balance information."
-      footer={
-        <ActionLink to={`${ROUTES.MY_PROFILE}/meal-history`}>
-          My meal details
-        </ActionLink>
-      }
     >
-      <MonthlyMealSummaryCard summary={profile.mealSummary} />
-
-      <ActionLink to={`${ROUTES.MY_PROFILE}/deposit-history`}>
-        My deposit details
-      </ActionLink>
-
       <MyProfileInfoCards summary={profile.summary} />
     </ManagementPage>
   );
