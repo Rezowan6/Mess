@@ -119,9 +119,9 @@ class AuthService {
       throw new ApiError(401, "Invalid credentials");
     }
 
-    // if (!user.isVerified) {
-    //   throw new ApiError(403, "Please verify your email first");
-    // }
+    if (!user.isVerified) {
+      throw new ApiError(403, "Please verify your email first");
+    }
 
     // 3. password verify
     const passwordMatch = await comparePassword(password, user.password);
