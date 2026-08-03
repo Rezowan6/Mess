@@ -14,6 +14,8 @@ export const useLogin = () => {
     onSuccess: (res) => {
       const { accessToken } = res.data;
 
+      console.log(res);
+
       setAccessToken(accessToken);
 
       setTimeout(() => {
