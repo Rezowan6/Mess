@@ -22,9 +22,9 @@ const envSchema = z.object({
   VERIFY_TOKEN_SECRET: z.string(),
   VERIFY_TOKEN_EXPIRE: z.string(),
 
-  // FRONTEND_URL: z.string(),
+  FRONTEND_URL: z.string(),
   // BACKEND_URL: z.string(),
-  // APP_URL: z.string(),
+  APP_URL: z.string(),
 
   EMAIL_SECRET: z.string(),
   SMTP_HOST: z.string(),
@@ -32,11 +32,11 @@ const envSchema = z.object({
   SMTP_EMAIL: z.string(),
   SMTP_PASS: z.string(),
 
-  // BKASH_BASE_URL: z.string(),
-  // BKASH_USERNAME: z.string(),
-  // BKASH_PASSWORD: z.string(),
-  // BKASH_APP_KEY: z.string(),
-  // BKASH_APP_SECRET: z.string(),
+  BKASH_BASE_URL: z.string(),
+  BKASH_USERNAME: z.string(),
+  BKASH_PASSWORD: z.string(),
+  BKASH_APP_KEY: z.string(),
+  BKASH_APP_SECRET: z.string(),
 });
 
 export type Env = z.infer<typeof envSchema>;
