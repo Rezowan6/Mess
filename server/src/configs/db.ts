@@ -1,36 +1,36 @@
-import { env } from "@/configs/env.js";
-import { Sequelize } from "sequelize";
+// import { env } from "@/configs/env.js";
+// import { Sequelize } from "sequelize";
 
-const sequelize =
-  env.NODE_ENV === "production"
-    ? new Sequelize(
-        env.DB_NAME as string,
-        env.DB_USER as string,
-        env.DB_PASS as string,
-        {
-          host: env.DB_HOST,
-          port: Number(env.DB_PORT),
-          dialect: "mysql",
-          dialectOptions: {
-            ssl: {
-              require: true,
-              rejectUnauthorized: false,
-            },
-          },
-        },
-      )
-    : new Sequelize(
-        env.DB_NAME as string,
-        env.DB_USER as string,
-        env.DB_PASS as string,
-        {
-          host: env.DB_HOST,
-          dialect: "mysql",
-        },
-      );
+// const sequelize =
+//   env.NODE_ENV === "production"
+//     ? new Sequelize(
+//         env.DB_NAME as string,
+//         env.DB_USER as string,
+//         env.DB_PASS as string,
+//         {
+//           host: env.DB_HOST,
+//           port: Number(env.DB_PORT),
+//           dialect: "mysql",
+//           dialectOptions: {
+//             ssl: {
+//               require: true,
+//               rejectUnauthorized: false,
+//             },
+//           },
+//         },
+//       )
+//     : new Sequelize(
+//         env.DB_NAME as string,
+//         env.DB_USER as string,
+//         env.DB_PASS as string,
+//         {
+//           host: env.DB_HOST,
+//           dialect: "mysql",
+//         },
+//       );
 
-export default sequelize;
-
+// export default sequelize;
+// ============ 2 ================
 // import { env } from "@/configs/env.js";
 // import { Sequelize } from "sequelize";
 
@@ -54,20 +54,21 @@ export default sequelize;
 
 // export default sequelize;
 
-// import { env } from "@/configs/env.js";
-// import { Sequelize } from "sequelize";
+// ============== 3 ============
+import { env } from "@/configs/env.js";
+import { Sequelize } from "sequelize";
 
-// const sequelize = new Sequelize(
-//   env.DB_NAME as string,
-//   env.DB_USER as string,
-//   env.DB_PASS as string,
-//   {
-//     host: env.DB_HOST,
-//     dialect: "mysql",
-//   },
-// );
+const sequelize = new Sequelize(
+  env.DB_NAME as string,
+  env.DB_USER as string,
+  env.DB_PASS as string,
+  {
+    host: env.DB_HOST,
+    dialect: "mysql",
+  },
+);
 
-// export default sequelize;
+export default sequelize;
 
 /**
 import mongoose from "mongoose";
