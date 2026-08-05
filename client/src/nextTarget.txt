@@ -1,3 +1,19 @@
+src/modules/landing/
+│
+├── pages/
+│   └── LandingPage.tsx
+│
+├── components/
+│   ├── HeroSection.tsx
+│   ├── FeaturesSection.tsx
+│   ├── HowItWorksSection.tsx
+│   ├── PricingSection.tsx
+│   ├── FAQSection.tsx
+│   ├── ContactSection.tsx
+│   └── Footer.tsx
+│
+└── configs/
+
 modules/
 └── meal-setting/
     │

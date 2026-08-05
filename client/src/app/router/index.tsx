@@ -22,6 +22,8 @@ import { DepositHistoryPage } from "@/modules/deposit/pages/DepositHistoryPage";
 import { DepositPage } from "@/modules/deposit/pages/DepositPage";
 import { ExpensePage } from "@/modules/expense/pages/ExpensePage";
 import { AcceptInvitePage } from "@/modules/invite/pages/AcceptInvitePage";
+import { LandingLayout } from "@/modules/landing/layouts/LandingLayout";
+import { LandingPage } from "@/modules/landing/pages/LandingPage";
 import { MealEntryPage } from "@/modules/meal-entry/pages/MealEntryPage";
 import { MealHistoryPage } from "@/modules/meal-entry/pages/MealHistoryPage";
 import { MembersMealSummaryPage } from "@/modules/meal-entry/pages/MembersMealSummaryPage";
@@ -53,6 +55,17 @@ export const router = createBrowserRouter([
         path: ROUTES.REGISTER,
         element: <RegisterPage />,
       },
+
+      {
+        path: "/",
+        element: <LandingLayout />,
+        children: [
+          {
+            index: true,
+            element: <LandingPage />,
+          },
+        ],
+      },
     ],
   },
 
@@ -60,6 +73,16 @@ export const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
     children: [
+      {
+        path: "/",
+        element: <LandingLayout />,
+        children: [
+          {
+            index: true,
+            element: <LandingPage />,
+          },
+        ],
+      },
       {
         element: <DashboardLayout />,
         children: [

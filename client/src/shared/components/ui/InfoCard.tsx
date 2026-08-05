@@ -2,9 +2,10 @@ import clsx from "clsx";
 import type { ReactNode } from "react";
 
 interface Props {
-  title: ReactNode;
-  value: ReactNode;
+  title?: ReactNode;
+  value?: ReactNode;
   icon?: ReactNode;
+  description?: string;
   className?: string;
   iconClassName?: string;
   valueClassName?: string;
@@ -14,6 +15,7 @@ export const InfoCard = ({
   title,
   value,
   icon,
+  description,
   className,
   iconClassName,
   valueClassName,
@@ -32,6 +34,12 @@ export const InfoCard = ({
           <p className="text-xs opacity-60">{title}</p>
 
           <h3 className={clsx("font-semibold", valueClassName)}>{value}</h3>
+
+          {description && (
+            <p className="mt-2 text-sm leading-6 text-base-content/70">
+              {description}
+            </p>
+          )}
         </div>
       </div>
     </div>
