@@ -25,7 +25,7 @@ export const Section = ({
   headerClassName,
 }: Props) => {
   return (
-    <section id={id} className={clsx("px-6 py-20", className)}>
+    <section id={id} className={clsx("px-6 py-20 scroll-mt-20", className)}>
       <div className={clsx("container mx-auto", containerClassName)}>
         {(title || description) && (
           <div

@@ -8,29 +8,17 @@ import { PricingSection } from "../components/PricingSection";
 export const LandingPage = () => {
   return (
     <>
-      <section id="home">
-        <HeroSection />
-      </section>
+      <HeroSection />
 
-      <section id="features">
-        <FeaturesSection />
-      </section>
+      <FeaturesSection />
 
-      <section id="how-it-works">
-        <HowItWorksSection />
-      </section>
+      <HowItWorksSection />
 
-      <section id="pricing">
-        <PricingSection />
-      </section>
+      <PricingSection />
 
-      <section id="faq">
-        <FAQSection />
-      </section>
+      <FAQSection />
 
-      <section id="contact">
-        <ContactSection />
-      </section>
+      <ContactSection />
     </>
   );
 };

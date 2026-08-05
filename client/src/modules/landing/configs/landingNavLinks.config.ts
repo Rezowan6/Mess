@@ -9,6 +9,10 @@ export const landingNavLinks: LandingNavLink[] = [
     href: "#features",
   },
   {
+    label: "How-it-works",
+    href: "#how-it-works",
+  },
+  {
     label: "Pricing",
     href: "#pricing",
   },
