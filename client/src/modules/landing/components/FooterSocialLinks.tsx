@@ -1,24 +1,25 @@
+import { Button } from "@/shared/components/ui/Button";
 import { Mail } from "lucide-react";
 import { FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
 
 export const FooterSocialLinks = () => {
   return (
     <div className="flex gap-3">
-      <button className="btn btn-circle btn-outline">
+      <Button variant="success">
         <FaFacebook size={18} />
-      </button>
+      </Button>
 
-      <button className="btn btn-circle btn-outline">
+      <Button variant="primary">
         <FaGithub size={18} />
-      </button>
+      </Button>
 
-      <button className="btn btn-circle btn-outline">
+      <Button variant="warning">
         <FaLinkedin size={18} />
-      </button>
+      </Button>
 
-      <button className="btn btn-circle btn-outline">
+      <Button variant="accent">
         <Mail size={18} />
-      </button>
+      </Button>
     </div>
   );
 };

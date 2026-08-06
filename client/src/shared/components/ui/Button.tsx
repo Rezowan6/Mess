@@ -179,8 +179,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
           "focus:outline-none",
 
-          "focus:ring-4 focus:ring-primary/20",
-
           "disabled:pointer-events-none",
 
           "disabled:opacity-50",

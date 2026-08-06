@@ -4,7 +4,7 @@ import { FooterSocialLinks } from "./FooterSocialLinks";
 
 export const Footer = () => {
   return (
-    <footer className="border-t border-base-300 bg-base-100 px-6 py-10">
+    <footer className="border-t border-success  px-6 py-10">
       <div className="container mx-auto">
         <div className="grid gap-8 md:grid-cols-3">
           {/* Brand */}

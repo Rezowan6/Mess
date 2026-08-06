@@ -6,7 +6,7 @@ export const FeaturesSection = () => {
   return (
     <Section
       id="features"
-      className="bg-base-200"
+      className="bg-success/10"
       title="Everything You Need to Manage Your Mess"
       description="A complete solution to manage meals, members, expenses, and monthly calculations in one place."
     >

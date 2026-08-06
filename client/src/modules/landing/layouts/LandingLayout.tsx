@@ -5,7 +5,7 @@ import { LandingNavbar } from "../components/LandingNavbar";
 
 export const LandingLayout = () => {
   return (
-    <div className="min-h-screen bg-base-100">
+    <div className="min-h-screen bg-background">
       <LandingNavbar />
 
       <main>

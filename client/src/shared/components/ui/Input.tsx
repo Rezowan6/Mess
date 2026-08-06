@@ -80,7 +80,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           "transition-all duration-200",
           error
             ? "border-error"
-            : "border-border focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10",
+            : "border-border focus-within:border-accent",
           (disabled || isLoading) && "cursor-not-allowed opacity-60",
           sizeClasses[size],
         )}

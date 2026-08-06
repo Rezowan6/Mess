@@ -12,7 +12,7 @@ export interface PricingCardProps {
 export const PricingCard = ({ plan }: PricingCardProps) => {
   return (
     <div
-      className={`relative rounded-2xl border bg-base-100 p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl ${
+      className={`relative rounded-2xl border bg-background p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl ${
         plan.isPopular ? "border-primary shadow-lg" : "border-base-300"
       }`}
     >

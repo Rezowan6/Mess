@@ -5,7 +5,12 @@ export const heroConfig = {
 
   title: "Manage Your Mess",
 
-  highlightedTitle: "Easily & Efficiently",
+  highlightedTitles: [
+    "Easily and Efficiently",
+    "Smartly and Securely",
+    "Fast and Reliable",
+    "Simple and Organized",
+  ],
 
   description:
     "Manage meals, deposits, expenses, members, and monthly calculations from one powerful platform. Make your mess management simple, transparent, and organized.",

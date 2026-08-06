@@ -6,9 +6,9 @@ import { Badge } from "@/shared/components/ui/Badge";
 export const HeroPreviewCard = () => {
   return (
     <div className="flex justify-center">
-      <div className="w-full max-w-md rounded-2xl border border-base-300 bg-base-100 p-6 shadow-xl">
+      <div className="w-full max-w-md rounded-2xl bg-accent/10 p-6">
         <div className="mb-6 flex items-center justify-between">
-          <h3 className="font-semibold">Monthly Overview</h3>
+          <h3 className="font-semibold text-accent">Monthly Overview</h3>
 
           <Badge variant="success" rounded="md">Active</Badge>
         </div>

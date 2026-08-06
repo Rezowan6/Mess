@@ -48,15 +48,6 @@ export const router = createBrowserRouter([
 
     children: [
       {
-        path: ROUTES.LOGIN,
-        element: <LoginPage />,
-      },
-      {
-        path: ROUTES.REGISTER,
-        element: <RegisterPage />,
-      },
-
-      {
         path: "/",
         element: <LandingLayout />,
         children: [
@@ -65,6 +56,14 @@ export const router = createBrowserRouter([
             element: <LandingPage />,
           },
         ],
+      },
+      {
+        path: ROUTES.LOGIN,
+        element: <LoginPage />,
+      },
+      {
+        path: ROUTES.REGISTER,
+        element: <RegisterPage />,
       },
     ],
   },
@@ -73,16 +72,6 @@ export const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
     children: [
-      {
-        path: "/",
-        element: <LandingLayout />,
-        children: [
-          {
-            index: true,
-            element: <LandingPage />,
-          },
-        ],
-      },
       {
         element: <DashboardLayout />,
         children: [
