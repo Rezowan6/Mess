@@ -4,7 +4,7 @@ import { HeaderProfile } from "./HeaderProfile";
 
 export const Header = () => {
   return (
-    <header className="sticky top-0 z-30 border-b bg-base-100">
+    <header className="fixed right-0 left-0 top-0 z-30 border-b border-info bg-base-100">
       <div className="flex h-16 items-center justify-between px-4 lg:px-6">
         {/* Left */}
 

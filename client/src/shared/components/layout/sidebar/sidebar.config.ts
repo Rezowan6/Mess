@@ -59,7 +59,7 @@ export const sidebarItems: ISidebarItem[] = [
     title: "Deposit",
     path: ROUTES.DEPOSIT,
     icon: Landmark,
-    permission: PERMISSIONS.DEPOSIT_CREATE,
+    permission: PERMISSIONS.DEPOSIT_VIEW,
   },
   {
     title: "Monthly Calculation",

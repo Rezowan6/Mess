@@ -5,6 +5,8 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
   [ROLES.SYSTEM_OWNER]: ["*"],
 
   [ROLES.ADMIN]: [
+    // sescription
+    PERMISSIONS.SUBSCRIPTION_VIEW,
     // tenant
     PERMISSIONS.TENANT_CREATE,
     // user

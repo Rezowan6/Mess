@@ -80,7 +80,10 @@ export const MobileSidebar = () => {
         <div className="flex items-center justify-between border-b p-5">
           <h2 className="text-xl font-bold">Mess SaaS</h2>
 
-          <button className="btn btn-ghost btn-square" onClick={close}>
+          <button
+            className="cursor-pointer hover:bg-info/10 p-2 rounded-md lg:hidden"
+            onClick={close}
+          >
             <X size={20} />
           </button>
         </div>

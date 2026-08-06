@@ -38,6 +38,10 @@ import { MyProfilePage } from "@/modules/my-profile/pages/MyProfilePage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
 import { GeneralSettingsPage } from "@/modules/settings/pages/GeneralSettingsPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
+import { SubscriptionLayout } from "@/modules/subscription/layouts/SubscriptionLayout";
+import { PaymentHistoryPage } from "@/modules/subscription/pages/PaymentHistoryPage";
+import { SubscriptionPage } from "@/modules/subscription/pages/SubscriptionPage";
+import { UpgradePlanPage } from "@/modules/subscription/pages/UpgradePlanPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
 
@@ -151,6 +155,32 @@ export const router = createBrowserRouter([
                   {
                     path: "today-meals",
                     element: <TodayMealEntriesPage />,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: ROUTES.SUBSCRIPTION,
+
+            element: <RoleGuard allowedRoles={[ROLES.ADMIN]} />,
+
+            children: [
+              {
+                element: <SubscriptionLayout />,
+
+                children: [
+                  {
+                    index: true,
+                    element: <SubscriptionPage />,
+                  },
+                  {
+                    path: "upgrade",
+                    element: <UpgradePlanPage />,
+                  },
+                  {
+                    path: "payment-history",
+                    element: <PaymentHistoryPage />,
                   },
                 ],
               },

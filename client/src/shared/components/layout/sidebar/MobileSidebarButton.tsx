@@ -9,7 +9,7 @@ export const MobileSidebarButton = () => {
     <button
       type="button"
       onClick={toggle}
-      className="btn btn-ghost btn-square lg:hidden"
+      className="cursor-pointer hover:bg-info/10 p-2 rounded-md lg:hidden"
       aria-label="Open sidebar"
     >
       <Menu size={22} />

@@ -13,6 +13,7 @@ export const plans = [
     maxMembers: 10,
 
     isPopular: false,
+    isActive: false,
 
     features: [
       "Basic Meal Management",
@@ -36,6 +37,7 @@ export const plans = [
     maxMembers: 50,
 
     isPopular: true,
+    isActive: true,
 
     features: [
       "Everything in Free",
@@ -57,9 +59,10 @@ export const plans = [
 
     durationDays: 30,
 
-    maxMembers: -1, // Unlimited
+    maxMembers: -1,
 
     isPopular: false,
+    isActive: false,
 
     features: [
       "Everything in Standard",
@@ -70,3 +73,5 @@ export const plans = [
     ],
   },
 ] as const;
+
+export type Plan = (typeof plans)[number];

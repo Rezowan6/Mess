@@ -1,18 +1,78 @@
-src/modules/landing/
+src/modules/subscription/
 │
 ├── pages/
-│   └── LandingPage.tsx
+│   ├── SubscriptionPage.tsx                 // Main page
+│   ├── CurrentSubscriptionPage.tsx          // Current subscription overview
+│   ├── BillingHistoryPage.tsx               // Payment history
+│   └── UpgradePlanPage.tsx                  // Plan selection & upgrade
+│
+├── layouts/
+│   └── SubscriptionLayout.tsx               // Outlet layout
 │
 ├── components/
-│   ├── HeroSection.tsx
-│   ├── FeaturesSection.tsx
-│   ├── HowItWorksSection.tsx
-│   ├── PricingSection.tsx
-│   ├── FAQSection.tsx
-│   ├── ContactSection.tsx
-│   └── Footer.tsx
+│   ├── SubscriptionOverview.tsx
+│   ├── SubscriptionStatusBadge.tsx
+│   ├── SubscriptionSummaryCards.tsx
+│   ├── SubscriptionInfoCard.tsx
+│   ├── CurrentPlanCard.tsx
+│   ├── PlanComparison.tsx
+│   ├── PlanCard.tsx
+│   ├── PlanFeatureList.tsx
+│   ├── BillingSummary.tsx
+│   ├── BillingHistoryTable.tsx
+│   ├── BillingHistoryRow.tsx
+│   ├── PaymentStatusBadge.tsx
+│   ├── PaymentGatewayBadge.tsx
+│   ├── PaymentDetailsModal.tsx
+│   ├── SubscriptionTimeline.tsx
+│   ├── ExpiryAlert.tsx
+│   ├── FreeTrialBanner.tsx
+│   ├── UpgradeButton.tsx
+│   ├── RenewButton.tsx
+│   ├── CancelSubscriptionButton.tsx
+│   ├── EmptySubscription.tsx
+│   ├── SubscriptionSkeleton.tsx
+│   └── PaymentHistorySkeleton.tsx
 │
-└── configs/
+├── api/
+│   ├── subscription.api.ts
+│   └── payment.api.ts
+│
+├── hooks/
+│   ├── useCurrentSubscription.ts
+│   ├── useBillingHistory.ts
+│   ├── usePlans.ts
+│   ├── useUpgradePlan.ts
+│   ├── useRenewSubscription.ts
+│   └── useCancelSubscription.ts
+│
+├── configs/
+│   ├── subscriptionStatus.config.ts
+│   ├── paymentStatus.config.ts
+│   ├── paymentGateway.config.ts
+│   ├── subscriptionActions.config.ts
+│   └── billingTableColumns.config.ts
+│
+├── types/
+│   ├── subscription.types.ts
+│   ├── payment.types.ts
+│   └── billing.types.ts
+│
+├── schemas/
+│   ├── upgradePlan.schema.ts
+│   └── billingFilter.schema.ts
+│
+├── utils/
+│   ├── subscription.util.ts
+│   ├── payment.util.ts
+│   ├── billing.util.ts
+│   └── subscriptionStatusColor.ts
+│
+├── constants/
+│   ├── subscription.constants.ts
+│   └── payment.constants.ts
+│
+├── index.ts
 
 modules/
 └── meal-setting/

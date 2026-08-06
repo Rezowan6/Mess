@@ -29,7 +29,7 @@ export const ManagementPage = ({
         {action && action}
       </div>
 
-      <div className="card bg-base-100 shadow">
+      <div className="card bg-info/5 shadow">
         <div className="card-body">{children}</div>
       </div>
     </div>

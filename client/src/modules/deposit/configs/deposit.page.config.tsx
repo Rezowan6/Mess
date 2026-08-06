@@ -1,6 +1,8 @@
 import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { BackButton } from "@/shared/components/ui/BackButton";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
+import { useRBAC } from "@/shared/hooks/useRBAC";
 
 interface GetDepositPageConfigProps {
   pathname: string;
@@ -9,11 +11,12 @@ interface GetDepositPageConfigProps {
 export const getDepositPageConfig = ({
   pathname,
 }: GetDepositPageConfigProps) => {
+  const { can } = useRBAC();
   const pageConfig = {
     [ROUTES.DEPOSIT]: {
       title: "Deposit Management",
       description: "Manage member deposits and payment records",
-      footer: (
+      footer: can(PERMISSIONS.DEPOSIT_CREATE) && (
         <ActionLink to={`${ROUTES.DEPOSIT}/quick-add`}>Quick Add</ActionLink>
       ),
     },

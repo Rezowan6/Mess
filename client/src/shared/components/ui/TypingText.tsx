@@ -21,7 +21,7 @@ export const TypingText = ({
   textClassName,
   typeSpeed = 100,
   backSpeed = 70,
-  backDelay = 900,
+  backDelay = 1000,
   smartBackspace = false,
   showCursor= true,
   loop = true,
@@ -53,10 +53,10 @@ export const TypingText = ({
   ]);
 
   return (
-    <h2 className={className}>
+    <div className={className}>
       {prefix && <span>{prefix} </span>}
 
       <span ref={typingRef} className={textClassName} />
-    </h2>
+    </div>
   );
 };

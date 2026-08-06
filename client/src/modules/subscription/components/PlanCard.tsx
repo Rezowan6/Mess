@@ -1,24 +1,28 @@
+import type { plans } from "@/modules/landing/configs/plans.config";
 import { PricingCardAction } from "@/shared/components/ui/PricingCardAction";
-import type { plans } from "../configs/plans.config";
-import { PricingCardHeader } from "@/shared/components/ui/PricingCardHeader";
 import { PricingCardFeatures } from "@/shared/components/ui/PricingCardFeatures";
+import { PricingCardHeader } from "@/shared/components/ui/PricingCardHeader";
+
+
 export type Plan = (typeof plans)[number];
 
-export interface PricingCardProps {
+interface Props {
   plan: Plan;
 }
 
-export const PricingCard = ({ plan }: PricingCardProps) => {
+export const PlanCard = ({ plan }: Props) => {
   return (
     <div
       className={`relative rounded-2xl border bg-background p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl ${
-        plan.isPopular ? "border-primary shadow-lg" : "border-base-300"
+        plan.isPopular
+          ? "border-info shadow-lg"
+          : "border-accent"
       }`}
     >
       <div className="space-y-4">
         <PricingCardHeader plan={plan} />
 
-        <PricingCardAction isPopular={plan.isPopular} />
+        <PricingCardAction label="Choose Plan" isPopular={plan.isPopular} />
 
         <PricingCardFeatures features={plan.features} />
       </div>

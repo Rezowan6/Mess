@@ -1,5 +1,5 @@
+import type { plans } from "@/modules/landing/configs/plans.config";
 import { Badge } from "@/shared/components/ui/Badge";
-import type { plans } from "../configs/plans.config";
 
 type Plan = (typeof plans)[number];
 
