@@ -6,8 +6,6 @@ import { PermissionGuard } from "@/shared/guards/permission.guard";
 
 import { Settings } from "lucide-react";
 
-import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage.tsx";
-import { BackButton } from "@/shared/components/ui/BackButton.tsx";
 import { MealSettingActions } from "../components/MealSettingActions.tsx";
 import { MealSettingCard } from "../components/MealSettingCard";
 import { MealSettingFormModal } from "../components/MealSettingFormModal";
@@ -22,58 +20,40 @@ export const MealSettingManagePage = () => {
 
   return (
     <PermissionGuard permission={PERMISSIONS.MEAL_SETTING_VIEW}>
-      <ManagementPage
-        title="Meal Setting Management"
-        description="Manage meal rules, cutoff times and preferences."
-        footer={<BackButton />}
-        action={
+      {isPending ? (
+        <p>Loading...</p>
+      ) : setting ? (
+        <div className="space-y-4">
+          <div className="flex justify-end">
+            <MealSettingActions
+              setting={setting}
+              onEdit={() => setIsOpen(true)}
+            />
+          </div>
+
+          <MealSettingCard setting={setting} />
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center gap-4 py-10">
+          <Settings size={40} className="opacity-50" />
+
+          <p className="text-sm opacity-70">No meal setting configured yet.</p>
+
           <Button
             variant="success"
             permission={PERMISSIONS.MEAL_SETTING_CREATE}
             onClick={() => setIsOpen(true)}
-            disabled={!!setting}
           >
-            Create Setting
+            Create Meal Setting
           </Button>
-        }
-      >
-        {isPending ? (
-          <p>Loading...</p>
-        ) : setting ? (
-          <div className="space-y-4">
-            <div className="flex justify-end">
-              <MealSettingActions
-                setting={setting}
-                onEdit={() => setIsOpen(true)}
-              />
-            </div>
+        </div>
+      )}
 
-            <MealSettingCard setting={setting} />
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center gap-4 py-10">
-            <Settings size={40} className="opacity-50" />
-
-            <p className="text-sm opacity-70">
-              No meal setting configured yet.
-            </p>
-
-            <Button
-              variant="success"
-              permission={PERMISSIONS.MEAL_SETTING_CREATE}
-              onClick={() => setIsOpen(true)}
-            >
-              Create Meal Setting
-            </Button>
-          </div>
-        )}
-
-        <MealSettingFormModal
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          setting={setting}
-        />
-      </ManagementPage>
+      <MealSettingFormModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        setting={setting}
+      />
     </PermissionGuard>
   );
 };

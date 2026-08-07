@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 export type BadgeVariant =
   | "success"
+  | "accent"
   | "warning"
   | "error"
   | "info"
@@ -17,13 +18,15 @@ interface BadgeProps {
 
   size?: "sm" | "md" | "lg";
 
-  rounded?: "full" | "md";
+  rounded?: "full" | "md" | "sm";
 
   className?: string;
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
   success: "bg-gradient-success",
+
+  accent: "bg-gradient-accent",
 
   warning: "bg-gradient-warning",
 
@@ -62,7 +65,7 @@ export const Badge = ({
 
         sizeStyles[size],
 
-        rounded === "full" ? "rounded-full" : "rounded-md",
+        rounded === "full" ? "rounded-full" : "rounded-sm",
 
         className,
       )}

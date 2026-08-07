@@ -28,35 +28,31 @@ export const DepositActions = ({ deposit, onEdit }: Props) => {
   return (
     <div className="flex items-center gap-2">
       {can(PERMISSIONS.DEPOSIT_UPDATE) && (
-        <Button
-          variant="success"
-          size="sm"
-          leftIcon={<Edit size={14} />}
-          className="px-2 sm:px-3 h-8"
-          onClick={() => onEdit(deposit)}
-        >
-          <span className="hidden sm:inline">Edit</span>
-        </Button>
+        <Button unstyled leftIcon={<Edit />} onClick={() => onEdit(deposit)} />
       )}
 
       {can(PERMISSIONS.DEPOSIT_DELETE) && (
         <Button
-          variant="error"
-          size="sm"
-          leftIcon={<Trash2 size={14} />}
-          className="px-2 sm:px-3 h-8"
+          unstyled
+          leftIcon={<Trash2 />}
           onClick={() =>
             openConfirm({
               title: "Delete Deposit",
-              message: <>Are you sure you want to delete <strong className="text-success">{deposit.member.name}</strong> this deposit?</>,
+              message: (
+                <>
+                  Are you sure you want to delete{" "}
+                  <strong className="text-success">
+                    {deposit.member.name}
+                  </strong>{" "}
+                  this deposit?
+                </>
+              ),
               onConfirm: async () => {
                 await deleteMutation.mutateAsync(deposit.id);
               },
             })
           }
-        >
-          <span className="hidden sm:inline">Delete</span>
-        </Button>
+        />
       )}
     </div>
   );

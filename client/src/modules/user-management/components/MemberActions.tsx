@@ -49,27 +49,24 @@ export const MemberActions = ({ member }: Props) => {
     <div className="flex items-center gap-4">
       {can(PERMISSIONS.USER_UPDATE) && (
         <Select
-          tooltip="Update member role"
           value={member.role}
           options={roleOptions}
           onChange={handleRoleChange}
-          className="text-xs sm:text-sm px-6 sm:px-0 flex items-center justify-center"
+          className="text-xs px-6 sm:px-0 flex items-center justify-center"
         />
       )}
 
       {can(PERMISSIONS.USER_DELETE) && (
         <Button
-          variant="error"
-          size="sm"
-          leftIcon={<Trash2 size={14} />}
-          className="px-2 sm:px-3 h-8"
+          unstyled
+          leftIcon={<Trash2 />}
           onClick={() =>
             openConfirm({
               title: "Remove Member",
               message: (
                 <>
                   Are you sure you want to remove{" "}
-                  <span className="font-bold text-error">{memberName}</span>{" "}
+                  <span className="font-bold text-success">{memberName}</span>{" "}
                   from this mess?
                 </>
               ),
@@ -78,9 +75,7 @@ export const MemberActions = ({ member }: Props) => {
               },
             })
           }
-        >
-          <span className="hidden sm:inline">Remove</span>
-        </Button>
+        />
       )}
     </div>
   );

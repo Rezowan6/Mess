@@ -1,3 +1,4 @@
+import { IconBox } from "@/shared/components/ui/IconBox";
 import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -22,9 +23,10 @@ export const SettingsCard = ({
       <div className="flex items-center justify-center p-6">
         <div className="flex gap-4">
           {icon && (
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-success text-text">
-              {icon}
-            </div>
+            <IconBox
+              icon={icon}
+              className="bg-gradient-success text-text"
+            />
           )}
 
           <div>

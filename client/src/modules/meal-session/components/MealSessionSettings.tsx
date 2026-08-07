@@ -8,6 +8,7 @@ import { useRBAC } from "@/shared/hooks/useRBAC";
 import { useMealSession } from "../hooks/useMealSession";
 import { CloseSessionButton } from "./CloseSessionButton";
 import { OpenMealSessionButton } from "./OpenMealSessionButton";
+import { Badge } from "@/shared/components/ui/Badge";
 
 export const MealSessionSettings = () => {
   const { data, isLoading } = useMealSession();
@@ -39,9 +40,9 @@ export const MealSessionSettings = () => {
 
                 <div>
                   Status:
-                  <span className="ml-2 badge bg-gradient-success px-2">
+                  <Badge variant="success" size="sm">
                     {session.status}
-                  </span>
+                  </Badge>
                 </div>
 
                 <div>

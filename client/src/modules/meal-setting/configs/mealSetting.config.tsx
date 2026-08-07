@@ -1,3 +1,4 @@
+import { Badge } from "@/shared/components/ui/Badge";
 import { minutesToTime } from "@/shared/utils/time";
 
 export const getMealSettingConfigs = (setting: any) => [
@@ -31,9 +32,9 @@ export const getMealSettingConfigs = (setting: any) => [
       {
         label: "Auto Approve",
         value: (
-          <span className={`badge px-2 ${setting.autoApproveMealRequest ? "bg-gradient-success" : "bg-gradient-accent"}`}>
+          <Badge size="sm" variant={`${setting.autoApproveMealRequest ? "success" : "accent"}`}>
             {setting.autoApproveMealRequest ? "Enabled" : "Disabled"}
-          </span>
+          </Badge>
         ),
       },
     ],

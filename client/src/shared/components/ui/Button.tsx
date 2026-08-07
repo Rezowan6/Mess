@@ -1,6 +1,13 @@
 import clsx from "clsx";
 import { Loader2 } from "lucide-react";
-import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react";
+import {
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  type ButtonHTMLAttributes,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 
 import type { Permission } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
@@ -15,14 +22,14 @@ type ButtonVariant =
   | "ghost"
   | "outline";
 
-type ButtonSize = "xs" | "sm" | "md" | "lg";
-
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
+  children?: ReactNode;
+
+  unstyled?: boolean;
+
+  iconSize?: number;
 
   variant?: ButtonVariant;
-
-  size?: ButtonSize;
 
   loading?: boolean;
 
@@ -46,9 +53,6 @@ const variantClasses = {
     to-indigo-600
     hover:from-blue-700 
     hover:to-indigo-700
-    text-white
-    shadow-md
-    hover:scale-105
     `,
 
   success: `
@@ -57,9 +61,6 @@ const variantClasses = {
     to-green-600
     hover:from-teal-700
     hover:to-green-700
-    text-white
-    shadow-md
-    hover:scale-105
     `,
 
   error: `
@@ -68,9 +69,6 @@ const variantClasses = {
     to-pink-600
     hover:from-red-600
     hover:to-pink-700
-    text-white
-    shadow-md
-    hover:scale-105
     `,
 
   warning: `
@@ -79,9 +77,6 @@ const variantClasses = {
     to-orange-500
     hover:from-yellow-600
     hover:to-orange-600
-    text-white
-    shadow-md
-    hover:scale-105
     `,
 
   secondary: `
@@ -90,8 +85,6 @@ const variantClasses = {
     to-slate-700
     hover:from-slate-600
     hover:to-slate-800
-    text-white
-    shadow-md
     `,
 
   accent: `
@@ -100,9 +93,6 @@ const variantClasses = {
     to-pink-600
     hover:from-purple-700
     hover:to-pink-700
-    text-white
-    shadow-md
-    hover:scale-105
     `,
 
   ghost: `
@@ -119,24 +109,14 @@ const variantClasses = {
     `,
 } satisfies Record<ButtonVariant, string>;
 
-const sizeClasses: Record<ButtonSize, string> = {
-  xs: "h-8 px-3 text-xs",
-
-  sm: "h-9 px-4 text-sm",
-
-  md: "h-10 px-5 text-sm",
-
-  lg: "h-12 px-6 text-base",
-};
-
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       children,
+      unstyled = false,
+      iconSize = 16,
 
       variant = "primary",
-
-      size = "md",
 
       loading = false,
 
@@ -171,21 +151,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={clsx(
-          "inline-flex items-center justify-center gap-2 cursor-pointer",
+          !unstyled && [
+            "inline-flex items-center justify-center gap-2 text-xs sm:text-md px-4",
+            variantClasses[variant],
+          ],
 
-          "rounded-md font-medium",
-
-          "transition-all duration-300",
-
-          "focus:outline-none",
-
-          "disabled:pointer-events-none",
-
-          "disabled:opacity-50",
-
-          sizeClasses[size],
-
-          variantClasses[variant],
+          "cursor-pointer ml-4 bg-info/20 hover:bg-info/40 p-2 rounded-sm disabled:opacity-50 disabled:pointer-events-none transition-all duration-300 hover:scale-105",
 
           fullWidth && "w-full",
 
@@ -201,11 +172,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           </>
         ) : (
           <>
-            {leftIcon}
+            {leftIcon &&
+              isValidElement(leftIcon) &&
+              cloneElement(leftIcon as ReactElement<{ size?: number }>, {
+                size: iconSize,
+              })}
 
-            <span>{children}</span>
+            {children && <span>{children}</span>}
 
-            {rightIcon}
+            {rightIcon &&
+              isValidElement(rightIcon) &&
+              cloneElement(rightIcon as ReactElement<{ size?: number }>, {
+                size: iconSize,
+              })}
           </>
         )}
       </button>

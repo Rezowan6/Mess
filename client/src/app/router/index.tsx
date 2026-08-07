@@ -59,6 +59,10 @@ export const router = createBrowserRouter([
             index: true,
             element: <LandingPage />,
           },
+          {
+            path: ROUTES.INVITES_ACCEPT,
+            element: <AcceptInvitePage />,
+          },
         ],
       },
       {
@@ -163,7 +167,7 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.SUBSCRIPTION,
 
-            element: <RoleGuard allowedRoles={[ROLES.ADMIN]} />,
+            element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
 
             children: [
               {
@@ -279,10 +283,5 @@ export const router = createBrowserRouter([
   {
     path: "*",
     element: <NotFoundPage />,
-  },
-
-  {
-    path: ROUTES.INVITES_ACCEPT,
-    element: <AcceptInvitePage />,
   },
 ]);

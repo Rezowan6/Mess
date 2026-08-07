@@ -28,22 +28,16 @@ export const ExpenseActions = ({ expense, onEdit }: Props) => {
     <div className="flex items-center gap-2">
       {can(PERMISSIONS.EXPENSE_UPDATE) && (
         <Button
-          variant="success"
-          size="sm"
-          leftIcon={<Edit size={14} />}
-          className="px-2 sm:px-3 h-8"
+          unstyled
+          leftIcon={<Edit />}
           onClick={() => onEdit(expense)}
-        >
-          <span className="hidden sm:inline">Edit</span>
-        </Button>
+        />
       )}
 
       {can(PERMISSIONS.EXPENSE_DELETE) && (
         <Button
-          variant="error"
-          size="sm"
-          leftIcon={<Trash2 size={14} />}
-          className="px-2 sm:px-3 h-8"
+          unstyled
+          leftIcon={<Trash2 />}
           onClick={() =>
             openConfirm({
               title: "Delete Expense",
@@ -61,9 +55,7 @@ export const ExpenseActions = ({ expense, onEdit }: Props) => {
               },
             })
           }
-        >
-          <span className="hidden sm:inline">Delete</span>
-        </Button>
+        />
       )}
     </div>
   );

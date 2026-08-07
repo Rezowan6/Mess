@@ -46,7 +46,7 @@ export const sidebarItems: ISidebarItem[] = [
     title: "Meal Entry",
     path: ROUTES.MEAL_ENTRY,
     icon: ClipboardList,
-    permission: PERMISSIONS.MEAL_ENTRY_CREATE,
+    permission: PERMISSIONS.MEAL_ENTRY_VIEW,
   },
 
   {
@@ -72,7 +72,7 @@ export const sidebarItems: ISidebarItem[] = [
     title: "Subscription",
     path: ROUTES.SUBSCRIPTION,
     icon: CreditCard,
-    permission: PERMISSIONS.SUBSCRIPTION_VIEW,
+    permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
   },
 
   {

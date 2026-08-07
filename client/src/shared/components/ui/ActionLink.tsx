@@ -20,7 +20,7 @@ export const ActionLink = ({
   className,
   icon: Icon = MoveRight,
   iconPosition = "right",
-  iconSize = 16,
+  iconSize = 14,
 }: Props) => {
   return (
     <Link
@@ -33,6 +33,7 @@ export const ActionLink = ({
         hover:border-info
         transition-all duration-300 ease-in-out
         w-fit
+        text-sm sm:text-md
         ${className ?? ""}
       `}
     >

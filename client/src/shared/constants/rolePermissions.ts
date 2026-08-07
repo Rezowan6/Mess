@@ -5,10 +5,6 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
   [ROLES.SYSTEM_OWNER]: ["*"],
 
   [ROLES.ADMIN]: [
-    // sescription
-    PERMISSIONS.SUBSCRIPTION_VIEW,
-    // tenant
-    PERMISSIONS.TENANT_CREATE,
     // user
     PERMISSIONS.USER_VIEW,
     PERMISSIONS.USER_CREATE,
@@ -28,18 +24,12 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
 
     // meal entry
     PERMISSIONS.MEAL_ENTRY_VIEW,
-    PERMISSIONS.MEAL_ENTRY_CREATE,
-    PERMISSIONS.MEAL_ENTRY_UPDATE,
 
     // expense
     PERMISSIONS.EXPENSE_VIEW,
 
     // deposit
     PERMISSIONS.DEPOSIT_VIEW,
-
-    // calculation
-    PERMISSIONS.CALCULATION_VIEW,
-    PERMISSIONS.CALCULATION_RUN,
 
     // notification
     PERMISSIONS.NOTICE_VIEW,
@@ -57,6 +47,12 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
   ],
 
   [ROLES.MANAGER]: [
+    // subscription
+    PERMISSIONS.SUBSCRIPTION_VIEW,
+    PERMISSIONS.SUBSCRIPTION_MANAGE,
+    // tenant
+    PERMISSIONS.TENANT_CREATE,
+
     // monthly calculation
     PERMISSIONS.MONTHLY_CALCULATION_VIEW,
     // user
@@ -116,6 +112,8 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     PERMISSIONS.MEAL_PREFERENCE_UPDATE,
     PERMISSIONS.MEAL_PREFERENCE_VIEW,
     PERMISSIONS.MEAL_SETTING_VIEW,
+    // tenant
+    PERMISSIONS.TENANT_CREATE,
   ],
 
   [ROLES.MESS_MALIK]: [

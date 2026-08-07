@@ -32,28 +32,29 @@ export const TenantForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {/* Email */}
-      <Input
-        label="Mess name"
-        type="name"
-        placeholder="Enter your mess name"
-        error={errors.name?.message}
-        {...register("name")}
-      />
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pb-4">
+        {/* Email */}
+        <Input
+          label="Mess name"
+          type="name"
+          placeholder="Enter your mess name"
+          error={errors.name?.message}
+          {...register("name")}
+        />
 
-      <Button
-        type="submit"
-        variant="success"
-        disabled={isPending}
-        className="w-full"
-        loading={isPending}
-        loadingText="Creating mess..."
-      >
-        Create Mess
-      </Button>
-
+        <Button
+          type="submit"
+          variant="success"
+          disabled={isPending}
+          className="w-full"
+          loading={isPending}
+          loadingText="Creating mess..."
+        >
+          Create Mess
+        </Button>
+      </form>
       <BackButton />
-    </form>
+    </>
   );
 };

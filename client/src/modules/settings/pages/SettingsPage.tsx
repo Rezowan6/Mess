@@ -1,12 +1,20 @@
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import { getSettingsPageConfig } from "../configs/settingsPage.config";
 
 export const SettingsPage = () => {
+  const location = useLocation();
+
+  const currentPage = getSettingsPageConfig({
+    pathname: location.pathname,
+  });
   return (
     <>
       <ManagementPage
-        title="Settings"
-        description="Manage your workspace, appearance and application preferences."
+        title={currentPage.title}
+        description={currentPage.description}
+        action={currentPage.action}
+        footer={currentPage.footer}
       >
         <Outlet />
       </ManagementPage>

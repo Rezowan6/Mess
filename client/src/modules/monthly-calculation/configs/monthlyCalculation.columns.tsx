@@ -1,5 +1,6 @@
 import type { TableColumn } from "@/shared/components/ui/Table";
 
+import { Badge } from "@/shared/components/ui/Badge";
 import type { IMonthlyCalculationMember } from "../types/monthlyCalculation.types";
 
 export const useMonthlyCalculationColumns =
@@ -39,17 +40,18 @@ export const useMonthlyCalculationColumns =
         key: "status",
         title: "Status",
         render: (member) => (
-          <span
-            className={`badge p-2 ${
+          <Badge
+            size="sm"
+            variant={`${
               member.status === "Payable"
-                ? "bg-gradient-accent"
+                ? "accent"
                 : member.status === "Received"
-                  ? "bg-gradient-success"
-                  : "bg-gradient-primary"
+                  ? "success"
+                  : "primary"
             }`}
           >
             {member.status}
-          </span>
+          </Badge>
         ),
       },
     ];

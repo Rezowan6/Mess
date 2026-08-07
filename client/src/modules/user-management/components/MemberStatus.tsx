@@ -12,11 +12,7 @@ export const MemberStatus = ({ status }: Props) => {
   } as const;
 
   return (
-    <Badge
-      variant={map[status]}
-      size="sm"
-      className="md:px-3 md:py-1 md:text-sm"
-    >
+    <Badge variant={map[status]} size="sm">
       {status}
     </Badge>
   );

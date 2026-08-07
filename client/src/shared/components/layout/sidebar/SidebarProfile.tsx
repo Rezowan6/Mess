@@ -26,8 +26,6 @@ export const SidebarProfile = () => {
 
         <div className="hidden text-left md:block">
           <p className="text-sm font-semibold">{user?.name}</p>
-
-          {/* <p className="text-xs text-green-600">{currentTenant?.role ?? ""}</p> */}
         </div>
       </button>
 
@@ -36,7 +34,7 @@ export const SidebarProfile = () => {
         fullWidth
         loading={logoutMutation.isPending}
         loadingText="Processing..."
-        leftIcon={<LogOut size={16} />}
+        leftIcon={<LogOut />}
         onClick={() => logoutMutation.mutate()}
       >
         Logout

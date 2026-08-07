@@ -47,7 +47,7 @@ export const useMembersMealSummaryColumns = (): TableColumn<IMealEntry>[] => {
     },
   ];
 
-  if (can(PERMISSIONS.MEAL_ENTRY_VIEW)) {
+  if (can(PERMISSIONS.MEAL_ENTRY_CREATE)) {
     columns.push({
       key: "details",
       title: "Details",

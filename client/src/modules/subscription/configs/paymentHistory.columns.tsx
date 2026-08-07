@@ -38,7 +38,7 @@ export const paymentHistoryColumns: TableColumn<IPaymentHistory>[] = [
     key: "status",
     title: "Status",
     render: (payment) => (
-      <Badge variant="success" className="w-fit">{payment.status}</Badge>
+      <Badge variant="success" size="sm">{payment.status}</Badge>
     ),
   },
 ];
