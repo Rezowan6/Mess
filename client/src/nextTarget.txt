@@ -1,3 +1,303 @@
+Frontend এ subscription system implement করার জন্য আপনার backend model অনুযায়ী structure এভাবে করলে clean SaaS architecture হবে।
+
+Implementation order:
+
+1. Plan Module
+        ↓
+2. Feature Module
+        ↓
+3. Plan Feature Module
+        ↓
+4. Subscription Module
+        ↓
+5. Payment Module
+        ↓
+6. Billing / Upgrade Flow
+1. Plan Module (আগে করবেন)
+
+কারণ:
+Subscription এর মূল dependency হচ্ছে Plan।
+
+src/modules/plan/
+
+├── api/
+│   └── plan.api.ts
+
+├── hooks/
+│   └── usePlans.ts
+
+├── types/
+│   └── plan.types.ts
+
+├── components/
+│   ├── PlanCard.tsx
+│   ├── PlanList.tsx
+│   └── PlanFeatureList.tsx
+
+├── pages/
+│   └── PlansPage.tsx
+
+└── configs/
+    └── plan.constants.ts
+
+Features:
+
+সব available plan দেখানো
+Free / Standard / Premium
+Price
+Max member
+Active status
+2. Feature Module
+
+কারণ:
+
+Backend:
+
+Feature
+
+model আছে।
+
+src/modules/feature/
+
+├── api/
+│   └── feature.api.ts
+
+├── hooks/
+│   └── useFeatures.ts
+
+├── types/
+│   └── feature.types.ts
+
+├── components/
+│   └── FeatureList.tsx
+
+└── pages/
+    └── FeaturePage.tsx
+
+Features:
+
+সব system feature list
+Active feature management
+3. Plan Feature Module
+
+কারণ:
+
+Relation:
+
+Plan
+ |
+ |
+PlanFeature
+ |
+ |
+Feature
+
+এখানে plan এর কোন feature আছে সেটা দেখাবেন।
+
+src/modules/plan-feature/
+
+├── api/
+│   └── planFeature.api.ts
+
+├── hooks/
+│   └── usePlanFeatures.ts
+
+├── types/
+│   └── planFeature.types.ts
+
+├── components/
+│   └── PlanFeatureList.tsx
+
+└── pages/
+    └── PlanFeatureManagePage.tsx
+
+Features:
+
+Example:
+
+Premium Plan:
+
+✓ Unlimited Members
+✓ Payment Integration
+✓ Analytics
+4. Subscription Module (আপনার current কাজ)
+
+Backend:
+
+Subscription
+
+এর উপর।
+
+src/modules/subscription/
+
+├── api/
+│   └── subscription.api.ts
+
+├── hooks/
+│   └── useSubscription.ts
+
+├── services/
+│   └── subscription.service.ts
+
+├── types/
+│   └── subscription.types.ts
+
+├── components/
+
+│   ├── CurrentSubscription.tsx
+│   ├── CurrentPlanCard.tsx
+│   ├── SubscriptionStatusBadge.tsx
+│   ├── SubscriptionSummaryCards.tsx
+│   ├── SubscriptionTimeline.tsx
+│   ├── ExpiryAlert.tsx
+│   └── UpgradeButton.tsx
+
+
+├── pages/
+
+│   ├── CurrentSubscriptionPage.tsx
+│   └── UpgradePlanPage.tsx
+
+
+└── configs/
+
+    └── subscriptionSummary.config.ts
+
+Features:
+
+Current plan দেখানো
+Active status
+Start date
+End date
+Remaining days
+Upgrade button
+5. Payment Module
+
+Subscription এর পরে।
+
+Backend:
+
+Payment
+src/modules/payment/
+
+├── api/
+│   └── payment.api.ts
+
+├── hooks/
+│   ├── usePayments.ts
+│   └── useCreatePayment.ts
+
+├── types/
+│   └── payment.types.ts
+
+├── components/
+
+│   ├── PaymentHistoryTable.tsx
+│   ├── PaymentStatusBadge.tsx
+│   └── PaymentMethod.tsx
+
+
+├── pages/
+
+│   └── PaymentHistoryPage.tsx
+
+Features:
+
+Payment history
+Transaction ID
+Gateway
+Status
+6. Billing / Upgrade Flow
+
+শেষে করবেন।
+
+src/modules/billing/
+
+├── components/
+
+│   ├── UpgradeModal.tsx
+│   ├── CheckoutSummary.tsx
+│   └── BillingCycleToggle.tsx
+
+
+├── hooks/
+
+│   └── useUpgradePlan.ts
+
+
+├── pages/
+
+│   └── BillingPage.tsx
+
+Flow:
+
+User clicks Upgrade
+
+        ↓
+
+Select Plan
+
+        ↓
+
+Create Payment
+
+        ↓
+
+Gateway
+
+        ↓
+
+Payment Success
+
+        ↓
+
+Subscription Update
+
+Final dependency graph:
+
+Feature
+   |
+   ↓
+Plan Feature
+   |
+   ↓
+Plan
+   |
+   ↓
+Subscription
+   |
+   ↓
+Payment
+   |
+   ↓
+Billing
+
+আপনার বর্তমান অবস্থায়:
+
+✅ Subscription UI শুরু করেছেন
+এখন আগে করবেন:
+
+Next implementation:
+
+Plan Module
+
+তারপর:
+
+Feature + Plan Feature
+
+তারপর current subscription কে real backend data দিয়ে complete করবেন।
+
+subscription.service.ts তখনই দরকার হবে যখন API response-কে UI-এর জন্য transform/format করতে হবে।
+
+এখানে সাধারণত থাকবে:
+
+getCurrentPlan()
+getSubscriptionStatus()
+isSubscriptionExpired()
+getRemainingDays()
+canUpgradePlan()
+formatSubscriptionForUI()
+
 src/modules/subscription/
 │
 ├── pages/

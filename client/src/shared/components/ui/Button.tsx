@@ -11,8 +11,10 @@ import {
 
 import type { Permission } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
+import styel from "@/styles/modules/button.module.css";
 
 type ButtonVariant =
+  | "moduleBtn"
   | "primary"
   | "secondary"
   | "accent"
@@ -47,6 +49,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses = {
+  moduleBtn: `
+    ${styel.btn}
+    `,
   primary: `
     bg-gradient-to-r 
     from-blue-600 
@@ -151,12 +156,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={clsx(
-          !unstyled && [
-            "inline-flex items-center justify-center gap-2 text-xs sm:text-md px-4",
-            variantClasses[variant],
-          ],
+          !unstyled && [variantClasses[variant], "px-4"],
 
-          "cursor-pointer ml-4 bg-info/20 hover:bg-info/40 p-2 rounded-sm disabled:opacity-50 disabled:pointer-events-none transition-all duration-300 hover:scale-105",
+          "cursor-pointer ml-4 bg-info/20 hover:bg-info/40 p-2 rounded-sm disabled:opacity-50 disabled:pointer-events-none transition-all duration-300",
 
           fullWidth && "w-full",
 

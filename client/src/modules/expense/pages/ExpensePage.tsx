@@ -4,7 +4,7 @@ import { AddExpenseModal } from "../components/AddExpenseModal";
 import { ExpenseTable } from "../components/ExpenseTable";
 
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
-import { Button } from "@/shared/components/ui/Button";
+import { ButtonModule } from "@/shared/components/ui/ButtonModule";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { PermissionGuard } from "@/shared/guards/permission.guard";
 
@@ -16,13 +16,7 @@ export const ExpensePage = () => {
         title="Expense Management"
         description="Manage mess expenses and records"
         action={
-          <Button
-            variant="success"
-            permission={PERMISSIONS.EXPENSE_CREATE}
-            onClick={() => setIsOpen(true)}
-          >
-            Add Expense
-          </Button>
+          <ButtonModule text="Add Expense" onClick={() => setIsOpen(true)} />
         }
       >
         <ExpenseTable />

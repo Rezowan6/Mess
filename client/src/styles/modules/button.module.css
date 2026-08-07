@@ -1,0 +1,20 @@
+:root {
+  --primary: #29e9bc;
+  --black: #13131a;
+}
+.btn {
+  display: inline-block;
+  padding: 0.5rem 2rem;
+  background-color: var(--primary);
+  border-radius: 0.3rem;
+  color: var(--black);
+  border: 1px solid transparent;
+  font-weight: 600;
+}
+
+.btn:hover {
+  color: var(--primary);
+  background-color: transparent;
+  border-color: var(--primary);
+  cursor: pointer;
+}
