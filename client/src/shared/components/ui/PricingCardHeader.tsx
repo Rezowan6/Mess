@@ -1,16 +1,17 @@
 import type { plans } from "@/modules/landing/configs/plans.config";
+import type { IPlan } from "@/modules/plan/types/plan.types";
 import { Badge } from "@/shared/components/ui/Badge";
 
 type Plan = (typeof plans)[number];
 
 interface Props {
-  plan: Plan;
+  plan: Plan | IPlan;
 }
 
 export const PricingCardHeader = ({ plan }: Props) => {
   return (
     <>
-      {plan.isPopular && (
+      {plan?.isPopular && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
           <Badge variant="success">Most Popular</Badge>
         </div>

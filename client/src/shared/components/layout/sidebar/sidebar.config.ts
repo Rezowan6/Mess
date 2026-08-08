@@ -6,6 +6,7 @@ import {
   Calculator,
   ClipboardList,
   CreditCard,
+  Crown,
   HandCoins,
   Landmark,
   LayoutDashboard,
@@ -27,6 +28,12 @@ export const sidebarItems: ISidebarItem[] = [
     title: "Dashboard",
     path: ROUTES.DASHBOARD,
     icon: LayoutDashboard,
+  },
+
+  {
+    title: "Plans",
+    path: ROUTES.PLANS,
+    icon: Crown,
   },
 
   {

@@ -28,7 +28,7 @@ export const DescriptionText = ({
         <button
           type="button"
           onClick={() => setExpanded((prev) => !prev)}
-          className="ml-1 font-medium text-primary hover:underline cursor-pointer"
+          className="ml-1 font-medium text-info hover:underline cursor-pointer"
         >
           {expanded ? "Less" : "... More"}
         </button>

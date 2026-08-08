@@ -18,16 +18,15 @@ export const ManagementPage = ({
 }: Props) => {
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between gap-6">
+      <div className="flex items-center justify-between">
         <div className="min-w-0 flex-1">
           <h1 className="text-2xl font-bold">{title}</h1>
-          <div className="min-h-10">
-            <DescriptionText
-              text={description}
-              maxWords={6}
-              className="text-sm opacity-70"
-            />
-          </div>
+
+          <DescriptionText
+            text={description}
+            maxWords={6}
+            className="text-sm opacity-70"
+          />
 
           {footer}
         </div>

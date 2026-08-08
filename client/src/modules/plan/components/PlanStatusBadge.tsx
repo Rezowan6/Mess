@@ -6,7 +6,7 @@ interface Props {
 
 export const PlanStatusBadge = ({ isActive }: Props) => {
   return (
-    <Badge variant={isActive ? "success" : "neutral"} size="sm">
+    <Badge variant={isActive ? "success" : "error"} size="sm">
       {isActive ? "Active" : "Inactive"}
     </Badge>
   );

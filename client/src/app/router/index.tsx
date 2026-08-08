@@ -36,6 +36,7 @@ import { MyDepositHistoryPage } from "@/modules/my-profile/pages/MyDepositHistor
 import { MyMealHistoryPage } from "@/modules/my-profile/pages/MyMealHistoryPage";
 import { MyProfilePage } from "@/modules/my-profile/pages/MyProfilePage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
+import { PlanDetailsPage } from "@/modules/plan/pages/PlanDetailsPage";
 import { PlanManagementPage } from "@/modules/plan/pages/PlanManagementPage";
 import { GeneralSettingsPage } from "@/modules/settings/pages/GeneralSettingsPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
@@ -45,6 +46,7 @@ import { SubscriptionPage } from "@/modules/subscription/pages/SubscriptionPage"
 import { UpgradePlanPage } from "@/modules/subscription/pages/UpgradePlanPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
+import { PlanTable } from "@/modules/plan/components/PlanTable";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -275,6 +277,16 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.PLANS,
             element: <PlanManagementPage />,
+            children: [
+              {
+                index: true,
+                element: <PlanTable />,
+              },
+              {
+                path: ":id",
+                element: <PlanDetailsPage />,
+              },
+            ],
           },
           {
             path: ROUTES.PREFERENCE,
