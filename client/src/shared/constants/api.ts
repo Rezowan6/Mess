@@ -10,6 +10,14 @@ export const API_ENDPOINTS = {
   TENANT: {
     CREATE: "/tenants",
   },
+
+  PLAN: {
+    LIST: "/plans",
+    BY_ID: (id: number) => `/plans/${id}`,
+    CREATE: "/plans",
+    UPDATE: (id: number) => `/plans/${id}`,
+    DELETE: (id: number) => `/plans/${id}`,
+  },
   MY_PROFILE: {
     INFO: "/my-profile/info",
     ALL: "/my-profile",
