@@ -36,6 +36,7 @@ import { MyDepositHistoryPage } from "@/modules/my-profile/pages/MyDepositHistor
 import { MyMealHistoryPage } from "@/modules/my-profile/pages/MyMealHistoryPage";
 import { MyProfilePage } from "@/modules/my-profile/pages/MyProfilePage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
+import { PlanManagementPage } from "@/modules/plan/pages/PlanManagementPage";
 import { GeneralSettingsPage } from "@/modules/settings/pages/GeneralSettingsPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { SubscriptionLayout } from "@/modules/subscription/layouts/SubscriptionLayout";
@@ -269,6 +270,11 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.HOME,
             element: <HomePage />,
+          },
+
+          {
+            path: ROUTES.PLANS,
+            element: <PlanManagementPage />,
           },
           {
             path: ROUTES.PREFERENCE,

@@ -50,6 +50,8 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     // subscription
     PERMISSIONS.SUBSCRIPTION_VIEW,
     PERMISSIONS.SUBSCRIPTION_MANAGE,
+    // plan
+    PERMISSIONS.PLANS_CREATE,
     // tenant
     PERMISSIONS.TENANT_CREATE,
 

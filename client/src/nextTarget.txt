@@ -20,6 +20,47 @@ Subscription এর মূল dependency হচ্ছে Plan।
 
 src/modules/plan/
 
+pages/
+
+PlanManagementPage.tsx
+
+components/
+
+PlanTable.tsx
+PlanRowActions.tsx
+PlanFormModal.tsx
+PlanForm.tsx
+PlanStatusBadge.tsx
+PlanPriceDisplay.tsx
+PlanMemberLimit.tsx
+PlanEmptyState.tsx
+
+hooks/
+
+usePlans.ts
+usePlan.ts
+useCreatePlan.ts
+useUpdatePlan.ts
+useDeletePlan.ts
+
+api/
+
+plan.api.ts
+
+types/
+
+plan.types.ts
+
+schemas/
+
+plan.schema.ts
+
+configs/
+
+planPage.config.tsx
+
+src/modules/plan/
+
 ├── api/
 │   └── plan.api.ts
 

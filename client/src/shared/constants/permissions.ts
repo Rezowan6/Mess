@@ -62,6 +62,8 @@ export const PERMISSIONS = {
   SUBSCRIPTION_VIEW: "subscription.view",
   SUBSCRIPTION_MANAGE: "subscription.manage",
 
+  PLANS_CREATE: "plan.create",
+
   // System
   SYSTEM_MANAGE: "system.manage",
 } as const;

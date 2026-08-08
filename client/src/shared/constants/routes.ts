@@ -30,6 +30,7 @@ export const ROUTES = {
   MONTHLY_CALCULATION: "/monthly-calculation",
 
   SUBSCRIPTION: "/subscription",
+  PLANS: "/plans",
 
   PAYMENT: "/payments",
 
