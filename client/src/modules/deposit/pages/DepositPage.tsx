@@ -28,7 +28,7 @@ export const DepositPage = () => {
         description={currentPage.description}
         action={
           <Button
-            variant="success"
+            variant="moduleBtn"
             permission={PERMISSIONS.DEPOSIT_CREATE}
             onClick={() => setIsOpen(true)}
           >
