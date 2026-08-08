@@ -9,7 +9,13 @@ interface props {
   fullWidth?: boolean;
 }
 
-export const ButtonModule = ({ text, leftIcon,className, fullWidth, ...props }: props) => {
+export const ButtonModule = ({
+  text,
+  leftIcon,
+  className,
+  fullWidth,
+  ...props
+}: props) => {
   return (
     <>
       <button
