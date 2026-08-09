@@ -9,6 +9,7 @@ import { useMealSession } from "../hooks/useMealSession";
 import { CloseSessionButton } from "./CloseSessionButton";
 import { OpenMealSessionButton } from "./OpenMealSessionButton";
 import { Badge } from "@/shared/components/ui/Badge";
+import { Skeleton } from "@/shared/components/feedback/Skeleton";
 
 export const MealSessionSettings = () => {
   const { data, isLoading } = useMealSession();
@@ -26,7 +27,7 @@ export const MealSessionSettings = () => {
       >
         <div className="p-2">
           {isLoading ? (
-            <p>Loading...</p>
+            <Skeleton className="h-12 w-full" />
           ) : session ? (
             <div className="space-y-3 flex justify-between">
               <div>

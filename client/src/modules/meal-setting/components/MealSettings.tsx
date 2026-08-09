@@ -13,6 +13,7 @@ import { getMealSettingConfigs } from "../configs/mealSetting.config";
 import { useMealSetting } from "../hooks/useMealSetting";
 import { MealSettingFormModal } from "./MealSettingFormModal";
 import { MealSettingItem } from "./MealSettingItem";
+import { Skeleton } from "@/shared/components/feedback/Skeleton";
 
 export const MealSettings = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +40,7 @@ export const MealSettings = () => {
       >
         <div className="p-2">
           {isLoading ? (
-            <p>Loading...</p>
+            <Skeleton className="h-12 w-full" />
           ) : setting ? (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
