@@ -38,6 +38,7 @@ import { MyDepositHistoryPage } from "@/modules/my-profile/pages/MyDepositHistor
 import { MyMealHistoryPage } from "@/modules/my-profile/pages/MyMealHistoryPage";
 import { MyProfilePage } from "@/modules/my-profile/pages/MyProfilePage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
+import { PlanFeaturePage } from "@/modules/plan-feature/pages/PlanFeaturePage";
 import { PlanTable } from "@/modules/plan/components/PlanTable";
 import { PlanDetailsPage } from "@/modules/plan/pages/PlanDetailsPage";
 import { PlanManagementPage } from "@/modules/plan/pages/PlanManagementPage";
@@ -49,6 +50,7 @@ import { SubscriptionPage } from "@/modules/subscription/pages/SubscriptionPage"
 import { UpgradePlanPage } from "@/modules/subscription/pages/UpgradePlanPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
+import { PlanFeatureTable } from "@/modules/plan-feature/components/PlanFeatureTable";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -304,6 +306,24 @@ export const router = createBrowserRouter([
                   {
                     index: true,
                     element: <FeatureTable />,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: ROUTES.PLAN_FEATURE,
+
+            element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+
+            children: [
+              {
+                element: <PlanFeaturePage />,
+
+                children: [
+                  {
+                    index: true,
+                    element: <PlanFeatureTable />,
                   },
                 ],
               },

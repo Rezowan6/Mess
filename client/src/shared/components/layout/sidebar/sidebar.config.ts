@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   Puzzle,
   Receipt,
+  SlidersHorizontal,
   Users,
   Utensils,
 } from "lucide-react";
@@ -41,6 +42,11 @@ export const sidebarItems: ISidebarItem[] = [
     title: "Features",
     path: ROUTES.FEATURE,
     icon: Puzzle,
+  },
+  {
+    title: "Plan Features",
+    path: ROUTES.PLAN_FEATURE,
+    icon: SlidersHorizontal,
   },
 
   {
