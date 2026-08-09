@@ -21,6 +21,8 @@ import { DepositAddPage } from "@/modules/deposit/pages/DepositAddPage";
 import { DepositHistoryPage } from "@/modules/deposit/pages/DepositHistoryPage";
 import { DepositPage } from "@/modules/deposit/pages/DepositPage";
 import { ExpensePage } from "@/modules/expense/pages/ExpensePage";
+import { FeatureTable } from "@/modules/feature/components/FeatureTable";
+import { FeaturePage } from "@/modules/feature/pages/FeaturePage";
 import { AcceptInvitePage } from "@/modules/invite/pages/AcceptInvitePage";
 import { LandingLayout } from "@/modules/landing/layouts/LandingLayout";
 import { LandingPage } from "@/modules/landing/pages/LandingPage";
@@ -36,6 +38,7 @@ import { MyDepositHistoryPage } from "@/modules/my-profile/pages/MyDepositHistor
 import { MyMealHistoryPage } from "@/modules/my-profile/pages/MyMealHistoryPage";
 import { MyProfilePage } from "@/modules/my-profile/pages/MyProfilePage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
+import { PlanTable } from "@/modules/plan/components/PlanTable";
 import { PlanDetailsPage } from "@/modules/plan/pages/PlanDetailsPage";
 import { PlanManagementPage } from "@/modules/plan/pages/PlanManagementPage";
 import { GeneralSettingsPage } from "@/modules/settings/pages/GeneralSettingsPage";
@@ -46,7 +49,6 @@ import { SubscriptionPage } from "@/modules/subscription/pages/SubscriptionPage"
 import { UpgradePlanPage } from "@/modules/subscription/pages/UpgradePlanPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
-import { PlanTable } from "@/modules/plan/components/PlanTable";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -285,6 +287,25 @@ export const router = createBrowserRouter([
               {
                 path: ":id",
                 element: <PlanDetailsPage />,
+              },
+            ],
+          },
+
+          {
+            path: ROUTES.FEATURE,
+
+            element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+
+            children: [
+              {
+                element: <FeaturePage />,
+
+                children: [
+                  {
+                    index: true,
+                    element: <FeatureTable />,
+                  },
+                ],
               },
             ],
           },

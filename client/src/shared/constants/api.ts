@@ -18,6 +18,13 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `/plans/${id}`,
     DELETE: (id: number) => `/plans/${id}`,
   },
+  FEATURE: {
+    LIST: "/features",
+    BY_ID: (id: number) => `/features/${id}`,
+    CREATE: "/features",
+    UPDATE: (id: number) => `/features/${id}`,
+    DELETE: (id: number) => `/features/${id}`,
+  },
   MY_PROFILE: {
     INFO: "/my-profile/info",
     ALL: "/my-profile",

@@ -2,9 +2,21 @@ export const PERMISSIONS = {
   // tenant
   TENANT_CREATE: "tenant.create",
 
+  // feature
+  FEATURE_VIEW: "feature.view",
+  FEATURE_CREATE: "feature.create",
+  FEATURE_UPDATE: "feature.update",
+  FEATURE_DELETE: "feature.delete",
+
+  // plan
+  PLAN_VIEW: "plan.view",
+  PLAN_CREATE: "plan.create",
+  PLAN_UPDATE: "plan.update",
+  PLAN_DELETE: "plan.delete",
+
   // monthly-calculation
   MONTHLY_CALCULATION_VIEW: "monthly_calculation.view",
-  
+
   // User
   USER_VIEW: "user.view",
   USER_CREATE: "user.create",

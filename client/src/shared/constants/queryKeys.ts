@@ -13,12 +13,19 @@ export const queryKeys = {
     invites: (tenantId?: number) => ["tenants", tenantId, "invites"] as const,
   },
   plans: {
-  all: ["plans"] as const,
+    all: ["plans"] as const,
 
-  list: ["plans", "list"] as const,
+    list: ["plans", "list"] as const,
 
-  byId: (id: number) => ["plans", id] as const,
-},
+    byId: (id: number) => ["plans", id] as const,
+  },
+  features: {
+    all: ["features"] as const,
+
+    list: ["features", "list"] as const,
+
+    byId: (id: number) => ["features", "byId", id] as const,
+  },
   monthlyCalculations: {
     current: (tenantId?: number) =>
       ["monthly-calculations", tenantId, "current"] as const,
