@@ -5,6 +5,7 @@ import { useFeatureColumns } from "../configs/feature.columns";
 import { useFeatures } from "../hooks/useFeatures";
 import type { IFeature } from "../types/feature.types";
 import { FeatureFormModal } from "./FeatureFormModal";
+import { FeatureTableSkeleton } from "./FeatureTableSkeleton";
 
 export const FeatureTable = () => {
   const [selectedFeature, setSelectedPlan] = useState<IFeature | null>(null);
@@ -18,6 +19,10 @@ export const FeatureTable = () => {
   };
 
   const columns = useFeatureColumns(handleEdit);
+
+  if (isPending) {
+    return <FeatureTableSkeleton />;
+  }
 
   return (
     <>
