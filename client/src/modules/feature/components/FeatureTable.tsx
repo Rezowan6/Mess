@@ -2,6 +2,7 @@ import { Table } from "@/shared/components/ui/Table";
 
 import { useState } from "react";
 import { useFeatureColumns } from "../configs/feature.columns";
+import { FEATURE_MESSAGES } from "../configs/feature.messages";
 import { useFeatures } from "../hooks/useFeatures";
 import type { IFeature } from "../types/feature.types";
 import { FeatureFormModal } from "./FeatureFormModal";
@@ -13,6 +14,7 @@ export const FeatureTable = () => {
   const { data, isPending, isError, refetch } = useFeatures();
 
   const features = data?.data ?? [];
+
   const handleEdit = (feature: IFeature) => {
     setSelectedPlan(feature);
     setIsEditOpen(true);
@@ -30,6 +32,7 @@ export const FeatureTable = () => {
         columns={columns}
         data={features}
         loading={isPending}
+        message={FEATURE_MESSAGES}
         error={isError}
         refetch={refetch}
       />

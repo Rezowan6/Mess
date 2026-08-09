@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Table } from "@/shared/components/ui/Table";
 
+import { PLAN_MESSAGES } from "../configs/plan.messages";
 import { usePlanColumns } from "../configs/planTable.config";
 import { usePlans } from "../hooks/usePlans";
 import type { IPlan } from "../types/plan.types";
@@ -12,7 +13,7 @@ export const PlanTable = () => {
   const [selectedPlan, setSelectedPlan] = useState<IPlan | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const { data, isPending } = usePlans();
+  const { data, isPending, refetch, isError } = usePlans();
 
   const plans = data?.data ?? [];
 
@@ -23,13 +24,20 @@ export const PlanTable = () => {
 
   const columns = usePlanColumns(handleEdit);
 
-  if(isPending) {
-    return <PlanTableSkeleton />
+  if (isPending) {
+    return <PlanTableSkeleton />;
   }
 
   return (
     <>
-      <Table columns={columns} data={plans} loading={isPending} />
+      <Table
+        columns={columns}
+        data={plans}
+        loading={isPending}
+        message={PLAN_MESSAGES}
+        refetch={refetch}
+        error={isError}
+      />
 
       <PlanFormModal
         isOpen={isEditOpen}
