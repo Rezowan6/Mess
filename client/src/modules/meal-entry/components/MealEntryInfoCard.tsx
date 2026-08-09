@@ -15,7 +15,6 @@ export const MealEntryInfoCard = ({ memberName, totalMeals }: Props) => {
         <InfoCard
           key={card.key}
           icon={card.icon}
-          iconClassName={card.iconClassName}
           title={card.title}
           value={card.value}
           valueClassName={card.valueClassName}

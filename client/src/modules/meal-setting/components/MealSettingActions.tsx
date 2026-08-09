@@ -47,7 +47,6 @@ export const MealSettingActions = ({ setting, onEdit }: Props) => {
       {can(PERMISSIONS.MEAL_SETTING_UPDATE) && (
         <Button
           variant="success"
-          size="sm"
           leftIcon={<Edit size={14} />}
           className="px-2 sm:px-3 h-8"
           onClick={onEdit}
