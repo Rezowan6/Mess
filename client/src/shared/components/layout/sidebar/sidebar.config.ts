@@ -10,6 +10,7 @@ import {
   HandCoins,
   Landmark,
   LayoutDashboard,
+  Puzzle,
   Receipt,
   Users,
   Utensils,
@@ -34,6 +35,12 @@ export const sidebarItems: ISidebarItem[] = [
     title: "Plans",
     path: ROUTES.PLANS,
     icon: Crown,
+  },
+
+  {
+    title: "Features",
+    path: ROUTES.FEATURE,
+    icon: Puzzle,
   },
 
   {
