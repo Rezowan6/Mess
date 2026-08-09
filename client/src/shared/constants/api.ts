@@ -33,6 +33,14 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `/plan-features/${id}`,
     DELETE: (id: number) => `/plan-features/${id}`,
   },
+  SUBSCRIPTION: {
+    CREATE: "/subscriptions",
+    CURRENT: "/subscriptions/current",
+    MY_SUBSCRIPTIONS: "/subscriptions/my-subscriptions",
+    BY_ID: (id: number) => `/subscriptions/${id}`,
+    ACTIVATE: (id: number) => `/subscriptions/${id}/activate`,
+    CANCEL: (id: number) => `/subscriptions/${id}/cancel`,
+  },
   MY_PROFILE: {
     INFO: "/my-profile/info",
     ALL: "/my-profile",

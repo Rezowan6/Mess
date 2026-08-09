@@ -12,6 +12,7 @@ export const queryKeys = {
 
     invites: (tenantId?: number) => ["tenants", tenantId, "invites"] as const,
   },
+  
   plans: {
     all: ["plans"] as const,
 
@@ -19,6 +20,7 @@ export const queryKeys = {
 
     byId: (id: number) => ["plans", id] as const,
   },
+
   features: {
     all: ["features"] as const,
 
@@ -26,6 +28,7 @@ export const queryKeys = {
 
     byId: (id: number) => ["features", "byId", id] as const,
   },
+
   planFeatures: {
     all: ["planFeatures"] as const,
 
@@ -33,7 +36,18 @@ export const queryKeys = {
 
     byId: (id: number) => ["planFeatures", id] as const,
 
-    byPlanId: (planId: number | undefined) => ["planFeatures", "plan", planId] as const,
+    byPlanId: (planId: number | undefined) =>
+      ["planFeatures", "plan", planId] as const,
+  },
+
+  subscriptions: {
+    all: ["subscriptions"] as const,
+
+    current: ["subscriptions", "current"] as const,
+
+    mySubscriptions: ["subscriptions", "my-subscriptions"] as const,
+
+    byId: (id: number) => ["subscriptions", id] as const,
   },
   monthlyCalculations: {
     current: (tenantId?: number) =>

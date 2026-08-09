@@ -1,51 +1,53 @@
+Next: Subscription Module
 
+আপনার project-এ এটা এখন সবচেয়ে logical next step।
 
-সব system feature list
-Active feature management
-3. Plan Feature Module
+Flow হবে:
 
-কারণ:
-
-Relation:
-
+Tenant
+   ↓
+Subscription
+   ↓
 Plan
- |
- |
+   ↓
 PlanFeature
- |
- |
-Feature
+   ↓
+Feature Access
 
-এখানে plan এর কোন feature আছে সেটা দেখাবেন।
+অর্থাৎ কোনো Mess/Tenant কোন Plan subscribe করেছে, subscription-এর status কী, শুরু/শেষ কবে—এসব Subscription Module handle করবে।
 
-src/modules/plan-feature/
+আপনার backend-এ Subscription Module আগে থেকেই আছে, তাই এখন frontend implementation করাই next priority।
 
-├── api/
-│   └── planFeature.api.ts
+Subscription-এ মূলত থাকবে
+Current Subscription
+Current Plan
+Subscription status
+Start date
+End date
+Monthly / Yearly billing
+Upgrade Plan
+Downgrade Plan
+Renew Subscription
+Cancel Subscription
+Subscription history
+Payment-এর সাথে connection
 
-├── hooks/
-│   └── usePlanFeatures.ts
+এটাই আপনার SaaS-এর billing + entitlement foundation। আধুনিক SaaS architecture-এ subscription state এবং feature entitlement আলাদা করে রাখা গুরুত্বপূর্ণ।
 
-├── types/
-│   └── planFeature.types.ts
+এরপর এই order রাখুন
+✅ Plan
+✅ Feature
+✅ PlanFeature
 
-├── components/
-│   └── PlanFeatureList.tsx
+👉 1. Subscription
+👉 2. Payment
+👉 3. Subscription/Feature Guard
+👉 4. Notification
+👉 5. Audit Log
+👉 6. Final SaaS Testing
+👉 7. Production Deployment
 
-└── pages/
-    └── PlanFeatureManagePage.tsx
-
-Features:
-
-Example:
-
-Premium Plan:
-
-✓ Unlimited Members
-✓ Payment Integration
-✓ Analytics
-4. Subscription Module (আপনার current কাজ)
-
+আমার recommendation: এখন সরাসরি Subscription Module শুরু করুন।
 Backend:
 
 Subscription
