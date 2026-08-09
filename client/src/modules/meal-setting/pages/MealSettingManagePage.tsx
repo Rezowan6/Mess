@@ -9,6 +9,7 @@ import { Settings } from "lucide-react";
 import { MealSettingActions } from "../components/MealSettingActions.tsx";
 import { MealSettingCard } from "../components/MealSettingCard";
 import { MealSettingFormModal } from "../components/MealSettingFormModal";
+import { MealSettingManageSkeleton } from "../components/MealSettingManageSkeleton.tsx";
 import { useMealSetting } from "../hooks/useMealSetting";
 
 export const MealSettingManagePage = () => {
@@ -21,9 +22,9 @@ export const MealSettingManagePage = () => {
   return (
     <PermissionGuard permission={PERMISSIONS.MEAL_SETTING_VIEW}>
       {isPending ? (
-        <p>Loading...</p>
+        <MealSettingManageSkeleton />
       ) : setting ? (
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="flex justify-end">
             <MealSettingActions
               setting={setting}
@@ -31,7 +32,9 @@ export const MealSettingManagePage = () => {
             />
           </div>
 
-          <MealSettingCard setting={setting} />
+          <div className="rounded-xl border border-accent p-6">
+            <MealSettingCard setting={setting} />
+          </div>
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center gap-4 py-10">
