@@ -26,6 +26,15 @@ export const queryKeys = {
 
     byId: (id: number) => ["features", "byId", id] as const,
   },
+  planFeatures: {
+    all: ["planFeatures"] as const,
+
+    list: ["planFeatures", "list"] as const,
+
+    byId: (id: number) => ["planFeatures", id] as const,
+
+    byPlanId: (planId: number | undefined) => ["planFeatures", "plan", planId] as const,
+  },
   monthlyCalculations: {
     current: (tenantId?: number) =>
       ["monthly-calculations", tenantId, "current"] as const,

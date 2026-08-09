@@ -31,6 +31,7 @@ export const ROUTES = {
 
   PLANS: "/plans",
   FEATURE: "/features",
+  PLAN_FEATURE: "/plan-features",
   SUBSCRIPTION: "/subscription",
 
   PAYMENT: "/payments",

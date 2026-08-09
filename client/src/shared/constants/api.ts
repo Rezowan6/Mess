@@ -25,6 +25,14 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `/features/${id}`,
     DELETE: (id: number) => `/features/${id}`,
   },
+  PLAN_FEATURE: {
+    LIST: "/plan-features",
+    BY_ID: (id: number) => `/plan-features/${id}`,
+    BY_PLAN_ID: (planId: number) => `/plan-features/plan/${planId}`,
+    CREATE: "/plan-features",
+    UPDATE: (id: number) => `/plan-features/${id}`,
+    DELETE: (id: number) => `/plan-features/${id}`,
+  },
   MY_PROFILE: {
     INFO: "/my-profile/info",
     ALL: "/my-profile",
