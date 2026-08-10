@@ -23,7 +23,6 @@ export const PlanManagementPage = () => {
             Add Plan
           </Button>
         }
-        footer={<BackButton />}
       >
         <Outlet />
       </ManagementPage>

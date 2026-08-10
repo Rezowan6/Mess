@@ -6,19 +6,19 @@ export const FooterSocialLinks = () => {
   return (
     <div className="flex gap-3">
       <Button variant="success">
-        <FaFacebook size={18} />
+        <FaFacebook/>
       </Button>
 
       <Button variant="primary">
-        <FaGithub size={18} />
+        <FaGithub />
       </Button>
 
       <Button variant="warning">
-        <FaLinkedin size={18} />
+        <FaLinkedin  />
       </Button>
 
       <Button variant="accent">
-        <Mail size={18} />
+        <Mail  />
       </Button>
     </div>
   );
