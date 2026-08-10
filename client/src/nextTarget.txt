@@ -1,11 +1,7 @@
 
-PaymentPage.tsx
 PaymentHistoryPage.tsx
 PaymentDetailsPage.tsx
-PaymentStatusBadge.tsx
 PaymentTable.tsx
-PaymentColumns.tsx
-PaymentRowActions.tsx
 PaymentMethodSelector.tsx
 PaymentCheckoutModal.tsx
 Subscription → Payment flow connect

@@ -3,7 +3,7 @@ import type { ISubscription } from "@/modules/subscription/types/subscription.ty
 export type PaymentGatewayType = "bkash" | "stripe";
 
 export type PaymentStatusType =
-  "pending" | "paid" | "failed" | "cancelled" | "refunded";
+  "pending" | "processing" | "success" | "failed" | "cancelled" | "refunded";
 
 export interface IPayment {
   id: number;

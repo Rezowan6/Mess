@@ -46,12 +46,15 @@ import { PlanManagementPage } from "@/modules/plan/pages/PlanManagementPage";
 import { GeneralSettingsPage } from "@/modules/settings/pages/GeneralSettingsPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { SubscriptionLayout } from "@/modules/subscription/layouts/SubscriptionLayout";
+import { SubscriptionDetailsPage } from "@/modules/subscription/pages/SubscriptionDetailsPage";
+import { SubscriptionHistoryPage } from "@/modules/subscription/pages/SubscriptionHistoryPage";
 import { SubscriptionPage } from "@/modules/subscription/pages/SubscriptionPage";
 import { UpgradePlanPage } from "@/modules/subscription/pages/UpgradePlanPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
-import { SubscriptionHistoryPage } from "@/modules/subscription/pages/SubscriptionHistoryPage";
-import { SubscriptionDetailsPage } from "@/modules/subscription/pages/SubscriptionDetailsPage";
+import { PaymentPage } from "@/modules/payment/pages/PaymentPage";
+import { PaymentLayout } from "@/modules/payment/layouts/PaymentLayout";
+import { PaymentDetailsPage } from "@/modules/payment/pages/PaymentDetailsPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -197,6 +200,29 @@ export const router = createBrowserRouter([
                   {
                     path: ":id",
                     element: <SubscriptionDetailsPage />,
+                  },
+                ],
+              },
+            ],
+          },
+
+          {
+            path: ROUTES.PAYMENT,
+
+            element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+
+            children: [
+              {
+                element: <PaymentLayout />,
+
+                children: [
+                  {
+                    index: true,
+                    element: <PaymentPage />,
+                  },
+                  {
+                    path: ":id",
+                    element: <PaymentDetailsPage />,
                   },
                 ],
               },

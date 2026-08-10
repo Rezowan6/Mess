@@ -44,7 +44,7 @@ export const API_ENDPOINTS = {
   PAYMENT: {
     CREATE: "/payments",
 
-    LIST: "/payments",
+    LIST: "/payments/my-payments",
 
     BY_ID: (id: number) => `/payments/${id}`,
 

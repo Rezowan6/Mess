@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { allAccess, systemOwnerAccess } from "@/helpers/permission.js";
+import { adminAndManagerAccess, allAccess, systemOwnerAccess } from "@/helpers/permission.js";
 import { PaymentController } from "./payment.controller.js";
 
 const router = Router();
@@ -11,15 +11,15 @@ const controller = new PaymentController();
  * Tenant Routes
  */
 
-router.post("/", controller.create);
+router.post("/", ...adminAndManagerAccess, controller.create);
 
 // router.post("/webhook/:gateway", controller.webhook);
 
 router.post("/:id/verify", controller.verify);
 
-router.get("/my-payments", controller.getMyPayments);
+router.get("/my-payments", ...adminAndManagerAccess, controller.getMyPayments);
 
-router.get("/:id", controller.getById);
+router.get("/:id", ...adminAndManagerAccess, controller.getById);
 
 
 /**
