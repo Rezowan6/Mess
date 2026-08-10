@@ -26,3 +26,16 @@ export interface ICopyMealPreferencePayload {
   previousMealSessionId: number;
   currentMealSessionId: number;
 }
+
+export interface IMealPreferenceWithUser {
+  userId: number;
+  breakfast: number;
+  lunch: number;
+  dinner: number;
+  guestMeal: number;
+
+  user: {
+    id: number;
+    name: string;
+  };
+}

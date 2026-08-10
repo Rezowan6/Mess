@@ -164,6 +164,28 @@ export class MealRequestService {
     });
   }
 
+  async getApproves({
+    tenantId,
+    mealSessionId,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+  }) {
+    const mealRequest = await mealRequestRepository.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+        status: MealRequestStatus.APPROVED,
+      },
+    });
+
+    if (!mealRequest.length) {
+      throw new ApiError(404, "today pending request not found.");
+    }
+
+    return mealRequest;
+  }
+
   async getPendingRequests({
     tenantId,
     mealSessionId,

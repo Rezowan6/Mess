@@ -5,6 +5,7 @@ import expensesRouter from "@/modules/expenses/expenses.route.js";
 import featureRouter from "@/modules/feature/feature.route.js";
 import invitesRouter from "@/modules/invite/invite.route.js";
 import mealEntriesRouter from "@/modules/mealEntry/mealEntry.route.js";
+import mealPlanningRouter from "@/modules/mealPlanning/mealPlanning.route.js";
 import mealPreferenceRouter from "@/modules/MealPreference/mealPreference.route.js";
 import mealRequestRouter from "@/modules/mealRequest/mealRequest.route.js";
 import mealSessionRouter from "@/modules/mealSession/mealSession.route.js";
@@ -28,6 +29,7 @@ export {
   featureRouter,
   invitesRouter,
   mealEntriesRouter,
+  mealPlanningRouter,
   mealPreferenceRouter,
   mealRequestRouter,
   mealSessionRouter,

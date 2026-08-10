@@ -1,0 +1,93 @@
+src/
+└── modules/
+    └── mealPlanning/
+        ├── mealPlanning.interface.ts
+        ├── mealPlanning.service.ts
+        ├── mealPlanning.controller.ts
+        └── mealPlanning.route.ts
+
+{mealPlanning.interface.ts
+→ Request DTO
+→ Response types
+→ Meal planning data types
+
+
+mealPlanning.service.ts
+→ Breakfast planning
+→ Lunch planning
+→ Dinner planning
+→ Guest meal calculation
+→ Member-wise meal list
+→ Daily meal summary
+
+
+mealPlanning.controller.ts
+→ HTTP request handle করবে
+→ tenantId/date নেবে
+→ service call করবে
+→ response পাঠাবে
+
+
+mealPlanning.route.ts
+→ Manager/Admin access
+→ GET daily meal planning endpoint
+  date: "2026-08-10",
+
+  summary: {
+    breakfast: 25,
+    lunch: 38,
+    dinner: 31,
+    guestMeal: 4,
+    totalMeals: 94
+  },
+
+  breakfast: [
+    {
+      userId: 1,
+      memberName: "Rahim",
+      meal: 1
+    },
+    {
+      userId: 2,
+      memberName: "Karim",
+      meal: 1
+    }
+  ],
+
+  lunch: [
+    {
+      userId: 1,
+      memberName: "Rahim",
+      meal: 1
+    }
+  ],
+
+  dinner: [
+    {
+      userId: 2,
+      memberName: "Karim",
+      meal: 1
+    }
+  ]
+}
+
+done module:
+1.auth
+2.user
+3.tenant
+4.tenantMembership
+5.plan
+6.feature
+7.planFeature
+8.subscription
+9.payment
+10.mealSession
+11.mealRequest
+12.mealEntry
+13.deposit
+14.expense
+15.notice
+
+next target:
+1.refreshToken
+

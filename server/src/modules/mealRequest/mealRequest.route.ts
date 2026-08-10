@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.post("/", ...allAccess, mealRequestController.create);
 
+router.get("/approves", ...allAccess, mealRequestController.getApproves);
+
 router.get("/pending/my", ...allAccess, mealRequestController.mypendingRequest);
 
 router.get("/pending-all", ...allAccess, mealRequestController.getPendingRequests);

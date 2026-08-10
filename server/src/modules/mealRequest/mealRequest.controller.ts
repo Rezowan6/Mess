@@ -23,6 +23,21 @@ export class MealRequestController {
     });
   });
 
+  getApproves = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
+
+    const approvedMeal = await mealRequestService.getApproves({
+      tenantId,
+      mealSessionId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 201,
+      message: "Meal approve request get successfully.",
+      data: approvedMeal,
+    });
+  });
+
   mypendingRequest = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId, mealSessionId } = getTenantContext(req);
 
@@ -104,10 +119,7 @@ export class MealRequestController {
   });
 
   approveAll = asyncHandler(async (req: Request, res: Response) => {
-    const {
-      tenantId,
-      userId: managerId,
-    } = getTenantContext(req);
+    const { tenantId, userId: managerId } = getTenantContext(req);
     const { approvedCount } = await mealRequestService.approveAllPending({
       tenantId,
       managerId,

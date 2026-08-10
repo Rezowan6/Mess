@@ -1,7 +1,6 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
-import { IGetMealPreferencesBySession } from "./mealPreference.interface.js";
+import { IGetMealPreferencesBySession, IMealPreferenceWithUser } from "./mealPreference.interface.js";
 import { MealPreference } from "./mealPreference.model.js";
-import { InferCreationAttributes, Transaction } from "sequelize";
 
 class MealPreferencRepository extends BaseRepository<MealPreference> {
   constructor() {
@@ -32,14 +31,22 @@ class MealPreferencRepository extends BaseRepository<MealPreference> {
   }: {
     tenantId: number;
     mealSessionId: number;
-  }) {
+  }): Promise<IMealPreferenceWithUser[]> {
     return this.findAllWithOptions({
       where: {
         tenantId,
         mealSessionId,
         isActive: true,
       },
-    });
+
+      include: [
+        {
+          association: "user",
+          attributes: ["id", "name"],
+          required: true,
+        },
+      ],
+    }) as unknown as IMealPreferenceWithUser[]; 
   }
 
   async getByMealSession({
@@ -54,7 +61,6 @@ class MealPreferencRepository extends BaseRepository<MealPreference> {
       },
     });
   }
-
 }
 
 export const mealPreferenceRepository = new MealPreferencRepository();
