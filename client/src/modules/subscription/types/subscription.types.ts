@@ -1,3 +1,5 @@
+import type { IPlan } from "@/modules/plan/types/plan.types";
+
 export type SubscriptionStatusType =
   "active" | "cancelled" | "expired" | "pending";
 
@@ -12,4 +14,5 @@ export interface ISubscription {
   endDate: string | null;
   createdAt: string;
   updatedAt: string;
+  plan?: IPlan
 }

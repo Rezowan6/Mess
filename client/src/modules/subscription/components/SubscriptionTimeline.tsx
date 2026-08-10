@@ -1,30 +1,48 @@
 import { CalendarCheck, CreditCard, PlayCircle } from "lucide-react";
 
-const timelineItems = [
-  {
-    title: "Subscription Started",
-    description: "Your Standard plan subscription started successfully.",
-    date: "01 Aug 2026",
-    icon: PlayCircle,
-  },
-  {
-    title: "Payment Completed",
-    description: "Monthly subscription payment was completed.",
-    date: "01 Aug 2026",
-    icon: CreditCard,
-  },
-  {
-    title: "Next Renewal",
-    description: "Your subscription will renew automatically.",
-    date: "01 Sep 2026",
-    icon: CalendarCheck,
-  },
-];
+import type { ISubscription } from "../types/subscription.types";
 
-export const SubscriptionTimeline = () => {
+interface Props {
+  subscription: ISubscription;
+}
+
+export const SubscriptionTimeline = ({ subscription }: Props) => {
+  const timelineItems = [
+    {
+      title: "Subscription Started",
+      description: `Your ${subscription.plan?.name ?? "plan"} subscription started successfully.`,
+      date: subscription.startDate,
+      icon: PlayCircle,
+    },
+    {
+      title: "Payment Completed",
+      description: "Subscription payment was completed.",
+      date: subscription.startDate,
+      icon: CreditCard,
+    },
+    {
+      title: "Next Renewal",
+      description: subscription.endDate
+        ? "Your subscription will renew automatically."
+        : "No renewal date available.",
+      date: subscription.endDate,
+      icon: CalendarCheck,
+    },
+  ];
+
+  const formatDate = (date: string | null) => {
+    if (!date) return "N/A";
+
+    return new Date(date).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
   return (
-    <div className="rounded-2xl bg-success/10 p-6 shadow-sm">
-      <h3 className="mb-6 text-xl font-bold">Subscription Timeline</h3>
+    <div className="rounded-2xl border border-base-300 bg-base-100 p-6">
+      <h3 className="mb-6 text-lg font-semibold">Subscription Timeline</h3>
 
       <ul className="space-y-6">
         {timelineItems.map((item) => {
@@ -44,7 +62,7 @@ export const SubscriptionTimeline = () => {
                 </p>
 
                 <span className="mt-1 block text-xs text-base-content/50">
-                  {item.date}
+                  {formatDate(item.date)}
                 </span>
               </div>
             </li>

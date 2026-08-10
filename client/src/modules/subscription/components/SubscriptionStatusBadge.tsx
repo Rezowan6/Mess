@@ -1,22 +1,44 @@
-import { Badge } from "@/shared/components/ui/Badge";
-import clsx from "clsx";
+import { Badge, type IBadgeVariant } from "@/shared/components/ui/Badge";
+import type { SubscriptionStatusType } from "../types/subscription.types";
 
 interface Props {
-  status: "FREE" | "ACTIVE" | "PENDING" | "EXPIRED" | "CANCELLED";
+  status: SubscriptionStatusType | string;
 }
 
-const statusStyles = {
-  FREE: "badge-info",
-  ACTIVE: "badge-success",
-  PENDING: "badge-warning",
-  EXPIRED: "badge-error",
-  CANCELLED: "badge-error",
+const statusConfig: Record<
+  SubscriptionStatusType,
+  {
+    label: string;
+    variant: IBadgeVariant;
+  }
+> = {
+  active: {
+    label: "Active",
+    variant: "success",
+  },
+  pending: {
+    label: "Pending",
+    variant: "warning",
+  },
+  cancelled: {
+    label: "Cancelled",
+    variant: "error",
+  },
+  expired: {
+    label: "Expired",
+    variant: "neutral",
+  },
 };
 
 export const SubscriptionStatusBadge = ({ status }: Props) => {
+  const config = statusConfig[status?.toLowerCase() as SubscriptionStatusType] ?? {
+    label: status,
+    variant: "error"  as IBadgeVariant,
+  };
+
   return (
-    <Badge className={clsx("badge px-4 py-3", statusStyles[status])}>
-      {status}
+    <Badge size="sm" className="w-fit" variant={config.variant}>
+      {config.label}
     </Badge>
   );
 };

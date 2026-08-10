@@ -1,3 +1,16 @@
+export interface IPlanFeature {
+  id: number;
+  name: string;
+  slug: string;
+  description: string | null;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  PlanFeature: {
+    value: string | null;
+  };
+}
+
 export interface IPlan {
   id: number;
   name: string;
@@ -11,4 +24,5 @@ export interface IPlan {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  features?: IPlanFeature[];
 }

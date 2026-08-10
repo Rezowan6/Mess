@@ -20,6 +20,13 @@ export const PERMISSIONS = {
   PLAN_FEATURE_UPDATE: "plan_feature.update",
   PLAN_FEATURE_DELETE: "plan_feature.delete",
 
+  // subscription
+  SUBSCRIPTION_VIEW: "subscription.view",
+  SUBSCRIPTION_CREATE: "subscription.create",
+  SUBSCRIPTION_UPDATE: "subscription.update",
+  SUBSCRIPTION_DELETE: "subscription.delete",
+  SUBSCRIPTION_MANAGE: "subscription.manage",
+
   // monthly-calculation
   MONTHLY_CALCULATION_VIEW: "monthly_calculation.view",
 
@@ -75,10 +82,6 @@ export const PERMISSIONS = {
   // Settings
   SETTINGS_VIEW: "settings.view",
   SETTINGS_UPDATE: "settings.update",
-
-  // Subscription
-  SUBSCRIPTION_VIEW: "subscription.view",
-  SUBSCRIPTION_MANAGE: "subscription.manage",
 
   PLANS_CREATE: "plan.create",
 

@@ -1,8 +1,14 @@
-import { Badge } from "@/shared/components/ui/Badge";
 import { IconBox } from "@/shared/components/ui/IconBox";
 import { Crown } from "lucide-react";
+import type { ISubscription } from "../types/subscription.types";
+import { SubscriptionStatusBadge } from "./SubscriptionStatusBadge";
 
-export const SubscriptionOverview = () => {
+interface Props {
+  subscription: ISubscription;
+}
+
+export const SubscriptionOverview = ({ subscription }: Props) => {
+
   return (
     <div className="rounded-2xl bg-success/20 p-6 shadow-sm">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -22,10 +28,7 @@ export const SubscriptionOverview = () => {
             </p>
           </div>
         </div>
-
-        <Badge variant="success" className="w-fit">
-          Active
-        </Badge>
+        <SubscriptionStatusBadge status={subscription.status} />
       </div>
     </div>
   );

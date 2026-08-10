@@ -1,106 +1,174 @@
-Next: Subscription Module
-
-আপনার project-এ এটা এখন সবচেয়ে logical next step।
-
-Flow হবে:
-
-Tenant
-   ↓
-Subscription
-   ↓
-Plan
-   ↓
-PlanFeature
-   ↓
-Feature Access
-
-অর্থাৎ কোনো Mess/Tenant কোন Plan subscribe করেছে, subscription-এর status কী, শুরু/শেষ কবে—এসব Subscription Module handle করবে।
-
-আপনার backend-এ Subscription Module আগে থেকেই আছে, তাই এখন frontend implementation করাই next priority।
-
-Subscription-এ মূলত থাকবে
-Current Subscription
-Current Plan
-Subscription status
-Start date
-End date
-Monthly / Yearly billing
-Upgrade Plan
-Downgrade Plan
-Renew Subscription
-Cancel Subscription
-Subscription history
-Payment-এর সাথে connection
-
-এটাই আপনার SaaS-এর billing + entitlement foundation। আধুনিক SaaS architecture-এ subscription state এবং feature entitlement আলাদা করে রাখা গুরুত্বপূর্ণ।
-
-এরপর এই order রাখুন
-✅ Plan
-✅ Feature
-✅ PlanFeature
-
-👉 1. Subscription
-👉 2. Payment
-👉 3. Subscription/Feature Guard
-👉 4. Notification
-👉 5. Audit Log
-👉 6. Final SaaS Testing
-👉 7. Production Deployment
-
-আমার recommendation: এখন সরাসরি Subscription Module শুরু করুন।
-Backend:
-
-Subscription
-
-এর উপর।
-
 src/modules/subscription/
-
+│
 ├── api/
 │   └── subscription.api.ts
-
+│
 ├── hooks/
-│   └── useSubscription.ts
-
-├── services/
-│   └── subscription.service.ts
-
+│   ├── useCreateSubscription.ts
+│   ├── useCurrentSubscription.ts
+│   ├── useTenantSubscriptions.ts
+│   ├── useSubscriptionById.ts
+│   ├── useActivateSubscription.ts
+│   └── useCancelSubscription.ts
+│
 ├── types/
 │   └── subscription.types.ts
-
-├── components/
-
-│   ├── CurrentSubscription.tsx
-│   ├── CurrentPlanCard.tsx
-│   ├── SubscriptionStatusBadge.tsx
-│   ├── SubscriptionSummaryCards.tsx
-│   ├── SubscriptionTimeline.tsx
-│   ├── ExpiryAlert.tsx
-│   └── UpgradeButton.tsx
-
-
+│
+├── schemas/
+│   └── subscription.schema.ts
+│
+├── configs/
+│   ├── subscription.page.config.tsx
+│   ├── subscription.columns.tsx
+│   └── subscription.messages.ts
+│
 ├── pages/
-
+│   ├── SubscriptionPage.tsx
 │   ├── CurrentSubscriptionPage.tsx
-│   └── UpgradePlanPage.tsx
+│   ├── SubscriptionHistoryPage.tsx
+│   └── SubscriptionDetailsPage.tsx
+│
+├── components/
+│   ├── SubscriptionTable.tsx
+│   ├── SubscriptionTableSkeleton.tsx
+│   ├── SubscriptionRowActions.tsx
+│   ├── SubscriptionFormModal.tsx
+│   ├── SubscriptionForm.tsx
+│   ├── SubscriptionCard.tsx
+│   ├── SubscriptionStatusBadge.tsx
+│   ├── SubscriptionPlanCard.tsx
+│   ├── SubscriptionActions.tsx
+│   └── SubscriptionHistory.tsx
+│
+└── index.ts
 
 
-└── configs/
-
-    └── subscriptionSummary.config.ts
-
-Features:
-
-Current plan দেখানো
-Active status
-Start date
-End date
-Remaining days
-Upgrade button
-5. Payment Module
+src/modules/subscription/
+│
+├── api/
+│   └── subscription.api.ts
+│
+├── hooks/
+│   ├── useCreateSubscription.ts
+│   ├── useCurrentSubscription.ts
+│   ├── useTenantSubscriptions.ts
+│   ├── useSubscriptionById.ts
+│   └── useCancelSubscription.ts
+│
+├── types/
+│   └── subscription.types.ts
+│
+├── schemas/
+│   └── subscription.schema.ts
+│
+├── configs/
+│   ├── subscription.page.config.tsx
+│   ├── subscription.columns.tsx
+│   └── subscription.messages.ts
+│
+├── pages/
+│   ├── SubscriptionPage.tsx
+│   ├── CurrentSubscriptionPage.tsx
+│   ├── SubscriptionHistoryPage.tsx
+│   └── SubscriptionDetailsPage.tsx
+│
+└── components/
+    ├── SubscriptionCard.tsx
+    ├── SubscriptionPlanCard.tsx
+    ├── SubscriptionTable.tsx
+    ├── SubscriptionTableSkeleton.tsx
+    ├── SubscriptionRowActions.tsx
+    ├── SubscriptionStatusBadge.tsx
+    ├── SubscriptionPurchaseModal.tsx
+    ├── SubscriptionPurchaseForm.tsx
+    └── SubscriptionCancelModal.tsx
 
 Subscription এর পরে।
 
+src/modules/payment/
+│
+├── api/
+│   └── payment.api.ts
+│
+├── hooks/
+│   ├── useCreatePayment.ts
+│   ├── usePaymentById.ts
+│   ├── usePaymentHistory.ts
+│   └── usePaymentStatus.ts
+│
+├── types/
+│   └── payment.types.ts
+│
+├── schemas/
+│   └── payment.schema.ts
+│
+├── configs/
+│   ├── payment.page.config.tsx
+│   ├── payment.columns.tsx
+│   └── payment.messages.ts
+│
+├── pages/
+│   ├── PaymentPage.tsx
+│   ├── PaymentHistoryPage.tsx
+│   └── PaymentDetailsPage.tsx
+│
+└── components/
+    ├── PaymentTable.tsx
+    ├── PaymentTableSkeleton.tsx
+    ├── PaymentStatusBadge.tsx
+    ├── PaymentMethodBadge.tsx
+    ├── PaymentCard.tsx
+    └── PaymentProcessing.tsx
+
+
+    ┌──────────────┐
+│    Plans     │
+└──────┬───────┘
+       │ Choose Plan
+       ▼
+┌─────────────────────┐
+│ Create Subscription │
+└──────────┬──────────┘
+           │
+           ▼
+      Free Plan?
+       /       \
+     YES       NO
+      │         │
+      ▼         ▼
+   Active    Create Payment
+                │
+                ▼
+          Payment Gateway
+                │
+                ▼
+             Success
+                │
+                ▼
+        Gateway Webhook
+                │
+                ▼
+       Activate Subscription
+                │
+                ▼
+          Active Plan
+
+          Frontend
+   ↓
+Create Subscription
+   ↓
+Create Payment
+   ↓
+Gateway
+   ↓
+Webhook → Backend
+   ↓
+Backend verifies payment
+   ↓
+Backend activates subscription
+
+সবচেয়ে clean SaaS architecture:
+Plan → Create Subscription → Payment → Webhook → Activate Subscription।
 Backend:
 
 Payment

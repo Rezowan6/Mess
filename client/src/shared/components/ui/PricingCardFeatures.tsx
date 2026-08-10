@@ -1,23 +1,26 @@
 import { Check } from "lucide-react";
 
+import type { IPlanFeature } from "@/modules/plan/types/plan.types";
+
 interface Props {
-  features: readonly string[];
+  features: IPlanFeature[];
 }
 
 export const PricingCardFeatures = ({ features }: Props) => {
   return (
-    <>
-      <div className="divider" />
-
-      <ul className="space-y-3">
-        {features.map((feature) => (
-          <li key={feature} className="flex items-center gap-3 text-sm">
+    <ul className="space-y-3">
+      {features
+        .filter(
+          (feature) =>
+            feature.isActive && feature.PlanFeature?.value === "true",
+        )
+        .map((feature) => (
+          <li key={feature.id} className="flex items-center gap-3 text-sm">
             <Check size={18} className="text-success" />
 
-            <span>{feature}</span>
+            <span>{feature.name}</span>
           </li>
         ))}
-      </ul>
-    </>
+    </ul>
   );
 };

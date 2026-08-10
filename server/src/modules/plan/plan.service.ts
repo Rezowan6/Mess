@@ -22,9 +22,7 @@ export class PlanService {
 
   // Get All Plans
   async getAll(): Promise<Plan[]> {
-    return planRepository.findAll({
-      order: [["createdAt", "DESC"]],
-    });
+    return planRepository.findPlansWithFeatures();
   }
 
   // Get Active Plans

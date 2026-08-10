@@ -299,6 +299,20 @@ export const setupAssociations = () => {
     as: "feature",
   });
 
+  Plan.belongsToMany(Feature, {
+    through: PlanFeature,
+    foreignKey: "planId",
+    otherKey: "featureId",
+    as: "features",
+  });
+
+  Feature.belongsToMany(Plan, {
+    through: PlanFeature,
+    foreignKey: "featureId",
+    otherKey: "planId",
+    as: "plans",
+  });
+
   /** Subscriptions */
   // Tenant ↔ Subscription
   Tenant.hasMany(Subscription, {

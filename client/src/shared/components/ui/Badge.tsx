@@ -1,7 +1,7 @@
 import { cn } from "@/shared/utils/cn";
 import type { ReactNode } from "react";
 
-export type BadgeVariant =
+export type IBadgeVariant =
   | "success"
   | "accent"
   | "warning"
@@ -14,7 +14,7 @@ export type BadgeVariant =
 interface BadgeProps {
   children: ReactNode;
 
-  variant?: BadgeVariant;
+  variant?: IBadgeVariant;
 
   size?: "sm" | "md" | "lg";
 
@@ -23,7 +23,7 @@ interface BadgeProps {
   className?: string;
 }
 
-const variantStyles: Record<BadgeVariant, string> = {
+const variantStyles: Record<IBadgeVariant, string> = {
   success: "bg-gradient-success",
 
   accent: "bg-gradient-accent",
