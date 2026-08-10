@@ -38,6 +38,7 @@ import { MyDepositHistoryPage } from "@/modules/my-profile/pages/MyDepositHistor
 import { MyMealHistoryPage } from "@/modules/my-profile/pages/MyMealHistoryPage";
 import { MyProfilePage } from "@/modules/my-profile/pages/MyProfilePage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
+import { PlanFeatureTable } from "@/modules/plan-feature/components/PlanFeatureTable";
 import { PlanFeaturePage } from "@/modules/plan-feature/pages/PlanFeaturePage";
 import { PlanTable } from "@/modules/plan/components/PlanTable";
 import { PlanDetailsPage } from "@/modules/plan/pages/PlanDetailsPage";
@@ -45,12 +46,12 @@ import { PlanManagementPage } from "@/modules/plan/pages/PlanManagementPage";
 import { GeneralSettingsPage } from "@/modules/settings/pages/GeneralSettingsPage";
 import { SettingsPage } from "@/modules/settings/pages/SettingsPage";
 import { SubscriptionLayout } from "@/modules/subscription/layouts/SubscriptionLayout";
-import { PaymentHistoryPage } from "@/modules/subscription/pages/PaymentHistoryPage";
 import { SubscriptionPage } from "@/modules/subscription/pages/SubscriptionPage";
 import { UpgradePlanPage } from "@/modules/subscription/pages/UpgradePlanPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
-import { PlanFeatureTable } from "@/modules/plan-feature/components/PlanFeatureTable";
+import { SubscriptionHistoryPage } from "@/modules/subscription/pages/SubscriptionHistoryPage";
+import { SubscriptionDetailsPage } from "@/modules/subscription/pages/SubscriptionDetailsPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -190,8 +191,12 @@ export const router = createBrowserRouter([
                     element: <UpgradePlanPage />,
                   },
                   {
-                    path: "payment-history",
-                    element: <PaymentHistoryPage />,
+                    path: "history",
+                    element: <SubscriptionHistoryPage />,
+                  },
+                  {
+                    path: ":id",
+                    element: <SubscriptionDetailsPage />,
                   },
                 ],
               },

@@ -9,8 +9,8 @@ export const SubscriptionPage = () => {
       title="Subscription & Billing"
       description="Manage your subscription, billing history, and payment information."
       footer={
-        <ActionLink to={`${ROUTES.SUBSCRIPTION}/payment-history`}>
-          Payment history
+        <ActionLink to={`${ROUTES.SUBSCRIPTION}/history`}>
+          Subscription history
         </ActionLink>
       }
     >

@@ -73,7 +73,7 @@ plan.yearlyPrice
   }
 
   async getById(id: number): Promise<Subscription> {
-    const subscription = await subscriptionRepository.findById(id);
+    const subscription = await subscriptionRepository.findActiveSubscriptionId(id);
 
     if (!subscription) {
       throw new ApiError(404, "Subscription not found.");

@@ -8,6 +8,7 @@ import {
 } from "./subscription.interface.js";
 
 import { Op } from "sequelize";
+import { Plan } from "../plan/plan.model.js";
 
 class SubscriptionRepository extends BaseRepository<Subscription> {
   constructor() {
@@ -18,6 +19,21 @@ class SubscriptionRepository extends BaseRepository<Subscription> {
     return this.findOne({
       tenantId,
       status: SubscriptionStatus.ACTIVE,
+    });
+  }
+
+  async findActiveSubscriptionId(id: number): Promise<Subscription | null> {
+    return this.findOneWithOptions({
+      where: {
+        id,
+        status: SubscriptionStatus.ACTIVE,
+      },
+      include: [
+        {
+          model: Plan,
+          association: "plan",
+        },
+      ],
     });
   }
 
