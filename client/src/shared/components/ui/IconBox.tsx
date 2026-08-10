@@ -13,7 +13,7 @@ interface Props {
 }
 
 const sizeClasses = {
-  sm: "h-12 w-12 rounded-xl",
+  sm: "h-10 w-10 rounded-xl",
   md: "h-14 w-14 rounded-2xl",
   lg: "h-16 w-16 rounded-2xl",
 };

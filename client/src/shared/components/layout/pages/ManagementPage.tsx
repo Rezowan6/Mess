@@ -7,6 +7,7 @@ interface Props {
   footer?: ReactNode;
   children: ReactNode;
   action?: ReactNode;
+  titleClassName?: string;
 }
 
 export const ManagementPage = ({
@@ -15,12 +16,13 @@ export const ManagementPage = ({
   footer,
   children,
   action,
+  titleClassName,
 }: Props) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="min-w-0 flex-1">
-          <h1 className="text-2xl font-bold">{title}</h1>
+          <h1 className={`text-2xl font-bold ${titleClassName}`}>{title}</h1>
 
           <DescriptionText
             text={description}

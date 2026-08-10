@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 
 import { SubscriptionStatusBadge } from "../components/SubscriptionStatusBadge";
 import type { ISubscription } from "../types/subscription.types";
+import { formatDate } from "@/shared/utils/date.utils";
 
 export interface SubscriptionSummaryCard {
   title: string;
@@ -37,11 +38,7 @@ export const getSubscriptionSummaryCards = (
   {
     title: "Next Renewal",
     value: subscription.endDate
-      ? new Date(subscription.endDate).toLocaleDateString("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        })
+      ? formatDate(subscription.endDate)
       : "No Renewal",
     icon: (
       <IconBox
