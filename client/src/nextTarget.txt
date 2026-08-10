@@ -1,10 +1,4 @@
-Payment Module implementation order
-payment.types.ts
-payment.api.ts
-payment.queryKeys.ts
-useCreatePayment.ts
-usePayment.ts
-usePaymentHistory.ts
+
 PaymentPage.tsx
 PaymentHistoryPage.tsx
 PaymentDetailsPage.tsx

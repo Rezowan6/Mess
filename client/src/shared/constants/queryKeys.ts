@@ -12,7 +12,7 @@ export const queryKeys = {
 
     invites: (tenantId?: number) => ["tenants", tenantId, "invites"] as const,
   },
-  
+
   plans: {
     all: ["plans"] as const,
 
@@ -48,6 +48,17 @@ export const queryKeys = {
     mySubscriptions: ["subscriptions", "my-subscriptions"] as const,
 
     byId: (id: number) => ["subscriptions", id] as const,
+  },
+
+  payments: {
+    all: ["payments"] as const,
+
+    list: ["payments", "list"] as const,
+
+    byId: (id: number) => ["payments", "byId", id] as const,
+
+    bySubscriptionId: (subscriptionId: number) =>
+      ["payments", "bySubscriptionId", subscriptionId] as const,
   },
   monthlyCalculations: {
     current: (tenantId?: number) =>
