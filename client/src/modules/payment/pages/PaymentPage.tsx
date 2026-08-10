@@ -1,7 +1,9 @@
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
-import { Table } from "@/shared/components/ui/Table";
+import { ActionLink } from "@/shared/components/ui/ActionLink";
+import { ROUTES } from "@/shared/constants/routes";
 
-import { paymentColumns } from "../configs/payment.columns";
+import { PaymentSummaryCards } from "../components/PaymentSummaryCards";
+import { RecentPaymentTable } from "../components/RecentPaymentTable";
 import { usePayments } from "../hooks/usePayments";
 
 export const PaymentPage = () => {
@@ -9,20 +11,26 @@ export const PaymentPage = () => {
 
   const payments = data?.data ?? [];
 
-  console.log(payments)
-
   return (
     <ManagementPage
       title="Payments"
       description="View and manage your tenant payment transactions."
+      footer={
+        <ActionLink to={`${ROUTES.PAYMENT}/history`}>
+          Payment History
+        </ActionLink>
+      }
     >
-      <Table
-        columns={paymentColumns}
-        data={payments}
-        loading={isPending}
-        error={isError}
-        refetch={refetch}
-      />
+      <div className="space-y-6">
+        <PaymentSummaryCards payments={payments} />
+
+        <RecentPaymentTable
+          payments={payments}
+          loading={isPending}
+          error={isError}
+          refetch={refetch}
+        />
+      </div>
     </ManagementPage>
   );
 };

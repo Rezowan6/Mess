@@ -55,6 +55,7 @@ import { DashboardLayout } from "../layouts/Dashboard.layout";
 import { PaymentPage } from "@/modules/payment/pages/PaymentPage";
 import { PaymentLayout } from "@/modules/payment/layouts/PaymentLayout";
 import { PaymentDetailsPage } from "@/modules/payment/pages/PaymentDetailsPage";
+import { PaymentHistoryPage } from "@/modules/payment/pages/PaymentHistoryPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -223,6 +224,10 @@ export const router = createBrowserRouter([
                   {
                     path: ":id",
                     element: <PaymentDetailsPage />,
+                  },
+                  {
+                    path: "history",
+                    element: <PaymentHistoryPage />,
                   },
                 ],
               },
