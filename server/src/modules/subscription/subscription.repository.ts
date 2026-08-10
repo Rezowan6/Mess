@@ -48,6 +48,7 @@ class SubscriptionRepository extends BaseRepository<Subscription> {
     return this.findAll({
       where: {
         tenantId,
+        status: SubscriptionStatus.ACTIVE
       },
       include: [
         {
