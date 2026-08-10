@@ -10,7 +10,7 @@ export const useSubscriptionHistoryColumns = (): TableColumn<ISubscription>[] =>
     {
       key: "plan",
       title: "Plan",
-      render: (subscription) => subscription.plan?.name ?? "N/A",
+      render: (subscription) => subscription?.plan?.name ?? "N/A",
     },
 
     {

@@ -49,6 +49,12 @@ class SubscriptionRepository extends BaseRepository<Subscription> {
       where: {
         tenantId,
       },
+      include: [
+        {
+          association: "plan",
+          attributes: ["name", "id"],
+        }
+      ],
       order: [["createdAt", "DESC"]],
     });
   }
