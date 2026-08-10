@@ -50,7 +50,6 @@ export const MealPreferenceForm = () => {
     mutate(values, {
       onSuccess: () => {
         if (!mealSetting) return;
-        // এখানে তোমার global success toast বসবে
 
         reset({
           breakfast: Number(preferenceData.data.breakfast),
