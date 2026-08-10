@@ -41,6 +41,16 @@ export const API_ENDPOINTS = {
     ACTIVATE: (id: number) => `/subscriptions/${id}/activate`,
     CANCEL: (id: number) => `/subscriptions/${id}/cancel`,
   },
+  PAYMENT: {
+    CREATE: "/payments",
+
+    LIST: "/payments",
+
+    BY_ID: (id: number) => `/payments/${id}`,
+
+    BY_SUBSCRIPTION_ID: (subscriptionId: number) =>
+      `/payments/subscription/${subscriptionId}`,
+  },
   MY_PROFILE: {
     INFO: "/my-profile/info",
     ALL: "/my-profile",
