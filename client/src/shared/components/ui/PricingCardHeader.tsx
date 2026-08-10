@@ -11,7 +11,7 @@ interface Props {
 export const PricingCardHeader = ({ plan }: Props) => {
   return (
     <>
-      {plan?.isPopular && (
+      {plan?.name === "Standard" && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
           <Badge variant="success">Most Popular</Badge>
         </div>
@@ -22,7 +22,7 @@ export const PricingCardHeader = ({ plan }: Props) => {
       <p className="text-base-content/70">{plan.description}</p>
 
       <div>
-        <span className="text-4xl font-bold">৳{plan.monthlyPrice}</span>
+        <span className="text-2xl font-bold">৳{plan.monthlyPrice}</span>
 
         <span className="text-base-content/60"> /month</span>
       </div>
