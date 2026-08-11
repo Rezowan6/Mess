@@ -1,5 +1,7 @@
 import sequelize from "@/configs/db.js";
 import { checkMealCutoff } from "@/helpers/checkMealCutoff.helper.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { getCurrentDate } from "@/utils/date.util.js";
 import { mealEntryRepository } from "../mealEntry/mealEntry.repository.js";
@@ -43,23 +45,41 @@ class MealPreferenceService {
        * First time create
        */
       if (!existingPreference) {
-        return await mealPreferenceRepository.createWithOptions(
+        const createdPreference =
+          await mealPreferenceRepository.createWithOptions(
+            {
+              tenantId,
+              userId,
+              mealSessionId,
+
+              breakfast,
+              lunch,
+              dinner,
+              guestMeal: guestMeal ?? 0,
+
+              isActive: true,
+            },
+            {
+              transaction,
+            },
+          );
+
+        socketService.emitToTenant(
+          tenantId,
+          SocketEvent.MEAL_PLANNING_UPDATED,
           {
             tenantId,
-            userId,
             mealSessionId,
-
+            userId,
+            date,
             breakfast,
             lunch,
             dinner,
             guestMeal: guestMeal ?? 0,
-
-            isActive: true,
-          },
-          {
-            transaction,
           },
         );
+
+        return createdPreference;
       }
 
       /**
@@ -129,7 +149,7 @@ class MealPreferenceService {
       /**
        * Update Meal Preference
        */
-      return await mealPreferenceRepository.update(
+      const updatedPreference = await mealPreferenceRepository.update(
         { id: existingPreference.id },
         {
           breakfast,
@@ -139,6 +159,19 @@ class MealPreferenceService {
         },
         { transaction },
       );
+
+      socketService.emitToTenant(tenantId, SocketEvent.MEAL_PLANNING_UPDATED, {
+        tenantId,
+        mealSessionId,
+        userId,
+        date,
+        breakfast,
+        lunch,
+        dinner,
+        guestMeal: guestMeal ?? 0,
+      });
+
+      return updatedPreference;
     });
   }
 
@@ -196,11 +229,13 @@ class MealPreferenceService {
         isActive: true,
       }));
 
-      await mealPreferenceRepository.bulkCreate(newPreferences, {transaction});
+      await mealPreferenceRepository.bulkCreate(newPreferences, {
+        transaction,
+      });
 
       return {
         copiedCount: newPreferences.length,
-      }
+      };
     });
   }
 }

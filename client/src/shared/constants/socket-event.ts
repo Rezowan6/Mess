@@ -8,4 +8,5 @@ export const SocketEvent = {
   MEMBER_UPDATED: "member-updated",
 
   MEMBER_REMOVED: "member-removed",
+  MEAL_PLANNING_UPDATED: "meal-planning-updated",
 } as const;

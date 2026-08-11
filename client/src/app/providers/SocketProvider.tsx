@@ -2,6 +2,7 @@ import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { addNotificationToCache } from "@/modules/notification/utils/notification-cache";
 import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 import { socket } from "@/services/socket";
+import { queryKeys } from "@/shared/constants/queryKeys";
 import { SocketEvent } from "@/shared/constants/socket-event";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -13,20 +14,32 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
+    if (!user?.id || !currentTenant?.tenantId) {
+      return;
+    }
     socket.connect();
 
     socket.on("connect", () => {
-      console.log("✅ Connected:", socket.id);
-
       socket.emit(SocketEvent.JOIN, {
         userId: user?.id,
         tenantId: currentTenant?.tenantId,
       });
     });
+    // handlers...
 
+    // meal planning
+    const handleMealPlanningUpdated = () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealPlanning.daily(currentTenant?.tenantId),
+      });
+    };
+
+    // notification
     const handleNotification = (notification: any) => {
       addNotificationToCache(queryClient, notification);
     };
+
+    socket.on(SocketEvent.MEAL_PLANNING_UPDATED, handleMealPlanningUpdated);
 
     socket.off(SocketEvent.NOTIFICATION, handleNotification);
     socket.on(SocketEvent.NOTIFICATION, handleNotification);
@@ -35,13 +48,15 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("❌ Disconnected");
     });
 
+    // cleanup...
     return () => {
+      socket.off(SocketEvent.MEAL_PLANNING_UPDATED);
       socket.off(SocketEvent.NOTIFICATION);
       socket.off("connect");
       socket.off("disconnect");
       socket.disconnect();
     };
-  }, []);
+  }, [user?.id, currentTenant?.tenantId, queryClient]);
 
   return <>{children}</>;
 };
