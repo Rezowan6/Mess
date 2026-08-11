@@ -1,8 +1,8 @@
 import { Button } from "@/shared/components/ui/Button";
 
 import type {
-  IMealPlanningResponse,
-  MealType,
+    IMealPlanningResponse,
+    MealType,
 } from "../types/mealPlanning.types";
 
 interface Props {
@@ -26,7 +26,7 @@ const tabs: { key: MealType; label: string }[] = [
   },
 ];
 
-export const MealPlanningTabs = ({ activeMeal, planning, onChange }: Props) => {
+export const MealPlanningTabs = ({ activeMeal, onChange }: Props) => {
   return (
     <div className="flex flex-wrap gap-2 border-b border-base-300 pb-3">
       {tabs.map((tab) => (
@@ -36,10 +36,6 @@ export const MealPlanningTabs = ({ activeMeal, planning, onChange }: Props) => {
           onClick={() => onChange(tab.key)}
         >
           {tab.label}
-
-          <span className="ml-2 opacity-70">
-            {planning?.[tab.key]?.length ?? 0}
-          </span>
         </Button>
       ))}
     </div>
