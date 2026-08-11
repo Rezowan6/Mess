@@ -30,9 +30,9 @@ export const mealPlanningColumns: TableColumn<IMealPlanningMember>[] = [
     className: "w-32",
     render: () => (
       <div className="flex items-center gap-2">
-        <Button variant="success">Approve</Button>
+        <Button disabled variant="success">Approve</Button>
 
-        <Button variant="error">Reject</Button>
+        <Button disabled variant="error">Reject</Button>
       </div>
     ),
   },
