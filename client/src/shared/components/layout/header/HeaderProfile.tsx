@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useLogout } from "@/modules/auth/hooks/useLoagout";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { useTenantStore } from "@/modules/tenant/store/tenant.store";
+import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
 import { HeaderMenuItem } from "./header.constance";
 
 export const HeaderProfile = () => {
@@ -51,7 +52,7 @@ export const HeaderProfile = () => {
         <div className="avatar placeholder">
           <div className="bg-gradient-success text-primary-content w-10 rounded-full flex items-center justify-center">
             <span className="text-sm font-semibold">
-              {user?.name?.charAt(0).toUpperCase()}
+              {getAvatarInitial(user?.name as string)}
             </span>
           </div>
         </div>
@@ -72,10 +73,9 @@ export const HeaderProfile = () => {
 
       {/* Dropdown */}
 
-
-        <ul
-          tabIndex={0}
-          className={`
+      <ul
+        tabIndex={0}
+        className={`
           absolute right-0 top-full
           z-50
           mt-2
@@ -88,49 +88,53 @@ export const HeaderProfile = () => {
           transition-all duration-300 ease-in-out
           ${isOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"}
           `}
-        >
-          {/* User Info */}
+      >
+        {/* User Info */}
 
-          <li className="pointer-events-none mb-2 border-b pb-2">
-            <div className="flex flex-col gap-0 items-start">
-              <p className="font-semibold">{user?.name}</p>
-              <span className="text-xs text-green-600">
-                {currentTenant?.role ?? ""}
-              </span>
+        <li className="pointer-events-none mb-2 border-b pb-2">
+          <div className="flex flex-col gap-0 items-start">
+            <p className="font-semibold">{user?.name}</p>
+            <span className="text-xs text-green-600">
+              {currentTenant?.role ?? ""}
+            </span>
 
-              <p className="text-xs text-base-content/60">{user?.email}</p>
-            </div>
-          </li>
+            <p className="text-xs text-base-content/60">{user?.email}</p>
+          </div>
+        </li>
 
-          {HeaderMenuItem.map((item) => {
-            const Icon = item.icon;
+        {HeaderMenuItem.map((item) => {
+          const Icon = item.icon;
 
-            return (
-              <li key={item.path}>
-                <Link to={item.path} onClick={closeDropdown} className="flex items-center gap-1 py-2 hover:bg-background rounded-sm">
-                  <Icon size={16} className="text-success" />
-                  {item.label}
-                </Link>
-              </li>
-            );
-          })}
+          return (
+            <li key={item.path}>
+              <Link
+                to={item.path}
+                onClick={closeDropdown}
+                className="flex items-center gap-1 py-2 hover:bg-background rounded-sm"
+              >
+                <Icon size={16} className="text-success" />
+                {item.label}
+              </Link>
+            </li>
+          );
+        })}
 
-          {/* Logout */}
+        {/* Logout */}
 
-          <li>
-            <button
-              disabled={logoutMutation.isPending}
-              onClick={() => {
-                closeDropdown();
-                logoutMutation.mutate();
-              }}
-              className="text-error w-full flex items-center gap-1 py-2 hover:bg-background rounded-sm cursor-pointer"
-            >
-              <LogOut size={16} />
-              Logout
-            </button>
-          </li>
-        </ul>
+        <li>
+          <button
+            disabled={logoutMutation.isPending}
+            onClick={() => {
+              closeDropdown();
+              logoutMutation.mutate();
+            }}
+            className="text-error w-full flex items-center gap-1 py-2 hover:bg-background rounded-sm cursor-pointer"
+          >
+            <LogOut size={16} />
+            Logout
+          </button>
+        </li>
+      </ul>
     </div>
   );
 };
