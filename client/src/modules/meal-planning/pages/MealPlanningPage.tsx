@@ -1,12 +1,11 @@
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
 
 import { MealPlanningSummaryCards } from "../components/MealPlanningSummaryCards";
-import { MealPlanningTabs } from "../components/MealPlanningTabs";
+import { MealPlanningTable } from "../components/MealPlanningTable";
 import { useMealPlanning } from "../hooks/useMealPlanning";
 
 export const MealPlanningPage = () => {
   const { data, isPending, isError, refetch } = useMealPlanning();
-
 
   const planning = data?.data;
 
@@ -21,7 +20,7 @@ export const MealPlanningPage = () => {
           loading={isPending}
         />
 
-        <MealPlanningTabs
+        <MealPlanningTable
           planning={planning}
           loading={isPending}
           error={isError}
