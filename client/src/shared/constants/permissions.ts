@@ -58,6 +58,13 @@ export const PERMISSIONS = {
   MEAL_SETTING_UPDATE: "meal_setting.update",
   MEAL_SETTING_DELETE: "meal_setting.delete",
 
+  // meal planning
+  MEAL_PLANNING_VIEW: "mealPlanning.view",
+  MEAL_PLANNING_CREATE: "mealPlanning.create",
+  MEAL_PLANNING_UPDATE: "mealPlanning.update",
+  MEAL_PLANNING_DELETE: "mealPlanning.delete",
+  MEAL_PLANNING_MANAGE: "mealPlanning.manage",
+
   // Expense
   EXPENSE_VIEW: "expense.view",
   EXPENSE_CREATE: "expense.create",

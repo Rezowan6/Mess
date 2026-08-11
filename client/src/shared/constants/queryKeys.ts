@@ -109,6 +109,12 @@ export const queryKeys = {
     myPreference: ["meal-preference"],
   },
 
+  mealPlanning: {
+    all: (tenantId?: number) => ["meal-planning", tenantId] as const,
+
+    daily: (tenantId?: number) => ["meal-planning", tenantId, "daily"] as const,
+  },
+
   mealSettings: {
     all: (tenantId?: number) => ["meal-settings", tenantId] as const,
 

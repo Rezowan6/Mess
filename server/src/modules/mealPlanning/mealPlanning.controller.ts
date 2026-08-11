@@ -12,7 +12,7 @@ class MealPlanningController {
   getDailyMealPlanning = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
-    const date = getCurrentDate() as string;
+    const date = req?.query?.date as string ?? getCurrentDate() as string;
 
     const data = await mealPlanningService.getDailyMealPlanning(
       tenantId,

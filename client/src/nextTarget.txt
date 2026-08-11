@@ -1,4 +1,37 @@
-
+src/
+│
+├── modules/
+│   │
+│   └── meal-planning/
+│       │
+│       │
+│       ├── pages/
+│       │   └── MealPlanningPage.tsx
+│       │
+│       ├── components/
+│       │   ├── MealPlanningTabs.tsx
+│       │   ├── MealPlanningSummary.tsx
+│       │   ├── MealMemberList.tsx
+│       │   ├── MealMemberRow.tsx
+│       │   ├── MealMemberAvatar.tsx
+│       │   ├── MealMemberActions.tsx
+│       │   └── MealPlanningSkeleton.tsx
+│       │
+│       ├── configs/
+│       │   ├── mealPlanning.tabs.ts
+│       │   ├── mealPlanning.columns.tsx
+│       │   └── mealPlanning.messages.ts
+│       │
+│       ├── types/
+│       │   └── mealPlanning.types.ts
+│       │
+│       └── schemas/
+│           └── mealPlanning.schema.ts
+│
+└── shared/
+    └── components/
+        └── ui/
+            └── Avatar.tsx
 PaymentHistoryPage.tsx
 PaymentDetailsPage.tsx
 PaymentTable.tsx

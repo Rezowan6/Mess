@@ -38,6 +38,10 @@ import { MyDepositHistoryPage } from "@/modules/my-profile/pages/MyDepositHistor
 import { MyMealHistoryPage } from "@/modules/my-profile/pages/MyMealHistoryPage";
 import { MyProfilePage } from "@/modules/my-profile/pages/MyProfilePage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
+import { PaymentLayout } from "@/modules/payment/layouts/PaymentLayout";
+import { PaymentDetailsPage } from "@/modules/payment/pages/PaymentDetailsPage";
+import { PaymentHistoryPage } from "@/modules/payment/pages/PaymentHistoryPage";
+import { PaymentPage } from "@/modules/payment/pages/PaymentPage";
 import { PlanFeatureTable } from "@/modules/plan-feature/components/PlanFeatureTable";
 import { PlanFeaturePage } from "@/modules/plan-feature/pages/PlanFeaturePage";
 import { PlanTable } from "@/modules/plan/components/PlanTable";
@@ -52,10 +56,8 @@ import { SubscriptionPage } from "@/modules/subscription/pages/SubscriptionPage"
 import { UpgradePlanPage } from "@/modules/subscription/pages/UpgradePlanPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
-import { PaymentPage } from "@/modules/payment/pages/PaymentPage";
-import { PaymentLayout } from "@/modules/payment/layouts/PaymentLayout";
-import { PaymentDetailsPage } from "@/modules/payment/pages/PaymentDetailsPage";
-import { PaymentHistoryPage } from "@/modules/payment/pages/PaymentHistoryPage";
+import { MealPlanningLayout } from "@/modules/meal-planning/layouts/MealPlanningLayout";
+import { MealPlanningPage } from "@/modules/meal-planning/pages/MealPlanningPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -228,6 +230,25 @@ export const router = createBrowserRouter([
                   {
                     path: "history",
                     element: <PaymentHistoryPage />,
+                  },
+                ],
+              },
+            ],
+          },
+
+          {
+            path: ROUTES.MEAL_PLANNING,
+
+            element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+
+            children: [
+              {
+                element: <MealPlanningLayout />,
+
+                children: [
+                  {
+                    index: true,
+                    element: <MealPlanningPage />,
                   },
                 ],
               },

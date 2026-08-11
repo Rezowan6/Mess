@@ -63,6 +63,13 @@ export const sidebarItems: ISidebarItem[] = [
   },
 
   {
+    title: "Meal Planning",
+    path: ROUTES.MEAL_PLANNING,
+    icon: ClipboardList,
+    permission: PERMISSIONS.MEAL_PLANNING_VIEW,
+  },
+
+  {
     title: "Meal Entry",
     path: ROUTES.MEAL_ENTRY,
     icon: ClipboardList,

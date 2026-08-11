@@ -107,6 +107,9 @@ export const API_ENDPOINTS = {
     OPEN: "/meal-sessions",
     CLOSE: (id: number) => `/meal-sessions/${id}/close`,
   },
+  MEAL_PLANNING: {
+    DAILY: "/meal-plannings/daily",
+  },
 
   EXPENSE: {
     GET_ALL: "/expenses",

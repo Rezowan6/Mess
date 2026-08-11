@@ -22,7 +22,8 @@ type ButtonVariant =
   | "warning"
   | "error"
   | "ghost"
-  | "outline";
+  | "outline"
+  | "normal";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
@@ -112,6 +113,8 @@ const variantClasses = {
     text-text
     hover:bg-surface-hover
     `,
+  normal: `
+    `,
 } satisfies Record<ButtonVariant, string>;
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -156,7 +159,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={clsx(
-          !unstyled && [variantClasses[variant], "px-4 sm:h-10 flex justify-center items-center"],
+          !unstyled && [
+            variantClasses[variant],
+            "px-4 sm:h-10 flex justify-center items-center",
+          ],
 
           "cursor-pointer bg-info/20 hover:bg-info/40 p-2 rounded-sm disabled:opacity-50 disabled:pointer-events-none transition-all duration-300",
 
