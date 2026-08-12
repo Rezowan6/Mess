@@ -40,8 +40,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     socket.on(SocketEvent.MEAL_PLANNING_UPDATED, handleMealPlanningUpdated);
-
-    socket.off(SocketEvent.NOTIFICATION, handleNotification);
     socket.on(SocketEvent.NOTIFICATION, handleNotification);
 
     socket.on("disconnect", () => {

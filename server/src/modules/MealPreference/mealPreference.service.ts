@@ -21,10 +21,22 @@ class MealPreferenceService {
 
     const date = getCurrentDate();
 
-    return await sequelize.transaction(async (transaction) => {
+    const socketPayload = {
+      tenantId,
+      mealSessionId,
+      userId,
+      date,
+      breakfast,
+      lunch,
+      dinner,
+      guestMeal: guestMeal ?? 0,
+    };
+
+    const result = await sequelize.transaction(async (transaction) => {
       const existingPreference = await mealPreferenceRepository.findOne({
         tenantId,
         userId,
+        mealSessionId,
       });
 
       const mealSetting = await mealSettingRepository.findOne({
@@ -45,41 +57,23 @@ class MealPreferenceService {
        * First time create
        */
       if (!existingPreference) {
-        const createdPreference =
-          await mealPreferenceRepository.createWithOptions(
-            {
-              tenantId,
-              userId,
-              mealSessionId,
-
-              breakfast,
-              lunch,
-              dinner,
-              guestMeal: guestMeal ?? 0,
-
-              isActive: true,
-            },
-            {
-              transaction,
-            },
-          );
-
-        socketService.emitToTenant(
-          tenantId,
-          SocketEvent.MEAL_PLANNING_UPDATED,
+        return await mealPreferenceRepository.createWithOptions(
           {
             tenantId,
-            mealSessionId,
             userId,
-            date,
+            mealSessionId,
+
             breakfast,
             lunch,
             dinner,
             guestMeal: guestMeal ?? 0,
+
+            isActive: true,
+          },
+          {
+            transaction,
           },
         );
-
-        return createdPreference;
       }
 
       /**
@@ -128,6 +122,10 @@ class MealPreferenceService {
         );
       }
 
+      /**
+       * Update Meal Entry
+       */
+
       if (todayRequest && todayRequest.status === MealRequestStatus.APPROVED) {
         const entry = await mealEntryRepository.findOne({
           mealRequestId: todayRequest.id,
@@ -149,7 +147,7 @@ class MealPreferenceService {
       /**
        * Update Meal Preference
        */
-      const updatedPreference = await mealPreferenceRepository.update(
+      return await mealPreferenceRepository.update(
         { id: existingPreference.id },
         {
           breakfast,
@@ -159,20 +157,20 @@ class MealPreferenceService {
         },
         { transaction },
       );
-
-      socketService.emitToTenant(tenantId, SocketEvent.MEAL_PLANNING_UPDATED, {
-        tenantId,
-        mealSessionId,
-        userId,
-        date,
-        breakfast,
-        lunch,
-        dinner,
-        guestMeal: guestMeal ?? 0,
-      });
-
-      return updatedPreference;
     });
+
+    /**
+     * Transaction successfully committed
+     * Now emit realtime event
+     */
+
+    socketService.emitToTenant(
+      tenantId,
+      SocketEvent.MEAL_PLANNING_UPDATED,
+      socketPayload,
+    );
+
+    return result;
   }
 
   async getMyPreference({

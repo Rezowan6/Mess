@@ -1,3 +1,13 @@
+DB Transaction
+   ↓
+Outbox Event
+   ↓
+Commit
+   ↓
+Background Worker
+   ↓
+Socket.IO
+
 src/
 └── modules/
     └── mealPlanning/
