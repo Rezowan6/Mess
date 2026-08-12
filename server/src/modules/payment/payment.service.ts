@@ -1,6 +1,6 @@
 import { ApiError } from "@/utils/ApiError.js";
 
-import { PaymentStatus } from "./payment.interface.js";
+import { PaymentGateway, PaymentStatus } from "./payment.interface.js";
 
 import { paymentRepository } from "./payment.repository.js";
 
@@ -32,6 +32,13 @@ export class PaymentService {
       );
     }
 
+    if (subscription.status !== "PENDING") {
+      throw new ApiError(
+        400,
+        "Payment can only be created for a pending subscription.",
+      );
+    }
+
     const existingSuccessPayment =
       await paymentRepository.findSuccessfulBySubscription(subscription.id);
 
@@ -46,24 +53,26 @@ export class PaymentService {
       await paymentRepository.findPendingBySubscription(subscription.id);
 
     if (existingPendingPayment) {
+      if (existingPendingPayment.gateway === data.gateway) {
+        return {
+          success: true,
+          paymentId: existingPendingPayment.id,
+          gateway: existingPendingPayment.gateway,
+          gatewayPaymentId:
+            existingPendingPayment.gatewayPaymentId ?? undefined,
+          redirectUrl: undefined,
+          message: "Pending payment already exists.",
+        };
+      }
+
       throw new ApiError(
         400,
-        "Pending payment already exists for this subscription.",
+        "A pending payment already exists for this subscription.",
       );
     }
 
-    // if (existingPendingPayment) {
-    //   return {
-    //     success: true,
-    //     paymentId: existingPendingPayment.id,
-    //     gateway: existingPendingPayment.gateway,
-    //     gatewayPaymentId: existingPendingPayment.gatewayPaymentId ?? undefined,
-    //     message: "Pending payment already exists.",
-    //   };
-    // }
-
     const payment = await sequelize.transaction(async (transaction) => {
-      return await paymentRepository.createWithOptions(
+      return paymentRepository.createWithOptions(
         {
           tenantId: subscription.tenantId,
           subscriptionId: subscription.id,
@@ -75,59 +84,67 @@ export class PaymentService {
       );
     });
 
-    const gateway = PaymentGatewayFactory.getGateway(data.gateway);
+    try {
+      const gateway = PaymentGatewayFactory.getGateway(data.gateway);
 
-    const response = await gateway.initiatePayment(payment.id);
+      const response = await gateway.initiatePayment(payment.id);
 
-    await paymentRepository.update(
-      { id: payment.id },
-      {
-        gatewayPaymentId: response.gatewayPaymentId ?? null,
+      await paymentRepository.update(
+        { id: payment.id },
+        {
+          gatewayPaymentId: response.gatewayPaymentId ?? null,
+          gatewayResponse: response,
+          status: PaymentStatus.PROCESSING,
+        },
+      );
 
-        gatewayResponse: response,
-      },
-    );
-    return response;
+      return response;
+    } catch (error) {
+      await paymentRepository.update(
+        { id: payment.id },
+        {
+          status: PaymentStatus.FAILED,
+          failureReason:
+            error instanceof Error
+              ? error.message
+              : "Payment initiation failed.",
+        },
+      );
+
+      throw error;
+    }
   }
 
-  async webhook(gatewayName: string, payload: any) {
-    /**
-     * 1. Gateway validate
-     */
-    const gateway = PaymentGatewayFactory.getGateway(
-      gatewayName as PaymentGatewayType,
-    );
+  async webhook(gatewayName: string, payload: unknown) {
+    if (!gatewayName?.trim()) {
+      throw new ApiError(400, "Payment gateway is required.");
+    }
 
-    /**
-     * 2. Get gateway payment id
-     *
-     * bKash:
-     * paymentID
-     *
-     * Stripe:
-     * session id
-     */
-    const gatewayPaymentId = payload.paymentID || payload.gatewayPaymentId;
+    const gatewayType = gatewayName.toUpperCase() as PaymentGatewayType;
+
+    if (!Object.values(PaymentGateway).includes(gatewayType)) {
+      throw new ApiError(400, `Unsupported payment gateway: ${gatewayName}`);
+    }
+
+    if (!payload || typeof payload !== "object") {
+      throw new ApiError(400, "Invalid gateway payload.");
+    }
+
+    const gateway = PaymentGatewayFactory.getGateway(gatewayType);
+
+    const gatewayPayload = payload as Record<string, unknown>;
+
+    const gatewayPaymentId =
+      typeof gatewayPayload.paymentID === "string"
+        ? gatewayPayload.paymentID
+        : typeof gatewayPayload.gatewayPaymentId === "string"
+          ? gatewayPayload.gatewayPaymentId
+          : null;
 
     if (!gatewayPaymentId) {
       throw new ApiError(400, "Gateway payment id missing.");
     }
 
-    /**
-     * 3. Verify with gateway
-     */
-    const response = await gateway.verifyPayment(gatewayPaymentId);
-
-    if (!response.success) {
-      throw new ApiError(
-        400,
-        response.message ?? "Payment verification failed.",
-      );
-    }
-
-    /**
-     * 4. Find payment
-     */
     const payment = await paymentRepository.findOne({
       gatewayPaymentId,
     });
@@ -136,52 +153,85 @@ export class PaymentService {
       throw new ApiError(404, "Payment record not found.");
     }
 
-    /**
-     * 5. Prevent duplicate success
-     */
-    if (payment.status === PaymentStatus.SUCCESS) {
-      return payment;
+    if (payment.gateway !== gatewayType) {
+      throw new ApiError(400, "Payment gateway mismatch.");
     }
 
-    /**
-     * 6. Update payment
-     */
-    await sequelize.transaction(async (transaction) => {
+    if (payment.status === PaymentStatus.SUCCESS) {
+      return {
+        success: true,
+        paymentId: payment.id,
+        message: "Payment already processed.",
+      };
+    }
+
+    if (payment.status === PaymentStatus.CANCELLED) {
+      throw new ApiError(400, "Payment has already been cancelled.");
+    }
+
+    const response = await gateway.verifyPayment(gatewayPaymentId);
+
+    if (!response.success) {
       await paymentRepository.update(
+        { id: payment.id },
         {
-          id: payment.id,
-        },
-        {
-          status: PaymentStatus.SUCCESS,
-
-          transactionId: response.transactionId ?? null,
-
-          paidAt: response.paidAt ?? new Date(),
-
+          status: PaymentStatus.FAILED,
+          failureReason: response.message ?? "Payment verification failed.",
           gatewayResponse: response,
         },
+      );
+
+      throw new ApiError(
+        400,
+        response.message ?? "Payment verification failed.",
+      );
+    }
+
+    await sequelize.transaction(async (transaction) => {
+      const latestPayment = await paymentRepository.findByIdWithOptions(
+        payment.id,
         {
           transaction,
         },
       );
 
-      /**
-       * Activate subscription
-       */
-      await subscriptionRepository.update(
+      if (!latestPayment) {
+        throw new ApiError(404, "Payment record not found.");
+      }
+
+      if (latestPayment.status === PaymentStatus.SUCCESS) {
+        return;
+      }
+
+      await paymentRepository.update(
+        { id: latestPayment.id },
         {
-          id: payment.subscriptionId,
+          status: PaymentStatus.SUCCESS,
+          transactionId: response.transactionId ?? null,
+          paidAt: response.paidAt ?? new Date(),
+          gatewayResponse: response,
+          failureReason: null,
         },
+        { transaction },
+      );
+
+      await subscriptionRepository.update(
+        { id: latestPayment.subscriptionId },
         {
           status: SubscriptionStatus.ACTIVE,
         },
-        {
-          transaction,
-        },
+        { transaction },
       );
     });
 
-    return response;
+    return {
+      success: true,
+      paymentId: payment.id,
+      gateway: gatewayType,
+      transactionId: response.transactionId ?? null,
+      paidAt: response.paidAt ?? new Date(),
+      message: response.message ?? "Payment verified successfully.",
+    };
   }
 
   async verifyPayment(paymentId: number) {
@@ -192,32 +242,72 @@ export class PaymentService {
     }
 
     if (payment.status === PaymentStatus.SUCCESS) {
-      throw new ApiError(400, "Payment already verified.");
+      return {
+        success: true,
+        paymentId: payment.id,
+        transactionId: payment.transactionId,
+        message: "Payment already verified.",
+      };
+    }
+
+    if (payment.status === PaymentStatus.CANCELLED) {
+      throw new ApiError(400, "Payment has been cancelled.");
+    }
+
+    if (!payment.gatewayPaymentId) {
+      throw new ApiError(400, "Gateway payment ID is missing.");
     }
 
     const gateway = PaymentGatewayFactory.getGateway(payment.gateway);
 
-    const response = await gateway.verifyPayment(payment.gatewayPaymentId!);
+    const response = await gateway.verifyPayment(payment.gatewayPaymentId);
+
+    if (!response.success) {
+      await paymentRepository.update(
+        { id: payment.id },
+        {
+          status: PaymentStatus.FAILED,
+          failureReason: response.message ?? "Payment verification failed.",
+          gatewayResponse: response,
+        },
+      );
+
+      throw new ApiError(
+        400,
+        response.message ?? "Payment verification failed.",
+      );
+    }
 
     await sequelize.transaction(async (transaction) => {
-      await paymentRepository.update(
+      const latestPayment = await paymentRepository.findByIdWithOptions(
+        payment.id,
         {
-          id: payment.id,
+          transaction,
         },
+      );
+
+      if (!latestPayment) {
+        throw new ApiError(404, "Payment not found.");
+      }
+
+      if (latestPayment.status === PaymentStatus.SUCCESS) {
+        return;
+      }
+
+      await paymentRepository.update(
+        { id: latestPayment.id },
         {
           status: PaymentStatus.SUCCESS,
-
           transactionId: response.transactionId ?? null,
-
-          paidAt: response.paidAt ?? null,
-
+          paidAt: response.paidAt ?? new Date(),
           gatewayResponse: response,
+          failureReason: null,
         },
         { transaction },
       );
 
       await subscriptionRepository.update(
-        { id: payment.subscriptionId },
+        { id: latestPayment.subscriptionId },
         {
           status: SubscriptionStatus.ACTIVE,
         },

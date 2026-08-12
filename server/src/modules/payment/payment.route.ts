@@ -1,6 +1,10 @@
 import { Router } from "express";
 
-import { adminAndManagerAccess, allAccess, systemOwnerAccess } from "@/helpers/permission.js";
+import {
+  adminAndManagerAccess,
+  systemOwnerAccess,
+} from "@/helpers/permission.js";
+
 import { PaymentController } from "./payment.controller.js";
 
 const router = Router();
@@ -11,20 +15,28 @@ const controller = new PaymentController();
  * Tenant Routes
  */
 
+// Create payment
 router.post("/", ...adminAndManagerAccess, controller.create);
 
-// router.post("/webhook/:gateway", controller.webhook);
+// Verify payment
+router.post("/:id/verify", ...adminAndManagerAccess, controller.verify);
 
-router.post("/:id/verify", controller.verify);
-
+// Payment history
 router.get("/my-payments", ...adminAndManagerAccess, controller.getMyPayments);
 
+// Payment details
 router.get("/:id", ...adminAndManagerAccess, controller.getById);
 
+/**
+ * Gateway Webhook
+ *
+ * Webhook must NOT use tenant authentication.
+ * Gateway verification is handled inside the service.
+ */
+router.post("/webhook/:gateway", controller.webhook);
 
 /**
  * System Owner Routes
- * Temporary (development/testing)
  */
 
 router.get(

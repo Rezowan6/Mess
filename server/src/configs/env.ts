@@ -3,13 +3,13 @@ import { z } from "zod";
 
 const envSchema = z.object({
   NODE_ENV: z.string(),
-  
+  APP_URL: z.string(),
+
   DB_NAME: z.string(),
   DB_USER: z.string(),
   DB_PASS: z.string(),
   DB_HOST: z.string(),
   DB_PORT: z.string(),
-
 
   PORT: z.string(),
 
@@ -29,6 +29,13 @@ const envSchema = z.object({
   SMTP_PORT: z.string(),
   SMTP_EMAIL: z.string(),
   SMTP_PASS: z.string(),
+
+  // bKash
+  BKASH_BASE_URL: z.string().default("https://tokenized.sandbox.bka.sh"),
+  BKASH_USERNAME: z.string(),
+  BKASH_PASSWORD: z.string(),
+  BKASH_APP_KEY: z.string(),
+  BKASH_APP_SECRET: z.string(),
 });
 
 export type Env = z.infer<typeof envSchema>;

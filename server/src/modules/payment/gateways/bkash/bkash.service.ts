@@ -1,88 +1,49 @@
-import axios, { AxiosInstance } from "axios";
+// src/modules/payment/gateways/bkash/bkash.service.ts
+
+import axios, { type AxiosInstance } from "axios";
 
 import { bkashConfig } from "./bkash.config.js";
+import {
+  IBkashCreatePaymentResponse,
+  IBkashExecutePaymentResponse,
+  IBkashQueryPaymentResponse,
+} from "./bkash.interface.js";
+import { bkashTokenService } from "./bkash.token.service.js";
 
-interface IBkashTokenResponse {
-  id_token: string;
-  token_type: string;
-  expires_in: number;
+interface CreatePaymentPayload {
+  amount: string;
+  invoiceNumber: string;
+  callbackURL: string;
 }
 
 class BkashService {
-  private token: string | null = null;
-
-  private tokenExpiryTime: number | null = null;
-
-  private client: AxiosInstance;
+  private readonly client: AxiosInstance;
 
   constructor() {
     this.client = axios.create({
       baseURL: bkashConfig.baseUrl,
-      timeout: 30000,
+      timeout: 30_000,
       headers: {
-        accept: "application/json",
-        "content-type": "application/json",
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     });
   }
 
   /**
-   * Check token validity
+   * Create bKash payment.
+   *
+   * Flow:
+   * 1. Get valid authorization token
+   * 2. Call bKash create endpoint
+   * 3. Return normalized gateway response
    */
-  private isTokenValid(): boolean {
-    if (!this.token || !this.tokenExpiryTime) {
-      return false;
-    }
+  async createPayment(
+    payload: CreatePaymentPayload,
+  ): Promise<IBkashCreatePaymentResponse> {
+    const token = await bkashTokenService.getToken();
 
-    return Date.now() < this.tokenExpiryTime;
-  }
-
-  /**
-   * Generate bKash Token
-   */
-  async getToken(): Promise<string> {
-    if (this.isTokenValid()) {
-      return this.token!;
-    }
-
-    const response = await this.client.post<IBkashTokenResponse>(
-      "/tokenized/checkout/token/grant",
-      {
-        app_key: bkashConfig.appKey,
-        app_secret: bkashConfig.appSecret,
-      },
-      {
-        headers: {
-          username: bkashConfig.username,
-          password: bkashConfig.password,
-        },
-      },
-    );
-
-    const data = response.data;
-
-    this.token = data.id_token;
-
-    /**
-     * expires_in usually comes in seconds
-     * keep 60 sec buffer
-     */
-    this.tokenExpiryTime = Date.now() + (data.expires_in - 60) * 1000;
-
-    return this.token;
-  }
-
-  /**
-   * Create Payment
-   */
-  async createPayment(payload: {
-    amount: string;
-    invoiceNumber: string;
-    callbackURL: string;
-  }) {
-    const token = await this.getToken();
-
-    const response = await this.client.post(
+    const response = await this.client.post<IBkashCreatePaymentResponse>(
       "/tokenized/checkout/create",
       {
         mode: "0011",
@@ -95,8 +56,8 @@ class BkashService {
       },
       {
         headers: {
-          authorization: token,
-          "x-app-key": bkashConfig.appKey,
+          Authorization: token,
+          "X-App-Key": bkashConfig.appKey,
         },
       },
     );
@@ -105,20 +66,22 @@ class BkashService {
   }
 
   /**
-   * Execute Payment
+   * Execute an authorized bKash payment.
    */
-  async executePayment(paymentID: string) {
-    const token = await this.getToken();
+  async executePayment(
+    paymentID: string,
+  ): Promise<IBkashExecutePaymentResponse> {
+    const token = await bkashTokenService.getToken();
 
-    const response = await this.client.post(
+    const response = await this.client.post<IBkashExecutePaymentResponse>(
       "/tokenized/checkout/execute",
       {
         paymentID,
       },
       {
         headers: {
-          authorization: token,
-          "x-app-key": bkashConfig.appKey,
+          Authorization: token,
+          "X-App-Key": bkashConfig.appKey,
         },
       },
     );
@@ -127,20 +90,23 @@ class BkashService {
   }
 
   /**
-   * Query Payment
+   * Query current payment status.
+   *
+   * This should be used as a server-side verification
+   * source instead of trusting client-side success.
    */
-  async queryPayment(paymentID: string) {
-    const token = await this.getToken();
+  async queryPayment(paymentID: string): Promise<IBkashQueryPaymentResponse> {
+    const token = await bkashTokenService.getToken();
 
-    const response = await this.client.post(
+    const response = await this.client.post<IBkashQueryPaymentResponse>(
       "/tokenized/checkout/payment/status",
       {
         paymentID,
       },
       {
         headers: {
-          authorization: token,
-          "x-app-key": bkashConfig.appKey,
+          Authorization: token,
+          "X-App-Key": bkashConfig.appKey,
         },
       },
     );
@@ -149,11 +115,10 @@ class BkashService {
   }
 
   /**
-   * Search Transaction
-   * Future use
+   * Search a transaction by bKash transaction ID.
    */
-  async searchTransaction(trxID: string) {
-    const token = await this.getToken();
+  async searchTransaction(trxID: string): Promise<unknown> {
+    const token = await bkashTokenService.getToken();
 
     const response = await this.client.post(
       "/tokenized/checkout/general/searchTransaction",
@@ -162,8 +127,8 @@ class BkashService {
       },
       {
         headers: {
-          authorization: token,
-          "x-app-key": bkashConfig.appKey,
+          Authorization: token,
+          "X-App-Key": bkashConfig.appKey,
         },
       },
     );

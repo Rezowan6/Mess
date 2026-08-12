@@ -126,7 +126,7 @@ export interface IPaymentCallbackPayload {
 export interface IPaymentGateway {
   initiatePayment(paymentId: number): Promise<IPaymentInitiateResponse>;
 
-  verifyPayment(gatewayPaymentId: number): Promise<IPaymentVerifyResponse>;
+  verifyPayment(gatewayPaymentId: string): Promise<IPaymentVerifyResponse>;
 
   /**
    * Optional

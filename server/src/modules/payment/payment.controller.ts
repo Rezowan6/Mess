@@ -5,6 +5,7 @@ import { sendResponse } from "@/utils/sendResponse.utils.js";
 
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 
+import { ApiError } from "@/utils/ApiError.js";
 import { PaymentService } from "./payment.service.js";
 
 const service = new PaymentService();
@@ -27,7 +28,11 @@ export class PaymentController {
 
   webhook = asyncHandler(async (req: Request, res: Response) => {
     const gatewayName = req.params.gateway as string;
-    
+
+    if (!gatewayName) {
+      throw new ApiError(400, "Payment gateway is required.");
+    }
+
     const result = await service.webhook(gatewayName, req.body);
 
     sendResponse(res, {
@@ -37,8 +42,14 @@ export class PaymentController {
     });
   });
 
-  verify = asyncHandler(async (req, res) => {
-    const result = await service.verifyPayment(Number(req.params.id));
+  verify = asyncHandler(async (req: Request, res: Response) => {
+    const paymentId = Number(req.params.id);
+
+    if (!Number.isInteger(paymentId) || paymentId <= 0) {
+      throw new ApiError(400, "Invalid payment ID.");
+    }
+
+    const result = await service.verifyPayment(paymentId);
 
     sendResponse(res, {
       statusCode: 200,

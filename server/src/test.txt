@@ -8,6 +8,23 @@ Background Worker
    ↓
 Socket.IO
 
+
+হ্যাঁ, core payment flow-এর জন্য এই ৩টা method দিয়েই শুরু করা যাবে:
+
+create() → Payment record তৈরি + gateway payment initiate
+verifyPayment() → Gateway থেকে payment verify + subscription activate
+webhook() → Gateway callback/webhook handle + payment update
+
+তবে production-ready full payment system করতে পরে এগুলো দরকার হবে:
+
+getById() → Payment details
+getMyPayments() → Tenant payment history
+getPendingPayments() → System owner monitoring
+getProcessingPayments() → Processing monitoring
+markAsSuccess() → Manual/admin recovery
+markAsFailed() → Manual/admin recovery
+markAsCancelled() → Cancellation
+refund() → Future refund support
 src/
 └── modules/
     └── mealPlanning/
