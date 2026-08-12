@@ -20,7 +20,7 @@ export const NotificationItem = ({ notification }: Props) => {
     <div
       onClick={handleMarkAsRead}
       className={[
-        "group flex items-start gap-3 border-b border-info p-4",
+        "group flex items-start gap-3 border-b last:border-0 border-info p-4",
         "transition-all duration-200",
         "hover:bg-success/5",
         notification.isRead ? "bg-background" : "bg-info/5",
