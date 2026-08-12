@@ -30,6 +30,8 @@ import { MealEntryPage } from "@/modules/meal-entry/pages/MealEntryPage";
 import { MealHistoryPage } from "@/modules/meal-entry/pages/MealHistoryPage";
 import { MembersMealSummaryPage } from "@/modules/meal-entry/pages/MembersMealSummaryPage";
 import { TodayMealEntriesPage } from "@/modules/meal-entry/pages/TodayMealEntriesPage";
+import { MealPlanningLayout } from "@/modules/meal-planning/layouts/MealPlanningLayout";
+import { MealPlanningPage } from "@/modules/meal-planning/pages/MealPlanningPage";
 import { MealPreferencePage } from "@/modules/meal-preference/pages/MealPreferencePage";
 import { MealSettingManagePage } from "@/modules/meal-setting/pages/MealSettingManagePage";
 import { MonthlyCalculationPage } from "@/modules/monthly-calculation/pages/MonthlyCalculationPage";
@@ -56,8 +58,6 @@ import { SubscriptionPage } from "@/modules/subscription/pages/SubscriptionPage"
 import { UpgradePlanPage } from "@/modules/subscription/pages/UpgradePlanPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
-import { MealPlanningLayout } from "@/modules/meal-planning/layouts/MealPlanningLayout";
-import { MealPlanningPage } from "@/modules/meal-planning/pages/MealPlanningPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -334,18 +334,22 @@ export const router = createBrowserRouter([
             path: ROUTES.HOME,
             element: <HomePage />,
           },
-
           {
             path: ROUTES.PLANS,
-            element: <PlanManagementPage />,
+            element: <RoleGuard allowedRoles={[ROLES.ADMIN]} />,
             children: [
               {
-                index: true,
-                element: <PlanTable />,
-              },
-              {
-                path: ":id",
-                element: <PlanDetailsPage />,
+                element: <PlanManagementPage />,
+                children: [
+                  {
+                    index: true,
+                    element: <PlanTable />,
+                  },
+                  {
+                    path: ":id",
+                    element: <PlanDetailsPage />,
+                  },
+                ],
               },
             ],
           },
@@ -353,7 +357,7 @@ export const router = createBrowserRouter([
           {
             path: ROUTES.FEATURE,
 
-            element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+            element: <RoleGuard allowedRoles={[ROLES.ADMIN]} />,
 
             children: [
               {
