@@ -2,6 +2,7 @@ import { Badge } from "@/shared/components/ui/Badge";
 import { Button } from "@/shared/components/ui/Button";
 import { StatusIndicator } from "@/shared/components/ui/StatusIndicator";
 import { Trash2 } from "lucide-react";
+import { useMarkAsRead } from "../hooks/useMarkAsRead";
 import type { INotification } from "../types/notification.types";
 
 interface Props {
@@ -9,8 +10,17 @@ interface Props {
 }
 
 export const NotificationItem = ({ notification }: Props) => {
+  const { mutate: markAsRead, isPending } = useMarkAsRead();
+
+  const handleMarkAsRead = () => {
+    if (notification.isRead || isPending) {
+      return;
+    }
+    markAsRead(notification.id);
+  };
   return (
     <div
+      onClick={handleMarkAsRead}
       className={[
         "group flex items-start gap-3 border-b border-info p-4",
         "transition-all duration-200",
@@ -44,9 +54,14 @@ export const NotificationItem = ({ notification }: Props) => {
               {notification.message}
             </p>
           </div>
-
           {/* Delete Button */}
-          <Button unstyled leftIcon={<Trash2 />} />
+          <div
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+          >
+            <Button unstyled leftIcon={<Trash2 />} />
+          </div>{" "}
         </div>
 
         {/* Status */}
