@@ -9,7 +9,8 @@ export type IBadgeVariant =
   | "info"
   | "primary"
   | "secondary"
-  | "neutral";
+  | "neutral"
+  | "soft-info";
 
 interface BadgeProps {
   children: ReactNode;
@@ -39,6 +40,7 @@ const variantStyles: Record<IBadgeVariant, string> = {
   secondary: "bg-gradient-secondary",
 
   neutral: "bg-surface-hover text-text",
+  "soft-info": "bg-info/10 text-info",
 };
 
 const sizeStyles = {
