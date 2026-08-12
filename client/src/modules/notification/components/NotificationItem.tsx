@@ -2,7 +2,8 @@ import { Badge } from "@/shared/components/ui/Badge";
 import { Button } from "@/shared/components/ui/Button";
 import { StatusIndicator } from "@/shared/components/ui/StatusIndicator";
 import { Trash2 } from "lucide-react";
-import { useMarkAsRead } from "../hooks/useMarkAsRead";
+
+import { useNotificationItem } from "../hooks/useNotificationItem";
 import type { INotification } from "../types/notification.types";
 
 interface Props {
@@ -10,14 +11,11 @@ interface Props {
 }
 
 export const NotificationItem = ({ notification }: Props) => {
-  const { mutate: markAsRead, isPending } = useMarkAsRead();
+  const { handleMarkAsRead, handleDelete, isDeleting } = useNotificationItem(
+    notification.id,
+    notification.isRead,
+  );
 
-  const handleMarkAsRead = () => {
-    if (notification.isRead || isPending) {
-      return;
-    }
-    markAsRead(notification.id);
-  };
   return (
     <div
       onClick={handleMarkAsRead}
@@ -28,14 +26,12 @@ export const NotificationItem = ({ notification }: Props) => {
         notification.isRead ? "bg-background" : "bg-info/5",
       ].join(" ")}
     >
-      {/* Notification Indicator */}
       <StatusIndicator
         active={!notification.isRead}
         activeClassName="bg-info"
         inactiveClassName="bg-success"
       />
 
-      {/* Content */}
       <div className="min-w-0 flex-1">
         <div className="flex items-start justify-between gap-3">
           <div>
@@ -54,17 +50,15 @@ export const NotificationItem = ({ notification }: Props) => {
               {notification.message}
             </p>
           </div>
-          {/* Delete Button */}
-          <div
-            onClick={(event) => {
-              event.stopPropagation();
-            }}
-          >
-            <Button unstyled leftIcon={<Trash2 />} />
-          </div>{" "}
+
+          <Button
+            unstyled
+            leftIcon={<Trash2 />}
+            onClick={handleDelete}
+            disabled={isDeleting}
+          />
         </div>
 
-        {/* Status */}
         {!notification.isRead && (
           <Badge size="sm" variant="soft-info">
             New

@@ -28,4 +28,10 @@ export const notificationApi = {
 
     return res.data;
   },
+
+  delete: async (id: number) => {
+    const res = await API.delete(API_ENDPOINTS.NOTIFICATION.DELETE(id));
+
+    return res.data;
+  },
 };

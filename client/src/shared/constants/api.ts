@@ -74,6 +74,7 @@ export const API_ENDPOINTS = {
     LIST: "/notifications",
     UNREAD_COUNT: "/notifications/unread-count",
     MARK_AS_READ: (id: number) => `/notifications/${id}/read`,
+    DELETE: (id: number) => `/notifications/${id}`,
   },
 
   MEAL_ENTRY: {

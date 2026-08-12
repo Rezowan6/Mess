@@ -7,12 +7,11 @@ export const NotificationDropdown = ({ isOpen }: { isOpen: boolean }) => {
     limit: 5,
   });
 
-
   const notifications = data?.data || [];
 
   return (
     <div
-      className={`absolute right-0 top-full mt-3 z-50 w-80 bg-base-100 shadow-xl rounded-md border transition-all duration-300 ease-in-out ${isOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"}`}
+      className={`absolute right-0 top-full mt-3 z-50 w-80 bg-background shadow-xl rounded-md border border-info transition-all duration-300 ease-in-out ${isOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"}`}
     >
       {notifications &&
         notifications.map((item) => (
@@ -20,7 +19,9 @@ export const NotificationDropdown = ({ isOpen }: { isOpen: boolean }) => {
         ))}
 
       {notifications.length === 0 && (
-        <span className="">Notification not found.</span>
+        <span className="block py-8 text-center text-sm text-base-content/50">
+          Notification not found.
+        </span>
       )}
     </div>
   );
