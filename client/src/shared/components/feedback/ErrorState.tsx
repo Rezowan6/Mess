@@ -1,3 +1,5 @@
+import { Button } from "../ui/Button";
+
 interface ErrorStateProps {
   title?: string;
   description?: string;
@@ -15,18 +17,16 @@ export const ErrorState = ({
 
       <h3 className="text-lg font-semibold">{title}</h3>
 
-      <p className="mt-2 max-w-md text-sm text-base-content/70">
+      <p className="my-2 max-w-md text-sm text-base-content/70">
         {description}
       </p>
 
       {onRetry && (
-        <button
-          type="button"
-          className="btn btn-primary mt-6"
+        <Button
           onClick={onRetry}
         >
           Try Again
-        </button>
+        </Button>
       )}
     </div>
   );
