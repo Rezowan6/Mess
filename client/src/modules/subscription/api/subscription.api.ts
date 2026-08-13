@@ -4,8 +4,8 @@ import type { ApiResponse } from "@/shared/types/api.types";
 import type { ISubscription } from "../types/subscription.types";
 
 export const subscriptionApi = {
-  create: async (payload: Partial<ISubscription>): Promise<ApiResponse> => {
-    const { data } = await API.post<ApiResponse>(
+  create: async (payload: Partial<ISubscription>): Promise<ApiResponse<ISubscription>> => {
+    const { data } = await API.post<ApiResponse<ISubscription>>(
       API_ENDPOINTS.SUBSCRIPTION.CREATE,
       payload,
     );
