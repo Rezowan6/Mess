@@ -41,9 +41,11 @@ import { MyMealHistoryPage } from "@/modules/my-profile/pages/MyMealHistoryPage"
 import { MyProfilePage } from "@/modules/my-profile/pages/MyProfilePage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
 import { PaymentLayout } from "@/modules/payment/layouts/PaymentLayout";
+import { PaymentCheckoutPage } from "@/modules/payment/pages/PaymentCheckoutPage";
 import { PaymentDetailsPage } from "@/modules/payment/pages/PaymentDetailsPage";
 import { PaymentHistoryPage } from "@/modules/payment/pages/PaymentHistoryPage";
 import { PaymentPage } from "@/modules/payment/pages/PaymentPage";
+import { PaymentResultPage } from "@/modules/payment/pages/PaymentResultPage";
 import { PlanFeatureTable } from "@/modules/plan-feature/components/PlanFeatureTable";
 import { PlanFeaturePage } from "@/modules/plan-feature/pages/PlanFeaturePage";
 import { PlanTable } from "@/modules/plan/components/PlanTable";
@@ -58,7 +60,6 @@ import { SubscriptionPage } from "@/modules/subscription/pages/SubscriptionPage"
 import { UpgradePlanPage } from "@/modules/subscription/pages/UpgradePlanPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
-import { PaymentCheckoutPage } from "@/modules/payment/pages/PaymentCheckoutPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -235,6 +236,10 @@ export const router = createBrowserRouter([
                   {
                     path: "checkout",
                     element: <PaymentCheckoutPage />,
+                  },
+                  {
+                    path: "result",
+                    element: <PaymentResultPage />,
                   },
                 ],
               },

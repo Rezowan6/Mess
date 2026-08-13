@@ -7,6 +7,7 @@ import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage"
 import { BackButton } from "@/shared/components/ui/BackButton";
 
 import { PaymentCheckoutHandler } from "../components/PaymentCheckoutHandler";
+import { ROUTES } from "@/shared/constants/routes";
 
 interface PaymentCheckoutState {
   redirectUrl?: string;
@@ -21,7 +22,7 @@ export const PaymentCheckoutPage = () => {
 
   useEffect(() => {
     if (!redirectUrl) {
-      navigate("/payment", { replace: true });
+      navigate(ROUTES.PAYMENT, { replace: true });
     }
   }, [redirectUrl, navigate]);
 
