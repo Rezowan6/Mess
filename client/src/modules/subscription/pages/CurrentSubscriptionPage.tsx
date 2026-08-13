@@ -1,11 +1,14 @@
 import { usePlans } from "@/modules/plan/hooks/usePlans";
+import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { useMemo } from "react";
 import { CurrentPlanCard } from "../components/CurrentPlanCard";
 import { ExpiryAlert } from "../components/ExpiryAlert";
 import { SubscriptionOverview } from "../components/SubscriptionOverview";
+import { SubscriptionSkeleton } from "../components/SubscriptionSkeleton";
 import { SubscriptionSummaryCards } from "../components/SubscriptionSummaryCards";
 import { SubscriptionTimeline } from "../components/SubscriptionTimeline";
 import { UpgradeButton } from "../components/UpgradeButton";
+import { SUBSCRIPTION_MESSAGES } from "../configs/subscription.messages";
 import { useCurrentSubscription } from "../hooks/useCurrentSubscription";
 
 export const CurrentSubscriptionPage = () => {
@@ -25,15 +28,12 @@ export const CurrentSubscriptionPage = () => {
   }, [plans, subscription]);
 
   if (subscriptionLoading || plansLoading) {
-    return null;
+    return <SubscriptionSkeleton />;
   }
 
   if (!subscription || !currentPlan) {
-    return (
-      <div className="rounded-xl border border-base-300 p-6 text-center">
-        <p className="text-sm opacity-70">No active subscription found.</p>
-      </div>
-    );
+    const { empty } = SUBSCRIPTION_MESSAGES;
+    return <EmptyState title={empty.title} description={empty.description} />;
   }
   return (
     <div className="space-y-6">

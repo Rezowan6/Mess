@@ -15,7 +15,7 @@ export const SubscriptionOverview = ({ subscription }: Props) => {
         <div className="flex items-center gap-4">
           <IconBox
             icon={<Crown size={28} />}
-            bgClassName="bg-warning/10"
+            bgClassName="bg-warning/20"
             textClassName="text-warning"
           />
 

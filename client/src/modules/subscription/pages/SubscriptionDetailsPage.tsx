@@ -40,6 +40,7 @@ export const SubscriptionDetailsPage = () => {
     >
       <div className="grid gap-4 md:grid-cols-2">
         <SubscriptionInfoCard subscription={subscription} />
+        
         <PlanInfoCard subscription={subscription} />
       </div>
     </ManagementPage>

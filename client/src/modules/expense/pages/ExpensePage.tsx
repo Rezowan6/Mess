@@ -16,7 +16,11 @@ export const ExpensePage = () => {
         title="Expense Management"
         description="Manage mess expenses and records"
         action={
-          <ButtonModule text="Add Expense" onClick={() => setIsOpen(true)} />
+          <ButtonModule
+            text="Add Expense"
+            onClick={() => setIsOpen(true)}
+            permission={PERMISSIONS.EXPENSE_CREATE}
+          />
         }
       >
         <ExpenseTable />

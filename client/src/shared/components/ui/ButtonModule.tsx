@@ -1,3 +1,5 @@
+import type { Permission } from "@/shared/constants/permissions";
+import { useRBAC } from "@/shared/hooks/useRBAC";
 import styel from "@/styles/modules/button.module.css";
 import type { ReactNode } from "react";
 
@@ -7,6 +9,7 @@ interface props {
   onClick?: () => void;
   className?: string;
   fullWidth?: boolean;
+  permission?: Permission;
 }
 
 export const ButtonModule = ({
@@ -14,8 +17,13 @@ export const ButtonModule = ({
   leftIcon,
   className,
   fullWidth,
+  permission,
   ...props
 }: props) => {
+  const { can } = useRBAC();
+  if (permission && !can(permission)) {
+    return null;
+  }
   return (
     <>
       <button
