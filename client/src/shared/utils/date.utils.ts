@@ -6,7 +6,8 @@ export const getCurrentlDate = () => {
   return new Date().toISOString().split("T")[0] as string;
 };
 
-export const formatDate = (date: string | Date): string => {
+export const formatDate = (date: string | Date | null): string => {
+  if (!date) return "N/A";
   return new Date(date).toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",

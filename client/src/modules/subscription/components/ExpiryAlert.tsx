@@ -1,4 +1,7 @@
+import { DescriptionText } from "@/shared/components/ui/DescriptionText";
 import { AlertTriangle } from "lucide-react";
+
+const description = `Your subscription will expire soon. Renew your plan to continue using all features without interruption.`;
 
 export const ExpiryAlert = () => {
   return (
@@ -11,10 +14,11 @@ export const ExpiryAlert = () => {
         <div>
           <h4 className="font-semibold">Subscription Renewal</h4>
 
-          <p className="mt-1 text-sm text-base-content/70">
-            Your subscription will expire soon. Renew your plan to continue
-            using all features without interruption.
-          </p>
+          <DescriptionText
+            text={description}
+            maxWords={10}
+            className="text-sm opacity-70"
+          />
         </div>
       </div>
     </div>
