@@ -58,6 +58,7 @@ import { SubscriptionPage } from "@/modules/subscription/pages/SubscriptionPage"
 import { UpgradePlanPage } from "@/modules/subscription/pages/UpgradePlanPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
+import { PaymentCheckoutPage } from "@/modules/payment/pages/PaymentCheckoutPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -230,6 +231,10 @@ export const router = createBrowserRouter([
                   {
                     path: "history",
                     element: <PaymentHistoryPage />,
+                  },
+                  {
+                    path: "checkout",
+                    element: <PaymentCheckoutPage />,
                   },
                 ],
               },

@@ -4,7 +4,9 @@ import type { IPlan } from "@/modules/plan/types/plan.types";
 import { PricingCardAction } from "@/shared/components/ui/PricingCardAction";
 import { PricingCardFeatures } from "@/shared/components/ui/PricingCardFeatures";
 import { PricingCardHeader } from "@/shared/components/ui/PricingCardHeader";
+import { ROUTES } from "@/shared/constants/routes";
 import type { ApiResponse } from "@/shared/types/api.types";
+import { useNavigate } from "react-router-dom";
 import { useCreateSubscription } from "../hooks/useCreateSubscription";
 import type { ISubscription } from "../types/subscription.types";
 
@@ -15,6 +17,7 @@ interface Props {
 export const PlanCard = ({ plan }: Props) => {
   const createSubscription = useCreateSubscription();
   const createPayment = useCreatePayment();
+  const navigate = useNavigate();
 
   const handleChoosePlan = () => {
     createSubscription.mutate(
@@ -38,7 +41,12 @@ export const PlanCard = ({ plan }: Props) => {
                   throw new Error("Payment checkout URL was not returned.");
                 }
 
-                window.location.href = redirectUrl;
+                navigate(`${ROUTES.PAYMENT}/checkout`, {
+                  replace: true,
+                  state: {
+                    redirectUrl,
+                  },
+                });
               },
             },
           );
