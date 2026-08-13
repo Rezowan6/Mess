@@ -18,7 +18,7 @@ export const MealEntryPage = () => {
       <ManagementPage
         title={currentPage.title}
         description={currentPage.description}
-        action={<Button variant="moduleBtn" permission={PERMISSIONS.MEAL_ENTRY_CREATE}>add Meal</Button>}
+        action={<Button disabled variant="moduleBtn" permission={PERMISSIONS.MEAL_ENTRY_CREATE}>add Meal</Button>}
         footer={currentPage.footer}
       >
         <Outlet />

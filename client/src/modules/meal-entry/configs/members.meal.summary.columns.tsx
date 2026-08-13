@@ -53,7 +53,7 @@ export const useMembersMealSummaryColumns = (): TableColumn<IMealEntry>[] => {
       title: "Details",
       render: (meal) => (
         <ActionLink state={meal} to={`${ROUTES.MEAL_ENTRY}/history`}>
-          View Details
+          Details
         </ActionLink>
       ),
     });
