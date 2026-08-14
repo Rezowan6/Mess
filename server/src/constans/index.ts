@@ -26,3 +26,7 @@ export const TenantStatus = {
   INVITED: "inactive",
   SUSPENDED: "suspended",
 };
+
+export const HEADERS = {
+  TENANT_ID: "x-tenant-id",
+} as const;
