@@ -15,25 +15,34 @@ class InviteService {
   async send({ email, context }: ISendInvitePayload) {
     const { tenantId, userId } = context;
 
-    // User already exists?
     const existingUser = await userRepository.findOne({ email });
 
     const inviter = await userRepository.findById(userId);
 
     const tenant = await tenantRepository.findById(tenantId);
 
+    if (!inviter) {
+      throw new ApiError(404, "Inviter not found.");
+    }
+
+    if (!tenant) {
+      throw new ApiError(404, "Tenant not found.");
+    }
+
+    // User already belongs to this mess?
     if (existingUser) {
-      const existingMembership = await inviteRepository.findOne({
+      const membership = await membershipRepository.findOne({
         tenantId,
-        email,
+        userId: existingUser.id,
+        status: MemberStatus.ACTIVE,
       });
 
-      if (existingMembership) {
-        throw new ApiError(409, "User already belongs to this tenant.");
+      if (membership) {
+        throw new ApiError(409, "User already belongs to this mess.");
       }
     }
 
-    // Pending invite?
+    // Pending invite already exists?
     const pendingInvite = await inviteRepository.findOne({
       email,
       tenantId,
@@ -44,7 +53,7 @@ class InviteService {
       throw new ApiError(409, "Pending invite already exists.");
     }
 
-    // Generate token
+    // Generate invite token
     const { rawToken, tokenHash } = IDep.generateInviteToken();
     const expiresAt = IDep.generateInviteExpiry();
 
@@ -65,8 +74,8 @@ class InviteService {
     await IDep.sendInviteEmail({
       email,
       recipientName: existingUser?.name ?? "Member",
-      name: tenant?.name as string,
-      inviterName: inviter?.name ?? "Admin",
+      name: tenant.name,
+      inviterName: inviter.name ?? "Admin",
       token: rawToken,
     });
 
@@ -115,7 +124,7 @@ class InviteService {
   }
 
   async accept(payload: IAcceptInvitePayload) {
-    const { name, password, token, } = payload;
+    const { name, password, token } = payload;
 
     return IDep.sequelize.transaction(async (transaction) => {
       const { invite } = await this.validate(token);

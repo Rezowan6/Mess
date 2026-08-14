@@ -75,15 +75,15 @@ export const router = createBrowserRouter([
             index: true,
             element: <LandingPage />,
           },
-          {
-            path: ROUTES.INVITES_ACCEPT,
-            element: <AcceptInvitePage />,
-          },
         ],
       },
       {
         path: ROUTES.LOGIN,
         element: <LoginPage />,
+      },
+      {
+        path: ROUTES.INVITES_ACCEPT,
+        element: <AcceptInvitePage />,
       },
       {
         path: ROUTES.REGISTER,
