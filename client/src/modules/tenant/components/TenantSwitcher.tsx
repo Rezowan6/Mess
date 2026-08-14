@@ -31,6 +31,10 @@ export const TenantSwitcher = () => {
 
     if (!tenantMembership) return;
 
+    // Clear old tenant cached data first
+    queryClient.clear();
+
+    // Set new tenant
     setTenant({
       tenantId: tenantMembership?.tenantId,
       role: tenantMembership?.role,

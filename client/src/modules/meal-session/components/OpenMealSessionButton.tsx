@@ -2,6 +2,7 @@ import { Button } from "@/shared/components/ui/Button";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 
 import { useOpenMealSession } from "../hooks/useOpenMealSession";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export const OpenMealSessionButton = () => {
   const { openConfirm } = useConfirmStore();
@@ -23,7 +24,7 @@ export const OpenMealSessionButton = () => {
   };
 
   return (
-    <Button variant="success" onClick={handleOpen} loading={mutation.isPending}>
+    <Button variant="success" onClick={handleOpen} loading={mutation.isPending} permission={PERMISSIONS.MEAL_SESSION_OPEN}>
       Open Session
     </Button>
   );

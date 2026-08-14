@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { useSidebarStore } from "@/store/sidebar.store";
 
 import { useEffect } from "react";
+import { TenantName } from "../../ui/TenantName";
 import { SidebarMenu } from "./SidebarMenu";
 import { SidebarProfile } from "./SidebarProfile";
 
@@ -78,8 +79,7 @@ export const MobileSidebar = () => {
         {/* Header */}
 
         <div className="flex items-center justify-between border-b p-5">
-          <h2 className="text-xl font-bold">Mess SaaS</h2>
-
+          <TenantName />
           <button
             className="cursor-pointer hover:bg-info/10 p-2 rounded-md lg:hidden"
             onClick={close}

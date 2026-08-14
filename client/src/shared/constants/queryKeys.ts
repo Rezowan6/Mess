@@ -41,24 +41,28 @@ export const queryKeys = {
   },
 
   subscriptions: {
-    all: ["subscriptions"] as const,
+    all: (tenantId?: number) => ["subscriptions", tenantId] as const,
 
-    current: ["subscriptions", "current"] as const,
+    current: (tenantId?: number) =>
+      ["subscriptions", tenantId, "current"] as const,
 
-    mySubscriptions: ["subscriptions", "my-subscriptions"] as const,
+    mySubscriptions: (tenantId?: number) =>
+      ["subscriptions", tenantId, "my-subscriptions"] as const,
 
-    byId: (id: number) => ["subscriptions", id] as const,
+    byId: (tenantId: number | undefined, id: number) =>
+      ["subscriptions", tenantId, "byId", id] as const,
   },
 
   payments: {
-    all: ["payments"] as const,
+    all: (tenantId?: number) => ["payments", tenantId] as const,
 
-    list: ["payments", "list"] as const,
+    list: (tenantId?: number) => ["payments", tenantId, "list"] as const,
 
-    byId: (id: number) => ["payments", "byId", id] as const,
+    byId: (tenantId: number | undefined, id: number) =>
+      ["payments", tenantId, "byId", id] as const,
 
-    bySubscriptionId: (subscriptionId: number) =>
-      ["payments", "bySubscriptionId", subscriptionId] as const,
+    bySubscriptionId: (tenantId: number | undefined, subscriptionId: number) =>
+      ["payments", tenantId, "bySubscriptionId", subscriptionId] as const,
   },
   monthlyCalculations: {
     current: (tenantId?: number) =>
@@ -106,7 +110,10 @@ export const queryKeys = {
   },
 
   mealPreference: {
-    myPreference: ["meal-preference"],
+    all: (tenantId?: number) => ["meal-preference", tenantId] as const,
+
+    myPreference: (tenantId?: number) =>
+      ["meal-preference", tenantId, "my"] as const,
   },
 
   mealPlanning: {
@@ -137,11 +144,11 @@ export const queryKeys = {
   },
 
   notifications: {
-    all: ["notifications"] as const,
+    all: (tenantId?: number) => ["notifications", tenantId] as const,
 
-    list: (params?: { page?: number; limit?: number }) =>
-      ["notifications", "list", params] as const,
+    list: (tenantId?: number, params?: { page?: number; limit?: number }) =>
+      ["notifications", tenantId, "list", params] as const,
 
-    count: ["notifications", "count"] as const,
+    count: (tenantId?: number) => ["notifications", tenantId, "count"] as const,
   },
 };

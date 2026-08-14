@@ -8,7 +8,7 @@ class TenantController {
   create = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.context.user;
 
-    const data = await tenantService.create(id, req.body);
+    const data = await tenantService.create(id, req.body.name ?? "");
 
     sendResponse(res, {
       statusCode: 201,

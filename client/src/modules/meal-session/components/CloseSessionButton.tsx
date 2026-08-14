@@ -2,6 +2,7 @@ import { Button } from "@/shared/components/ui/Button";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 
 import { useCloseMealSession } from "../hooks/useCloseMealSession";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 interface Props {
   sessionId: number;
@@ -27,7 +28,7 @@ export const CloseSessionButton = ({ sessionId }: Props) => {
   };
 
   return (
-    <Button variant="error" onClick={handleClose} loading={mutation.isPending}>
+    <Button variant="error" onClick={handleClose} loading={mutation.isPending} permission={PERMISSIONS.MEAL_SESSION_CLOSE}>
       Close Session
     </Button>
   );
