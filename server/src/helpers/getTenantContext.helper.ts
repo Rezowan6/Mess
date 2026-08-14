@@ -15,7 +15,7 @@ export interface AuthRequest {
       tenantId: number;
       role: MemberShipRole;
     };
-    mealSession: IMealSessionReq;
+    mealSession?: IMealSessionReq | undefined;
   };
 }
 

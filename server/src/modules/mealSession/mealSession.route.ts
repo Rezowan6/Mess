@@ -1,10 +1,10 @@
-import { allAccess, managerAccess } from "@/helpers/permission.js";
+import { allAccess, managerAccess, mealSessionAdminAndManagerAccess } from "@/helpers/permission.js";
 import express from "express";
 import { mealSessionController } from "./mealSession.controller.js";
 
 const router = express.Router();
 
-router.post("/", ...managerAccess, mealSessionController.create);
+router.post("/", ...mealSessionAdminAndManagerAccess, mealSessionController.create);
 router.get("/", ...allAccess, mealSessionController.getCurrentSession);
 router.get("/history", ...managerAccess, mealSessionController.getAll);
 router.patch("/:id/close", ...managerAccess, mealSessionController.close);

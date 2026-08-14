@@ -3,10 +3,11 @@ import asyncHandler from "@/middlewares/asyncHandler.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { mealSessionService } from "./MealSession.service.js";
+import { getTenantBaseContext } from "@/helpers/getTenantBaseContext.js";
 
 class MealSessionController {
   create = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, userId } = getTenantContext(req);
+    const { tenantId, userId } = getTenantBaseContext(req);
 
     const session = await mealSessionService.create(tenantId, userId);
 

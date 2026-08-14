@@ -21,6 +21,7 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
 
     // meal session
     PERMISSIONS.MEAL_SESSION_VIEW,
+    PERMISSIONS.MEAL_SESSION_OPEN,
 
     // meal entry
     PERMISSIONS.MEAL_ENTRY_VIEW,

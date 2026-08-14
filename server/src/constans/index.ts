@@ -28,5 +28,5 @@ export const TenantStatus = {
 };
 
 export const HEADERS = {
-  TENANT_ID: "x-tenant-id",
+  TENANT_ID: "X-Tenant-ID",
 } as const;

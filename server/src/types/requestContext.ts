@@ -18,13 +18,15 @@ export interface RequestContext {
     id: number;
     name?: string;
   };
-  mealSession: {
-    id: number;
-    tenantId: number;
-    month: number;
-    year: number;
-    status: MealSessionStatus;
-  };
+  mealSession?:
+    | {
+        id: number;
+        tenantId: number;
+        month: number;
+        year: number;
+        status: MealSessionStatus;
+      }
+    | undefined;
 }
 
 export interface IGetTenantContentRes {
@@ -33,7 +35,7 @@ export interface IGetTenantContentRes {
   membershipId: number;
   mealSessionId: number;
   role: MemberShipRole;
-  session: {
+  session?: {
     id: number;
     month: number;
     year: number;

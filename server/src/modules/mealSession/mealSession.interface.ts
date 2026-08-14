@@ -14,7 +14,7 @@ export interface IMealSessionReq {
   month: number;
   year: number;
   status: MealSessionStatus;
-}
+};
 export interface CreateMealSessionPayload {
   tenantId: number;
   month: number;

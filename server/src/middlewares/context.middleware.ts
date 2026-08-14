@@ -5,61 +5,73 @@ import { mealSessionRepository } from "@/modules/mealSession/mealSession.reposit
 import { ApiError } from "@/utils/index.js";
 import { NextFunction, Request, Response } from "express";
 
-export const contextMiddleware = async (
-  req: Request,
-  _res: Response,
-  next: NextFunction,
-) => {
-  const tenantId = Number(req.headers[HEADERS.TENANT_ID]);
-  if (!tenantId) {
-    throw new ApiError(400, "Tenant ID is required.");
-  }
-  const membership = await TenantMembership.findOne({
-    where: {
-      userId: req.user.id,
-      tenantId,
-      status: MemberStatus.ACTIVE,
-    },
-    include: [
-      {
-        model: Tenant,
-        as: "tenant",
+interface ContextMiddlewareOptions {
+  requireMealSession?: boolean;
+}
+
+export const contextMiddleware = (options: ContextMiddlewareOptions = {}) => {
+  const { requireMealSession = true } = options;
+
+  return async (req: Request, _res: Response, next: NextFunction) => {
+    const tenantIdHeader = req.get(HEADERS.TENANT_ID);
+
+    const tenantId = Number(tenantIdHeader);
+
+    if (!tenantId || Number.isNaN(tenantId)) {
+      throw new ApiError(400, "Tenant ID is required.");
+    }
+
+    const membership = await TenantMembership.findOne({
+      where: {
+        userId: req.user.id,
+        tenantId,
+        status: MemberStatus.ACTIVE,
       },
-    ],
-  });
+      include: [
+        {
+          model: Tenant,
+          as: "tenant",
+        },
+      ],
+    });
 
-  if (!membership) {
-    throw new ApiError(403, "Active membership not found.");
-  }
+    if (!membership) {
+      throw new ApiError(403, "Active membership not found.");
+    }
 
-  if (!membership.tenant) {
-    throw new ApiError(404, "Tenant not found.");
-  }
+    if (!membership.tenant) {
+      throw new ApiError(404, "Tenant not found.");
+    }
 
-  if (membership.tenant.status !== TenantStatus.ACTIVE) {
-    throw new ApiError(403, "Tenant is inactive.");
-  }
+    if (membership.tenant.status !== TenantStatus.ACTIVE) {
+      throw new ApiError(403, "Tenant is inactive.");
+    }
 
-  const mealSession = await mealSessionRepository.getCurrentSession(
-    membership.tenantId,
-  );
+    let mealSession = undefined;
 
-  if (!mealSession || mealSession.status !== MealSessionStatus.OPEN) {
-    throw new ApiError(404, "Open meal session not found.");
-  }
+    if (requireMealSession) {
+      mealSession = await mealSessionRepository.getCurrentSession(
+        membership.tenantId,
+      );
 
-  const { id, name, email } = req.user;
+      if (!mealSession || mealSession.status !== MealSessionStatus.OPEN) {
+        throw new ApiError(404, "Open meal session not found.");
+      }
+    }
 
-  req.context = {
-    user: {
-      id,
-      name,
-      email,
-    },
-    membership,
-    tenant: membership.tenant,
-    mealSession,
+    const { id, name, email } = req.user;
+
+    req.context = {
+      user: {
+        id,
+        name,
+        email,
+      },
+      membership,
+      tenant: membership.tenant,
+      mealSession,
+    };
+
+    next();
   };
-
-  next();
 };
