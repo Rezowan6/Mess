@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
-import { notificationApi } from "../api/notification.api";
 import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
+import { notificationApi } from "../api/notification.api";
 
 export const useNotifications = (params?: {
   page?: number;
@@ -10,7 +10,7 @@ export const useNotifications = (params?: {
 }) => {
   const tenantId = useCurrentTenantId();
   return useQuery({
-    queryKey: queryKeys.notifications.list(tenantId,params),
+    queryKey: queryKeys.notifications.list(tenantId),
 
     queryFn: () => notificationApi.getAll(params),
   });

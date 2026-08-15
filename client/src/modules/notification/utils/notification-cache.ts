@@ -11,9 +11,10 @@ import type { ApiResponse } from "@/shared/types/api.types";
 export const addNotificationToCache = (
   queryClient: QueryClient,
   notification: INotification,
+  tenantId: number,
 ) => {
   queryClient.setQueryData(
-    queryKeys.notifications.list({ limit: 5 }),
+    queryKeys.notifications.list(tenantId),
     (old: INotificationResponse | undefined) => {
       if (!old) return old;
       const total = old.meta?.total ?? 0;
@@ -30,7 +31,7 @@ export const addNotificationToCache = (
   );
 
   queryClient.setQueryData(
-    queryKeys.notifications.count,
+    queryKeys.notifications.count(tenantId),
     (old: ApiResponse<{ count: number }> | undefined) => {
       if (!old) return old;
 

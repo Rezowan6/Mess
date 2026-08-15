@@ -36,7 +36,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     // notification
     const handleNotification = (notification: any) => {
-      addNotificationToCache(queryClient, notification);
+      addNotificationToCache(queryClient, notification, currentTenant.tenantId);
     };
 
     socket.on(SocketEvent.MEAL_PLANNING_UPDATED, handleMealPlanningUpdated);
@@ -48,7 +48,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     // cleanup...
     return () => {
-      socket.off(SocketEvent.MEAL_PLANNING_UPDATED);
+      socket.off(SocketEvent.MEAL_PLANNING_UPDATED, handleMealPlanningUpdated);
       socket.off(SocketEvent.NOTIFICATION);
       socket.off("connect");
       socket.off("disconnect");
