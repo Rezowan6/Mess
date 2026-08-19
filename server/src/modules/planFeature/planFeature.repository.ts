@@ -1,6 +1,11 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
 
+import { Feature } from "@clerk/express";
 import { PlanFeature } from "./planFeature.model.js";
+
+type PlanFeatureWithFeature = PlanFeature & {
+  feature?: Feature;
+};
 
 class PlanFeatureRepository extends BaseRepository<PlanFeature> {
   constructor() {
@@ -14,11 +19,16 @@ class PlanFeatureRepository extends BaseRepository<PlanFeature> {
     });
   }
 
-  async findByPlanId(planId: number) {
+  async findByPlanId(planId: number): Promise<PlanFeatureWithFeature[]> {
     return this.findAll({
       where: {
         planId,
       },
+      include: [
+        {
+          association: "feature",
+        },
+      ],
     });
   }
 
