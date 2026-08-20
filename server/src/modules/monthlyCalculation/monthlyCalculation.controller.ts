@@ -5,9 +5,12 @@ import { Request, Response } from "express";
 import { monthlyCalculationService } from "./monthlyCalculation.service.js";
 
 class MonthlyCalculationController {
-   getCurrentMonthCalculation = asyncHandler(
+  getCurrentMonthCalculation = asyncHandler(
     async (req: Request, res: Response) => {
       const { mealSessionId, tenantId, session } = getTenantContext(req);
+      if (!session) {
+        throw new Error("Meal session not found");
+      }
 
       const data = await monthlyCalculationService.getCurrentMonthCalculation({
         tenantId,

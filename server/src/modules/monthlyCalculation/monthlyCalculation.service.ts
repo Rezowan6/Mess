@@ -51,7 +51,7 @@ class MonthlyCalculationService {
       );
       const totalMeal = mealData ? Number(mealData.get("totalMeal")) : 0;
 
-      const deposit = depositMap.get(member.userId);
+      const deposit = Number(depositMap.get(member.userId) ?? 0);
 
       const memberCost = totalMeal * mealRate || 0;
 

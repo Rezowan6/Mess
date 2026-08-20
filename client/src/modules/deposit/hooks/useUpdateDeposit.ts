@@ -1,17 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { useTenantStore } from "@/modules/tenant/store/tenant.store";
-
 import { queryKeys } from "@/shared/constants/queryKeys";
 
 import { depositApi } from "../api/deposit.api";
 
+import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
 import type { IUpdateDepositDto } from "../types/deposit.types";
 
 export const useUpdateDeposit = () => {
   const queryClient = useQueryClient();
 
-  const currentTenant = useTenantStore((state) => state.currentTenant);
+  const tenantId = useCurrentTenantId();
 
   return useMutation({
     mutationFn: ({ id, payload }: { id: number; payload: IUpdateDepositDto }) =>
@@ -19,7 +18,11 @@ export const useUpdateDeposit = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.deposits.list(currentTenant?.tenantId),
+        queryKey: queryKeys.deposits.list(tenantId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.monthlyCalculations.current(tenantId),
       });
     },
   });

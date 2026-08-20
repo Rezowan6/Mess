@@ -18,6 +18,10 @@ export const useUpsertMealPreference = () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealPreference.myPreference(tenantId),
       });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.monthlyCalculations.current(tenantId),
+      });
     },
   });
 };

@@ -23,6 +23,8 @@ export const getNextMaghribTime = (): Date => {
 
   return runAt;
 
+  // for testing---
+
   // const runAt = new Date();
 
   // runAt.setMinutes(runAt.getMinutes() + 1);
