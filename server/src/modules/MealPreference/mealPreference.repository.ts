@@ -10,32 +10,26 @@ class MealPreferencRepository extends BaseRepository<MealPreference> {
   async getMyPreference({
     tenantId,
     userId,
-    mealSessionId,
   }: {
     tenantId: number;
     userId: number;
-    mealSessionId: number;
   }) {
     return this.findOneWithOptions({
       where: {
         tenantId,
         userId,
-        mealSessionId,
       },
     });
   }
 
   async getActivePreferences({
     tenantId,
-    mealSessionId,
   }: {
     tenantId: number;
-    mealSessionId: number;
   }): Promise<IMealPreferenceWithUser[]> {
     return this.findAllWithOptions({
       where: {
         tenantId,
-        mealSessionId,
         isActive: true,
       },
 
@@ -51,12 +45,10 @@ class MealPreferencRepository extends BaseRepository<MealPreference> {
 
   async getByMealSession({
     tenantId,
-    mealSessionId,
   }: IGetMealPreferencesBySession) {
     return this.findAll({
       where: {
         tenantId,
-        mealSessionId,
         isActive: true,
       },
     });

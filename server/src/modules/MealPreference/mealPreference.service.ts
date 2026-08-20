@@ -26,9 +26,9 @@ class MealPreferenceService {
       mealSessionId,
       userId,
       date,
-      breakfast,
-      lunch,
-      dinner,
+      breakfast: breakfast ?? 0,
+      lunch: lunch ?? 0,
+      dinner: dinner ?? 0,
       guestMeal: guestMeal ?? 0,
     };
 
@@ -36,7 +36,6 @@ class MealPreferenceService {
       const existingPreference = await mealPreferenceRepository.findOne({
         tenantId,
         userId,
-        mealSessionId,
       });
 
       const mealSetting = await mealSettingRepository.findOne({
@@ -184,7 +183,6 @@ class MealPreferenceService {
   }) {
     return await mealPreferenceRepository.getMyPreference({
       tenantId,
-      mealSessionId,
       userId,
     });
   }

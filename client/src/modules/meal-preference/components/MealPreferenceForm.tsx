@@ -20,9 +20,9 @@ export const MealPreferenceForm = () => {
     formState: { isDirty, errors },
   } = useForm<IUpsertMealPreferenceDto>({
     defaultValues: {
-      breakfast: 1,
-      lunch: 1,
-      dinner: 1,
+      breakfast: 0,
+      lunch: 0,
+      dinner: 0,
       guestMeal: 0,
     },
   });
@@ -81,7 +81,7 @@ export const MealPreferenceForm = () => {
           <p className="text-text-muted">
             You haven't set your meal preference yet.
           </p>
-          <p className="text-xs text-success">
+          <p className="text-xs text-info">
             Save your preference to enable automatic meal requests.
           </p>
         </div>
