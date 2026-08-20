@@ -30,3 +30,11 @@ export const TenantStatus = {
 export const HEADERS = {
   TENANT_ID: "X-Tenant-ID",
 } as const;
+
+export const FeatureCode = {
+  DASHBOARD: "dashboard",
+  ADVANCED_REPORT: "advanced_report",
+  EXPENSE_MANAGEMENT: "Expense Management",
+} as const;
+
+export type FeatureCode = (typeof FeatureCode)[keyof typeof FeatureCode];
