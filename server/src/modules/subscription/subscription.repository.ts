@@ -19,6 +19,9 @@ class SubscriptionRepository extends BaseRepository<Subscription> {
     return this.findOne({
       tenantId,
       status: SubscriptionStatus.ACTIVE,
+      endDate: {
+        [Op.gte]: new Date(),
+      },
     });
   }
 
@@ -48,13 +51,13 @@ class SubscriptionRepository extends BaseRepository<Subscription> {
     return this.findAll({
       where: {
         tenantId,
-        status: SubscriptionStatus.ACTIVE
+        status: SubscriptionStatus.ACTIVE,
       },
       include: [
         {
           association: "plan",
           attributes: ["name", "id"],
-        }
+        },
       ],
       order: [["createdAt", "DESC"]],
     });
@@ -118,6 +121,9 @@ class SubscriptionRepository extends BaseRepository<Subscription> {
       where: {
         tenantId,
         status: SubscriptionStatus.ACTIVE,
+        endDate: {
+          [Op.gte]: new Date(),
+        },
       },
 
       include: [

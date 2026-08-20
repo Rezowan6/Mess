@@ -33,7 +33,13 @@ export const CurrentSubscriptionPage = () => {
 
   if (!subscription || !currentPlan) {
     const { empty } = SUBSCRIPTION_MESSAGES;
-    return <EmptyState title={empty.title} description={empty.description} />;
+    return (
+      <EmptyState
+        title={empty.title}
+        description={empty.description}
+        action={<UpgradeButton />}
+      />
+    );
   }
   return (
     <div className="space-y-6">
