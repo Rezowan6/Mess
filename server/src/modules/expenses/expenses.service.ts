@@ -41,7 +41,7 @@ class ExpensesService {
       mealSessionId,
       query,
     );
-    
+
     if (!expenses) {
       throw new ApiError(404, "Expense not foudn.");
     }
@@ -165,7 +165,7 @@ class ExpensesService {
   }: {
     tenantId: number;
     mealSessionId: number;
-    session: IMealSessionReq;
+    session?: IMealSessionReq | undefined;
   }) {
     const totalExpense = await expensesRepository.getTotalExpenseByMealSession(
       tenantId,
