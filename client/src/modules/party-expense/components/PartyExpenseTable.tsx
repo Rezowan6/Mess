@@ -10,7 +10,6 @@ import { usePartyExpenseColumns } from "../configs/partyExpense.columns";
 import { PARTY_EXPENSE_MESSAGES } from "../configs/partyExpense.messages";
 import { PartyExpenseTableSkeleton } from "./PartyExpenseTableSkeleton";
 
-import { Pagination } from "@/shared/components/ui/Pagination";
 import type { IPartyExpense } from "../types/partyExpense.types";
 
 interface Props {
@@ -36,12 +35,12 @@ export const PartyExpenseTable = ({ data, loading, error, refetch }: Props) => {
     );
   };
 
-  const handlePage = (page: number) => {
-    setSearchParams({
-      page: String(page),
-      ...(search && { search }),
-    });
-  };
+  // const handlePage = (page: number) => {
+  //   setSearchParams({
+  //     page: String(page),
+  //     ...(search && { search }),
+  //   });
+  // };
 
   useEffect(() => {
     if (page !== 1) {
@@ -73,14 +72,6 @@ export const PartyExpenseTable = ({ data, loading, error, refetch }: Props) => {
         message={PARTY_EXPENSE_MESSAGES}
         refetch={refetch}
       />
-
-      {/* {data?.meta && (
-        <Pagination
-          page={data.meta.page}
-          totalPages={data.meta.totalPages}
-          onChange={handlePage}
-        />
-      )} */}
     </div>
   );
 };

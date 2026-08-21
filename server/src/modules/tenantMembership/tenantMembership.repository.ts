@@ -1,9 +1,8 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
 import { MemberStatus } from "@/constans/index.js";
 import { TenantMembership, User } from "@/models/index.js";
-import { Transaction } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { FindByTenantAndUserPayload } from "./tenantMembership.interface.js";
-import {Op} from "sequelize";
 
 import type { IPaginationQuery } from "@/common/types/pagination.interface.js";
 
@@ -79,13 +78,30 @@ export class TenantMembershipRepository extends BaseRepository<TenantMembership>
           tenantId,
         },
 
-        include:[userInclude],
+        include: [userInclude],
 
         order: [["createdAt", "ASC"]],
       },
 
       query,
     );
+  }
+
+  async getAllMembers(tenantId: number) {
+    return await this.findAll({
+      where: {
+        tenantId,
+        status: MemberStatus.ACTIVE,
+      },
+      include: [
+        {
+          model: User,
+          as: "user",
+          attributes: ["id", "name", "email", "avatar"],
+        },
+      ],
+      order: [["createdAt", "ASC"]],
+    });
   }
 
   async countByTenant(id: number) {

@@ -7,6 +7,7 @@ import { membershipController } from "./tenantMembership.controller.js";
 const router = express.Router();
 
 router.get("/", ...allAccess, membershipController.getMembers);
+router.get("/all", ...allAccess, membershipController.getAllMembers);
 router.patch("/:id/role", ...adminAccess, membershipController.updateRole);
 router.delete("/:id", ...adminAccess, membershipController.deleteMember);
 

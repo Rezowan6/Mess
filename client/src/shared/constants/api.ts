@@ -61,6 +61,7 @@ export const API_ENDPOINTS = {
   TENANT_MEMBERSHIP: {
     INVITES: "/invites",
     LIST: "/tenant-memberships",
+    ALL: "/tenant-memberships/all",
 
     UPDATE_ROLE: (id: number) => `/tenant-memberships/${id}/role`,
 

@@ -1,9 +1,9 @@
+import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import { asyncHandler } from "@/middlewares/index.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { membershipService } from "./tenantMembership.service.js";
-import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 
 export class TenantMembershipController {
   getMembers = asyncHandler(async (req: Request, res: Response) => {
@@ -21,8 +21,25 @@ export class TenantMembershipController {
     });
   });
 
+  getAllMembers = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantContext(req);
+
+    const members = await membershipService.getAllMembers(tenantId);
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "All members fetched successfully",
+      data: members,
+    });
+  });
+
   updateRole = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, membershipId, role: currentRole, userId } = getTenantContext(req);
+    const {
+      tenantId,
+      membershipId,
+      role: currentRole,
+      userId,
+    } = getTenantContext(req);
 
     const id = Number(req.params.id);
     const { role } = req.body;

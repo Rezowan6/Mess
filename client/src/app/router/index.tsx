@@ -20,6 +20,8 @@ import { DepositTable } from "@/modules/deposit/components/DepositTable";
 import { DepositAddPage } from "@/modules/deposit/pages/DepositAddPage";
 import { DepositHistoryPage } from "@/modules/deposit/pages/DepositHistoryPage";
 import { DepositPage } from "@/modules/deposit/pages/DepositPage";
+import { ExpenseTable } from "@/modules/expense/components/ExpenseTable";
+import { ExpenseListLayout } from "@/modules/expense/layouts/ExpenseListLayout";
 import { ExpensePage } from "@/modules/expense/pages/ExpensePage";
 import { FeatureTable } from "@/modules/feature/components/FeatureTable";
 import { FeaturePage } from "@/modules/feature/pages/FeaturePage";
@@ -40,6 +42,8 @@ import { MyDepositHistoryPage } from "@/modules/my-profile/pages/MyDepositHistor
 import { MyMealHistoryPage } from "@/modules/my-profile/pages/MyMealHistoryPage";
 import { MyProfilePage } from "@/modules/my-profile/pages/MyProfilePage";
 import { NotificationPage } from "@/modules/notification/pages/NotificationPage";
+import { PartyExpenseListPage } from "@/modules/party-expense/pages/PartyExpenseListPage";
+import { PartyExpensePage } from "@/modules/party-expense/pages/PartyExpensePage";
 import { PaymentLayout } from "@/modules/payment/layouts/PaymentLayout";
 import { PaymentCheckoutPage } from "@/modules/payment/pages/PaymentCheckoutPage";
 import { PaymentDetailsPage } from "@/modules/payment/pages/PaymentDetailsPage";
@@ -60,8 +64,6 @@ import { SubscriptionPage } from "@/modules/subscription/pages/SubscriptionPage"
 import { UpgradePlanPage } from "@/modules/subscription/pages/UpgradePlanPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
-import { PartyExpensePage } from "@/modules/party-expense/pages/PartyExpensePage";
-import { PartyExpenseListPage } from "@/modules/party-expense/pages/PartyExpenseListPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -150,24 +152,6 @@ export const router = createBrowserRouter([
                   {
                     path: "history",
                     element: <DepositHistoryPage />,
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            path: ROUTES.PARTY_EXPENSE,
-
-            element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
-
-            children: [
-              {
-                element: <PartyExpensePage />,
-
-                children: [
-                  {
-                    index: true,
-                    element: <PartyExpenseListPage />,
                   },
                 ],
               },
@@ -305,7 +289,30 @@ export const router = createBrowserRouter([
 
           {
             path: ROUTES.EXPENSE,
+
             element: <ExpensePage />,
+
+            children: [
+              {
+                element: <ExpenseListLayout />,
+                children: [
+                  {
+                    index: true,
+                    element: <ExpenseTable />,
+                  },
+                ],
+              },
+              {
+                path: "party",
+                element: <PartyExpensePage />,
+                children: [
+                  {
+                    index: true,
+                    element: <PartyExpenseListPage />,
+                  },
+                ],
+              },
+            ],
           },
 
           {

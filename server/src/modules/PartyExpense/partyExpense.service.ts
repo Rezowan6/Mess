@@ -14,7 +14,7 @@ class PartyExpenseService {
 
     try {
       const partyExpense = await partyExpenseRepository.createWithOptions(
-        { ...data },
+        { ...data, date: new Date() },
         { transaction },
       );
 

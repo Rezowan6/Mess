@@ -2,13 +2,14 @@
 
 import type { TableColumn } from "@/shared/components/ui/Table";
 import type { IPartyExpense } from "../types/partyExpense.types";
+import { formatDate } from "@/shared/utils/date.utils";
 
 export const usePartyExpenseColumns = (): TableColumn<IPartyExpense>[] => {
   const columns: TableColumn<IPartyExpense>[] = [
     {
       key: "date",
       title: "Date",
-      render: (expense) => expense.date,
+      render: (expense) => formatDate(expense.date),
     },
     {
       key: "amount",

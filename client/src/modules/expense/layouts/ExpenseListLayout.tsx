@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
 
-export const PartyExpensePage = () => {
+export const ExpenseListLayout = () => {
   return <Outlet />;
 };

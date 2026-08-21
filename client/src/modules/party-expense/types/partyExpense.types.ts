@@ -25,6 +25,5 @@ export interface IPartyExpenseMember {
 export interface ICreatePartyExpense {
   amount: number;
   description?: string;
-  date: string;
   memberIds: number[];
 }

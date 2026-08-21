@@ -20,9 +20,23 @@ export class TenantMembershipService {
 
     return result;
   }
+  async getAllMembers(tenantId: number) {
+    const members = await membershipRepository.getAllMembers(tenantId);
 
+    if (!members.length) {
+      throw new ApiError(404, "Members not found.");
+    }
+
+    return members;
+  }
   async updateRole(payload: IUpdateRolePayload) {
-    const { tenantId, currentMembershipId, id, role, userId: adminId } = payload;
+    const {
+      tenantId,
+      currentMembershipId,
+      id,
+      role,
+      userId: adminId,
+    } = payload;
 
     if (role === MemberRole.ADMIN) {
       throw new ApiError(400, "The admin role cannot be assigned.");

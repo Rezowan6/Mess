@@ -8,6 +8,9 @@ export const queryKeys = {
   tenants: {
     all: ["tenants"] as const,
 
+    allMembers: (tenantId?: number) =>
+      ["tenants", tenantId, "members", "all"] as const,
+
     members: (tenantId?: number) => ["tenants", tenantId, "members"] as const,
 
     invites: (tenantId?: number) => ["tenants", tenantId, "invites"] as const,
