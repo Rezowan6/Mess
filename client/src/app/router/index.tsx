@@ -60,6 +60,8 @@ import { SubscriptionPage } from "@/modules/subscription/pages/SubscriptionPage"
 import { UpgradePlanPage } from "@/modules/subscription/pages/UpgradePlanPage";
 import { TenantPage } from "@/modules/tenant/pages/TenantPage";
 import { DashboardLayout } from "../layouts/Dashboard.layout";
+import { PartyExpensePage } from "@/modules/party-expense/pages/PartyExpensePage";
+import { PartyExpenseListPage } from "@/modules/party-expense/pages/PartyExpenseListPage";
 
 export const router = createBrowserRouter([
   // Public Routes
@@ -148,6 +150,24 @@ export const router = createBrowserRouter([
                   {
                     path: "history",
                     element: <DepositHistoryPage />,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: ROUTES.PARTY_EXPENSE,
+
+            element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+
+            children: [
+              {
+                element: <PartyExpensePage />,
+
+                children: [
+                  {
+                    index: true,
+                    element: <PartyExpenseListPage />,
                   },
                 ],
               },

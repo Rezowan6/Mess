@@ -26,6 +26,8 @@ export const ROUTES = {
   NOTIFICATIONS: "notifications",
 
   EXPENSE: "/expenses",
+  
+  PARTY_EXPENSE: "/party-expenses",
 
   DEPOSIT: "/deposits",
 
