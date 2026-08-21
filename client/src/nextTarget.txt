@@ -1,8 +1,3 @@
-│   └── PartyExpenseTable.tsx
-├── configs/
-│   ├── partyExpense.columns.ts
-│   └── partyExpense.messages.ts
-
 
 
 

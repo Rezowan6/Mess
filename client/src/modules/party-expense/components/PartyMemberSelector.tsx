@@ -2,6 +2,7 @@ import { Controller, useFormContext } from "react-hook-form";
 
 import { useAllMembers } from "@/modules/user-management/hooks/useAllMembers";
 import type { PartyExpenseFormValues } from "../schemas/partyExpense.schema";
+import { Checkbox } from "@/shared/components/ui/Checkbox";
 
 export const PartyMemberSelector = () => {
   const { control } = useFormContext<PartyExpenseFormValues>();
@@ -22,7 +23,7 @@ export const PartyMemberSelector = () => {
           control={control}
           render={({ field, fieldState }) => (
             <>
-              <div className="max-h-60 space-y-2 overflow-y-auto rounded-lg border border-base-300 p-3">
+              <div className="max-h-60 space-y-2 overflow-y-auto rounded-md border border-info p-3">
                 {members.map((member) => {
                   const userId = member.user.id;
                   const checked = field.value.includes(userId);
@@ -30,14 +31,12 @@ export const PartyMemberSelector = () => {
                   return (
                     <label
                       key={userId}
-                      className="flex cursor-pointer items-center gap-3 rounded-lg p-2 hover:bg-base-200"
+                      className="flex cursor-pointer items-center gap-3 rounded-lg p-2 bg-info/10 hover:bg-success/10"
                     >
-                      <input
-                        type="checkbox"
-                        className="checkbox"
+                      <Checkbox
                         checked={checked}
-                        onChange={(e) => {
-                          if (e.target.checked) {
+                        onChange={(value) => {
+                          if (value) {
                             field.onChange([...field.value, userId]);
                           } else {
                             field.onChange(
@@ -48,7 +47,7 @@ export const PartyMemberSelector = () => {
                       />
 
                       <div>
-                        <p className="font-medium text-text">
+                        <p className="font-medium text-info">
                           {member.user.name}
                         </p>
 
