@@ -35,6 +35,7 @@ import {
   tenantMembershipRouter,
   tenantRoute,
   mealPlanningRouter,
+  partyExpenseRouter,
 } from "@/routes/index.js";
 
 
@@ -70,6 +71,7 @@ app.use("/api/v1/meal-requests", mealRequestRouter);
 app.use("/api/v1/meal-entries", mealEntriesRouter);
 app.use("/api/v1/meal-plannings", mealPlanningRouter);
 app.use("/api/v1/expenses", expensesRouter);
+app.use("/api/v1/party-expenses", partyExpenseRouter);
 app.use("/api/v1/deposits", depositRouter);
 app.use("/api/v1/monthly-calculations", monthlyCalculationRouter);
 app.use("/api/v1/dashboards", dashboardRouter);
