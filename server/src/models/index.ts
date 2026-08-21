@@ -17,8 +17,12 @@ import { Tenant } from "@/modules/tenant/tenant.model.js";
 import { TenantMembership } from "@/modules/tenantMembership/tenantMembership.model.js";
 import { User } from "@/modules/user/user.model.js";
 import { MealPreference } from "@/modules/MealPreference/mealPreference.model.js";
+import { PartyExpense } from "@/modules/PartyExpense/partyExpense.model.js";
+import { PartyExpenseMember } from "@/modules/PartyExpenseMember/partyExpenseMember.model.js";
 
 export {
+  PartyExpense,
+  PartyExpenseMember,
   MealPreference,
   Deposit,
   Expenses,

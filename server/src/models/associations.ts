@@ -10,6 +10,8 @@ import {
   MealSetting,
   Notice,
   Notification,
+  PartyExpense,
+  PartyExpenseMember,
   Payment,
   Plan,
   PlanFeature,
@@ -419,5 +421,47 @@ export const setupAssociations = () => {
   MealPreference.belongsTo(MealSession, {
     foreignKey: "mealSessionId",
     as: "mealSession",
+  });
+
+  // party expense
+
+  PartyExpense.hasMany(PartyExpenseMember, {
+    foreignKey: "partyExpenseId",
+    as: "members",
+  });
+
+  PartyExpenseMember.belongsTo(PartyExpense, {
+    foreignKey: "partyExpenseId",
+    as: "partyExpense",
+  });
+
+  PartyExpenseMember.belongsTo(User, {
+    foreignKey: "memberId",
+    as: "member",
+  });
+
+  User.hasMany(PartyExpenseMember, {
+    foreignKey: "memberId",
+    as: "partyExpenses",
+  });
+
+  PartyExpense.belongsTo(Tenant, {
+    foreignKey: "tenantId",
+    as: "tenant",
+  });
+
+  Tenant.hasMany(PartyExpense, {
+    foreignKey: "tenantId",
+    as: "partyExpenses",
+  });
+
+  PartyExpense.belongsTo(MealSession, {
+    foreignKey: "mealSessionId",
+    as: "mealSession",
+  });
+
+  MealSession.hasMany(PartyExpense, {
+    foreignKey: "mealSessionId",
+    as: "partyExpenses",
   });
 };
