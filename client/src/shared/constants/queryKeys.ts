@@ -143,6 +143,12 @@ export const queryKeys = {
     summary: (tenantId?: number) => ["expenses", tenantId, "summary"] as const,
   },
 
+  partyExpenses: {
+    all: (tenantId?: number) => ["partyExpenses", tenantId] as const,
+
+    list: (tenantId?: number) => ["partyExpenses", tenantId, "list"] as const,
+  },
+
   notifications: {
     all: (tenantId?: number) => ["notifications", tenantId] as const,
 
