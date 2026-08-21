@@ -120,6 +120,10 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `/expenses/${id}`,
     DELETE: (id: number) => `/expenses/${id}`,
   },
+  PARTY_EXPENSE: {
+    LIST: "/party-expenses",
+    CREATE: "/party-expenses",
+  },
   DEPOSIT: {
     GET_ALL: "/deposits",
     MEMBER_DEPOSIT_SUMMARY: "/deposits/member-summary",
