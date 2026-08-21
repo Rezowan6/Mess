@@ -59,7 +59,6 @@ class MealPlanningService {
     const preferences =
       await mealPreferenceRepository.getActivePreferences({
         tenantId,
-        mealSessionId,
       });
 
     const entries: IMealPlanningEntry[] = preferences.map((preference) => ({

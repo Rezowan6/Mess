@@ -20,6 +20,8 @@ export class PartyExpenseMember extends Model<
   declare partyExpenseId: number;
   declare memberId: number;
 
+  declare amount: number;
+
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
   declare readonly deletedAt: CreationOptional<Date | null>;
@@ -38,6 +40,10 @@ PartyExpenseMember.init(
     },
     memberId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    amount: {
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
   },

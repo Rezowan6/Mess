@@ -34,6 +34,11 @@ export default {
         onDelete: "CASCADE",
       },
 
+      amount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+      },
+
       created_at: {
         type: DataTypes.DATE,
         allowNull: false,
