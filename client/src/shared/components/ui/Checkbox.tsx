@@ -20,7 +20,7 @@ export const Checkbox = ({
         flex h-5 w-5 shrink-0 items-center justify-center rounded-md
         border transition-all duration-200
         focus:outline-none focus:ring-2 focus:ring-primary/30
-        disabled:cursor-not-allowed disabled:opacity-50
+        disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer
         ${
           checked
             ? "border-accent bg-gradient-success text-text"
