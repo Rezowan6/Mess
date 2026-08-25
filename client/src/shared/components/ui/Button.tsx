@@ -23,7 +23,8 @@ type ButtonVariant =
   | "error"
   | "ghost"
   | "outline"
-  | "normal";
+  | "normal"
+  | "tab";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
@@ -50,6 +51,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses = {
+  tab: `
+  text-info
+`,
   moduleBtn: `
     ${styel.btn}
     `,
