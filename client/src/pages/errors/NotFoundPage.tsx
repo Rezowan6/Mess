@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Button } from "@/shared/components/ui/Button";
+import { Link, useNavigate } from "react-router-dom";
 
 export const NotFoundPage = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-6">
       <div className="text-center max-w-xl">
@@ -21,23 +23,14 @@ export const NotFoundPage = () => {
         {/* Buttons */}
         <div className="flex justify-center gap-4">
           {/* Go Home */}
-          <Link
-            to="/"
-            className="px-6 py-3 bg-blue-600 text-white rounded-xl 
-                       hover:bg-blue-700 transition duration-200"
-          >
-            Go Home
+          <Link to="/">
+            <Button>Go Home</Button>
           </Link>
 
           {/* Go Back */}
-          <button
-            onClick={() => window.history.back()}
-            className="px-6 py-3 border border-gray-300 
-                       text-gray-700 rounded-xl 
-                       hover:bg-gray-200 transition duration-200"
-          >
+          <Button variant="secondary" onClick={() => navigate(-1)}>
             Go Back
-          </button>
+          </Button>
         </div>
       </div>
     </div>

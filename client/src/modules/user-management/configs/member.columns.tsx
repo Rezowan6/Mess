@@ -17,7 +17,7 @@ export const useMemberColumns = (): TableColumn<ITenantMember>[] => {
     {
       key: "name",
       title: "Name",
-      className: "text-xs sm:text-md md:text-md",
+      className: "sm:text-md",
       render: (member) => (
         <MemberAvatar name={member?.user?.name} avatar={member?.user?.avatar} />
       ),
@@ -27,7 +27,7 @@ export const useMemberColumns = (): TableColumn<ITenantMember>[] => {
       key: "email",
       title: "Email",
       hideOnMobile: true,
-      className: "text-xs",
+      className: "text-sm",
       render: (member) => member.user.email,
     },
 
