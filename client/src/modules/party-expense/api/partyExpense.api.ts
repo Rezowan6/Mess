@@ -4,12 +4,16 @@ import type { ApiResponse } from "@/shared/types/api.types";
 import type {
   ICreatePartyExpense,
   IPartyExpense,
+  IPartyExpenseParams,
 } from "../types/partyExpense.types";
 
 export const partyExpenseApi = {
-  getAll: async (): Promise<ApiResponse<IPartyExpense[]>> => {
+  getAll: async (
+    params: IPartyExpenseParams,
+  ): Promise<ApiResponse<IPartyExpense[]>> => {
     const { data } = await API.get<ApiResponse<IPartyExpense[]>>(
       API_ENDPOINTS.PARTY_EXPENSE.LIST,
+      { params },
     );
 
     return data;

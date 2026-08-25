@@ -1,5 +1,5 @@
 import { PartyExpenseListPage } from "@/modules/party-expense/pages/PartyExpenseListPage";
-import { PartyExpensePage } from "@/modules/party-expense/pages/PartyExpensePage";
+import { PartyExpenseLayout } from "@/modules/party-expense/layouts/PartyExpenseLayout";
 import { ROUTES } from "@/shared/constants/routes";
 import { ExpenseTable } from "../components/ExpenseTable";
 import { ExpenseListLayout } from "../layouts/ExpenseListLayout";
@@ -22,7 +22,7 @@ export const expenseRoutes = {
     },
     {
       path: "party",
-      element: <PartyExpensePage />,
+      element: <PartyExpenseLayout />,
       children: [
         {
           index: true,

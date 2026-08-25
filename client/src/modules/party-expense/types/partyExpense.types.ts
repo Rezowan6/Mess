@@ -1,3 +1,5 @@
+import type { IPaginationParams } from "@/shared/types/pagination.types";
+
 export interface IPartyExpense {
   id: number;
   tenantId: number;
@@ -8,6 +10,8 @@ export interface IPartyExpense {
   createdAt: string;
   members: IPartyExpenseMember[];
 }
+
+export type IPartyExpenseParams = IPaginationParams;
 
 export interface IPartyExpenseMember {
   id: number;

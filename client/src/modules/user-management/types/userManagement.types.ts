@@ -1,5 +1,8 @@
 import type { Role } from "@/shared/constants/roles";
-import type { IPaginationMeta } from "@/shared/types/pagination.types";
+import type {
+  IPaginationMeta,
+  IPaginationParams,
+} from "@/shared/types/pagination.types";
 
 export interface IMemberUser {
   id: number;
@@ -36,13 +39,7 @@ export interface IMemberListResponse {
   meta: IPaginationMeta;
 }
 
-export interface IMemberParams {
-  page: number;
-
-  limit: number;
-
-  search?: string;
-}
+export type IMemberParams = IPaginationParams;
 
 export interface ITenantMemberDeposit extends ITenantMember {
   totalDeposit?: number;

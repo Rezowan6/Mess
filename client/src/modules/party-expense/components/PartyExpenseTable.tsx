@@ -1,6 +1,6 @@
 // File: PartyExpenseTable.tsx
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { SearchInput } from "@/shared/components/ui/SearchInput";
@@ -10,17 +10,11 @@ import { usePartyExpenseColumns } from "../configs/partyExpense.columns";
 import { PARTY_EXPENSE_MESSAGES } from "../configs/partyExpense.messages";
 import { PartyExpenseTableSkeleton } from "./PartyExpenseTableSkeleton";
 
+import { usePartyExpenses } from "../hooks/usePartyExpenses";
 import type { IPartyExpense } from "../types/partyExpense.types";
 import { AddPartyExpenseModal } from "./AddPartyExpenseModal";
 
-interface Props {
-  data: IPartyExpense[];
-  loading: boolean;
-  error: boolean;
-  refetch: () => void;
-}
-
-export const PartyExpenseTable = ({ data, loading, error, refetch }: Props) => {
+export const PartyExpenseTable = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [selectedPartyExpense, setSelectedPartyExpense] =
@@ -30,6 +24,16 @@ export const PartyExpenseTable = ({ data, loading, error, refetch }: Props) => {
 
   const page = Number(searchParams.get("page")) || 1;
   const search = searchParams.get("search") || "";
+
+  const { data, isPending, isError, refetch } = usePartyExpenses({
+    page,
+
+    limit: 10,
+
+    search,
+  });
+
+  const partyExpenses = data?.data ?? [];
 
   const handleSearch = (value: string) => {
     setSearchParams(
@@ -48,17 +52,17 @@ export const PartyExpenseTable = ({ data, loading, error, refetch }: Props) => {
   //   });
   // };
 
-  useEffect(() => {
-    if (page !== 1) {
-      setSearchParams(
-        {
-          page: "1",
-          ...(search && { search }),
-        },
-        { replace: true },
-      );
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (page !== 1) {
+  //     setSearchParams(
+  //       {
+  //         page: "1",
+  //         ...(search && { search }),
+  //       },
+  //       { replace: true },
+  //     );
+  //   }
+  // }, []);
 
   /**
    * handle edit
@@ -70,7 +74,7 @@ export const PartyExpenseTable = ({ data, loading, error, refetch }: Props) => {
 
   const columns = usePartyExpenseColumns(handleEdit);
 
-  if (loading) {
+  if (isPending) {
     return <PartyExpenseTableSkeleton />;
   }
 
@@ -80,9 +84,9 @@ export const PartyExpenseTable = ({ data, loading, error, refetch }: Props) => {
 
       <Table
         columns={columns}
-        data={data}
-        loading={loading}
-        error={error}
+        data={partyExpenses}
+        loading={isPending}
+        error={isError}
         message={PARTY_EXPENSE_MESSAGES}
         refetch={refetch}
       />
