@@ -1,8 +1,7 @@
 import type { TableColumn } from "@/shared/components/ui/Table";
 
-import { Avatar } from "@/shared/components/ui/Avatar";
 import { Badge } from "@/shared/components/ui/Badge";
-import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
+import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
 import type { IMonthlyCalculationMember } from "../types/monthlyCalculation.types";
 
 export const useMonthlyCalculationColumns =
@@ -11,18 +10,9 @@ export const useMonthlyCalculationColumns =
       {
         key: "name",
         title: "Member",
-        render: (member) => {
-          return (
-            <div className="flex items-center gap-3">
-              <Avatar
-                size="sm"
-                fallback={getAvatarInitial(member?.name ?? "", member?.avatar)}
-              />
-
-              <span className="font-medium">{member?.name ?? ""}</span>
-            </div>
-          );
-        },
+        render: (member) => (
+          <MemberAvatar name={member?.name} avatar={member?.avatar} />
+        ),
       },
       {
         key: "totalMeal",
