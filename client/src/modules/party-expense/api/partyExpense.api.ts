@@ -25,4 +25,24 @@ export const partyExpenseApi = {
 
     return data;
   },
+
+  update: async (
+    id: number,
+    payload: Partial<ICreatePartyExpense>,
+  ): Promise<ApiResponse<IPartyExpense>> => {
+    const { data } = await API.patch<ApiResponse<IPartyExpense>>(
+      `${API_ENDPOINTS.PARTY_EXPENSE.LIST}/${id}`,
+      payload,
+    );
+
+    return data;
+  },
+
+  delete: async (id: number): Promise<ApiResponse<null>> => {
+    const { data } = await API.delete<ApiResponse<null>>(
+      `${API_ENDPOINTS.PARTY_EXPENSE.LIST}/${id}`,
+    );
+
+    return data;
+  },
 };
