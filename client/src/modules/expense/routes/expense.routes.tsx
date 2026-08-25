@@ -1,15 +1,15 @@
-import { PartyExpenseListPage } from "@/modules/party-expense/pages/PartyExpenseListPage";
-import { PartyExpenseLayout } from "@/modules/party-expense/layouts/PartyExpenseLayout";
-import { ROUTES } from "@/shared/constants/routes";
+// expense.routes.tsx
+
+import { partyExpenseRoutes } from "@/modules/party-expense/routes/partyExpense.routes";
 import { ExpenseTable } from "../components/ExpenseTable";
 import { ExpenseListLayout } from "../layouts/ExpenseListLayout";
 import { ExpensePage } from "../pages/ExpensePage";
 
+import { ROUTES } from "@/shared/constants/routes";
+
 export const expenseRoutes = {
   path: ROUTES.EXPENSE,
-
   element: <ExpensePage />,
-
   children: [
     {
       element: <ExpenseListLayout />,
@@ -20,15 +20,7 @@ export const expenseRoutes = {
         },
       ],
     },
-    {
-      path: "party",
-      element: <PartyExpenseLayout />,
-      children: [
-        {
-          index: true,
-          element: <PartyExpenseListPage />,
-        },
-      ],
-    },
+
+    partyExpenseRoutes,
   ],
 };

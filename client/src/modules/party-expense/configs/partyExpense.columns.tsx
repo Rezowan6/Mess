@@ -1,7 +1,9 @@
 // File: partyExpense.columns.ts
 
+import { ActionLink } from "@/shared/components/ui/ActionLink";
 import type { TableColumn } from "@/shared/components/ui/Table";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { ROUTES } from "@/shared/constants/routes";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 import { formatDate } from "@/shared/utils/date.utils";
 import { PartyExpenseActions } from "../components/PartyExpenseActions";
@@ -30,7 +32,11 @@ export const usePartyExpenseColumns = (
     {
       key: "members",
       title: "Members",
-      render: (expense) => expense.members?.length ?? 0,
+      render: (expense) => (
+        <ActionLink state={expense} to={`${ROUTES.EXPENSE}/party/history`}>
+          {expense.members?.length ?? 0} Details
+        </ActionLink>
+      ),
     },
   ];
 

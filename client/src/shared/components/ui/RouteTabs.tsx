@@ -1,5 +1,3 @@
-// src/shared/components/ui/RouteTabs.tsx
-
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button } from "@/shared/components/ui/Button";
@@ -18,8 +16,13 @@ export const RouteTabs = ({ tabs }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const activeTab =
-    tabs.find((tab) => location.pathname === tab.path)?.key ?? tabs[0]?.key;
+  const activeTab = tabs
+    .filter(
+      (tab) =>
+        location.pathname === tab.path ||
+        location.pathname.startsWith(`${tab.path}/`),
+    )
+    .sort((a, b) => b.path.length - a.path.length)[0]?.key;
 
   return (
     <div className="flex flex-wrap gap-2 pb-3">

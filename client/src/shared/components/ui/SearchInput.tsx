@@ -7,9 +7,11 @@ interface Props {
   value: string;
 
   onChange: (value: string) => void;
+
+  placeholder?: string;
 }
 
-export const SearchInput = ({ value, onChange }: Props) => {
+export const SearchInput = ({ value, onChange, placeholder }: Props) => {
   const [input, setInput] = useState(value);
 
   const debouncedValue = useDebounce(input, 600);
@@ -28,7 +30,7 @@ export const SearchInput = ({ value, onChange }: Props) => {
     <Input
       leftIcon={<Search size={18} />}
       value={input}
-      placeholder="Search member..."
+      placeholder={`${placeholder ? `Search ${placeholder}...` : "Search member..."}`}
       onChange={(e) => setInput(e.target.value)}
     />
   );
