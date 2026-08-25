@@ -1,6 +1,6 @@
+import { UpgradeButton } from "@/modules/subscription/components/UpgradeButton";
 import { TenantName } from "../../ui/TenantName";
 import { SidebarMenu } from "./SidebarMenu";
-import { SidebarProfile } from "./SidebarProfile";
 
 export const Sidebar = () => {
   return (
@@ -13,7 +13,10 @@ export const Sidebar = () => {
         <SidebarMenu />
       </div>
 
-      <SidebarProfile />
+      {/* <SidebarProfile /> */}
+      <div className="border-t border-info p-3">
+        <UpgradeButton />
+      </div>
     </aside>
   );
 };

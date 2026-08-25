@@ -98,17 +98,17 @@ export const sidebarItems: ISidebarItem[] = [
     permission: PERMISSIONS.MONTHLY_CALCULATION_VIEW,
   },
 
-  {
-    title: "Subscription",
-    path: ROUTES.SUBSCRIPTION,
-    icon: CreditCard,
-    permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
-  },
+  // {
+  //   title: "Subscription",
+  //   path: ROUTES.SUBSCRIPTION,
+  //   icon: CreditCard,
+  //   permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
+  // },
 
-  {
-    title: "Payment",
-    path: ROUTES.PAYMENT,
-    icon: HandCoins,
-    permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
-  },
+  // {
+  //   title: "Payment",
+  //   path: ROUTES.PAYMENT,
+  //   icon: HandCoins,
+  //   permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
+  // },
 ];

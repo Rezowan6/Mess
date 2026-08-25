@@ -6,7 +6,7 @@ import { useSidebarStore } from "@/store/sidebar.store";
 import { useEffect } from "react";
 import { TenantName } from "../../ui/TenantName";
 import { SidebarMenu } from "./SidebarMenu";
-import { SidebarProfile } from "./SidebarProfile";
+import { UpgradeButton } from "@/modules/subscription/components/UpgradeButton";
 
 export const MobileSidebar = () => {
   const isOpen = useSidebarStore((state) => state.isOpen);
@@ -71,6 +71,7 @@ export const MobileSidebar = () => {
           transition-transform
           duration-300
           ease-in-out
+          border-r border-info
 
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           lg:hidden
@@ -78,7 +79,7 @@ export const MobileSidebar = () => {
       >
         {/* Header */}
 
-        <div className="flex items-center justify-between border-b p-5">
+        <div className="flex items-center justify-between border-b border-info p-3.5">
           <TenantName />
           <button
             className="cursor-pointer hover:bg-info/10 p-2 rounded-md lg:hidden"
@@ -96,7 +97,10 @@ export const MobileSidebar = () => {
 
         {/* Profile */}
 
-        <SidebarProfile />
+        {/* <SidebarProfile /> */}
+        <div className="border-t border-info p-3">
+          <UpgradeButton />
+        </div>
       </aside>
     </>
   );
