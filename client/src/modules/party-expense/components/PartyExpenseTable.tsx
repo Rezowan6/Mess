@@ -1,6 +1,6 @@
 // File: PartyExpenseTable.tsx
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { SearchInput } from "@/shared/components/ui/SearchInput";
@@ -11,6 +11,7 @@ import { PARTY_EXPENSE_MESSAGES } from "../configs/partyExpense.messages";
 import { PartyExpenseTableSkeleton } from "./PartyExpenseTableSkeleton";
 
 import type { IPartyExpense } from "../types/partyExpense.types";
+import { AddPartyExpenseModal } from "./AddPartyExpenseModal";
 
 interface Props {
   data: IPartyExpense[];
@@ -21,6 +22,11 @@ interface Props {
 
 export const PartyExpenseTable = ({ data, loading, error, refetch }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const [selectedPartyExpense, setSelectedPartyExpense] =
+    useState<IPartyExpense | null>(null);
+
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const page = Number(searchParams.get("page")) || 1;
   const search = searchParams.get("search") || "";
@@ -54,7 +60,15 @@ export const PartyExpenseTable = ({ data, loading, error, refetch }: Props) => {
     }
   }, []);
 
-  const columns = usePartyExpenseColumns();
+  /**
+   * handle edit
+   */
+  const handleEdit = (expense: IPartyExpense) => {
+    setSelectedPartyExpense(expense);
+    setIsEditOpen(true);
+  };
+
+  const columns = usePartyExpenseColumns(handleEdit);
 
   if (loading) {
     return <PartyExpenseTableSkeleton />;
@@ -71,6 +85,15 @@ export const PartyExpenseTable = ({ data, loading, error, refetch }: Props) => {
         error={error}
         message={PARTY_EXPENSE_MESSAGES}
         refetch={refetch}
+      />
+
+      <AddPartyExpenseModal
+        isOpen={isEditOpen}
+        onClose={() => {
+          setIsEditOpen(false);
+          setSelectedPartyExpense(null);
+        }}
+        partyExpense={selectedPartyExpense ?? undefined}
       />
     </div>
   );

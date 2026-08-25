@@ -1,9 +1,13 @@
 // File: AddPartyExpenseModal.tsx
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { DollarSign } from "lucide-react";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { useCreatePartyExpense } from "../hooks/useCreatePartyExpense";
+import { useUpdatePartyExpense } from "../hooks/useUpdatePartyExpense";
 
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
@@ -13,18 +17,30 @@ import {
   partyExpenseSchema,
   type PartyExpenseFormValues,
 } from "../schemas/partyExpense.schema";
+
+import type { IPartyExpense } from "../types/partyExpense.types";
+
 import { PartyMemberSelector } from "./PartyMemberSelector";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  partyExpense?: IPartyExpense;
 }
 
-export const AddPartyExpenseModal = ({ isOpen, onClose }: Props) => {
+export const AddPartyExpenseModal = ({
+  isOpen,
+  onClose,
+  partyExpense,
+}: Props) => {
   const createMutation = useCreatePartyExpense();
+  const updateMutation = useUpdatePartyExpense();
+
+  const isEdit = !!partyExpense;
 
   const methods = useForm<PartyExpenseFormValues>({
     resolver: zodResolver(partyExpenseSchema),
+
     defaultValues: {
       amount: undefined,
       description: "",
@@ -39,25 +55,63 @@ export const AddPartyExpenseModal = ({ isOpen, onClose }: Props) => {
     formState: { errors },
   } = methods;
 
+  useEffect(() => {
+    if (partyExpense) {
+      reset({
+        amount: partyExpense.amount,
+        description: partyExpense.description ?? "",
+        memberIds: partyExpense.members?.map((item) => item.memberId) ?? [],
+      });
+    } else {
+      reset({
+        amount: undefined,
+        description: "",
+        memberIds: [],
+      });
+    }
+  }, [partyExpense, reset]);
+
   const onSubmit = (data: PartyExpenseFormValues) => {
-    createMutation.mutate(data, {
-      onSuccess: () => {
-        reset();
-        onClose();
-      },
-    });
+    if (isEdit) {
+      updateMutation.mutate(
+        {
+          id: partyExpense.id,
+          payload: data,
+        },
+        {
+          onSuccess: () => {
+            reset();
+            onClose();
+          },
+        },
+      );
+    } else {
+      createMutation.mutate(data, {
+        onSuccess: () => {
+          reset();
+          onClose();
+        },
+      });
+    }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Add Party Expense">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={isEdit ? "Update Party Expense" : "Add Party Expense"}
+    >
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
           <Input
             label="Amount"
             type="number"
+            leftIcon={<DollarSign size={18} />}
             placeholder="Enter party expense amount"
             error={errors.amount?.message}
-            {...register("amount", { valueAsNumber: true })}
+            {...register("amount", {
+              valueAsNumber: true,
+            })}
           />
 
           <Input
@@ -68,7 +122,6 @@ export const AddPartyExpenseModal = ({ isOpen, onClose }: Props) => {
             {...register("description")}
           />
 
-          {/* Member selection will be added here */}
           <PartyMemberSelector />
 
           <div className="flex justify-end gap-2 pt-4">
@@ -79,10 +132,12 @@ export const AddPartyExpenseModal = ({ isOpen, onClose }: Props) => {
             <Button
               variant="success"
               type="submit"
-              loading={createMutation.isPending}
-              loadingText="Saving..."
+              loading={
+                isEdit ? updateMutation.isPending : createMutation.isPending
+              }
+              loadingText={isEdit ? "Updating..." : "Saving..."}
             >
-              Save Party Expense
+              {isEdit ? "Update Party Expense" : "Save Party Expense"}
             </Button>
           </div>
         </form>
