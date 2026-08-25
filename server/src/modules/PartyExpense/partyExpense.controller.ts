@@ -57,6 +57,7 @@ class PartyExpenseController {
         id: Number(req.params.id),
       },
       req.body,
+      req.body.memberIds,
     );
 
     return sendResponse(res, {

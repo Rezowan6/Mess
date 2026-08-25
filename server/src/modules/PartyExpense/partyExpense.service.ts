@@ -1,15 +1,43 @@
 import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import sequelize from "@/configs/db.js";
 import { ApiError } from "@/utils/ApiError.js";
+import { Transaction } from "sequelize";
 import { partyExpenseMemberRepository } from "../PartyExpenseMember/partyExpenseMember.repository.js";
 import { ICreatePartyExpenseDto } from "./partyExpense.interface.js";
 import { partyExpenseRepository } from "./partyExpense.repository.js";
 
 class PartyExpenseService {
-  async create(data: ICreatePartyExpenseDto, memberIds: number[]) {
+  private async syncMembers(
+    partyExpenseId: number,
+    amount: number,
+    memberIds: number[],
+    transaction: Transaction,
+  ) {
     if (!memberIds.length) {
       throw new ApiError(400, "At least one member is required.");
     }
+
+    await partyExpenseMemberRepository.delete(
+      { partyExpenseId },
+      { force: true, transaction },
+    );
+
+    const shareAmount = amount / memberIds.length;
+
+    await Promise.all(
+      memberIds.map((memberId) =>
+        partyExpenseMemberRepository.createWithOptions(
+          {
+            partyExpenseId,
+            memberId,
+            amount: shareAmount,
+          },
+          { transaction },
+        ),
+      ),
+    );
+  }
+  async create(data: ICreatePartyExpenseDto, memberIds: number[]) {
     const transaction = await sequelize.transaction();
 
     try {
@@ -18,24 +46,66 @@ class PartyExpenseService {
         { transaction },
       );
 
-      const shareAmount = data.amount / memberIds.length;
-
-      await Promise.all(
-        memberIds.map((memberId) =>
-          partyExpenseMemberRepository.createWithOptions(
-            {
-              partyExpenseId: partyExpense.id,
-              memberId,
-              amount: shareAmount,
-            },
-            { transaction },
-          ),
-        ),
+      await this.syncMembers(
+        partyExpense.id,
+        data.amount,
+        memberIds,
+        transaction,
       );
 
       await transaction.commit();
 
       return partyExpense;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
+
+  async update(
+    {
+      id,
+      tenantId,
+      mealSessionId,
+    }: {
+      id: number;
+      tenantId: number;
+      mealSessionId: number;
+    },
+    data: ICreatePartyExpenseDto,
+    memberIds: number[],
+  ) {
+    const transaction = await sequelize.transaction();
+
+    try {
+      const partyExpense = await partyExpenseRepository.findOne({
+        id,
+        tenantId,
+        mealSessionId,
+      });
+
+      if (!partyExpense) {
+        throw new ApiError(404, "Party expense not found.");
+      }
+
+      await partyExpenseRepository.update(
+        { id },
+        {
+          amount: data.amount,
+          description: data.description ?? null,
+        },
+        { transaction },
+      );
+
+      await this.syncMembers(id, data.amount, memberIds, transaction);
+
+      await transaction.commit();
+
+      return await partyExpenseRepository.findOne({
+        id,
+        tenantId,
+        mealSessionId,
+      });
     } catch (error) {
       await transaction.rollback();
       throw error;
@@ -62,31 +132,6 @@ class PartyExpenseService {
     }
 
     return partyExpenses;
-  }
-
-  async update(
-    {
-      id,
-      tenantId,
-      mealSessionId,
-    }: {
-      id: number;
-      tenantId: number;
-      mealSessionId: number;
-    },
-    data: Partial<ICreatePartyExpenseDto>,
-  ) {
-    const partyExpense = await partyExpenseRepository.findOne({
-      id,
-      tenantId,
-      mealSessionId,
-    });
-
-    if (!partyExpense) {
-      throw new ApiError(404, "Party expense not found.");
-    }
-
-    return await partyExpenseRepository.update({ id }, data);
   }
 
   async delete({
