@@ -4,13 +4,14 @@ import { Table } from "@/shared/components/ui/Table";
 
 import { Pagination } from "@/shared/components/ui/Pagination";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
+import { Tabs } from "@/shared/components/ui/Tabs";
+import { mealTabs } from "../configs/meal.tabs.config";
 import { mealPlanningColumns } from "../configs/mealPlanning.columns";
 import { useMealPlanningTable } from "../hooks/useMealPlanningTable";
 import type {
   IMealPlanningResponse,
   MealType,
 } from "../types/mealPlanning.types";
-import { MealPlanningTabs } from "./MealPlanningTabs";
 
 interface Props {
   planning?: IMealPlanningResponse["data"];
@@ -46,11 +47,7 @@ export const MealPlanningTable = ({
   return (
     <div className="space-y-4">
       {/* Tabs — fixed */}
-      <MealPlanningTabs
-        activeMeal={activeMeal}
-        planning={planning}
-        onChange={setActiveMeal}
-      />
+      <Tabs tabs={mealTabs} activeTab={activeMeal} onChange={setActiveMeal} />
 
       {/* Search — fixed */}
       <SearchInput value={search} onChange={handleSearch} />
