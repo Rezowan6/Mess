@@ -21,7 +21,7 @@ export const Tabs = <T extends string>({
       {tabs.map((tab) => (
         <Button
           key={tab.key}
-          variant={activeTab === tab.key ? "primary" : "normal"}
+          variant={activeTab === tab.key ? "accent" : "normal"}
           onClick={() => onChange(tab.key)}
         >
           {tab.label}

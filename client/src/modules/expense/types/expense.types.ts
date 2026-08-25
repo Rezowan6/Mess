@@ -1,5 +1,5 @@
 import type { IPaginationMeta } from "@/shared/types/pagination.types";
-
+export type IExpenseType = "party" | "egg" | "rice";
 export interface IExpense {
   id: number;
 

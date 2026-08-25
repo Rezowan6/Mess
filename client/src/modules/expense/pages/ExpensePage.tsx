@@ -6,7 +6,7 @@ import { getExpensePageConfig } from "../configs/expense.page.config";
 
 import { AddPartyExpenseModal } from "@/modules/party-expense/components/AddPartyExpenseModal";
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
-import { ButtonModule } from "@/shared/components/ui/ButtonModule";
+import { Button } from "@/shared/components/ui/Button";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { PermissionGuard } from "@/shared/guards/permission.guard";
 
@@ -32,11 +32,13 @@ export const ExpensePage = () => {
         title={currentPage.title}
         description={currentPage.description}
         action={
-          <ButtonModule
-            text={currentPage.actionText}
+          <Button
+            variant="moduleBtn"
             onClick={currentPage.onAction}
             permission={PERMISSIONS.EXPENSE_CREATE}
-          />
+          >
+            {currentPage.actionText}
+          </Button>
         }
         footer={currentPage.footer}
       >
@@ -45,9 +47,7 @@ export const ExpensePage = () => {
       <AddExpenseModal
         isOpen={isExpenseOpen}
         onClose={() => setIsExpenseOpen(false)}
-      />{" "}
-
-      
+      />
       <AddPartyExpenseModal
         isOpen={isPartyExpenseOpen}
         onClose={() => setIsPartyExpenseOpen(false)}
