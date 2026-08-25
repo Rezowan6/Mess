@@ -9,7 +9,7 @@ import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage"
 import { Button } from "@/shared/components/ui/Button";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { PermissionGuard } from "@/shared/guards/permission.guard";
-import { ExpenseTabs } from "../components/ExpenseTabs";
+import { ExpenseRouteTabs } from "../components/ExpenseRouteTabs";
 
 export const ExpensePage = () => {
   const [isExpenseOpen, setIsExpenseOpen] = useState(false);
@@ -29,7 +29,7 @@ export const ExpensePage = () => {
 
   return (
     <PermissionGuard permission={PERMISSIONS.EXPENSE_VIEW}>
-      <ExpenseTabs />
+      <ExpenseRouteTabs />
       <ManagementPage
         title={currentPage.title}
         description={currentPage.description}

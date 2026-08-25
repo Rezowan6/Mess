@@ -1,5 +1,5 @@
 // mealPlanning.types.ts
-export type MealType = "breakfast" | "lunch" | "dinner";
+export type MealType = "breakfast" | "lunch" | "dinner" | "guest";
 export interface IMealPlanningQuery {
   mealSessionId: number;
   date: string;

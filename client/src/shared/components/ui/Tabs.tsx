@@ -3,6 +3,7 @@ import { Button } from "@/shared/components/ui/Button";
 export interface TabItem<T extends string> {
   key: T;
   label: string;
+  disabled?: boolean | undefined;
 }
 
 interface Props<T extends string> {
@@ -24,6 +25,7 @@ export const Tabs = <T extends string>({
           variant={activeTab === tab.key ? "primary" : "normal"}
           className="w-24 h-fit"
           onClick={() => onChange(tab.key)}
+          disabled={tab.disabled ?? false}
         >
           {tab.label}
         </Button>
