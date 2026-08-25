@@ -6,6 +6,7 @@ import { useLogout } from "@/modules/auth/hooks/useLoagout";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
+import { Avatar } from "../../ui/Avatar";
 import { HeaderMenuItem } from "./header.constance";
 
 export const HeaderProfile = () => {
@@ -49,20 +50,14 @@ export const HeaderProfile = () => {
         tabIndex={0}
         className="flex items-center justify-center gap-3 px-2 cursor-pointer border border-success py-1 rounded-md"
       >
-        <div className="avatar placeholder">
-          <div className="bg-gradient-success text-primary-content w-10 rounded-full flex items-center justify-center">
-            <span className="text-sm font-semibold">
-              {getAvatarInitial(user?.name as string)}
-            </span>
-          </div>
-        </div>
-
+        {/* member avatar */}
+        <Avatar fallback={getAvatarInitial(user?.name ?? "")} />
+        
         <div className="hidden text-left md:block">
           <p className="text-sm font-semibold">{user?.name}</p>
 
           <p className="text-xs text-green-600">{currentTenant?.role ?? ""}</p>
         </div>
-
         <ChevronDown
           size={18}
           className={`transition-transform duration-200 ${
