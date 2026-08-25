@@ -23,7 +23,7 @@ export const Checkbox = ({
         disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer
         ${
           checked
-            ? "border-accent bg-gradient-success text-text"
+            ? "border-accent bg-gradient-success text-white"
             : "border-info bg-info/30 hover:border-primary/60"
         }
       `}
