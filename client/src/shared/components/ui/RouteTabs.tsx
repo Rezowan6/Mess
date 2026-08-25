@@ -6,6 +6,7 @@ export interface RouteTabItem {
   key: string;
   label: string;
   path: string;
+  disabled?: boolean | undefined;
 }
 
 interface Props {
@@ -30,8 +31,9 @@ export const RouteTabs = ({ tabs }: Props) => {
         <Button
           key={tab.key}
           className={`w-24 h-fit`}
-          variant={activeTab === tab.key ? "primary" : "normal"}
+          variant={activeTab === tab.key ? "accent" : "normal"}
           onClick={() => navigate(tab.path)}
+          disabled={tab.disabled ?? false}
         >
           {tab.label}
         </Button>

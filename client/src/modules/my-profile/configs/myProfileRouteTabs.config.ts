@@ -20,5 +20,6 @@ export const myProfileRouteTabs = [
     key: "egg",
     label: "Egg",
     path: `${ROUTES.EXPENSE}/egg`,
+    disabled: true,
   },
 ] as const;
