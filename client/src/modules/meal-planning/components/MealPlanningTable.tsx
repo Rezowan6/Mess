@@ -47,8 +47,10 @@ export const MealPlanningTable = ({
   return (
     <div className="space-y-4">
       {/* Tabs — fixed */}
-      <Tabs tabs={mealTabs} activeTab={activeMeal} onChange={setActiveMeal} />
-
+      <div>
+        <Tabs tabs={mealTabs} activeTab={activeMeal} onChange={setActiveMeal} />
+        <p className="w-fit text-left text-sm text-info -mt-2">{activeMeal}</p>
+      </div>
       {/* Search — fixed */}
       <SearchInput value={search} onChange={handleSearch} />
 
