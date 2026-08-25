@@ -60,9 +60,9 @@ const variantClasses = {
   primary: `
     bg-gradient-to-r 
     from-blue-600 
-    to-indigo-600
-    hover:from-blue-700 
-    hover:to-indigo-700
+    to-blue-900
+    hover:from-blue-800 
+    hover:to-blue-600
     `,
 
   success: `
@@ -118,6 +118,12 @@ const variantClasses = {
     hover:bg-surface-hover
     `,
   normal: `
+    bg-gradient-to-r
+    from-teal-500
+    to-teal-900
+    hover:from-teal-600
+    hover:to-teal-600
+  
     `,
 } satisfies Record<ButtonVariant, string>;
 
@@ -165,7 +171,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={clsx(
           !unstyled && [
             variantClasses[variant],
-            "px-4 sm:h-10 flex justify-center items-center",
+            "px-4 sm:h-10 flex justify-center items-center text-white",
           ],
 
           "cursor-pointer bg-info/20 hover:bg-info/40 p-2 rounded-sm disabled:opacity-50 disabled:pointer-events-none transition-all duration-300",

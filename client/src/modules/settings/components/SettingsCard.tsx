@@ -25,7 +25,7 @@ export const SettingsCard = ({
           {icon && (
             <IconBox
               icon={icon}
-              className="bg-gradient-success text-text"
+              className="bg-gradient-success text-white"
             />
           )}
 

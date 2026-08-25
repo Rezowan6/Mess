@@ -59,7 +59,7 @@ export const Badge = ({
   return (
     <span
       className={cn(
-        "inline-flex text-center items-center justify-center font-medium whitespace-nowrap leading-none align-middle",
+        "inline-flex text-center items-center justify-center font-medium whitespace-nowrap leading-none align-middle text-white",
 
         variantStyles[variant],
 

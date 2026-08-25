@@ -29,7 +29,7 @@ export const RouteTabs = ({ tabs }: Props) => {
       {tabs.map((tab) => (
         <Button
           key={tab.key}
-          className="w-24 h-fit"
+          className={`w-24 h-fit`}
           variant={activeTab === tab.key ? "primary" : "normal"}
           onClick={() => navigate(tab.path)}
         >
