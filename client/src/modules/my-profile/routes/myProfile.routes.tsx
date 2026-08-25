@@ -1,9 +1,10 @@
 import { ROLES } from "@/shared/constants/roles";
 import { ROUTES } from "@/shared/constants/routes";
 import { RoleGuard } from "@/shared/guards/role.guard";
-import { MyProfileLayout } from "../layout/MyProfileLayout";
+
 import { MyDepositHistoryPage } from "../pages/MyDepositHistoryPage";
 import { MyMealHistoryPage } from "../pages/MyMealHistoryPage";
+import { MyProfileOverviewPage } from "../pages/MyProfileOverviewPage";
 import { MyProfilePage } from "../pages/MyProfilePage";
 
 export const myProfileRoutes = {
@@ -15,19 +16,17 @@ export const myProfileRoutes = {
 
   children: [
     {
-      element: <MyProfileLayout />,
+      element: <MyProfilePage />,
 
       children: [
         {
           index: true,
-          element: <MyProfilePage />,
+          element: <MyProfileOverviewPage />,
         },
-
         {
           path: "deposit-history",
           element: <MyDepositHistoryPage />,
         },
-
         {
           path: "meal-history",
           element: <MyMealHistoryPage />,

@@ -34,7 +34,7 @@ export const SidebarMenu = () => {
                       to-teal-200
                       hover:from-teal-600
                       hover:to-teal-600 text-white`
-                      : "hover:bg-info/10"
+                      : "hover:bg-background"
                   }`}
               >
                 <Icon size={18} />

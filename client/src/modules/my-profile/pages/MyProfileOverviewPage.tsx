@@ -1,5 +1,3 @@
-import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
-
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { MyProfileInfoCards } from "../components/MyProfileInfoCards";
 import { MyProfileInfoCardsSkeleton } from "../components/MyProfileInfoCardsSkeleton";
@@ -22,12 +20,5 @@ export const MyProfileOverviewPage = () => {
 
   // not used
 
-  return (
-    <ManagementPage
-      title="My Profile"
-      description="View your meal, deposit and balance information."
-    >
-      <MyProfileInfoCards summary={profile.summary} />
-    </ManagementPage>
-  );
+  return <MyProfileInfoCards summary={profile.summary} />;
 };
