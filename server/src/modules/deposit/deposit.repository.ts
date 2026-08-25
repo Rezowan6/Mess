@@ -56,7 +56,7 @@ class DepositRepository extends BaseRepository<Deposit> {
     const memberInclude = {
       association: "member",
 
-      attributes: ["id", "name"],
+      attributes: ["id", "name", "email", "avatar"],
 
       required: !!query.search,
 

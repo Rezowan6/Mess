@@ -7,6 +7,7 @@ export interface IDeposit {
     id: number;
     name: string;
     email: string;
+    avatar?: string | null;
   };
 
   tenantId: number;
