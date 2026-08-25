@@ -64,11 +64,55 @@ class PartyExpenseService {
     return partyExpenses;
   }
 
+  async update(
+    {
+      id,
+      tenantId,
+      mealSessionId,
+    }: {
+      id: number;
+      tenantId: number;
+      mealSessionId: number;
+    },
+    data: Partial<ICreatePartyExpenseDto>,
+  ) {
+    const partyExpense = await partyExpenseRepository.findOne({
+      id,
+      tenantId,
+      mealSessionId,
+    });
+
+    if (!partyExpense) {
+      throw new ApiError(404, "Party expense not found.");
+    }
+
+    return await partyExpenseRepository.update({ id }, data);
+  }
+
+  async delete({
+    id,
+    tenantId,
+    mealSessionId,
+  }: {
+    id: number;
+    tenantId: number;
+    mealSessionId: number;
+  }) {
+    const partyExpense = await partyExpenseRepository.findOne({
+      id,
+      tenantId,
+      mealSessionId,
+    });
+
+    if (!partyExpense) {
+      throw new ApiError(404, "Party expense not found.");
+    }
+
+    await partyExpenseRepository.delete({ id });
+
+    return true;
+  }
   async getById() {}
-
-  async update() {}
-
-  async delete() {}
 }
 
 export const partyExpenseService = new PartyExpenseService();

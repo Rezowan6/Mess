@@ -45,6 +45,42 @@ class PartyExpenseController {
       meta: partyExpenses.meta,
     });
   });
+
+  // update
+  update = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
+
+    const partyExpense = await partyExpenseService.update(
+      {
+        tenantId,
+        mealSessionId,
+        id: Number(req.params.id),
+      },
+      req.body,
+    );
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Party expense updated successfully.",
+      data: partyExpense,
+    });
+  });
+
+  // delete
+  delete = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
+
+    await partyExpenseService.delete({
+      tenantId,
+      mealSessionId,
+      id: Number(req.params.id),
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Party expense deleted successfully.",
+    });
+  });
 }
 
 export const partyExpenseController = new PartyExpenseController();

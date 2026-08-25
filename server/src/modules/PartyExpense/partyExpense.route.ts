@@ -8,4 +8,8 @@ router.post("/", ...managerAccess, partyExpenseController.create);
 
 router.get("/", ...allAccess, partyExpenseController.getAll);
 
+router.patch("/:id", ...managerAccess, partyExpenseController.update);
+
+router.delete("/:id", ...managerAccess, partyExpenseController.delete);
+
 export default router;
