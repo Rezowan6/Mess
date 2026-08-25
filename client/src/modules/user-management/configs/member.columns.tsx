@@ -5,6 +5,8 @@ import type { ITenantMember } from "../types/userManagement.types";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 
+import { Avatar } from "@/shared/components/ui/Avatar";
+import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
 import { MemberActions } from "../components/MemberActions";
 import { MemberRole } from "../components/MemberRole";
 import { MemberStatus } from "../components/MemberStatus";
@@ -18,7 +20,16 @@ export const useMemberColumns = (): TableColumn<ITenantMember>[] => {
       title: "Name",
       className: "text-xs sm:text-md md:text-md",
       render: (member) => (
-        <div className="font-semibold">{member.user.name}</div>
+        <div className="flex items-center gap-3">
+          <Avatar
+            size="sm"
+            fallback={getAvatarInitial(member.user.avatar ?? member.user.name)}
+          />
+
+          <span className="font-medium">
+            {member.user.avatar ?? member.user.name}
+          </span>
+        </div>
       ),
     },
 

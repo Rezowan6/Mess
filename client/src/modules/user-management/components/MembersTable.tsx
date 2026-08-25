@@ -2,8 +2,8 @@ import { Pagination } from "@/shared/components/ui/Pagination";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Table } from "@/shared/components/ui/Table";
 
-import { useMemberColumns } from "../constants/member.columns";
-import { MEMBER_MESSAGES } from "../constants/member.messages";
+import { useMemberColumns } from "../configs/member.columns";
+import { MEMBER_MESSAGES } from "../configs/member.messages";
 
 import { useMembersTable } from "../hooks/useMembersTable";
 import { MembersTableSkeleton } from "./MembersTableSkeleton";
