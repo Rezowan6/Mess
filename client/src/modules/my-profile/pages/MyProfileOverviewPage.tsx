@@ -1,4 +1,5 @@
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
+import { MonthlyMealSummaryCard } from "../components/MonthlyMealSummaryCard";
 import { MyProfileInfoCards } from "../components/MyProfileInfoCards";
 import { MyProfileInfoCardsSkeleton } from "../components/MyProfileInfoCardsSkeleton";
 import { MY_PROFILE_MESSAGES } from "../configs/myProfile.messages";
@@ -18,7 +19,10 @@ export const MyProfileOverviewPage = () => {
     return <EmptyState title={empty.title} description={empty.description} />;
   }
 
-  // not used
-
-  return <MyProfileInfoCards summary={profile.summary} />;
+  return (
+    <>
+      <MonthlyMealSummaryCard summary={profile.mealSummary} />
+      <MyProfileInfoCards summary={profile.summary} />
+    </>
+  );
 };
