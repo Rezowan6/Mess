@@ -42,6 +42,7 @@ export const ExpensePage = () => {
             {currentPage.actionText}
           </Button>
         }
+        footer={currentPage.footer}
       >
         <Outlet />
       </ManagementPage>
