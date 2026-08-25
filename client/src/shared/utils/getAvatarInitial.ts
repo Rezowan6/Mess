@@ -1,4 +1,10 @@
-export const getAvatarInitial = (name: string): string => {
+export const getAvatarInitial = (
+  name: string,
+  avatar?: string | null,
+): string => {
+  if (avatar) {
+    return avatar;
+  }
   const words = name.trim().split(/\s+/);
 
   if (!words.length || !words[0]) {

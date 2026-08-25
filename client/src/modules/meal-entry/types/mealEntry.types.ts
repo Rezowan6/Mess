@@ -16,6 +16,7 @@ export interface IMealEntry {
     id: number;
     name: string;
     email: string;
+    avatar?: string | null;
   };
 
   tenantId: number;
