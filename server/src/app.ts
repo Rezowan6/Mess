@@ -5,7 +5,6 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "url";
 import { env } from "./configs/env.js";
 
 // internal import
@@ -20,6 +19,7 @@ import {
   featureRouter,
   invitesRouter,
   mealEntriesRouter,
+  mealPlanningRouter,
   mealPreferenceRouter,
   mealRequestRouter,
   mealSessionRouter,
@@ -28,16 +28,14 @@ import {
   myProfileRouter,
   noticesRouter,
   notificationRouter,
+  partyExpenseRouter,
   paymentRouter,
   planFeatureRouter,
   planRouter,
   subscriptionRouter,
   tenantMembershipRouter,
   tenantRoute,
-  mealPlanningRouter,
-  partyExpenseRouter,
 } from "@/routes/index.js";
-
 
 const app: Application = express();
 
@@ -50,6 +48,8 @@ app.use(cookieParser());
 if (env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 // CORS
 app.use(
@@ -86,10 +86,10 @@ app.use("/api/v1/meal-settings", mealSettingRouter);
 app.use("/api/v1/meal-preferences", mealPreferenceRouter);
 app.use("/api/v1/my-profile", myProfileRouter);
 
-app.use("/api/v1/my", (req, res)=> {
+app.use("/api/v1/my", (req, res) => {
   res.status(200).json({
     mesage: "I Love Allah",
-  })
+  });
 });
 
 // app.get("/api/test/socket", (req, res) => {

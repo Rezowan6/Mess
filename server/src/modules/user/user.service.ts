@@ -20,6 +20,10 @@ class UserService {
       status: user.status,
     };
   }
+
+  async updateAvatar(userId: number, avatar: string) {
+    return userRepository.updateAvatar(userId, avatar);
+  }
 }
 
 export const userService = new UserService();
