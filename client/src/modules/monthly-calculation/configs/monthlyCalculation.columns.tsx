@@ -21,7 +21,7 @@ export const useMonthlyCalculationColumns =
       },
       {
         key: "totalMeal",
-        title: "Total Meal",
+        title: "Meal",
         render: (member) => member.totalMeal,
       },
       {

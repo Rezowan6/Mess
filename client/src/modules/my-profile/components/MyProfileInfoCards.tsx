@@ -1,16 +1,10 @@
 import { InfoCard } from "@/shared/components/ui/InfoCard";
 
 import { getMyProfileInfoCards } from "../configs/myProfileInfoCards.config";
+import type { IMealCalculationSummary } from "../types/myProfile.types";
 
 interface Props {
-  summary: {
-    totalMeal: number;
-    deposit: number;
-    mealRate: number;
-    memberCost: number;
-    balance: number;
-    status: string;
-  };
+  summary: IMealCalculationSummary;
 }
 
 export const MyProfileInfoCards = ({ summary }: Props) => {

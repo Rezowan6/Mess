@@ -6,8 +6,11 @@ export class PartyExpenseMemberRepository extends BaseRepository<PartyExpenseMem
     super(PartyExpenseMember);
   }
 
-  async getMemberPartyExpenseTotals(tenantId: number, mealSessionId: number) {
-    return await this.model.findAll({
+  async getMemberPartyExpenseTotals(
+    tenantId: number,
+    mealSessionId: number,
+  ): Promise<{ memberId: number; totalPartyCost: number }[]> {
+    return (await this.findAll({
       attributes: [
         "memberId",
         [
@@ -33,7 +36,7 @@ export class PartyExpenseMemberRepository extends BaseRepository<PartyExpenseMem
 
       group: ["memberId"],
       raw: true,
-    });
+    })) as unknown as { memberId: number; totalPartyCost: number }[];
   }
 }
 

@@ -5,6 +5,7 @@ import {
   Scale,
   Wallet,
 } from "lucide-react";
+import type { IMealCalculationSummary } from "../types/myProfile.types";
 
 interface MyProfileInfoCardConfig {
   key: string;
@@ -15,14 +16,9 @@ interface MyProfileInfoCardConfig {
   valueClassName?: string;
 }
 
-export const getMyProfileInfoCards = (summary: {
-  totalMeal: number;
-  deposit: number;
-  mealRate: number;
-  memberCost: number;
-  balance: number;
-  status: string;
-}): MyProfileInfoCardConfig[] => [
+export const getMyProfileInfoCards = (
+  summary: IMealCalculationSummary,
+): MyProfileInfoCardConfig[] => [
   {
     key: "deposit",
     title: "Total Deposit",
@@ -40,9 +36,25 @@ export const getMyProfileInfoCards = (summary: {
     valueClassName: "text-primary",
   },
   {
-    key: "memberCost",
+    key: "normalMealCost",
     title: "Meal Cost",
-    value: `৳ ${summary.memberCost}`,
+    value: `৳ ${summary.normalMealCost.toFixed(2)}`,
+    icon: <Wallet size={22} />,
+    iconClassName: "text-error",
+    valueClassName: "text-error",
+  },
+  {
+    key: "partyCost",
+    title: "Party Cost",
+    value: `৳ ${summary.partyCost.toFixed(2)}`,
+    icon: <Wallet size={22} />,
+    iconClassName: "text-warning",
+    valueClassName: "text-warning",
+  },
+  {
+    key: "memberCost",
+    title: "Total Cost",
+    value: `৳ ${summary.memberCost.toFixed(2)}`,
     icon: <Wallet size={22} />,
     iconClassName: "text-error",
     valueClassName: "text-error",

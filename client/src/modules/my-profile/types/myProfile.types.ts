@@ -1,3 +1,14 @@
+export interface IMealCalculationSummary {
+  totalMeal: number;
+  deposit: number;
+  mealRate: number;
+  memberCost: number;
+  normalMealCost: number;
+  partyCost: number;
+  balance: number;
+  status: "Received" | "Settled" | "Payable";
+}
+
 export interface IMyProfile {
   member: {
     id: number;
@@ -6,14 +17,7 @@ export interface IMyProfile {
     avatar: string | null;
   };
 
-  summary: {
-    totalMeal: number;
-    deposit: number;
-    mealRate: number;
-    memberCost: number;
-    balance: number;
-    status: "Received" | "Settled" | "Payable";
-  };
+  summary: IMealCalculationSummary;
 
   mealSummary: {
     breakfast: number;

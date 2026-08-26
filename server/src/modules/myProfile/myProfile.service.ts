@@ -1,4 +1,6 @@
 import { monthlyCalculationRepository } from "../monthlyCalculation/monthlyCalculation.repository.js";
+import { partyExpenseRepository } from "../PartyExpense/partyExpense.repository.js";
+import { partyExpenseMemberRepository } from "../PartyExpenseMember/partyExpenseMember.repository.js";
 import { myProfileRepository } from "./myProfile.repository.js";
 
 class MyProfileService {
@@ -14,11 +16,13 @@ class MyProfileService {
     const [
       member,
       totalExpense,
+      totalPartyExpense,
       mealSummary,
       myMealSummary,
       myDeposit,
       deposits,
       meals,
+      memberPartyCosts,
     ] = await Promise.all([
       myProfileRepository.getMyProfileUser({
         tenantId,
@@ -26,6 +30,8 @@ class MyProfileService {
       }),
 
       monthlyCalculationRepository.getTotalExpense(tenantId, mealSessionId),
+
+      partyExpenseRepository.getTotalPartyExpense(tenantId, mealSessionId),
 
       monthlyCalculationRepository.getTotalMeal(tenantId, mealSessionId),
 
@@ -52,20 +58,40 @@ class MyProfileService {
         mealSessionId,
         userId,
       }),
+
+      partyExpenseMemberRepository.getMemberPartyExpenseTotals(
+        tenantId,
+        mealSessionId,
+      ),
     ]);
 
     const grandTotalMeals = Number(mealSummary?.grandTotalMeals ?? 0);
 
+    // Party expense বাদ দিয়ে normal expense
+    const normalExpense =
+      Number(totalExpense ?? 0) - Number(totalPartyExpense ?? 0);
+
+    // Normal meal rate
     const mealRate =
       grandTotalMeals > 0
-        ? Number((totalExpense / grandTotalMeals).toFixed(2))
+        ? Number((normalExpense / grandTotalMeals).toFixed(2))
         : 0;
 
     const totalMeal = Number(myMealSummary?.totalMeal ?? 0);
 
     const totalDeposit = Number(myDeposit ?? 0);
 
-    const memberCost = Number((totalMeal * mealRate).toFixed(2));
+    // এই member-এর সব party expense-এর total
+    const myPartyCost = Number(
+      memberPartyCosts.find((item: any) => Number(item.memberId) === userId)
+        ?.totalPartyCost ?? 0,
+    );
+
+    // Normal meal cost
+    const normalMealCost = Number((totalMeal * mealRate).toFixed(2));
+
+    // Normal meal cost + party cost
+    const memberCost = Number((normalMealCost + myPartyCost).toFixed(2));
 
     const balance = Number((totalDeposit - memberCost).toFixed(2));
 
@@ -74,13 +100,14 @@ class MyProfileService {
 
       summary: {
         totalMeal,
-
         deposit: totalDeposit,
 
         mealRate,
 
-        memberCost,
+        normalMealCost,
+        partyCost: Number(myPartyCost.toFixed(2)),
 
+        memberCost,
         balance,
 
         status:
@@ -95,7 +122,6 @@ class MyProfileService {
       },
 
       deposits,
-
       meals,
     };
   }

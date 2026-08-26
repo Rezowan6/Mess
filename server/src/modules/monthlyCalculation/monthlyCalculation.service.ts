@@ -51,7 +51,6 @@ class MonthlyCalculationService {
     });
 
     // active members
-
     const activeMembers =
       await monthlyCalculationRepository.getActiveMembers(tenantId);
 
