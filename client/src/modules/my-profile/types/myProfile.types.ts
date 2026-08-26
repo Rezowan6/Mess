@@ -9,6 +9,13 @@ export interface IMealCalculationSummary {
   status: "Received" | "Settled" | "Payable";
 }
 
+export interface mealSummary {
+  breakfast: number;
+  lunch: number;
+  dinner: number;
+  total: number;
+}
+
 export interface IMyProfile {
   member: {
     id: number;
@@ -19,12 +26,7 @@ export interface IMyProfile {
 
   summary: IMealCalculationSummary;
 
-  mealSummary: {
-    breakfast: number;
-    lunch: number;
-    dinner: number;
-    total: number;
-  };
+  mealSummary: mealSummary
 
   deposits: {
     id: number;
