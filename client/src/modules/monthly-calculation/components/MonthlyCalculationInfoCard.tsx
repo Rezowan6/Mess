@@ -5,6 +5,7 @@ import { getMonthlyCalculationInfoCards } from "../configs/monthlyCalculationInf
 interface Props {
   calculation: {
     totalExpense: number;
+    totalPartyExpense: number;
     totalDeposit: string | number;
     grandTotalMeals: number;
     mealRate: number;

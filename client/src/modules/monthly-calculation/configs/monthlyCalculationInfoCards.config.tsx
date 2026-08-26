@@ -11,6 +11,7 @@ interface MonthlyCalculationInfoCardConfig {
 
 export const getMonthlyCalculationInfoCards = (calculation: {
   totalExpense: number;
+  totalPartyExpense: number;
   totalDeposit: string | number;
   grandTotalMeals: number;
   mealRate: number;
@@ -22,6 +23,14 @@ export const getMonthlyCalculationInfoCards = (calculation: {
     icon: <Wallet size={22} />,
     iconClassName: "text-error",
     valueClassName: "text-error",
+  },
+  {
+    key: "totalPartyExpense",
+    title: "Total Party Cost",
+    value: `৳ ${calculation.totalPartyExpense}`,
+    icon: <Wallet size={22} />,
+    iconClassName: "text-warning",
+    valueClassName: "text-warning",
   },
   {
     key: "totalDeposit",
@@ -36,8 +45,8 @@ export const getMonthlyCalculationInfoCards = (calculation: {
     title: "Grand Total Meals",
     value: calculation.grandTotalMeals,
     icon: <Utensils size={22} />,
-    iconClassName: "text-warning",
-    valueClassName: "text-warning",
+    iconClassName: "text-info",
+    valueClassName: "text-info",
   },
   {
     key: "mealRate",
