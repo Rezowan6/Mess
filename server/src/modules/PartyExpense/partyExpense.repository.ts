@@ -45,6 +45,14 @@ export class PartyExpenseRepository extends BaseRepository<PartyExpense> {
       query,
     );
   }
+  async getTotalPartyExpense(tenantId: number, mealSessionId: number) {
+    return await this.sum("amount", {
+      where: {
+        tenantId,
+        mealSessionId,
+      },
+    });
+  }
 }
 
 export const partyExpenseRepository = new PartyExpenseRepository();
