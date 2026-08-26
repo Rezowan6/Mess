@@ -112,6 +112,7 @@ class MonthlyCalculationService {
 
     return {
       totalExpense: Number(normalExpense.toFixed(2)),
+      totalPartyExpense: Number(totalPartyExpense.toFixed(2)),
 
       totalDeposit: memberDeposits
         .reduce((sum: number, item: any) => sum + Number(item.totalDeposit), 0)

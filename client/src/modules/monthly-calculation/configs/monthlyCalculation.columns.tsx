@@ -15,14 +15,19 @@ export const useMonthlyCalculationColumns =
         ),
       },
       {
+        key: "deposit",
+        title: "Deposit",
+        render: (member) => `৳ ${member.deposit}`,
+      },
+      {
         key: "totalMeal",
         title: "Total Meal",
         render: (member) => member.totalMeal,
       },
       {
-        key: "deposit",
-        title: "Deposit",
-        render: (member) => `৳ ${member.deposit}`,
+        key: "partyCost",
+        title: "Party Cost",
+        render: (member) => <span className="text-warning">৳ {member.partyCost.toFixed(2)}</span>,
       },
       {
         key: "memberCost",

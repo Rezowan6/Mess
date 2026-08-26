@@ -6,12 +6,14 @@ export interface IMonthlyCalculationMember {
   totalMeal: number;
   deposit: number;
   memberCost: number;
+  partyCost: number;
   balance: number;
   status: "Payable" | "Received" | "Settled";
 }
 
 export interface IMonthlyCalculation {
   totalExpense: number;
+  totalPartyExpense: number;
   totalDeposit: string;
   grandTotalMeals: number;
   mealRate: number;
