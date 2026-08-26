@@ -57,6 +57,7 @@ export const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
         className={[
           "flex shrink-0 items-center justify-center cursor-pointer",
           "rounded-full bg-gradient-success text-white",
+          `${size === "xl" ? "text-2xl font-bold" : ""}`,
           sizeClasses[size],
           className,
         ]
