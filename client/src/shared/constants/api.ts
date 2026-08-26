@@ -54,6 +54,7 @@ export const API_ENDPOINTS = {
   MY_PROFILE: {
     INFO: "/my-profile/info",
     ALL: "/my-profile",
+    AVATAR: "my-profile/avatar",
   },
   MONTHLY_CALCULATION: {
     CURRENT: "/monthly-calculations/current",

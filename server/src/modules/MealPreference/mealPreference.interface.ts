@@ -37,5 +37,7 @@ export interface IMealPreferenceWithUser {
   user: {
     id: number;
     name: string;
+    avatar: string | null;
+    email?: string;
   };
 }

@@ -13,4 +13,22 @@ export const myProfileApi = {
 
     return data;
   },
+
+  updateAvatar: async (file: File) => {
+    const formData = new FormData();
+
+    formData.append("avatar", file);
+
+    const { data } = await API.patch<ApiResponse<IMyProfile>>(
+      API_ENDPOINTS.MY_PROFILE.AVATAR,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+
+    return data;
+  },
 };

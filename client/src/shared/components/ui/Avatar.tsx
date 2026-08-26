@@ -1,3 +1,4 @@
+import { env } from "@/shared/config/env";
 import { UserRound } from "lucide-react";
 
 import { forwardRef, type ImgHTMLAttributes, type ReactNode } from "react";
@@ -30,7 +31,11 @@ export const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
     return src ? (
       <img
         ref={ref}
-        src={src}
+        src={
+          src?.startsWith("http")
+            ? src
+            : `${env.apiUrl.replace("/api/v1", "")}${src}`
+        }
         alt={alt}
         loading="lazy"
         className={[

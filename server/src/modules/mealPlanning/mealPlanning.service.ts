@@ -30,23 +30,21 @@ class MealPlanningService {
     );
 
     summary.totalMeals =
-      summary.breakfast +
-      summary.lunch +
-      summary.dinner +
-      summary.guestMeal;
+      summary.breakfast + summary.lunch + summary.dinner + summary.guestMeal;
 
     return summary;
   }
 
   private buildMealMemberList(
     entries: IMealPlanningEntry[],
-    meal: "breakfast" | "lunch" | "dinner",
+    meal: "breakfast" | "lunch" | "dinner" | "guestMeal",
   ): IMealPlanningMember[] {
     return entries
       .filter((entry) => Number(entry[meal]) > 0)
       .map((entry) => ({
         userId: entry.userId,
         memberName: entry.user?.name ?? "Unknown Member",
+        avatar: entry.user.avatar ?? null,
         meal: Number(entry[meal]),
       }));
   }
@@ -56,10 +54,9 @@ class MealPlanningService {
     mealSessionId: number,
     date: string,
   ): Promise<IMealPlanningResponse> {
-    const preferences =
-      await mealPreferenceRepository.getActivePreferences({
-        tenantId,
-      });
+    const preferences = await mealPreferenceRepository.getActivePreferences({
+      tenantId,
+    });
 
     const entries: IMealPlanningEntry[] = preferences.map((preference) => ({
       userId: preference.userId,
@@ -78,11 +75,14 @@ class MealPlanningService {
 
     const dinner = this.buildMealMemberList(entries, "dinner");
 
+    const guestMeal = this.buildMealMemberList(entries, "guestMeal");
+
     return {
       summary,
       breakfast,
       lunch,
       dinner,
+      guestMeal,
     };
   }
 }

@@ -9,13 +9,14 @@ export interface IMealPlanningMember {
   userId: number;
   memberName: string;
   meal: number;
+  avatar: string;
 }
 
 export interface IMealPlanningSummary {
   breakfast: number;
   lunch: number;
   dinner: number;
-  guestMeal: number;
+  guest: number;
   totalMeals: number;
 }
 
@@ -25,5 +26,6 @@ export interface IMealPlanningResponse {
     breakfast: IMealPlanningMember[];
     lunch: IMealPlanningMember[];
     dinner: IMealPlanningMember[];
+    guest: IMealPlanningMember[];
   };
 }

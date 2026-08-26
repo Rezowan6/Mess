@@ -13,6 +13,7 @@ export const MyProfileOverviewPage = () => {
   const { data, isPending } = useMyProfile();
 
   const profile = data?.data;
+  console.log(profile)
 
   if (isPending) {
     return <MyProfileInfoCardsSkeleton />;

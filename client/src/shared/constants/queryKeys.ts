@@ -74,6 +74,7 @@ export const queryKeys = {
   myProfile: {
     current: (tenantId?: number) =>
       ["my-profile", tenantId, "current"] as const,
+    all: (tenantId?: number) => ["my-profile", tenantId, "current"] as const,
   },
   mealSessions: {
     all: (tenantId?: number) => ["meal-sessions", tenantId] as const,
