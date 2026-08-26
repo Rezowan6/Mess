@@ -11,7 +11,7 @@ export const NotificationDropdown = ({ isOpen }: { isOpen: boolean }) => {
 
   return (
     <div
-      className={`absolute right-0 top-full mt-3 z-50 w-80 overflow-hidden bg-background shadow-xl rounded-md border border-info transition-all duration-300 ease-in-out ${isOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"}`}
+      className={`absolute right-0 top-full sm:mt-3 z-50 w-screen overflow-x-auto sm:w-80 overflow-hidden bg-background shadow-xl sm:rounded-md sm:border sm:border-info transition-all duration-300 ease-in-out ${isOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"}`}
     >
       {notifications &&
         notifications.map((item) => (
