@@ -13,7 +13,7 @@ export const NotificationBell = () => {
   const count: number = data?.data?.count || 0;
 
   return (
-    <div className="relative">
+    <div className="static sm:relative">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-accent hover:bg-gradient-success cursor-pointer transition-all duration-300 text-white"
