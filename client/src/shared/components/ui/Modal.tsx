@@ -37,7 +37,7 @@ export const Modal = ({
 
   return (
     <dialog className="modal modal-open" onCancel={onClose}>
-      <div className={`modal-box ${sizeClass[size]}`}>
+      <div className={`modal-box bg-background ${sizeClass[size]}`}>
         {title && <h3 className="text-lg font-bold">{title}</h3>}
 
         <div className="py-4">{children}</div>

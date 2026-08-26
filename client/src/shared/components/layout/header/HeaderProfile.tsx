@@ -52,7 +52,7 @@ export const HeaderProfile = () => {
       >
         {/* member avatar */}
         <Avatar fallback={getAvatarInitial(user?.name ?? "")} />
-        
+
         <div className="hidden text-left md:block">
           <p className="text-sm font-semibold">{user?.name}</p>
 
@@ -76,8 +76,8 @@ export const HeaderProfile = () => {
           mt-2
           w-64
           rounded-box
-          border
-          bg-base-100
+          border border-info
+          bg-background
           p-2
           shadow-lg
           transition-all duration-300 ease-in-out
@@ -86,13 +86,12 @@ export const HeaderProfile = () => {
       >
         {/* User Info */}
 
-        <li className="pointer-events-none mb-2 border-b pb-2">
+        <li className="pointer-events-none mb-2 border-b border-info pb-2">
           <div className="flex flex-col gap-0 items-start">
             <p className="font-semibold">{user?.name}</p>
             <span className="text-xs text-green-600">
               {currentTenant?.role ?? ""}
             </span>
-
             <p className="text-xs text-base-content/60">{user?.email}</p>
           </div>
         </li>
@@ -105,7 +104,7 @@ export const HeaderProfile = () => {
               <Link
                 to={item.path}
                 onClick={closeDropdown}
-                className="flex items-center gap-1 py-2 hover:bg-background rounded-sm"
+                className="flex items-center gap-1 p-2 hover:bg-info/10 rounded-sm"
               >
                 <Icon size={16} className="text-success" />
                 {item.label}
@@ -123,7 +122,7 @@ export const HeaderProfile = () => {
               closeDropdown();
               logoutMutation.mutate();
             }}
-            className="text-error w-full flex items-center gap-1 py-2 hover:bg-background rounded-sm cursor-pointer"
+            className="text-error w-full flex items-center gap-1 p-2 hover:bg-info/10 rounded-sm cursor-pointer"
           >
             <LogOut size={16} />
             Logout
