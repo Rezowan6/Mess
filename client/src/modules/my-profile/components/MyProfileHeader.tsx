@@ -13,7 +13,12 @@ interface Props {
 export const MyProfileHeader = ({ member }: Props) => {
   return (
     <div className="flex flex-col gap-4 rounded-2xl bg-info/10 p-5 shadow-sm sm:flex-row sm:items-center">
-      <Avatar size="xl" fallback={getAvatarInitial(member.name)}></Avatar>
+      <Avatar
+        src={member.avatar}
+        alt={member.name}
+        size="xl"
+        fallback={getAvatarInitial(member.name)}
+      />
       <div>
         <h2 className="text-xl font-bold">{member.name}</h2>
         <p className="text-sm opacity-60">{member.email}</p>

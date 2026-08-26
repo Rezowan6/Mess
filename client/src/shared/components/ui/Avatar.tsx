@@ -1,14 +1,13 @@
 import { UserRound } from "lucide-react";
-import {
-  forwardRef,
-  type ImgHTMLAttributes,
-  type ReactNode,
-} from "react";
+
+import { forwardRef, type ImgHTMLAttributes, type ReactNode } from "react";
 
 type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
 
-interface AvatarProps
-  extends Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "alt"> {
+interface AvatarProps extends Omit<
+  ImgHTMLAttributes<HTMLImageElement>,
+  "src" | "alt"
+> {
   src?: string | null;
   alt?: string;
   fallback?: ReactNode;
@@ -25,14 +24,7 @@ const sizeClasses: Record<AvatarSize, string> = {
 
 export const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
   (
-    {
-      src,
-      alt = "User avatar",
-      fallback,
-      size = "md",
-      className,
-      ...props
-    },
+    { src, alt = "User avatar", fallback, size = "md", className, ...props },
     ref,
   ) => {
     return src ? (
@@ -64,7 +56,9 @@ export const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
           .filter(Boolean)
           .join(" ")}
       >
-        {fallback ?? <UserRound size={size === "xs" ? 14 : size === "sm" ? 16 : 20} />}
+        {fallback ?? (
+          <UserRound size={size === "xs" ? 14 : size === "sm" ? 16 : 20} />
+        )}
       </div>
     );
   },
