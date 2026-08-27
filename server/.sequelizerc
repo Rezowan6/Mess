@@ -1,33 +1,33 @@
-// const path = require("path");
+const path = require("path");
 
-// module.exports = {
+module.exports = {
 
-//   config: path.resolve("src/database/config/config.json"),
+  config: path.resolve("src/database/config/config.json"),
 
-//   "models-path": path.resolve("src/database/models"),
+  "models-path": path.resolve("src/database/models"),
 
-//   "migrations-path": path.resolve("src/database/migrations"),
+  "migrations-path": path.resolve("src/database/migrations"),
 
-//   "seeders-path": path.resolve("src/database/seeders")
+  "seeders-path": path.resolve("src/database/seeders")
 
-// };
-
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// কন্টেইনারের ভেতর নাকি লোকাল মেশিনে আছে তা চেক করার লজিক
-const isDocker = fs.existsSync(path.resolve(__dirname, "src"));
-const basePath = isDocker
-  ? path.resolve(__dirname, "src", "database")
-  : path.resolve(__dirname, "server", "src", "database");
-
-export default {
-  config: path.join(basePath, "config", "config.json"),
-  "migrations-path": path.join(basePath, "migrations"),
-  "seeders-path": path.join(basePath, "seeders"),
-  "models-path": path.join(basePath, "models"),
 };
+
+// import fs from "fs";
+// import path from "path";
+// import { fileURLToPath } from "url";
+
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+
+// // কন্টেইনারের ভেতর নাকি লোকাল মেশিনে আছে তা চেক করার লজিক
+// const isDocker = fs.existsSync(path.resolve(__dirname, "src"));
+// const basePath = isDocker
+//   ? path.resolve(__dirname, "src", "database")
+//   : path.resolve(__dirname, "server", "src", "database");
+
+// export default {
+//   config: path.join(basePath, "config", "config.json"),
+//   "migrations-path": path.join(basePath, "migrations"),
+//   "seeders-path": path.join(basePath, "seeders"),
+//   "models-path": path.join(basePath, "models"),
+// };
