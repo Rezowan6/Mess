@@ -5,8 +5,7 @@ import type { ITenantMember } from "@/modules/user-management/types/userManageme
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 
-import { Avatar } from "@/shared/components/ui/Avatar";
-import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
+import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
 import { QuickDepositButtons } from "../components/QuickDepositButtons";
 
 export const useDepositAddColumns = (): TableColumn<ITenantMember>[] => {
@@ -18,21 +17,9 @@ export const useDepositAddColumns = (): TableColumn<ITenantMember>[] => {
     columns.push({
       key: "name",
       title: "Member",
-      render: (member) => {
-        return (
-          <div className="flex items-center gap-3">
-            <Avatar
-              size="sm"
-              fallback={getAvatarInitial(
-                member?.user?.name ?? "",
-                member?.user?.avatar,
-              )}
-            />
-
-            <span className="font-medium">{member?.user?.name ?? ""}</span>
-          </div>
-        );
-      },
+      render: (member) => (
+        <MemberAvatar name={member.user.name} avatar={member.user.avatar} />
+      ),
     });
     columns.push({
       key: "id",
