@@ -84,5 +84,6 @@ RUN chown -R node:node /app
 USER node
 
 EXPOSE 5001
-# 1. config.json এর পাথ নির্দিষ্ট করে মাইগ্রেশন, 2. সিড, 3. সার্ভার স্টার্ট
-CMD npx sequelize-cli db:migrate --config src/database/config/config.json && npx tsx src/database/seeder.ts && node dist/server.js
+
+# .sequelizerc এর পাথ ধরে সরাসরি Railway variables দিয়ে মাইগ্রেশন ও সিড রান
+CMD npx sequelize-cli db:migrate --url "mysql://$DB_USER:$DB_PASS@$DB_HOST:$DB_PORT/$DB_NAME" && npx tsx src/database/seeder.ts && node dist/server.js
