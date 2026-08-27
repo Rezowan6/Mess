@@ -29,7 +29,6 @@ class MealGeneratorService {
 
     const preferences = await mealPreferenceRepository.getActivePreferences({
       tenantId,
-      mealSessionId: mealSession.id,
     });
 
     return sequelize.transaction(async (transaction) => {

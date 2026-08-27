@@ -8,7 +8,6 @@ interface GetSubscriptionPageConfigProps {
 
 export const getSubscriptionPageConfig = ({
   pathname,
-  setIsOpen,
 }: GetSubscriptionPageConfigProps) => {
   const pageConfig = {
     [ROUTES.SUBSCRIPTION]: {

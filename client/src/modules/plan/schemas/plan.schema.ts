@@ -13,9 +13,9 @@ export const planSchema = z.object({
 
   description: z.string().nullable().optional(),
 
-  monthlyPrice: z.coerce.string().min(1, "Monthly price is required."),
+  monthlyPrice: z.string().min(1, "Monthly price is required."),
 
-  yearlyPrice: z.coerce.string().min(1, "Yearly price is required."),
+  yearlyPrice: z.string().min(1, "Yearly price is required."),
 
   currency: z
     .string()

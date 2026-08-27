@@ -1,17 +1,17 @@
-import type { plans } from "@/modules/landing/configs/plans.config";
 import type { IPlan } from "@/modules/plan/types/plan.types";
+import { isPopularPlan } from "@/modules/plan/utils/plan.utils";
 import { Badge } from "@/shared/components/ui/Badge";
 
-type Plan = (typeof plans)[number];
-
 interface Props {
-  plan: Plan | IPlan;
+  plan: IPlan;
 }
 
 export const PricingCardHeader = ({ plan }: Props) => {
+  const isPopular = isPopularPlan(plan);
+
   return (
     <>
-      {plan?.name === "Standard" && (
+      {isPopular && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
           <Badge variant="success">Most Popular</Badge>
         </div>
@@ -23,7 +23,6 @@ export const PricingCardHeader = ({ plan }: Props) => {
 
       <div>
         <span className="text-2xl font-bold">৳{plan.monthlyPrice}</span>
-
         <span className="text-base-content/60"> /month</span>
       </div>
 

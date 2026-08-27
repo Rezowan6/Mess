@@ -1,6 +1,5 @@
 import { BackButton } from "@/shared/components/ui/BackButton";
 import { ROUTES } from "@/shared/constants/routes";
-import { useRBAC } from "@/shared/hooks/useRBAC";
 
 interface GetPlanFeaturePageConfigProps {
   pathname: string;
@@ -9,10 +8,7 @@ interface GetPlanFeaturePageConfigProps {
 
 export const getPlanFeaturePageConfig = ({
   pathname,
-  setIsOpen,
 }: GetPlanFeaturePageConfigProps) => {
-  const { can } = useRBAC();
-
   const pageConfig = {
     [ROUTES.PLAN_FEATURE]: {
       title: "Plan Feature Management",

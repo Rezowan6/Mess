@@ -5,9 +5,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   Calculator,
   ClipboardList,
-  CreditCard,
   Crown,
-  HandCoins,
   Landmark,
   LayoutDashboard,
   Puzzle,
