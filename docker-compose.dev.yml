@@ -1,0 +1,38 @@
+services:
+  server:
+    image: node:22-bookworm-slim
+    working_dir: /app
+    volumes:
+      - ./server:/app
+      - server_node_modules:/app/node_modules
+    env_file:
+      - ./server/.env
+    ports:
+      - "5001:5001"
+    command: sh -c "npm install && npm run dev"
+
+  client:
+    image: node:22-bookworm-slim
+    working_dir: /app
+    volumes:
+      - ./client:/app
+      - client_node_modules:/app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:5001/api/v1
+      VITE_SOCKET_URL: http://localhost:5001
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+
+    develop:
+      watch:
+        - action: sync
+          path: ./client
+          target: /app
+
+    depends_on:
+      - server
+
+volumes:
+  server_node_modules:
+  client_node_modules:

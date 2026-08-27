@@ -14,11 +14,12 @@ RUN npm install --no-audit --no-fund
 COPY client/ ./
 
 # Empty = browser calls /api on same origin
-ENV VITE_API_URL=
+ARG VITE_API_URL
+ENV VITE_API_URL=${VITE_API_URL}
 
-# Public Clerk key (safe to embed in client build)
-ARG VITE_CLERK_PUBLISHABLE_KEY
-ENV VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}
+ARG VITE_SOCKET_URL
+ENV VITE_SOCKET_URL=${VITE_SOCKET_URL}
+
 
 # Build client
 RUN npm run build
@@ -71,9 +72,12 @@ COPY --from=client-build /app/client/dist ./public
 # Give ownership to non-root user
 RUN chown -R node:node /app
 
+RUN mkdir -p /app/uploads \
+ && chown -R node:node /app
+
 # Run as non-root
 USER node
 
-EXPOSE 3001
+EXPOSE 5001
 
 CMD ["node", "dist/server.js"]

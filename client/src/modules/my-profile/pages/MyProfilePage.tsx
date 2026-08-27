@@ -2,11 +2,12 @@ import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage"
 
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { Outlet, useLocation } from "react-router-dom";
+import { MyProfileHeader } from "../components/MyProfileHeader";
 import { MyProfileInfoCardsSkeleton } from "../components/MyProfileInfoCardsSkeleton";
 import { MyProfileRouteTabs } from "../components/MyProfileRouteTabs";
 import { MY_PROFILE_MESSAGES } from "../configs/myProfile.messages";
-import { useMyProfile } from "../hooks/useMyProfile";
 import { getMyProfilePageConfig } from "../configs/myProfile.page.config";
+import { useMyProfile } from "../hooks/useMyProfile";
 
 export const MyProfilePage = () => {
   const location = useLocation();
@@ -28,7 +29,11 @@ export const MyProfilePage = () => {
 
   return (
     <>
-      <MyProfileRouteTabs />
+      <div className="space-y-4">
+        <MyProfileHeader member={profile.member} />
+
+        <MyProfileRouteTabs />
+      </div>
 
       <ManagementPage
         title={currentPage.title}
