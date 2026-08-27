@@ -17,6 +17,10 @@ export const useUpdateAvatar = () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.myProfile.all(tenantId),
       });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.auth.me,
+      });
     },
   });
 };
