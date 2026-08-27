@@ -14,11 +14,11 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "avnadmin",
-    "password": "AVNS_TwTcD7vXFFmGAedSQCH",
-    "database": "defaultdb",
-    "host": "mysql-3d0ec3d5-mdrezowanmiya6-5d54.j.aivencloud.com",
-    "port": 11302,
+    "username": "root",
+    "password": "YVvVlCpxIKbdYwYEoQavZLWXCYmddJbm",
+    "database": "railway",
+    "host": "mysql.railway.internal",
+    "port": 3306,
     "dialect": "mysql",
     "dialectOptions": {
       "ssl": {
