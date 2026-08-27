@@ -20,7 +20,6 @@ ENV VITE_API_URL=${VITE_API_URL}
 ARG VITE_SOCKET_URL
 ENV VITE_SOCKET_URL=${VITE_SOCKET_URL}
 
-
 # Build client
 RUN npm run build
 
@@ -63,21 +62,28 @@ RUN npm ci \
     --no-fund \
  && npm cache clean --force
 
+# মাইগ্রেশন এবং সিড রান করার জন্য প্রোডাকশনে গ্লোবালি tsx এবং sequelize-cli ইনস্টল করা হলো
+RUN npm install -g tsx sequelize-cli
+
 # Copy compiled server
 COPY --from=server-build /app/dist ./dist
 
 # Copy built React app
 COPY --from=client-build /app/client/dist ./public
 
+# Copy src folder for migrations and seeders configuration access
+COPY server/src ./src
+
+# Create uploads folder
+RUN mkdir -p /app/uploads
+
 # Give ownership to non-root user
 RUN chown -R node:node /app
-
-RUN mkdir -p /app/uploads \
- && chown -R node:node /app
 
 # Run as non-root
 USER node
 
 EXPOSE 5001
 
-CMD ["node", "dist/server.js"]
+# 1. Run migrations, 2. Run seeders, 3. Start the production server
+CMD sequelize-cli db:migrate && tsx src/database/seeder.ts && node dist/server.js
