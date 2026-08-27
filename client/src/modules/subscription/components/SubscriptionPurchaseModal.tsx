@@ -1,7 +1,6 @@
-import { useCreateSubscription } from "../hooks/useCreateSubscription";
 import { Button } from "@/shared/components/ui/Button";
 import { Modal } from "@/shared/components/ui/Modal";
-import { useState } from "react";
+import { useCreateSubscription } from "../hooks/useCreateSubscription";
 
 interface Props {
   isOpen: boolean;
@@ -16,16 +15,12 @@ export const SubscriptionPurchaseModal = ({
 }: Props) => {
   const createMutation = useCreateSubscription();
 
-  const [selectedPlanId, setSelectedPlanId] = useState<number | undefined>(
-    planId,
-  );
-
   const handleSubmit = () => {
-    if (!selectedPlanId) return;
+    if (!planId) return;
 
     createMutation.mutate(
       {
-        planId: selectedPlanId,
+        planId,
       },
       {
         onSuccess: () => {
@@ -36,11 +31,7 @@ export const SubscriptionPurchaseModal = ({
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Choose Subscription Plan"
-    >
+    <Modal isOpen={isOpen} onClose={onClose} title="Choose Subscription Plan">
       <div className="space-y-4">
         <p className="text-sm opacity-70">
           Select a plan to start your subscription.
@@ -57,7 +48,7 @@ export const SubscriptionPurchaseModal = ({
             onClick={handleSubmit}
             loading={createMutation.isPending}
             loadingText="Creating..."
-            disabled={!selectedPlanId}
+            disabled={!planId}
           >
             Continue
           </Button>

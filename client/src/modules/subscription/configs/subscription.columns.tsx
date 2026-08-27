@@ -5,7 +5,6 @@ import { SubscriptionStatusBadge } from "../components/SubscriptionStatusBadge";
 import type { ISubscription } from "../types/subscription.types";
 
 export const useSubscriptionColumns = (
-  onView: (subscription: ISubscription) => void,
 ): TableColumn<ISubscription>[] => {
   return [
     {
@@ -45,7 +44,7 @@ export const useSubscriptionColumns = (
       title: "Actions",
       className: "w-24",
       render: (subscription) => (
-        <SubscriptionRowActions subscription={subscription} onView={onView} />
+        <SubscriptionRowActions subscription={subscription} />
       ),
     },
   ];

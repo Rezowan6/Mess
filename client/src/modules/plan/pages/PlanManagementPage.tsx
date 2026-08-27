@@ -1,5 +1,4 @@
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
-import { BackButton } from "@/shared/components/ui/BackButton";
 import { Button } from "@/shared/components/ui/Button";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useState } from "react";

@@ -9,7 +9,7 @@ const router = Router();
 
 router.post("/", ...adminAndManagerAccess, controller.create);
 
-router.get("/", ...allAccess, controller.getAll);
+router.get("/", controller.getAll);
 
 router.get("/active", ...allAccess, controller.getActivePlans);
 

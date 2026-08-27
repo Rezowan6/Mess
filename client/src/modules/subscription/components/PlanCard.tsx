@@ -9,6 +9,7 @@ import type { ApiResponse } from "@/shared/types/api.types";
 import { useNavigate } from "react-router-dom";
 import { useCreateSubscription } from "../hooks/useCreateSubscription";
 import type { ISubscription } from "../types/subscription.types";
+import { isPopularPlan } from "@/modules/plan/utils/plan.utils";
 
 interface Props {
   plan: IPlan;
@@ -55,10 +56,12 @@ export const PlanCard = ({ plan }: Props) => {
     );
   };
 
+  const isPopular = isPopularPlan(plan);
+
   return (
     <div
       className={`relative rounded-2xl border bg-background p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl ${
-        plan.name === "Standard" ? "border-info shadow-lg" : "border-accent"
+        isPopular ? "border-info shadow-lg" : "border-accent"
       }`}
     >
       <div className="space-y-3">
@@ -66,7 +69,7 @@ export const PlanCard = ({ plan }: Props) => {
 
         <PricingCardAction
           label="Choose Plan"
-          isPopular={plan.name === "Standard"}
+          isPopular={isPopular}
 
           onClick={handleChoosePlan}
           loading={createSubscription.isPending || createPayment.isPending}

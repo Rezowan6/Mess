@@ -24,5 +24,5 @@ export interface IPlan {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
-  features?: IPlanFeature[];
+  features: IPlanFeature[];
 }

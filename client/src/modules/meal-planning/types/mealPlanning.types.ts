@@ -16,7 +16,7 @@ export interface IMealPlanningSummary {
   breakfast: number;
   lunch: number;
   dinner: number;
-  guest: number;
+  guestMeal: number;
   totalMeals: number;
 }
 

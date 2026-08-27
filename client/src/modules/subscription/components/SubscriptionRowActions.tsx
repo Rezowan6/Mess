@@ -10,10 +10,9 @@ import type { ISubscription } from "../types/subscription.types";
 
 interface Props {
   subscription: ISubscription;
-  onView: (subscription: ISubscription) => void;
 }
 
-export const SubscriptionRowActions = ({ subscription, onView }: Props) => {
+export const SubscriptionRowActions = ({ subscription }: Props) => {
   const navigate = useNavigate();
   const openConfirm = useConfirmStore((state) => state.openConfirm);
 

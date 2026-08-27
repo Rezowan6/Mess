@@ -17,6 +17,7 @@ export const PricingCardAction = ({
 }: Props) => {
   return (
     <Button
+      type="button"
       className="w-full"
       variant={isPopular ? "warning" : "outline"}
       onClick={onClick}

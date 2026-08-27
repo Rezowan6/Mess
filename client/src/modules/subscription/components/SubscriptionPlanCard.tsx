@@ -22,7 +22,7 @@ export const SubscriptionPlanCard = ({
           : "border-base-300 hover:border-info/50"
       }`}
     >
-      {plan.isPopular && (
+      {plan.name === "Standard" && (
         <div className="absolute right-4 top-4">
           <span className="badge badge-info">Popular</span>
         </div>
@@ -44,12 +44,12 @@ export const SubscriptionPlanCard = ({
         <p className="mt-3 text-sm opacity-70">{plan.description}</p>
       )}
 
-      {plan.features?.length > 0 && (
+      {plan?.features?.length! > 0 && (
         <ul className="mt-5 space-y-2">
-          {plan.features.map((feature, index) => (
+          {plan.features?.map((feature, index) => (
             <li key={index} className="flex items-center gap-2 text-sm">
               <Check size={16} className="text-success" />
-              {feature}
+              {feature.name}
             </li>
           ))}
         </ul>

@@ -51,7 +51,6 @@ export function ToggleCounter({
           <Button
             type="button"
             variant="error"
-            size="sm"
             onClick={handleDecrement}
             disabled={value <= min}
             className="w-1"
@@ -62,7 +61,6 @@ export function ToggleCounter({
           <Button
             type="button"
             variant="accent"
-            size="sm"
             onClick={handleIncrement}
             disabled={value >= max}
             className="w-1"
