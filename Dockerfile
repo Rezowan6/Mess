@@ -84,6 +84,5 @@ RUN chown -R node:node /app
 USER node
 
 EXPOSE 5001
-
-# 1. Run migrations, 2. Run seeders, 3. Start the production server
-CMD sequelize-cli db:migrate && tsx src/database/seeder.ts && node dist/server.js
+# 1. config.json এর পাথ নির্দিষ্ট করে মাইগ্রেশন, 2. সিড, 3. সার্ভার স্টার্ট
+CMD npx sequelize-cli db:migrate --config src/database/config/config.json && npx tsx src/database/seeder.ts && node dist/server.js
