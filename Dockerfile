@@ -62,9 +62,6 @@ RUN npm ci \
     --no-fund \
  && npm cache clean --force
 
-# মাইগ্রেশন এবং সিড রান করার জন্য প্রোডাকশনে গ্লোবালি tsx এবং sequelize-cli ইনস্টল করা হলো
-RUN npm install -g tsx sequelize-cli
-
 # Copy compiled server
 COPY --from=server-build /app/dist ./dist
 
@@ -73,6 +70,9 @@ COPY --from=client-build /app/client/dist ./public
 
 # Copy src folder for migrations and seeders configuration access
 COPY server/src ./src
+
+# [ অত্যন্ত গুরুত্বপূর্ণ লাইন] কন্টেইনারের ভেতর থেকে ঝামেলার .sequelizerc ফাইলটি থাকলে তা ডিলেট করে দেওয়া হলো
+RUN rm -f .sequelizerc server/.sequelizerc
 
 # Create uploads folder
 RUN mkdir -p /app/uploads
@@ -85,5 +85,5 @@ USER node
 
 EXPOSE 5001
 
-# .sequelizerc এর পাথ ধরে সরাসরি Railway variables দিয়ে মাইগ্রেশন ও সিড রান
-CMD npx sequelize-cli db:migrate --url "mysql://$DB_USER:$DB_PASS@$DB_HOST:$DB_PORT/$DB_NAME" && npx tsx src/database/seeder.ts && node dist/server.js
+# একদম ডিরেক্ট পাথ এবং ইউআরএল দিয়ে রান করা হলো, এবার Sequelize বাধ্য হয়ে এটি শুনবে
+CMD npx sequelize-cli db:migrate --url "mysql://$DB_USER:$DB_PASS@$DB_HOST:$DB_PORT/$DB_NAME" --migrations-path src/database/migrations && npx tsx src/database/seeder.ts && node dist/server.js
