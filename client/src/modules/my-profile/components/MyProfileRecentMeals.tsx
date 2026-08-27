@@ -9,6 +9,7 @@ interface Meal {
 interface Props {
   meals: Meal[];
 }
+// not used
 
 export const MyProfileRecentMeals = ({ meals }: Props) => {
   return (

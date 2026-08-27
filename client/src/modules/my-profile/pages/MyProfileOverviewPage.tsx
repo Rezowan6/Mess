@@ -1,11 +1,9 @@
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { MonthlyMealSummaryCard } from "../components/MonthlyMealSummaryCard";
 import { MyProfileFinancialSummary } from "../components/MyProfileFinancialSummary";
-import { MyProfileHeader } from "../components/MyProfileHeader";
 import { MyProfileInfoCardsSkeleton } from "../components/MyProfileInfoCardsSkeleton";
 import { MyProfileMealBreakdown } from "../components/MyProfileMealBreakdown";
 import { MyProfileRecentDeposits } from "../components/MyProfileRecentDeposits";
-import { MyProfileRecentMeals } from "../components/MyProfileRecentMeals";
 import { MY_PROFILE_MESSAGES } from "../configs/myProfile.messages";
 import { useMyProfile } from "../hooks/useMyProfile";
 
@@ -26,8 +24,6 @@ export const MyProfileOverviewPage = () => {
 
   return (
     <div className="space-y-6">
-      <MyProfileHeader member={profile.member} />
-
       <MyProfileFinancialSummary summary={profile.summary} />
 
       <MonthlyMealSummaryCard summary={profile.mealSummary} />
@@ -37,8 +33,6 @@ export const MyProfileOverviewPage = () => {
 
         <MyProfileRecentDeposits deposits={profile.deposits} />
       </div>
-
-      <MyProfileRecentMeals meals={profile.meals} />
     </div>
   );
 };
