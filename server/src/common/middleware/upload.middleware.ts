@@ -1,8 +1,8 @@
+import fs from "fs";
 import multer from "multer";
 import path from "path";
-import fs from "fs";
 
-const uploadPath = path.join(process.cwd(), "uploads/avatars");
+const uploadPath = path.join(process.cwd(), "uploads", "avatars");
 
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
@@ -14,12 +14,9 @@ const storage = multer.diskStorage({
   },
 
   filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname);
+    const ext = path.extname(file.originalname).toLowerCase();
 
-    cb(
-      null,
-      `avatar-${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`,
-    );
+    cb(null, `avatar-${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`);
   },
 });
 
@@ -32,13 +29,9 @@ export const uploadAvatar = multer({
   },
 
   fileFilter: (_req, file, cb) => {
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-    ];
+    const allowedMimeTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 
-    if (!allowedTypes.includes(file.mimetype)) {
+    if (!allowedMimeTypes.has(file.mimetype)) {
       return cb(new Error("Only JPG, PNG and WEBP images are allowed"));
     }
 

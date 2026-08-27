@@ -7,14 +7,7 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   async updateAvatar(userId: number, avatar: string) {
-    return this.update(
-      { avatar },
-      {
-        where: {
-          id: userId,
-        },
-      },
-    );
+    return this.update({ id: userId }, { avatar });
   }
 }
 

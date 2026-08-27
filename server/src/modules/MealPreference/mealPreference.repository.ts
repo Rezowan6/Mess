@@ -36,7 +36,7 @@ class MealPreferencRepository extends BaseRepository<MealPreference> {
       include: [
         {
           association: "user",
-          attributes: ["id", "name"],
+          attributes: ["id", "name", "avatar", "email"],
           required: true,
         },
       ],

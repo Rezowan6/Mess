@@ -1,20 +1,25 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
-import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
-import { userManagementApi } from "../api/userManagement.api";
 
-export const useUpdateRole = () => {
+import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
+import { myProfileApi } from "../api/myProfile.api";
+
+export const useUpdateAvatar = () => {
   const queryClient = useQueryClient();
+
   const tenantId = useCurrentTenantId();
 
   return useMutation({
-    mutationFn: ({ id, role }: { id: number; role: string }) =>
-      userManagementApi.updateRole(id, role),
+    mutationFn: (file: File) => myProfileApi.updateAvatar(file),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.tenants.members(tenantId),
+        queryKey: queryKeys.myProfile.all(tenantId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.auth.me,
       });
     },
   });

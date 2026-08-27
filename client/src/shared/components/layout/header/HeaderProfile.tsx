@@ -51,7 +51,7 @@ export const HeaderProfile = () => {
         className="flex items-center justify-center gap-3 px-2 cursor-pointer border border-success py-1 rounded-md"
       >
         {/* member avatar */}
-        <Avatar fallback={getAvatarInitial(user?.name ?? "")} />
+        <Avatar src={user?.avatar} alt={user?.name} fallback={getAvatarInitial(user?.name ?? "")} />
 
         <div className="hidden text-left md:block">
           <p className="text-sm font-semibold">{user?.name}</p>

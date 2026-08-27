@@ -20,6 +20,9 @@ class UserService {
       status: user.status,
     };
   }
+  async getUserById(userId: number) {
+    return userRepository.findById(userId);
+  }
 
   async updateAvatar(userId: number, avatar: string) {
     return userRepository.updateAvatar(userId, avatar);

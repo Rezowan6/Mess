@@ -9,7 +9,7 @@ export const mealPlanningColumns: TableColumn<IMealPlanningMember>[] = [
     key: "member",
     title: "Member",
     render: (row) => {
-      return <MemberAvatar name={row?.memberName} />;
+      return <MemberAvatar avatar={row.avatar} name={row?.memberName} />;
     },
   },
 

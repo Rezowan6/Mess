@@ -17,6 +17,7 @@ export interface IUser {
   id: number;
   name: string;
   email: string;
+  avatar: string;
 }
 
 export interface IAuthUser extends IUser {

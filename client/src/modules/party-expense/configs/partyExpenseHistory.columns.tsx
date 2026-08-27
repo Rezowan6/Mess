@@ -1,5 +1,4 @@
-import { Avatar } from "@/shared/components/ui/Avatar";
-import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
+import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
 import type { IPartyExpense } from "../types/partyExpense.types";
 
 export const partyExpenseHistoryColumns = () => {
@@ -8,11 +7,7 @@ export const partyExpenseHistoryColumns = () => {
       key: "member",
       title: "Member",
       render: (item: IPartyExpense["members"][number]) => (
-        <div className="flex items-center gap-3">
-          <Avatar size="sm" fallback={getAvatarInitial(item.member.name)} />
-
-          <span className="font-medium">{item.member.name}</span>
-        </div>
+        <MemberAvatar avatar={item.member.avatar} name={item.member.name} />
       ),
     },
     {

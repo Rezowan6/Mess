@@ -2,6 +2,7 @@ export interface IMealPlanningMember {
   userId: number;
   memberName: string;
   meal: number;
+  avatar?: string | null;
 }
 
 export interface IMealPlanningSummary {
@@ -20,6 +21,8 @@ export interface IMealPlanningResponse {
   lunch: IMealPlanningMember[];
 
   dinner: IMealPlanningMember[];
+
+  guestMeal: IMealPlanningMember[];
 }
 
 export interface IMealPlanningEntry {
@@ -32,10 +35,12 @@ export interface IMealPlanningEntry {
   dinner: number;
 
   guestMeal: number;
+  
 
   user: {
     id: number;
     name: string;
+    avatar: string | null;
   };
 }
 
