@@ -8,7 +8,7 @@
     "build": "tsc && tsc-alias",
     "start": "cross-env NODE_ENV=production node dist/server.js",
     "migrate": "sequelize-cli db:migrate",
-    "seed": "tsx dist/database/seeder.ts"
+    "seed": "node dist/database/seeder.ts"
   },
   "keywords": [],
   "author": "",
