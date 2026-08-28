@@ -18,7 +18,7 @@ export const RoleGuard = ({ allowedRoles }: Props) => {
     (item) => item.tenantId === currentTenant?.tenantId,
   );
 
-  const role = membership?.role;
+  const role = user?.role === "systemOwner" ? user.role : membership?.role;
 
   if (!role || !allowedRoles.includes(role)) {
     return <Navigate to="/403" replace />;

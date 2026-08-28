@@ -9,7 +9,7 @@ export async function seedSystemOwner() {
   });
 
   if (existingUser) {
-    console.log("ℹ️ System owner already exists");
+    console.log(" System owner already exists");
     return;
   }
 
@@ -19,6 +19,7 @@ export async function seedSystemOwner() {
     name: "System Owner",
     email,
     password,
+    role:"systemOwner",
     status: MemberStatus.ACTIVE,
     isVerified: true,
   });

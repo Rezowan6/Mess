@@ -18,6 +18,7 @@ export interface IUser {
   name: string;
   email: string;
   avatar: string;
+  role: string;
 }
 
 export interface IAuthUser extends IUser {
