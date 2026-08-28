@@ -4,6 +4,7 @@ import { seedPlans } from "./seeders/001-plan.seed.js";
 import { seedFeatures } from "./seeders/002-feature.seed.js";
 import { seedPlanFeatures } from "./seeders/003-planFeature.seed.js";
 import { seedSystemOwner } from "./seeders/004-systemOwner.seed.js";
+import { seedSystemOwnerRole } from "./seeders/005-systemOwnerRole.seed.js";
 
 async function runSeeder() {
   try {
@@ -16,6 +17,8 @@ async function runSeeder() {
     await seedPlanFeatures();
 
     await seedSystemOwner();
+
+    await seedSystemOwnerRole()
 
     console.log("Seeder completed");
 
