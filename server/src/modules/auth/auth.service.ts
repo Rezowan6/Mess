@@ -1,4 +1,4 @@
-import { env } from "@/configs/index.js";
+import { env, sequelize } from "@/configs/index.js";
 import { RefreshToken, User } from "@/models/index.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { comparePassword } from "@/utils/bcrypt.js";
@@ -26,34 +26,46 @@ import { authRepository } from "./auth.repository.js";
 
 class AuthService {
   register = async (payload: IRegisterPayload) => {
-    const exists = await authRepository.findOne({ email: payload.email });
+    const transaction = await sequelize.transaction();
 
-    if (exists) {
-      throw new ApiError(409, "User already exists");
+    try {
+      const exists = await authRepository.findOne({ email: payload.email });
+
+      if (exists) {
+        throw new ApiError(409, "User already exists");
+      }
+
+      const user = await userService.create(
+        {
+          ...payload,
+        },
+        transaction,
+      );
+
+      const token = emailVerifyToken({
+        userId: user.id,
+        email: user.email,
+      });
+
+      const verifyLink = `${env.FRONTEND_URL}/verify-email/${token}`;
+
+      await sendVerificationEmail(user.email, verifyLink);
+
+      await transaction.commit();
+
+      const saveUser = {
+        id: user.id,
+        name: user.name ?? null,
+        email: user.email,
+        isVerified: user.isVerified,
+        status: user.status,
+      };
+
+      return saveUser;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
     }
-
-    const user = await userService.create({
-      ...payload,
-    });
-
-    // OUTSIDE TRANSACTION (IMPORTANT)
-    const token = emailVerifyToken({
-      userId: user?.id,
-      email: user?.email,
-    });
-    const verifyLink = `${env.FRONTEND_URL}/verify-email/${token}`;
-
-    await sendVerificationEmail(user?.email, verifyLink);
-
-    const saveUser = {
-      id: user.id,
-      name: user.name ?? null,
-      email: user.email,
-      isVerified: user.isVerified,
-      status: user.status,
-    };
-
-    return saveUser;
   };
 
   verify = async (token: any) => {

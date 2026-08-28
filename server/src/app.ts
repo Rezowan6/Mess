@@ -36,6 +36,7 @@ import {
   tenantMembershipRouter,
   tenantRoute,
 } from "@/routes/index.js";
+import { deleteUnverifiedUsersJob } from "./jobs/users/deleteUnverifiedUsers.job.js";
 
 const app: Application = express();
 
@@ -127,6 +128,9 @@ if (fs.existsSync(publicDir)) {
     });
   });
 }
+
+// deleteUnverifiedUsersJob
+deleteUnverifiedUsersJob();
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {
