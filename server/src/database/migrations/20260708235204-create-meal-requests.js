@@ -4,6 +4,7 @@ import { DataTypes } from "sequelize";
 // npx sequelize-cli db:migrate
 // npx sequelize-cli migration:generate --name create-meal-sessions
 // npx sequelize-cli db:migrate --to <migration-file-name>.js
+// npx sequelize-cli seed:generate --name seed-system-owner
 
 /** @type {import('sequelize-cli').Migration} */
 export default {

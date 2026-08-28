@@ -1,22 +1,22 @@
 import { Router } from "express";
 
-import { adminAndManagerAccess } from "@/helpers/permission.js";
+import { systemWonerAccess } from "@/helpers/permission.js";
 import { FeatureController } from "./feature.controller.js";
 
 const controller = new FeatureController();
 
 const router = Router();
 
-router.post("/", ...adminAndManagerAccess, controller.create);
+router.post("/", ...systemWonerAccess, controller.create);
 
 router.get("/", controller.getAll);
 
-router.get("/active", ...adminAndManagerAccess, controller.getActiveFeatures);
+router.get("/active", ...systemWonerAccess, controller.getActiveFeatures);
 
-router.get("/:id", ...adminAndManagerAccess, controller.getById);
+router.get("/:id", ...systemWonerAccess, controller.getById);
 
-router.patch("/:id", ...adminAndManagerAccess, controller.update);
+router.patch("/:id", ...systemWonerAccess, controller.update);
 
-router.delete("/:id", ...adminAndManagerAccess, controller.delete);
+router.delete("/:id", ...systemWonerAccess, controller.delete);
 
 export default router;

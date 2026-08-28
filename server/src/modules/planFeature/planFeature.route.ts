@@ -1,22 +1,23 @@
 import { Router } from "express";
 
-import { adminAccess, adminAndManagerAccess } from "@/helpers/permission.js";
+import { systemOwner } from "@/middlewares/systemOwner.middleware.js";
 import { PlanFeatureController } from "./planFeature.controller.js";
+import { systemWonerAccess } from "@/helpers/permission.js";
 
 const controller = new PlanFeatureController();
 
 const router = Router();
 
-router.post("/", ...adminAndManagerAccess, controller.create);
+router.post("/", ...systemWonerAccess, controller.create);
 
 router.get("/", controller.getAll);
 
-router.get("/plan/:planId", ...adminAndManagerAccess, controller.getByPlanId);
+router.get("/plan/:planId", ...systemWonerAccess, controller.getByPlanId);
 
-router.get("/:id", ...adminAndManagerAccess, controller.getById);
+router.get("/:id", ...systemWonerAccess, controller.getById);
 
-router.patch("/:id", ...adminAndManagerAccess, controller.update);
+router.patch("/:id", ...systemWonerAccess, controller.update);
 
-router.delete("/:id", ...adminAndManagerAccess, controller.delete);
+router.delete("/:id", ...systemWonerAccess, controller.delete);
 
 export default router;

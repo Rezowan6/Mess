@@ -11,6 +11,10 @@ export async function seedFeatures() {
       name: "Advanced Report",
       slug: "advanced_report",
     },
+    {
+      name: "Expense Management",
+      slug: "expense_management",
+    },
 
     {
       name: "Export Report",

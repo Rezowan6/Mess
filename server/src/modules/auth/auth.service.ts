@@ -128,7 +128,7 @@ class AuthService {
     const user = await authRepository.findOne({ email });
 
     if (!user) {
-      throw new ApiError(401, "Invalid credentials");
+      throw new ApiError(403, "Invalid credentials");
     }
 
     if (!user.isVerified) {

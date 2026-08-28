@@ -4,6 +4,7 @@ interface User {
   id: number;
   name: string | null | undefined;
   email: string;
+  role: string;
 }
 
 declare global {

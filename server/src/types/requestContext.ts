@@ -6,6 +6,7 @@ export interface RequestContext {
     id: number;
     email: string;
     name?: string | null | undefined;
+    role: string;
   };
 
   membership: {

@@ -8,6 +8,9 @@ import {
   Model,
 } from "sequelize";
 import { USER_STATUS, UserStatus } from "./user.interface.js";
+import { MemberShipRole } from "@/middlewares/role.middleware.js";
+import { MemberRole } from "@/constans/index.js";
+import { MEMBER_SHIP_ROLE } from "../tenantMembership/tenantMembership.interface.js";
 
 export class User extends Model<
   InferAttributes<
@@ -31,6 +34,8 @@ export class User extends Model<
   declare status: CreationOptional<UserStatus>;
 
   declare isVerified: CreationOptional<boolean>;
+
+  declare role: CreationOptional<MemberShipRole>;
 
   declare lastLoginAt: CreationOptional<Date | null>;
 
@@ -83,6 +88,11 @@ User.init(
     lastLoginAt: {
       type: DataTypes.DATE,
       allowNull: true,
+    },
+    role: {
+      type: DataTypes.ENUM(...MEMBER_SHIP_ROLE),
+      allowNull: false,
+      defaultValue: "member",
     },
   },
   {

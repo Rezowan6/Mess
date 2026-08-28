@@ -1,13 +1,13 @@
 import { MemberRole } from "@/constans/index.js";
 import { access } from "@/middlewares/access.middleware.js";
+import { auth } from "@/middlewares/auth.middleware.js";
+import { systemOwner } from "@/middlewares/systemOwner.middleware.js";
 
 type MemberRoleType = (typeof MemberRole)[keyof typeof MemberRole];
 
 export const allMemberRole = Object.values(MemberRole) as MemberRoleType[];
 
-export const systemOwnerAccess = access({
-  roles: [MemberRole.SYSTEM_OWNER],
-});
+export const systemWonerAccess = [auth, systemOwner]
 
 export const adminAccess = access({
   roles: [MemberRole.ADMIN],

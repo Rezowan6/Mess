@@ -7,7 +7,7 @@ export async function seedPlanFeatures() {
 
   const premium = plans.find((plan) => plan.slug === "premium");
 
-  const basic = plans.find((plan) => plan.slug === "basic");
+  const Standard = plans.find((plan) => plan.slug === "Standard");
 
   const free = plans.find((plan) => plan.slug === "free");
 
@@ -27,7 +27,7 @@ export async function seedPlanFeatures() {
 
   if (
     !premium ||
-    !basic ||
+    !Standard ||
     !free ||
     !dashboard ||
     !advancedReport ||
@@ -49,13 +49,13 @@ export async function seedPlanFeatures() {
 
     // Basic
     {
-      planId: basic.id,
+      planId: Standard.id,
       featureId: dashboard.id,
       value: "true",
     },
 
     {
-      planId: basic.id,
+      planId: Standard.id,
       featureId: advancedReport.id,
       value: "true",
     },

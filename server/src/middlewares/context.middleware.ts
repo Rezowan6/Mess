@@ -59,13 +59,14 @@ export const contextMiddleware = (options: ContextMiddlewareOptions = {}) => {
       }
     }
 
-    const { id, name, email } = req.user;
+    const { id, name, email, role } = req.user;
 
     req.context = {
       user: {
         id,
         name,
         email,
+        role,
       },
       membership,
       tenant: membership.tenant,
