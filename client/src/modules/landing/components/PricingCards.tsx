@@ -2,9 +2,9 @@ import { usePlans } from "@/modules/plan/hooks/usePlans";
 import { PricingCard } from "./PricingCard";
 
 export const PricingCards = () => {
-  const { data, isLoading } = usePlans();
+  const { data, isPending } = usePlans();
 
-  if (isLoading) {
+  if (isPending) {
     return <div>Loading...</div>;
   }
 
