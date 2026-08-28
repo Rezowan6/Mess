@@ -7,7 +7,7 @@ import { PlanManagementPage } from "../pages/PlanManagementPage";
 
 export const planRoutes = {
   path: ROUTES.PLANS,
-  element: <RoleGuard allowedRoles={[ROLES.ADMIN]} />,
+  element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.SYSTEM_OWNER]} />,
   children: [
     {
       element: <PlanManagementPage />,

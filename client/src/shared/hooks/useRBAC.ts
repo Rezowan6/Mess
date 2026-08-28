@@ -5,6 +5,7 @@ import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 
 import type { Permission } from "../constants/permissions";
 import { ROLE_PERMISSIONS } from "../constants/rolePermissions";
+import { ROLES } from "../constants/roles";
 
 export const useRBAC = () => {
   const user = useAuthStore((state) => state.user);
@@ -12,6 +13,9 @@ export const useRBAC = () => {
   const currentTenant = useTenantStore((state) => state.currentTenant);
 
   const role = useMemo(() => {
+    if (user?.role === ROLES.SYSTEM_OWNER) {
+      return ROLES.SYSTEM_OWNER;
+    }
     const membership = user?.tenantMemberships?.find(
       (item) => item.tenantId === currentTenant?.tenantId,
     );

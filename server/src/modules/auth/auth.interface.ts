@@ -4,6 +4,7 @@ export interface IRegisterPayload {
   name: string;
   email: string;
   password: string;
+  role?: string;
 }
 
 export interface LoginPayload {
@@ -21,6 +22,7 @@ export interface RegisterResponse {
     email: string;
     isVerified: boolean;
     status: UserStatus;
+    role?: string;
   };
 }
 
@@ -32,6 +34,7 @@ export interface LoginResponse {
       id: number;
       name: string | null;
       email: string;
+      role?: string;
     };
   };
 }

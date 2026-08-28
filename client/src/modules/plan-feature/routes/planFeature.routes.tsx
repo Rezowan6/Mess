@@ -6,7 +6,7 @@ import { PlanFeaturePage } from "../pages/PlanFeaturePage";
 export const planFeatureRoutes = {
   path: ROUTES.PLAN_FEATURE,
 
-  element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+  element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.SYSTEM_OWNER]} />,
 
   children: [
     {

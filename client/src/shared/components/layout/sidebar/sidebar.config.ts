@@ -34,20 +34,20 @@ export const sidebarItems: ISidebarItem[] = [
     title: "Plans",
     path: ROUTES.PLANS,
     icon: Crown,
-    permission: PERMISSIONS.PLANS_CREATE,
+    // permission: PERMISSIONS.PLAN_VIEW,
   },
 
   {
     title: "Features",
     path: ROUTES.FEATURE,
     icon: Puzzle,
-    permission: PERMISSIONS.FEATURE_CREATE,
+    // permission: PERMISSIONS.FEATURE_VIEW,
   },
   {
     title: "Plan Features",
     path: ROUTES.PLAN_FEATURE,
     icon: SlidersHorizontal,
-    permission: PERMISSIONS.PLAN_FEATURE_CREATE,
+    // permission: PERMISSIONS.PLAN_FEATURE_VIEW,
   },
 
   {

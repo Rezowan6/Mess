@@ -8,7 +8,7 @@ class AuthRepository extends UserRepository {
 
   async getMeById(userId: number) {
     return await this.findByIdWithOptions(userId, {
-      attributes: ["id", "name", "email", "avatar"],
+      attributes: ["id", "name", "email", "avatar", "role"],
       include: [
         {
           model: TenantMembership,

@@ -6,7 +6,7 @@ import { FeaturePage } from "../pages/FeaturePage";
 export const featureRoutes = {
   path: ROUTES.FEATURE,
 
-  element: <RoleGuard allowedRoles={[ROLES.ADMIN]} />,
+  element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.SYSTEM_OWNER]} />,
 
   children: [
     {
