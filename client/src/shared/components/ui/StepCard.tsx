@@ -10,7 +10,7 @@ interface Props {
 
 export const StepCard = ({ stepNumber, icon, title, description }: Props) => {
   return (
-    <div className="relative rounded-2xl border border-base-300 bg-info/10 p-6 text-center shadow-2xl shadow-green-900/50">
+    <div className="relative rounded-2xl bg-info/10 p-6 text-center shadow-xl shadow-success/30">
       {stepNumber && (
         <Badge
           variant="success"

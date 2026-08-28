@@ -8,7 +8,7 @@ export const PricingSection = () => {
       id="pricing"
       title="Simple & Transparent Pricing"
       description="Choose the perfect plan for your mess. Upgrade anytime as your community grows."
-      className="bg-info/5"
+      className="bg-info/10"
     >
       <PricingCards />
     </Section>

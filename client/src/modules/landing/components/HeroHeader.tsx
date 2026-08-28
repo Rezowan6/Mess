@@ -7,12 +7,12 @@ export const HeroHeader = () => {
     <>
       <Badge variant="success">{heroConfig.badge}</Badge>
 
-      <h1 className="text-4xl font-bold leading-tight">
+      <h1 className="text-3xl sm:text-4xl font-bold leading-tight">
         {heroConfig.title}
 
         <TypingText
           texts={heroConfig.highlightedTitles}
-          className="block text-4xl font-bold"
+          className="block text-2xl sm:text-4xl font-bold"
           textClassName="text-accent"
           backDelay={1000}
           smartBackspace={false}

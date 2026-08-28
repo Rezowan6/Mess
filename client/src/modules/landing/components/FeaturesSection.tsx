@@ -6,11 +6,10 @@ export const FeaturesSection = () => {
   return (
     <Section
       id="features"
-      className="bg-success/10"
       title="Everything You Need to Manage Your Mess"
       description="A complete solution to manage meals, members, expenses, and monthly calculations in one place."
     >
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="p-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 bg-linear-to-br from-success/10 via-background to-info/10">
         {features.map((feature) => {
           const Icon = feature.icon;
 

@@ -9,7 +9,7 @@ export const LandingNavbar = () => {
     <header className="sticky top-0 z-50 border-b border-base-300 bg-base-100/80 backdrop-blur">
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         {/* Logo */}
-        <a href="#home" className="text-xl font-bold text-primary">
+        <a href="#home" className="text-xl font-bold text-accent">
           Mess Management
         </a>
 

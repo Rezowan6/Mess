@@ -17,7 +17,7 @@ export const Footer = () => {
           <FooterSocialLinks />
         </div>
 
-        <div className="mt-8 border-t border-base-300 pt-6 text-center text-sm text-base-content/60">
+        <div className="mt-8 border-t border-success pt-6 text-center text-sm text-base-content/60">
           © {new Date().getFullYear()} Mess Management System. All rights
           reserved.
         </div>

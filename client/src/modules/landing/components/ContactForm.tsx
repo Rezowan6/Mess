@@ -5,7 +5,7 @@ import { Send } from "lucide-react";
 
 export const ContactForm = () => {
   return (
-    <div className="rounded-2xl border border-base-300 bg-background p-6 shadow-sm">
+    <div className="rounded-2xl bg-info/10 p-6 shadow-sm">
       <div className="space-y-4">
         <Input type="text" placeholder="Your Name" />
 
