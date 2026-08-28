@@ -3,6 +3,7 @@ import sequelize from "@/configs/db.js";
 import { seedPlans } from "./seeders/001-plan.seed.js";
 import { seedFeatures } from "./seeders/002-feature.seed.js";
 import { seedPlanFeatures } from "./seeders/003-planFeature.seed.js";
+import { seedSystemOwner } from "./seeders/004-systemOwner.seed.js";
 
 async function runSeeder() {
   try {
@@ -13,6 +14,8 @@ async function runSeeder() {
     await seedFeatures();
 
     await seedPlanFeatures();
+
+    await seedSystemOwner();
 
     console.log("Seeder completed");
 
