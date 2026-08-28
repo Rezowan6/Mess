@@ -19,7 +19,6 @@ export async function seedSystemOwner() {
     name: "System Owner",
     email,
     password,
-    role:"systemOwner",
     status: MemberStatus.ACTIVE,
     isVerified: true,
   });
