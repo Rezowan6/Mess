@@ -69,6 +69,9 @@ COPY --from=server-build /app/dist ./dist
 # Copy built React app
 COPY --from=client-build /app/client/dist ./public
 
+COPY --from=server-build /app/src/database ./src/database
+COPY server/.sequelizerc ./
+
 # Give ownership to non-root user
 RUN chown -R node:node /app
 
