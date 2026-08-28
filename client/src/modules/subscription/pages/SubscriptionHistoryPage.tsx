@@ -12,8 +12,6 @@ export const SubscriptionHistoryPage = () => {
 
   const columns = useSubscriptionHistoryColumns();
 
-  console.log(subscriptions)
-
   return (
     <ManagementPage
       title="Subscription History"

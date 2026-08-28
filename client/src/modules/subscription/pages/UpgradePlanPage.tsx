@@ -7,8 +7,6 @@ export const UpgradePlanPage = () => {
   const { data } = usePlans();
   const plans = data?.data ?? [];
 
-  console.log(plans)
-
   return (
     <ManagementPage
       title="Upgrade Your Plan"
