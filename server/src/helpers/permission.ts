@@ -7,7 +7,7 @@ type MemberRoleType = (typeof MemberRole)[keyof typeof MemberRole];
 
 export const allMemberRole = Object.values(MemberRole) as MemberRoleType[];
 
-export const systemWonerAccess = [auth, systemOwner]
+export const systemOwnerAccess = [auth, systemOwner];
 
 export const adminAccess = access({
   roles: [MemberRole.ADMIN],
