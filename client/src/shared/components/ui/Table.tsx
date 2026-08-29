@@ -99,11 +99,11 @@ export function Table<T>({
   return (
     <div
       className={clsx(
-        "overflow-x-auto rounded-md bg-accent/10 my-4",
+        "overflow-x-auto rounded-md bg-background",
         className,
       )}
     >
-      <table className="table">
+      <table className="table table-sm">
         <thead>
           <tr>
             {columns.map((column) => (

@@ -25,7 +25,6 @@ export const ToggleSwitch = ({
         onClick={() => onChange(!checked)}
         className={[
           "relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-300",
-          "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
           disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
           checked ? "bg-success" : `bg-linear-to-r from-slate-500 to-slate-700`,
         ].join(" ")}

@@ -1,4 +1,5 @@
-import { Button } from "./Button";
+import { CounterButton } from "./CounterButton";
+import { ToggleSwitch } from "./ToggleSwitch";
 
 interface ToggleCounterProps {
   label: string;
@@ -19,10 +20,6 @@ export function ToggleCounter({
 }: ToggleCounterProps) {
   const isOn = value > 0;
 
-  const handleToggle = () => {
-    onChange(isOn ? 0 : min);
-  };
-
   const handleIncrement = () => {
     if (value < max) onChange(value + 1);
   };
@@ -32,41 +29,42 @@ export function ToggleCounter({
   };
 
   return (
-    <div className="relative flex items-center justify-between gap-3 py-1">
+    <div className="relative flex items-center justify-between border-b border-info py-2">
       <span className="text-sm font-medium">{label}</span>
 
       <div className="flex items-center gap-2">
-        <Button
-          type="button"
-          variant={`${isOn ? "success" : "secondary"}`}
-          onClick={handleToggle}
-        >
-          {isOn ? "On" : "Off"}
-        </Button>
+        <ToggleSwitch
+          checked={isOn}
+          onChange={(checked) => onChange(checked ? min : 0)}
+        />
 
         {/* toggle */}
         <div
-          className={`absolute right-20 flex items-center gap-1 transition-all duration-300 ease-in-out ${isOn ? "visible translate-x-0 opacity-100" : "invisible -translate-x-2 opacity-0"}`}
+          className={`absolute right-20 flex items-center transition-all duration-300 ease-in-out ${
+            isOn
+              ? "visible translate-x-0 opacity-100"
+              : "invisible -translate-x-2 opacity-0"
+          }`}
         >
-          <Button
-            type="button"
-            variant="error"
+          <CounterButton
+            position="left"
             onClick={handleDecrement}
             disabled={value <= min}
-            className="w-1"
           >
-            -
-          </Button>
-          <span className="w-5 text-center text-sm">{value}</span>
-          <Button
-            type="button"
-            variant="accent"
+            −
+          </CounterButton>
+
+          <span className="flex h-7 min-w-8 items-center justify-center  px-2 text-sm font-medium">
+            {value}
+          </span>
+
+          <CounterButton
+            position="right"
             onClick={handleIncrement}
             disabled={value >= max}
-            className="w-1"
           >
             +
-          </Button>
+          </CounterButton>
         </div>
       </div>
 

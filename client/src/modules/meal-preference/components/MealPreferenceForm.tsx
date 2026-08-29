@@ -87,7 +87,7 @@ export const MealPreferenceForm = () => {
         </div>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="space-y-1">
+        <div className="my-4 bg-info/5 p-4 rounded-md">
           {mealFields.map((meal) => (
             <MealCounterField
               key={meal.name}

@@ -36,9 +36,7 @@ export const ManagementPage = ({
         {action && <div className="w-fit shrink-0">{action}</div>}
       </div>
 
-      <div className="card bg-info/5 shadow">
-        <div className="card-body">{children}</div>
-      </div>
+      <div>{children}</div>
     </div>
   );
 };
