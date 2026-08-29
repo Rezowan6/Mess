@@ -36,7 +36,7 @@ export const ManagementPage = ({
         {action && <div className="w-fit shrink-0">{action}</div>}
       </div>
 
-      <div>{children}</div>
+      <div className="space-y-6">{children}</div>
     </div>
   );
 };

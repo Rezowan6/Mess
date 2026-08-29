@@ -11,7 +11,6 @@ import {
 
 import type { Permission } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
-import styel from "@/styles/modules/button.module.css";
 
 type ButtonVariant =
   | "moduleBtn"
@@ -55,7 +54,11 @@ const variantClasses = {
   text-info
 `,
   moduleBtn: `
-    ${styel.btn}
+    bg-gradient-to-r 
+    from-teal-600 
+    to-green-600
+    hover:from-teal-700
+    hover:to-green-700
     `,
   primary: `
     bg-gradient-to-r 
