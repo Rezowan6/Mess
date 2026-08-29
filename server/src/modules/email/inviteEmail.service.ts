@@ -1,5 +1,5 @@
 import { env } from "@/configs/index.js";
-import { sendResendEmail } from "@/utils/sendResendEmail.js";
+import { sendEmail } from "@/utils/sendEmail.js";
 import { ISendInviteEmailPayload } from "../invite/invite.interface.js";
 
 export const sendInviteEmail = async (payload: ISendInviteEmailPayload) => {
@@ -45,5 +45,5 @@ export const sendInviteEmail = async (payload: ISendInviteEmailPayload) => {
     </div>
   `;
 
-  return await sendResendEmail(email, `You are invited to join ${name}`, html);
+  return await sendEmail(email, `You are invited to join ${name}`, html);
 };
