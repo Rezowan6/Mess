@@ -1,4 +1,4 @@
-import { sendEmail } from "@/utils/sendEmail.js";
+import { sendResendEmail } from "@/utils/sendResendEmail.js";
 
 export const sendVerificationEmail = async (
   email: string,
@@ -12,5 +12,5 @@ export const sendVerificationEmail = async (
     </div>
   `;
 
-  return await sendEmail(email, "Verify Your Email", html);
+  return await sendResendEmail(email, "Verify Your Email", html);
 };
