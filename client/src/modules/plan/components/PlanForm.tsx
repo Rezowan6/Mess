@@ -86,7 +86,7 @@ export const PlanForm = ({ plan, onSuccess }: Props) => {
         );
       })}
 
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-2 pt-4">
         <Button type="button" variant="error" onClick={onSuccess}>
           Cancel
         </Button>
