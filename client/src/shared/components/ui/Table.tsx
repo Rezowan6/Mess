@@ -99,17 +99,18 @@ export function Table<T>({
   return (
     <div
       className={clsx(
-        "overflow-x-auto rounded-xl border border-border bg-surface my-4",
+        "overflow-x-auto rounded-md bg-accent/10 my-4",
         className,
       )}
     >
-      <table className="table table-zebra">
+      <table className="table">
         <thead>
           <tr>
             {columns.map((column) => (
               <th
                 key={String(column.key)}
                 className={clsx(
+                  "bg-accent/10",
                   column.className,
                   column.hideOnMobile && "hidden md:table-cell",
                 )}
@@ -128,11 +129,12 @@ export function Table<T>({
                 : (row[rowKey] as React.Key);
 
             return (
-              <tr key={key} className="hover">
+              <tr key={key} className="hover hover:bg-info/20">
                 {columns.map((column) => (
                   <td
                     key={String(column.key)}
                     className={clsx(
+                      "border-b border-success",
                       column.className,
                       column.hideOnMobile && "hidden md:table-cell",
                     )}

@@ -11,7 +11,15 @@ export const myProfileRoutes = {
   path: ROUTES.MY_PROFILE,
 
   element: (
-    <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER]} />
+    <RoleGuard
+      allowedRoles={[
+        ROLES.ADMIN,
+        ROLES.MANAGER,
+        ROLES.MEMBER,
+        ROLES.SYSTEM_OWNER,
+        ROLES.MESS_MALIK,
+      ]}
+    />
   ),
 
   children: [
