@@ -16,9 +16,7 @@ class InviteService {
     const { tenantId, userId } = context;
 
     const existingUser = await userRepository.findOne({ email });
-
     const inviter = await userRepository.findById(userId);
-
     const tenant = await tenantRepository.findById(tenantId);
 
     if (!inviter) {
@@ -57,8 +55,20 @@ class InviteService {
     const { rawToken, tokenHash } = IDep.generateInviteToken();
     const expiresAt = IDep.generateInviteExpiry();
 
+    /**
+     * IMPORTANT:
+     *
+     * Invite creation and email sending are handled inside
+     * the same transaction callback.
+     *
+     * If email sending fails:
+     * - Error is thrown
+     * - Transaction is automatically rolled back
+     * - Invite record is NOT saved
+     * - No partial database change remains
+     */
     const invite = await IDep.sequelize.transaction(async (transaction) => {
-      return await inviteRepository.createWithOptions(
+      const createdInvite = await inviteRepository.createWithOptions(
         {
           email,
           tokenHash,
@@ -69,14 +79,24 @@ class InviteService {
         },
         { transaction },
       );
-    });
 
-    await IDep.sendInviteEmail({
-      email,
-      recipientName: existingUser?.name ?? "Member",
-      name: tenant.name,
-      inviterName: inviter.name ?? "Admin",
-      token: rawToken,
+      try {
+        await IDep.sendInviteEmail({
+          email,
+          recipientName: existingUser?.name ?? "Member",
+          name: tenant.name,
+          inviterName: inviter.name ?? "Admin",
+          token: rawToken,
+        });
+      } catch (error) {
+        // Throwing here automatically rolls back the transaction.
+        throw new ApiError(
+          500,
+          "Invitation email could not be sent. Please try again.",
+        );
+      }
+
+      return createdInvite;
     });
 
     return invite;

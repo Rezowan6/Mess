@@ -30,6 +30,10 @@ const envSchema = z.object({
   SMTP_EMAIL: z.string(),
   SMTP_PASS: z.string(),
 
+  // resend diye mail send
+  RESEND_API_KEY: z.string(),
+  EMAIL_FROM: z.string(),
+
   // bKash
   BKASH_BASE_URL: z.string().default("https://tokenized.sandbox.bka.sh"),
   BKASH_USERNAME: z.string(),
