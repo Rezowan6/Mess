@@ -98,6 +98,50 @@ mealPlanning.route.ts
   ]
 }
 
+আপনি এখন Bash shell-এর ভিতরে আছেন, MySQL console-এর ভিতরে না। তাই SET, SELECT এগুলো Bash command হিসেবে নিয়েছে।
+
+আপনি এখন দেখছেন:
+
+bash-5.1#
+
+প্রথমে MySQL-এ ঢুকুন:
+
+mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u "$MYSQLUSER" -p"$MYSQLPASSWORD" "$MYSQLDATABASE"
+
+যদি password চাই, password দিন।
+
+তারপর prompt এমন হবে:
+
+mysql>
+
+এখন আপনার সব table একসাথে delete করার জন্য এটা চালান:
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+SET @tables = NULL;
+
+SELECT GROUP_CONCAT(
+  CONCAT('`', table_name, '`')
+  SEPARATOR ','
+)
+INTO @tables
+FROM information_schema.tables
+WHERE table_schema = 'railway';
+
+SET @sql = IF(
+  @tables IS NULL,
+  'SELECT 1',
+  CONCAT('DROP TABLE ', @tables)
+);
+
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+তারপর বের হবেন:
+
 done module:
 1.auth
 2.user

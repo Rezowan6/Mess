@@ -7,11 +7,11 @@ export const seedTenant = async () => {
   try {
     const [tenant] = await Tenant.findOrCreate({
       where: {
-        slug: "test-mess",
+        slug: "shamsul-huda-mess",
       },
       defaults: {
-        name: "Test Mess",
-        slug: "test-mess",
+        name: "Shamsul Huda",
+        slug: "shamsul-huda-mess",
         status: "active",
       },
       transaction,

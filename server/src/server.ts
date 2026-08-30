@@ -3,8 +3,8 @@ import { setupAssociations } from "@/models/associations.js";
 import "dotenv/config";
 import http from "http";
 import app from "./app.js";
-import { initSocket } from "./socket/socket.js";
 import { startMealRequestJob } from "./jobs/mealRequest/mealRequest.job.js";
+import { initSocket } from "./socket/socket.js";
 
 const PORT = env.PORT || 4000;
 
@@ -16,11 +16,11 @@ const startServer = async (): Promise<void> => {
 
     const httpServer = http.createServer(app);
 
-    // init socket 
+    // init socket
     initSocket(httpServer);
 
     // cron job
-    startMealRequestJob()
+    startMealRequestJob();
 
     httpServer.listen(PORT, () => {
       console.log(`Server running on port http://localhost:${PORT}`);
