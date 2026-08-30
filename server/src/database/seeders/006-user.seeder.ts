@@ -26,7 +26,7 @@ export const seedUsers = async () => {
       {
         name: "Md Abdullah Kauser",
         email: "kauser@gmail.com",
-        password: "@maruf123",
+        password: "@kauser123",
         role: MemberRole.MESS_MALIK,
         status: "active" as const,
         isVerified: true,
