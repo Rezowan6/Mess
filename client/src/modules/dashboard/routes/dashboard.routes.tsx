@@ -6,7 +6,7 @@ import { RoleGuard } from "@/shared/guards/role.guard";
 export const dashboardModuleRoutes = {
   path: ROUTES.DASHBOARD,
   element: (
-    <RoleGuard allowedRoles={[ROLES.MANAGER, ROLES.ADMIN, ROLES.MEMBER, ROLES.SYSTEM_OWNER]} />
+    <RoleGuard allowedRoles={[ROLES.MANAGER, ROLES.ADMIN, ROLES.MEMBER, ROLES.SYSTEM_OWNER, ROLES.MESS_MALIK]} />
   ),
 
   children: [

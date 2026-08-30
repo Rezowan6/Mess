@@ -11,7 +11,7 @@ import { UpgradePlanPage } from "../pages/UpgradePlanPage";
 export const subscriptionRoutes = {
   path: ROUTES.SUBSCRIPTION,
 
-  element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.SYSTEM_OWNER]} />,
+  element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.SYSTEM_OWNER, ROLES.MESS_MALIK]} />,
 
   children: [
     {

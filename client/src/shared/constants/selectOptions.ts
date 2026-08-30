@@ -15,4 +15,8 @@ export const ROLE_OPTIONS: SelectOption[] = [
     label: "Member",
     value: ROLES.MEMBER,
   },
+  {
+    label: "MessMalik",
+    value: ROLES.MESS_MALIK,
+  },
 ];
