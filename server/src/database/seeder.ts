@@ -5,6 +5,9 @@ import { seedFeatures } from "./seeders/002-feature.seed.js";
 import { seedPlanFeatures } from "./seeders/003-planFeature.seed.js";
 import { seedSystemOwner } from "./seeders/004-systemOwner.seed.js";
 import { seedSystemOwnerRole } from "./seeders/005-systemOwnerRole.seed.js";
+import { seedUsers } from "./seeders/006-user.seeder.js";
+import { seedTenant } from "./seeders/007-tenant.seeder.js";
+import { seedMemberships } from "./seeders/008-membership.seeder.js";
 
 async function runSeeder() {
   try {
@@ -18,7 +21,13 @@ async function runSeeder() {
 
     await seedSystemOwner();
 
-    await seedSystemOwnerRole()
+    await seedSystemOwnerRole();
+
+    await seedUsers();
+
+    await seedTenant();
+
+    await seedMemberships();
 
     console.log("Seeder completed");
 
