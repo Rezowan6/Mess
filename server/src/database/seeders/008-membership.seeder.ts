@@ -12,7 +12,7 @@ export const seedMemberships = async () => {
   try {
     const tenant = await Tenant.findOne({
       where: {
-        slug: "test-mess",
+        slug: "shamsul-huda-mess",
       },
       transaction,
     });
@@ -25,35 +25,58 @@ export const seedMemberships = async () => {
       where: {
         email: {
           [Op.in]: [
-            "admin@gmail.com",
-            "manager@gmail.com",
-            "messmalik@gmail.com",
-            "member1@gmail.com",
-            "member2@gmail.com",
-            "member3@gmail.com",
-            "member4@gmail.com",
-            "member5@gmail.com",
+            "rezowan@gmail.com",
+            "maruf1@gmail.com",
+            "kauser@gmail.com",
+            "sojib@gmail.com",
+            "maruf2@gmail.com",
+            "tamim@gmail.com",
+            "ehasan@gmail.com",
+            "apon@gmail.com",
+            "tajmir@gmail.com",
+            "rafi@gmail.com",
+            "riyad@gmail.com",
+            "amirhamja@gmail.com",
+            "abdulahad@gmail.com",
+            "salman@gmail.com",
+            "reajul@gmail.com",
+            "sakil@gmail.com",
+            "khokon@gmail.com",
+            "ripon@gmail.com",
+            "sourov@gmail.com",
           ],
         },
       },
       transaction,
     });
 
-    if (users.length !== 8) {
+    if (users.length !== 19) {
       throw new Error(
-        `Expected 8 test users, but found ${users.length}. Run user seeder first.`,
+        `Expected 19 test users, but found ${users.length}. Run user seeder first.`,
       );
     }
 
     const roleMap: Record<string, MemberShipRole> = {
-      "admin@gmail.com": MemberRole.ADMIN,
-      "manager@gmail.com": MemberRole.MANAGER,
-      "messmalik@gmail.com": MemberRole.MESS_MALIK,
-      "member1@gmail.com": MemberRole.MEMBER,
-      "member2@gmail.com": MemberRole.MEMBER,
-      "member3@gmail.com": MemberRole.MEMBER,
-      "member4@gmail.com": MemberRole.MEMBER,
-      "member5@gmail.com": MemberRole.MEMBER,
+      "rezowan@gmail.com": MemberRole.ADMIN,
+      "maruf1@gmail.com": MemberRole.MANAGER,
+      "kauser@gmail.com": MemberRole.MESS_MALIK,
+
+      "sojib@gmail.com": MemberRole.MEMBER,
+      "maruf2@gmail.com": MemberRole.MEMBER,
+      "tamim@gmail.com": MemberRole.MEMBER,
+      "ehasan@gmail.com": MemberRole.MEMBER,
+      "apon@gmail.com": MemberRole.MEMBER,
+      "tajmir@gmail.com": MemberRole.MEMBER,
+      "rafi@gmail.com": MemberRole.MEMBER,
+      "riyad@gmail.com": MemberRole.MEMBER,
+      "amirhamja@gmail.com": MemberRole.MEMBER,
+      "abdulahad@gmail.com": MemberRole.MEMBER,
+      "salman@gmail.com": MemberRole.MEMBER,
+      "reajul@gmail.com": MemberRole.MEMBER,
+      "sakil@gmail.com": MemberRole.MEMBER,
+      "khokon@gmail.com": MemberRole.MEMBER,
+      "ripon@gmail.com": MemberRole.MEMBER,
+      "sourov@gmail.com": MemberRole.MEMBER,
     };
 
     const memberships = [];
