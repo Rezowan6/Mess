@@ -1,7 +1,7 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
 import { Notification, User } from "@/models/index.js";
 
-import { IPaginationQuery } from "@/common/types/pagination.interface.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
 
 class NotificationRepository extends BaseRepository<Notification> {
   constructor() {

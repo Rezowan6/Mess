@@ -1,6 +1,6 @@
-import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { getCurrentDate } from "@/utils/date.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";

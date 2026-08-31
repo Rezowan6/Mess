@@ -1,5 +1,5 @@
-import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { MemberStatus } from "@/constans/index.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { getActiveMember } from "../tenantMembership/tenantMembership.helper.js";
 import {
@@ -41,7 +41,11 @@ class DepositService {
     });
   }
 
-  async getMemberDepositSummary({ tenantId, mealSessionId, query }: IDepositSummaryPayload) {
+  async getMemberDepositSummary({
+    tenantId,
+    mealSessionId,
+    query,
+  }: IDepositSummaryPayload) {
     return await depositRepository.getMemberDepositSummary({
       tenantId,
       mealSessionId,

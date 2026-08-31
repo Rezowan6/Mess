@@ -1,4 +1,5 @@
 import sequelize from "@/configs/db.js";
+import { MemberShipRole } from "@/middlewares/role.middleware.js";
 import { hashPassword } from "@/utils/bcrypt.js";
 import {
   CreationOptional,
@@ -7,10 +8,8 @@ import {
   InferCreationAttributes,
   Model,
 } from "sequelize";
-import { USER_STATUS, UserStatus } from "./user.interface.js";
-import { MemberShipRole } from "@/middlewares/role.middleware.js";
-import { MemberRole } from "@/constans/index.js";
 import { MEMBER_SHIP_ROLE } from "../tenantMembership/tenantMembership.interface.js";
+import { USER_STATUS, UserStatus } from "./user.interface.js";
 
 export class User extends Model<
   InferAttributes<
@@ -30,6 +29,7 @@ export class User extends Model<
   declare password: string;
 
   declare avatar: CreationOptional<string | null>;
+  declare avatarPublicId: CreationOptional<string | null>;
 
   declare status: CreationOptional<UserStatus>;
 
@@ -74,6 +74,10 @@ User.init(
       },
     },
     avatar: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    avatarPublicId: {
       type: DataTypes.STRING,
       allowNull: true,
     },

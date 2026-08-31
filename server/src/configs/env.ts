@@ -40,6 +40,11 @@ const envSchema = z.object({
   BKASH_PASSWORD: z.string(),
   BKASH_APP_KEY: z.string(),
   BKASH_APP_SECRET: z.string(),
+
+  // cloudinary image upload
+  CLOUDINARY_CLOUD_NAME: z.string(),
+  CLOUDINARY_API_KEY: z.string(),
+  CLOUDINARY_API_SECRET: z.string(),
 });
 
 export type Env = z.infer<typeof envSchema>;

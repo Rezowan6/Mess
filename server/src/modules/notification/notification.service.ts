@@ -1,8 +1,7 @@
 import { ApiError } from "@/utils/ApiError.js";
 
-import { IPaginationQuery } from "@/common/types/pagination.interface.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
 
-import { SocketRoom } from "@/helpers/socket-room.js";
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
 import { notificationRepository } from "./notification.repository.js";

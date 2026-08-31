@@ -2,6 +2,7 @@ import fs from "fs";
 import multer from "multer";
 import path from "path";
 
+// this file not use
 const uploadPath = path.join(process.cwd(), "uploads", "avatars");
 
 if (!fs.existsSync(uploadPath)) {
@@ -20,7 +21,7 @@ const storage = multer.diskStorage({
   },
 });
 
-export const uploadAvatar = multer({
+export const upload = multer({
   storage,
 
   limits: {

@@ -1,7 +1,7 @@
-import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { MemberRole } from "@/constans/index.js";
 import { Notification } from "@/modules/notification/notification.interface.js";
 import { notificationService } from "@/modules/notification/notification.service.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import {
   IDeleteMemberPayload,

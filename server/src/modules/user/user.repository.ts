@@ -6,8 +6,8 @@ export class UserRepository extends BaseRepository<User> {
     super(User);
   }
 
-  async updateAvatar(userId: number, avatar: string) {
-    return this.update({ id: userId }, { avatar });
+  async updateAvatar(userId: number, avatar: string, avatarPublicId: string) {
+    return this.update({ id: userId }, { avatar,  avatarPublicId});
   }
 }
 

@@ -1,5 +1,5 @@
-import { uploadAvatar } from "@/common/middleware/upload.middleware.js";
 import { allAccess } from "@/helpers/permission.js";
+import { uploadAvatar } from "@/middlewares/uploadAvatar.middleware.js";
 import express from "express";
 import { userController } from "../user/user.controller.js";
 import { myProfileController } from "./myProfile.controller.js";

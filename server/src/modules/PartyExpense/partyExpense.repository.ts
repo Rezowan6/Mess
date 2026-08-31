@@ -1,7 +1,7 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
-import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { buildSearchCondition } from "@/common/utils/search.util.js";
 import { PartyExpense } from "@/models/index.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
 
 export class PartyExpenseRepository extends BaseRepository<PartyExpense> {
   constructor() {

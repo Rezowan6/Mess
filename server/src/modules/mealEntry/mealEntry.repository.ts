@@ -1,7 +1,7 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
-import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealEntry } from "@/models/index.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { Op, Transaction, col, fn, literal } from "sequelize";
 import { ICreateMealEntryDto, IMealSummary } from "./mealEntry.interface.js";
 

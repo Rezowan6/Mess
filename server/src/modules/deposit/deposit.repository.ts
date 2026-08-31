@@ -1,8 +1,8 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
-import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { buildSearchCondition } from "@/common/utils/search.util.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { Deposit } from "@/models/index.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { Op, col, fn, literal } from "sequelize";
 
 class DepositRepository extends BaseRepository<Deposit> {

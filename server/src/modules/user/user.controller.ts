@@ -1,11 +1,10 @@
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { ApiError } from "@/utils/ApiError.js";
+import { deleteImage, uploadImage } from "@/utils/cloudinary.util.js";
 import { logger } from "@/utils/logger.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
-import fs from "fs/promises";
-import path from "path";
 import { userService } from "./user.service.js";
 
 class UserController {
@@ -22,55 +21,65 @@ class UserController {
       throw new ApiError(404, "User not found");
     }
 
-    const oldAvatar = user.avatar;
-    const newAvatar = `/uploads/avatars/${req.file.filename}`;
+    let newAvatarPublicId: string | null = null;
 
     try {
-      await userService.updateAvatar(userId, newAvatar);
-
-      if (oldAvatar) {
-        const oldAvatarPath = path.join(
-          process.cwd(),
-          oldAvatar.replace(/^[/\\]+/, ""),
-        );
-
-        try {
-          await fs.unlink(oldAvatarPath);
-        } catch (error: any) {
-          if (error.code !== "ENOENT") {
-            logger.error(
-              { error, userId, oldAvatar },
-              "Failed to delete old avatar",
-            );
-          }
-        }
-      }
-    } catch (error) {
-      const newAvatarPath = path.join(
-        process.cwd(),
-        newAvatar.replace(/^[/\\]+/, ""),
+      // Upload new avatar to Cloudinary
+      const result = await uploadImage(
+        req.file.buffer,
+        "mess-management/avatars",
       );
 
-      try {
-        await fs.unlink(newAvatarPath);
-      } catch (cleanupError) {
-        logger.error(
-          { error: cleanupError, userId },
-          "Failed to cleanup new avatar",
-        );
+      const newAvatar = result.secure_url;
+      newAvatarPublicId = result.public_id;
+
+      // Update database
+      const updatedUser = await userService.updateAvatar(
+        userId,
+        newAvatar,
+        newAvatarPublicId,
+      );
+
+      // Delete old avatar from Cloudinary
+      if (user.avatarPublicId) {
+        try {
+          await deleteImage(user.avatarPublicId);
+        } catch (error) {
+          logger.error(
+            {
+              error,
+              userId,
+              publicId: user.avatarPublicId,
+            },
+            "Failed to delete old avatar from Cloudinary",
+          );
+        }
+      }
+
+      return sendResponse(res, {
+        statusCode: 200,
+        message: "Avatar updated successfully",
+        data: updatedUser,
+      });
+    } catch (error) {
+      // Rollback newly uploaded image if DB update fails
+      if (newAvatarPublicId) {
+        try {
+          await deleteImage(newAvatarPublicId);
+        } catch (cleanupError) {
+          logger.error(
+            {
+              error: cleanupError,
+              userId,
+              publicId: newAvatarPublicId,
+            },
+            "Failed to cleanup new avatar from Cloudinary",
+          );
+        }
       }
 
       throw error;
     }
-
-    return sendResponse(res, {
-      statusCode: 200,
-      message: "Avatar updated successfully",
-      data: {
-        ...user.toJSON(),
-        avatar: newAvatar,
-      },
-    });
   });
 }
 

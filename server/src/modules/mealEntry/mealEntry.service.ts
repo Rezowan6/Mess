@@ -1,5 +1,5 @@
-import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import sequelize from "@/configs/db.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { mealEntryRepository } from "./mealEntry.repository.js";
 

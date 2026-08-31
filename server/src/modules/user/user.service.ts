@@ -1,4 +1,3 @@
-import { MemberStatus } from "@/constans/index.js";
 import { Transaction } from "sequelize";
 import { IRegisterPayload } from "../auth/auth.interface.js";
 import { ICreateUserResponse } from "./user.interface.js";
@@ -32,8 +31,8 @@ class UserService {
     return userRepository.findById(userId);
   }
 
-  async updateAvatar(userId: number, avatar: string) {
-    return userRepository.updateAvatar(userId, avatar);
+  async updateAvatar(userId: number, avatar: string, avatarPublicId: string) {
+    return userRepository.updateAvatar(userId, avatar, avatarPublicId);
   }
 
   deleteUnverifiedInactiveUsers = async () => {

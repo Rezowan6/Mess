@@ -1,4 +1,4 @@
-import type { IPaginationMeta } from "@/common/types/pagination.interface.js";
+import type { IPaginationMeta } from "@/types/pagination.interface.js";
 import { Response } from "express";
 
 import { ApiResponse } from "./index.js";

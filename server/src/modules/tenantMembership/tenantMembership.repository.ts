@@ -4,7 +4,7 @@ import { TenantMembership, User } from "@/models/index.js";
 import { Op, Transaction } from "sequelize";
 import { FindByTenantAndUserPayload } from "./tenantMembership.interface.js";
 
-import type { IPaginationQuery } from "@/common/types/pagination.interface.js";
+import type { IPaginationQuery } from "@/types/pagination.interface.js";
 
 export class TenantMembershipRepository extends BaseRepository<TenantMembership> {
   constructor() {

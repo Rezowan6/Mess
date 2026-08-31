@@ -13,7 +13,7 @@ import {
 import {
   IPaginatedResult,
   IPaginationQuery,
-} from "../types/pagination.interface.js";
+} from "../../types/pagination.interface.js";
 
 export abstract class BaseRepository<T extends Model> {
   protected model: ModelStatic<T>;

@@ -19,7 +19,12 @@ createRoot(document.getElementById("root")!).render(
         <AuthProvider>
           <SocketProvider>
             <App />
-            <Toaster position="top-right" />
+            <Toaster
+              position="top-right"
+              containerStyle={{
+                top: "100px",
+              }}
+            />
           </SocketProvider>
         </AuthProvider>
       </ThemeProvider>

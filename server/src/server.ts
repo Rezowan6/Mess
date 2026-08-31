@@ -5,12 +5,14 @@ import http from "http";
 import app from "./app.js";
 import { startMealRequestJob } from "./jobs/mealRequest/mealRequest.job.js";
 import { initSocket } from "./socket/socket.js";
+import { testCloudinaryConnection } from "./utils/cloudinary.test.js";
 
 const PORT = env.PORT || 4000;
 
 const startServer = async (): Promise<void> => {
   try {
     await sequelize.authenticate();
+    await testCloudinaryConnection();
     setupAssociations();
     console.log("Database connected successfully");
 

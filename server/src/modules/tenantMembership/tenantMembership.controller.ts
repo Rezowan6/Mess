@@ -1,6 +1,6 @@
-import { IPaginationQuery } from "@/common/types/pagination.interface.js";
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import { asyncHandler } from "@/middlewares/index.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { membershipService } from "./tenantMembership.service.js";
