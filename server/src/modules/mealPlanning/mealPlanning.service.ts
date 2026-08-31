@@ -15,6 +15,8 @@ import type {
   IMealPlanningSummary,
   IRejectMealPayload,
 } from "./mealPlanning.interface.js";
+import { notificationService } from "../notification/notification.service.js";
+import { Notification } from "../notification/notification.interface.js";
 
 class MealPlanningService {
   private buildMealPlanningSummary(
@@ -91,7 +93,7 @@ class MealPlanningService {
     };
   }
 
-  async rejectMeal({ tenantId, userId, meal }: IRejectMealPayload) {
+  async rejectMeal({ tenantId, userId, managerId, meal }: IRejectMealPayload) {
     const result = await sequelize.transaction(async (transaction) => {
       const preference = await mealPreferenceRepository.findOneWithOptions({
         where: {
@@ -164,6 +166,12 @@ class MealPlanningService {
       );
 
       return updatedPreference;
+    });
+
+    await notificationService.create(tenantId, userId, managerId, {
+      title: "Meal Rejected",
+      message: `Your ${meal} meal has been turned off by the manager.`,
+      type: Notification.MEAL_REJECTED,
     });
 
     // Transaction successfully committed
