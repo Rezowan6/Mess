@@ -5,7 +5,7 @@ export const TenantName = () => {
 
   return (
     <>
-      <h2 className="text-xl font-bold text-info">
+      <h2 className="text-xl font-bold text-accent">
         {currentTenant?.tenant.name}
       </h2>
     </>

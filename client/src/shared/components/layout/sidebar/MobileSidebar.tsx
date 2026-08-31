@@ -3,12 +3,15 @@ import { useLocation } from "react-router-dom";
 
 import { useSidebarStore } from "@/store/sidebar.store";
 
+import { UpgradeButton } from "@/modules/subscription/components/UpgradeButton";
+import { PERMISSIONS } from "@/shared/constants/permissions";
+import { useRBAC } from "@/shared/hooks/useRBAC";
 import { useEffect } from "react";
 import { TenantName } from "../../ui/TenantName";
 import { SidebarMenu } from "./SidebarMenu";
-import { UpgradeButton } from "@/modules/subscription/components/UpgradeButton";
 
 export const MobileSidebar = () => {
+  const { can } = useRBAC();
   const isOpen = useSidebarStore((state) => state.isOpen);
 
   const close = useSidebarStore((state) => state.close);
@@ -98,9 +101,11 @@ export const MobileSidebar = () => {
         {/* Profile */}
 
         {/* <SidebarProfile /> */}
-        <div className="border-t border-info p-3">
-          <UpgradeButton />
-        </div>
+        {can(PERMISSIONS.SUBSCRIPTION_CREATE) && (
+          <div className="border-t border-info p-3">
+            <UpgradeButton />
+          </div>
+        )}
       </aside>
     </>
   );
