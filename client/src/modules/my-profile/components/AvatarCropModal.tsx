@@ -73,6 +73,8 @@ export const AvatarCropModal = ({
         <div className="space-y-2">
           <label className="text-sm mr-1 font-medium">Zoom</label>
 
+          <span className="text-xs opacity-60 mr-1">{zoom.toFixed(1)}x</span>
+
           <input
             type="range"
             min={1}
