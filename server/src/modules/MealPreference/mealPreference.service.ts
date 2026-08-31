@@ -174,12 +174,10 @@ class MealPreferenceService {
 
   async getMyPreference({
     tenantId,
-    mealSessionId,
     userId,
   }: {
     tenantId: number;
     userId: number;
-    mealSessionId: number;
   }) {
     return await mealPreferenceRepository.getMyPreference({
       tenantId,

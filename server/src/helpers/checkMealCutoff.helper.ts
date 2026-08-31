@@ -72,7 +72,25 @@ export const checkMealCutoff = ({
 
   const minutes = cutoffMinute % 60;
 
+  console.log({
+    meal,
+    now: new Date(),
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    cutoffMinute,
+    date,
+    cutoffBeforeSetHours: cutoff,
+  });
+
   cutoff.setHours(hours, minutes, 0, 0);
+
+  console.log({
+  meal,
+  now: new Date(),
+  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  cutoffMinute,
+  date,
+  cutoffAfterSetHours: cutoff,
+});
 
   if (now > cutoff) {
     throw new ApiError(400, `${meal} modification time has expired.`);
