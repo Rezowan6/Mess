@@ -4,7 +4,9 @@ import { Button } from "@/shared/components/ui/Button";
 import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
 import type { IMealPlanningMember } from "../types/mealPlanning.types";
 
-export const mealPlanningColumns: TableColumn<IMealPlanningMember>[] = [
+export const getMealPlanningColumns = (
+  onReject: (userId: number) => void,
+): TableColumn<IMealPlanningMember>[] => [
   {
     key: "member",
     title: "Member",
@@ -23,13 +25,13 @@ export const mealPlanningColumns: TableColumn<IMealPlanningMember>[] = [
     key: "actions",
     title: "Actions",
     className: "w-32",
-    render: () => (
+    render: (row) => (
       <div className="flex items-center gap-2">
         <Button disabled variant="success">
           Approve
         </Button>
 
-        <Button disabled variant="error">
+        <Button variant="error" onClick={() => onReject(row.userId)}>
           Reject
         </Button>
       </div>

@@ -112,6 +112,7 @@ export const API_ENDPOINTS = {
   },
   MEAL_PLANNING: {
     DAILY: "/meal-plannings/daily",
+    REJECT: "/meal-plannings",
   },
 
   EXPENSE: {

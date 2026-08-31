@@ -5,6 +5,8 @@ import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
 import { mealRequestRepository } from "../mealRequest/mealRequest.repository.js";
 
 import sequelize from "@/configs/db.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
 import type {
   IMealPlanningEntry,
@@ -90,7 +92,7 @@ class MealPlanningService {
   }
 
   async rejectMeal({ tenantId, userId, meal }: IRejectMealPayload) {
-    return sequelize.transaction(async (transaction) => {
+    const result = await sequelize.transaction(async (transaction) => {
       const preference = await mealPreferenceRepository.findOneWithOptions({
         where: {
           tenantId,
@@ -163,6 +165,16 @@ class MealPlanningService {
 
       return updatedPreference;
     });
+
+    // Transaction successfully committed
+    // realtime event
+    socketService.emitToTenant(tenantId, SocketEvent.MEAL_PLANNING_UPDATED, {
+      tenantId,
+      userId,
+      meal,
+    });
+
+    return result;
   }
 }
 

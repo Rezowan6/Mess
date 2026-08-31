@@ -6,8 +6,9 @@ import { Pagination } from "@/shared/components/ui/Pagination";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Tabs } from "@/shared/components/ui/Tabs";
 import { mealTabs } from "../configs/meal.tabs.config";
-import { mealPlanningColumns } from "../configs/mealPlanning.columns";
+import { getMealPlanningColumns } from "../configs/mealPlanning.columns";
 import { useMealPlanningTable } from "../hooks/useMealPlanningTable";
+import { useRejectMeal } from "../hooks/useRejectMeal";
 import type {
   IMealPlanningResponse,
   MealType,
@@ -40,6 +41,15 @@ export const MealPlanningTable = ({
     activeMeal,
   });
 
+  const { mutate: rejectMeal, } = useRejectMeal();
+
+  const columns = getMealPlanningColumns((userId) => {
+    rejectMeal({
+      userId,
+      meal: activeMeal,
+    });
+  });
+
   const members = (planning?.[activeMeal] ?? []).filter((member) =>
     member.memberName.toLowerCase().includes(search.toLowerCase()),
   );
@@ -57,7 +67,7 @@ export const MealPlanningTable = ({
       {/* Only this area changes */}
       <div className="min-h-[30em] transition-all duration-200">
         <Table
-          columns={mealPlanningColumns}
+          columns={columns}
           data={paginatedMembers}
           loading={loading}
           error={error}

@@ -32,6 +32,11 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealPlanning.daily(currentTenant?.tenantId),
       });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealPreference.myPreference(
+          currentTenant?.tenantId,
+        ),
+      });
     };
 
     // notification

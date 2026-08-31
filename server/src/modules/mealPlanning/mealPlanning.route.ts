@@ -8,6 +8,6 @@ const router = Router();
 
 router.get("/daily", ...allAccess, mealPlanningController.getDailyMealPlanning);
 
-router.get("/:userId/reject", ...managerAccess, mealPlanningController.rejectMeal);
+router.patch("/:userId/reject", ...managerAccess, mealPlanningController.rejectMeal);
 
 export default router;
