@@ -41,14 +41,14 @@ export const MealPlanningTable = ({
     activeMeal,
   });
 
-  const { mutate: rejectMeal, } = useRejectMeal();
+  const { mutate: rejectMeal, isPending } = useRejectMeal();
 
   const columns = getMealPlanningColumns((userId) => {
     rejectMeal({
       userId,
       meal: activeMeal,
     });
-  });
+  }, isPending );
 
   const members = (planning?.[activeMeal] ?? []).filter((member) =>
     member.memberName.toLowerCase().includes(search.toLowerCase()),

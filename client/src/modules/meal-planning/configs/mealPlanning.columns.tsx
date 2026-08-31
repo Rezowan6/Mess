@@ -6,6 +6,7 @@ import type { IMealPlanningMember } from "../types/mealPlanning.types";
 
 export const getMealPlanningColumns = (
   onReject: (userId: number) => void,
+  isPending: boolean,
 ): TableColumn<IMealPlanningMember>[] => [
   {
     key: "member",
@@ -31,7 +32,13 @@ export const getMealPlanningColumns = (
           Approve
         </Button>
 
-        <Button variant="error" onClick={() => onReject(row.userId)}>
+        <Button
+          variant="error"
+          onClick={() => onReject(row.userId)}
+          disabled={isPending}
+          loading={isPending}
+          loadingText="Rejecting..."
+        >
           Reject
         </Button>
       </div>
