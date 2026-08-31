@@ -1,28 +1,49 @@
 import type { Request, Response } from "express";
 
-
-
-import { mealPlanningService } from "./mealPlanning.service.js";
-import asyncHandler from "@/middlewares/asyncHandler.js";
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
+import asyncHandler from "@/middlewares/asyncHandler.js";
+import { ApiError } from "@/utils/ApiError.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
-import { getCurrentDate } from "@/utils/date.util.js";
+import { mealPlanningService } from "./mealPlanning.service.js";
 
 class MealPlanningController {
   getDailyMealPlanning = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, mealSessionId } = getTenantContext(req);
+    const { tenantId } = getTenantContext(req);
 
-    const date = req?.query?.date as string ?? getCurrentDate() as string;
-
-    const data = await mealPlanningService.getDailyMealPlanning(
-      tenantId,
-      mealSessionId,
-      date,
-    );
+    const data = await mealPlanningService.getDailyMealPlanning(tenantId);
 
     return sendResponse(res, {
       statusCode: 200,
       message: "Daily meal planning fetched successfully.",
+      data,
+    });
+  });
+
+  rejectMeal = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantContext(req);
+
+    const userId = Number(req.params.userId);
+    const { meal } = req.body;
+
+    if (!Number.isInteger(userId) || userId <= 0) {
+      throw new ApiError(400, "Invalid user ID");
+    }
+
+    const allowedMeals = ["breakfast", "lunch", "dinner"] as const;
+
+    if (!allowedMeals.includes(meal)) {
+      throw new ApiError(400, "Invalid meal type");
+    }
+
+    const data = await mealPlanningService.rejectMeal({
+      tenantId,
+      userId,
+      meal,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: `${meal} rejected successfully.`,
       data,
     });
   });

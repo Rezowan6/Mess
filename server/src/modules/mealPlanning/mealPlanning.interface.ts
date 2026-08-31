@@ -35,7 +35,6 @@ export interface IMealPlanningEntry {
   dinner: number;
 
   guestMeal: number;
-  
 
   user: {
     id: number;
@@ -46,4 +45,12 @@ export interface IMealPlanningEntry {
 
 export interface IMealPlanningQuery {
   date: string;
+}
+
+export type MealPlanningMeal = "breakfast" | "lunch" | "dinner";
+
+export interface IRejectMealPayload {
+  tenantId: number;
+  userId: number;
+  meal: MealPlanningMeal;
 }

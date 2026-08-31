@@ -1,11 +1,13 @@
 import { Router } from "express";
 
+import { allAccess, managerAccess } from "@/helpers/permission.js";
 import { mealPlanningController } from "./mealPlanning.controller.js";
-import { allAccess } from "@/helpers/permission.js";
 
 
 const router = Router();
 
 router.get("/daily", ...allAccess, mealPlanningController.getDailyMealPlanning);
+
+router.get("/:userId/reject", ...managerAccess, mealPlanningController.rejectMeal);
 
 export default router;

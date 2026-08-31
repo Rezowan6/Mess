@@ -1,10 +1,17 @@
+import { getCurrentDate } from "@/utils/date.util.js";
+import { mealEntryRepository } from "../mealEntry/mealEntry.repository.js";
 import { mealPreferenceRepository } from "../MealPreference/mealPreference.repository.js";
+import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
+import { mealRequestRepository } from "../mealRequest/mealRequest.repository.js";
 
+import sequelize from "@/configs/db.js";
+import { ApiError } from "@/utils/ApiError.js";
 import type {
   IMealPlanningEntry,
   IMealPlanningMember,
   IMealPlanningResponse,
   IMealPlanningSummary,
+  IRejectMealPayload,
 } from "./mealPlanning.interface.js";
 
 class MealPlanningService {
@@ -49,11 +56,7 @@ class MealPlanningService {
       }));
   }
 
-  async getDailyMealPlanning(
-    tenantId: number,
-    mealSessionId: number,
-    date: string,
-  ): Promise<IMealPlanningResponse> {
+  async getDailyMealPlanning(tenantId: number): Promise<IMealPlanningResponse> {
     const preferences = await mealPreferenceRepository.getActivePreferences({
       tenantId,
     });
@@ -84,6 +87,82 @@ class MealPlanningService {
       dinner,
       guestMeal,
     };
+  }
+
+  async rejectMeal({ tenantId, userId, meal }: IRejectMealPayload) {
+    return sequelize.transaction(async (transaction) => {
+      const preference = await mealPreferenceRepository.findOneWithOptions({
+        where: {
+          tenantId,
+          userId,
+        },
+        transaction,
+      });
+
+      if (!preference) {
+        throw new ApiError(404, "Meal preference not found");
+      }
+
+      if (Number(preference[meal]) <= 0) {
+        throw new ApiError(
+          400,
+          `${meal} is already turned off for this member.`,
+        );
+      }
+
+      const date = getCurrentDate();
+
+      /**
+       * Update today's meal request
+       */
+      const todayRequest = await mealRequestRepository.findTodayRequest({
+        tenantId,
+        userId,
+        date,
+      });
+
+      if (todayRequest) {
+        await mealRequestRepository.update(
+          { id: todayRequest.id },
+          {
+            [meal]: 0,
+          },
+          { transaction },
+        );
+      }
+
+      /**
+       * Update meal entry if today's request is approved
+       */
+      if (todayRequest && todayRequest.status === MealRequestStatus.APPROVED) {
+        const entry = await mealEntryRepository.findOne({
+          mealRequestId: todayRequest.id,
+        });
+
+        if (entry) {
+          await mealEntryRepository.update(
+            { mealRequestId: todayRequest.id },
+            {
+              [meal]: 0,
+            },
+            { transaction },
+          );
+        }
+      }
+
+      /**
+       * Update meal preference
+       */
+      const updatedPreference = await mealPreferenceRepository.update(
+        { id: preference.id },
+        {
+          [meal]: 0,
+        },
+        { transaction },
+      );
+
+      return updatedPreference;
+    });
   }
 }
 
