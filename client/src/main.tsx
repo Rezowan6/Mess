@@ -22,7 +22,7 @@ createRoot(document.getElementById("root")!).render(
             <Toaster
               position="top-right"
               containerStyle={{
-                top: "100px",
+                top: "64px",
               }}
             />
           </SocketProvider>

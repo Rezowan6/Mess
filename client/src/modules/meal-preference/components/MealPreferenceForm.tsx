@@ -48,18 +48,8 @@ export const MealPreferenceForm = () => {
 
   const onSubmit = (values: IUpsertMealPreferenceDto) => {
     mutate(values, {
-      onSuccess: () => {
-        if (!mealSetting) return;
-
-        reset({
-          breakfast: Number(preferenceData.data.breakfast),
-          lunch: Number(preferenceData.data.lunch),
-          dinner: Number(preferenceData.data.dinner),
-          guestMeal: Number(preferenceData.data.guestMeal),
-        });
-      },
-
       onError: () => {
+        if (!preferenceData?.data) return;
         reset({
           breakfast: Number(preferenceData.data.breakfast),
           lunch: Number(preferenceData.data.lunch),
