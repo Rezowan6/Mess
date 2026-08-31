@@ -1,10 +1,7 @@
 import { getMaghribTime } from "@/helpers/getPrayerTime.helper.js";
 import { MealSetting } from "@/models/index.js";
 import { ApiError } from "@/utils/ApiError.js";
-import {
-  createAppTime,
-  getAppNow,
-} from "@/utils/timezone.util.js";
+import { createAppTime, getAppNow } from "@/utils/timezone.util.js";
 
 interface ICheckMealCutoffPayload {
   mealSetting: MealSetting;
@@ -50,14 +47,13 @@ export const checkMealCutoff = ({
     const startTime = getMaghribTime(requestDate);
 
     // next day cutoff
-    const endTime = new Date(requestDate);
+    const cutoffHours = Math.floor(cutoffMinute / 60);
+    const cutoffMinutes = cutoffMinute % 60;
 
-    endTime.setDate(endTime.getDate() + 1);
+    const nextDay = new Date(requestDate);
+    nextDay.setDate(nextDay.getDate() + 1);
 
-    const hours = Math.floor(cutoffMinute / 60);
-    const minutes = cutoffMinute % 60;
-
-    endTime.setHours(hours, minutes, 0, 0);
+    const endTime = createAppTime(nextDay, cutoffHours, cutoffMinutes);
 
     if (now < startTime) {
       throw new ApiError(400, "Breakfast modification has not started yet.");
@@ -70,14 +66,10 @@ export const checkMealCutoff = ({
     return true;
   }
 
-const cutoffHours = Math.floor(cutoffMinute / 60);
-const cutoffMinutes = cutoffMinute % 60;
+  const cutoffHours = Math.floor(cutoffMinute / 60);
+  const cutoffMinutes = cutoffMinute % 60;
 
-const cutoff = createAppTime(
-  date,
-  cutoffHours,
-  cutoffMinutes,
-);
+  const cutoff = createAppTime(date, cutoffHours, cutoffMinutes);
 
   if (now > cutoff) {
     throw new ApiError(400, `${meal} modification time has expired.`);
