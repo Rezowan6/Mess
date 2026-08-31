@@ -28,6 +28,9 @@ export const MealPlanningTable = ({
   refetch,
 }: Props) => {
   const [activeMeal, setActiveMeal] = useState<MealType>("breakfast");
+  const [pendingUserId, setPendingUserId] = useState<number | null>(null);
+
+  const { mutate: rejectMeal, isPending } = useRejectMeal();
 
   const {
     search,
@@ -41,14 +44,25 @@ export const MealPlanningTable = ({
     activeMeal,
   });
 
-  const { mutate: rejectMeal, isPending } = useRejectMeal();
+  const columns = getMealPlanningColumns(
+    (userId) => {
+      setPendingUserId(userId);
 
-  const columns = getMealPlanningColumns((userId) => {
-    rejectMeal({
-      userId,
-      meal: activeMeal,
-    });
-  }, isPending );
+      rejectMeal(
+        {
+          userId,
+          meal: activeMeal,
+        },
+        {
+          onSettled: () => {
+            setPendingUserId(null);
+          },
+        },
+      );
+    },
+    isPending,
+    pendingUserId,
+  );
 
   const members = (planning?.[activeMeal] ?? []).filter((member) =>
     member.memberName.toLowerCase().includes(search.toLowerCase()),

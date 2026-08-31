@@ -7,6 +7,7 @@ import type { IMealPlanningMember } from "../types/mealPlanning.types";
 export const getMealPlanningColumns = (
   onReject: (userId: number) => void,
   isPending: boolean,
+  pendingUserId: number | null,
 ): TableColumn<IMealPlanningMember>[] => [
   {
     key: "member",
@@ -36,7 +37,7 @@ export const getMealPlanningColumns = (
           variant="error"
           onClick={() => onReject(row.userId)}
           disabled={isPending}
-          loading={isPending}
+          loading={isPending && pendingUserId === row.userId}
           loadingText="Rejecting..."
         >
           Reject
