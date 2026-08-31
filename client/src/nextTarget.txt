@@ -1,4 +1,24 @@
-
+Select Photo
+    ↓
+Frontend এ Local Preview
+    ↓
+Crop / Position UI
+    ↓
+User ছবি move / zoom / crop করবে
+    ↓
+Cancel অথবা Save
+    ↓
+Save হলে cropped image তৈরি
+    ↓
+Cropped image → Backend
+    ↓
+Cloudinary Upload
+    ↓
+DB Update
+    ↓
+Old Cloudinary Image Delete
+    ↓
+Success
 
 
     ┌──────────────┐
