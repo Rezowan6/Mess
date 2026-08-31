@@ -1,6 +1,10 @@
 import { getMaghribTime } from "@/helpers/getPrayerTime.helper.js";
 import { MealSetting } from "@/models/index.js";
 import { ApiError } from "@/utils/ApiError.js";
+import {
+  createAppTime,
+  getAppNow,
+} from "@/utils/timezone.util.js";
 
 interface ICheckMealCutoffPayload {
   mealSetting: MealSetting;
@@ -15,7 +19,7 @@ export const checkMealCutoff = ({
   meal,
   date = new Date(),
 }: ICheckMealCutoffPayload) => {
-  const now = new Date();
+  const now = getAppNow();
 
   let cutoffMinute: number;
 
@@ -66,31 +70,14 @@ export const checkMealCutoff = ({
     return true;
   }
 
-  const cutoff = new Date(date);
+const cutoffHours = Math.floor(cutoffMinute / 60);
+const cutoffMinutes = cutoffMinute % 60;
 
-  const hours = Math.floor(cutoffMinute / 60);
-
-  const minutes = cutoffMinute % 60;
-
-  console.log({
-    meal,
-    now: new Date(),
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    cutoffMinute,
-    date,
-    cutoffBeforeSetHours: cutoff,
-  });
-
-  cutoff.setHours(hours, minutes, 0, 0);
-
-  console.log({
-  meal,
-  now: new Date(),
-  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-  cutoffMinute,
+const cutoff = createAppTime(
   date,
-  cutoffAfterSetHours: cutoff,
-});
+  cutoffHours,
+  cutoffMinutes,
+);
 
   if (now > cutoff) {
     throw new ApiError(400, `${meal} modification time has expired.`);
