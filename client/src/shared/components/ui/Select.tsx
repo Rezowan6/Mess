@@ -88,7 +88,8 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           disabled={disabled || isLoading}
           className={clsx(
             "w-full bg-transparent py-2 outline-none",
-            "text-text",
+            "text-base-content",
+            "appearance-none",
             disabled && "cursor-not-allowed",
             !disabled && "cursor-pointer",
             className,
@@ -110,6 +111,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                   key={option.value}
                   value={String(option.value)}
                   disabled={option.disabled}
+                  className="bg-base-100 text-base-content"
                 >
                   {option.label}
                 </option>
