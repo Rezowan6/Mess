@@ -36,7 +36,7 @@ export const getMealPlanningColumns = (
         <Button
           variant="error"
           onClick={() => onReject(row.userId)}
-          disabled={isPending}
+          disabled={isPending && pendingUserId === row.userId}
           loading={isPending && pendingUserId === row.userId}
           loadingText="Rejecting..."
         >
