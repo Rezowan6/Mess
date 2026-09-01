@@ -1,17 +1,17 @@
 import { ChevronDown, LogOut } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useLogout } from "@/modules/auth/hooks/useLoagout";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { useTenantStore } from "@/modules/tenant/store/tenant.store";
+import { useClickOutside } from "@/shared/hooks/useClickOutside";
 import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
 import { Avatar } from "../../ui/Avatar";
 import { HeaderMenuItem } from "./header.constance";
 
 export const HeaderProfile = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const user = useAuthStore((state) => state.user);
   const currentTenant = useTenantStore((state) => state.currentTenant);
@@ -26,20 +26,7 @@ export const HeaderProfile = () => {
     setIsOpen(false);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        closeDropdown();
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const dropdownRef = useClickOutside<HTMLDivElement>(closeDropdown);
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -51,7 +38,11 @@ export const HeaderProfile = () => {
         className="flex items-center justify-center gap-3 px-2 cursor-pointer border border-success py-1 rounded-md"
       >
         {/* member avatar */}
-        <Avatar src={user?.avatar} alt={user?.name} fallback={getAvatarInitial(user?.name ?? "")} />
+        <Avatar
+          src={user?.avatar}
+          alt={user?.name}
+          fallback={getAvatarInitial(user?.name ?? "")}
+        />
 
         <div className="hidden text-left md:block">
           <p className="text-sm font-semibold">{user?.name}</p>

@@ -2,6 +2,7 @@ import { Bell } from "lucide-react";
 
 import { useState } from "react";
 
+import { useClickOutside } from "@/shared/hooks/useClickOutside";
 import { useUnreadCount } from "../hooks/useUnreadCount";
 import { NotificationDropdown } from "./NotificationDropdown";
 
@@ -10,13 +11,19 @@ export const NotificationBell = () => {
 
   const { data } = useUnreadCount();
 
+  const closeDropdown = () => {
+    setIsOpen(false);
+  };
+
+  const dropdownRef = useClickOutside<HTMLDivElement>(closeDropdown);
+
   const count: number = data?.data?.count || 0;
 
   return (
-    <div className="static sm:relative">
+    <div ref={dropdownRef} className="static sm:relative">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-accent hover:bg-gradient-success cursor-pointer transition-all duration-300 text-white"
+        className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-accent hover:bg-gradient-success focus:bg-gradient-success cursor-pointer transition-all duration-300 text-white"
       >
         <Bell size={20} />
 

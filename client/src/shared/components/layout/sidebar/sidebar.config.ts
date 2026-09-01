@@ -51,7 +51,7 @@ export const sidebarItems: ISidebarItem[] = [
   },
 
   {
-    title: "Users",
+    title: "Members",
     path: ROUTES.USERS,
     icon: Users,
     permission: PERMISSIONS.USER_VIEW,
