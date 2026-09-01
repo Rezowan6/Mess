@@ -46,7 +46,7 @@ export const TodayMealEntriesPage = () => {
   return (
     <>
       {createdAt && (
-        <p className="text-xs sm:text-sm">
+        <p className="text-xs sm:text-sm ">
            Created At:{" "}
           <span className="text-info">{createdAt.split("T")[0]}</span>
         </p>

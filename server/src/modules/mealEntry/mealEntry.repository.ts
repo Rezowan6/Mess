@@ -175,7 +175,7 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
       include: [
         {
           association: "user",
-          attributes: ["id", "name"],
+          attributes: ["id", "name", "avatar", "email"],
         },
         {
           association: "mealSession",

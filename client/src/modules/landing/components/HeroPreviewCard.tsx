@@ -10,7 +10,7 @@ export const HeroPreviewCard = () => {
         <div className="mb-6 flex items-center justify-between">
           <h3 className="font-semibold text-accent">Monthly Overview</h3>
 
-          <Badge variant="success" rounded="md">Active</Badge>
+          <Badge variant="success">Active</Badge>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

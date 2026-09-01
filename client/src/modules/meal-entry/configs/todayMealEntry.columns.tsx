@@ -1,5 +1,6 @@
 import type { TableColumn } from "@/shared/components/ui/Table";
 
+import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
 import type { ITodayMealEntry } from "../types/mealEntry.types";
 
 export const useTodayMealEntryColumns = (): TableColumn<ITodayMealEntry>[] => {
@@ -7,7 +8,9 @@ export const useTodayMealEntryColumns = (): TableColumn<ITodayMealEntry>[] => {
     {
       key: "user",
       title: "Member",
-      render: (row) => row?.user?.name,
+      render: (row) => {
+        return <MemberAvatar name={row.user?.name} avatar={row.user?.avatar} />;
+      },
     },
 
     {
