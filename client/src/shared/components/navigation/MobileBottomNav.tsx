@@ -1,53 +1,70 @@
-import { CircleDollarSign, House, Users, Utensils } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 
-const navItems = [
-  {
-    label: "Dashboard",
-    path: "/dashboard",
-    icon: House,
-  },
-  {
-    label: "Members",
-    path: "/users",
-    icon: Users,
-  },
-  {
-    label: "Meals",
-    path: "/preferences",
-    icon: Utensils,
-  },
-  {
-    label: "Expense",
-    path: "/expenses",
-    icon: CircleDollarSign,
-  },
-];
+import { useRBAC } from "@/shared/hooks/useRBAC";
+
+import { sidebarItems } from "../layout/sidebar/sidebar.config";
+import { MobileBottomNavBar } from "./MobileBottomNavBar";
+import { MobileMoreMenu } from "./MobileMoreMenu";
 
 export const MobileBottomNav = () => {
-  return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-base-300 lg:hidden">
-      <div className="grid h-16 grid-cols-4">
-        {navItems.map(({ label, path, icon: Icon }) => (
-          <NavLink
-            key={path}
-            to={path}
-            className={({ isActive }) =>
-              `flex flex-col items-center justify-center gap-1 text-xs transition-colors ${
-                isActive ? "text-accent font-semibold" : "text-text"
-              }`
-            }
-          >
-            {({ isActive }) => (
-              <>
-                <Icon size={21} strokeWidth={isActive ? 2.5 : 2} />
+  const { can } = useRBAC();
 
-                <span>{label}</span>
-              </>
-            )}
-          </NavLink>
-        ))}
-      </div>
-    </nav>
+  const location = useLocation();
+
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
+
+  /**
+   * Permission filtered menu
+   */
+  const accessibleMenus = useMemo(() => {
+    return sidebarItems.filter(
+      (item) => !item.permission || can(item.permission),
+    );
+  }, [can]);
+
+  /**
+   * Primary bottom navigation
+   */
+  const primaryMenus = accessibleMenus.filter(
+    (item) => item.mobile === "primary",
+  );
+
+  /**
+   * More menu
+   */
+  const moreMenus = accessibleMenus.filter(
+    (item) => item.mobile === "more",
+  );
+
+  /**
+   * Check whether current route belongs to More menu
+   */
+  const isMoreActive = moreMenus.some(
+    (item) => location.pathname === item.path,
+  );
+
+  /**
+   * Close More menu after route change
+   */
+  useEffect(() => {
+    setIsMoreOpen(false);
+  }, [location.pathname]);
+
+  return (
+    <>
+      <MobileMoreMenu
+        menus={moreMenus}
+        isOpen={isMoreOpen}
+        onClose={() => setIsMoreOpen(false)}
+      />
+
+      <MobileBottomNavBar
+        menus={primaryMenus}
+        isMoreActive={isMoreActive}
+        isMoreOpen={isMoreOpen}
+        onMoreClick={() => setIsMoreOpen((prev) => !prev)}
+      />
+    </>
   );
 };
