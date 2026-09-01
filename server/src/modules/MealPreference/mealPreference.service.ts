@@ -3,9 +3,7 @@ import { checkMealCutoff } from "@/helpers/checkMealCutoff.helper.js";
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { getCurrentDate } from "@/utils/date.util.js";
-import { mealEntryRepository } from "../mealEntry/mealEntry.repository.js";
-import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
+import { getCurrentMealDate } from "@/utils/mealDate.js";
 import { mealRequestRepository } from "../mealRequest/mealRequest.repository.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { mealSettingRepository } from "../mealSetting/mealSetting.repository.js";
@@ -19,7 +17,13 @@ class MealPreferenceService {
   async upsert({ tenantId, userId, mealSessionId, payload }: IUpsertPayload) {
     const { breakfast, lunch, dinner, guestMeal } = payload;
 
-    const date = getCurrentDate();
+    /**
+     * Meal date is based on Maghrib.
+     *
+     * Before Maghrib → Today
+     * After Maghrib  → Tomorrow
+     */
+    const date = getCurrentMealDate();
 
     const socketPayload = {
       tenantId,
@@ -33,11 +37,17 @@ class MealPreferenceService {
     };
 
     const result = await sequelize.transaction(async (transaction) => {
+      /**
+       * Find existing meal preference.
+       */
       const existingPreference = await mealPreferenceRepository.findOne({
         tenantId,
         userId,
       });
 
+      /**
+       * Get tenant meal settings.
+       */
       const mealSetting = await mealSettingRepository.findOne({
         tenantId,
       });
@@ -46,6 +56,9 @@ class MealPreferenceService {
         throw new ApiError(404, "Meal setting not found");
       }
 
+      /**
+       * Validate meal session.
+       */
       const mealSession = await mealSessionRepository.findById(mealSessionId);
 
       if (!mealSession) {
@@ -53,7 +66,17 @@ class MealPreferenceService {
       }
 
       /**
-       * First time create
+       * ============================================================
+       * FIRST TIME CREATE
+       * ============================================================
+       *
+       * Only create/update the preference here.
+       *
+       * Do NOT create Meal Request manually.
+       * Do NOT create Meal Entry manually.
+       *
+       * Daily Meal Request Job will generate the request
+       * for the appropriate meal date.
        */
       if (!existingPreference) {
         return await mealPreferenceRepository.createWithOptions(
@@ -76,7 +99,12 @@ class MealPreferenceService {
       }
 
       /**
-       * Check ON OFF action
+       * ============================================================
+       * CHECK MEAL CUTOFF
+       * ============================================================
+       *
+       * Only check cutoff when the member actually changes
+       * the meal preference.
        */
       if (Number(existingPreference.breakfast) !== Number(breakfast)) {
         checkMealCutoff({
@@ -100,51 +128,54 @@ class MealPreferenceService {
       }
 
       /**
-       * Update Today's Meal Request
+       * ============================================================
+       * FIND MEAL REQUEST FOR CURRENT MEAL DATE
+       * ============================================================
+       *
+       * Before Maghrib:
+       *   date = today
+       *
+       * After Maghrib:
+       *   date = tomorrow
        */
-      const todayRequest = await mealRequestRepository.findTodayRequest({
+      const mealRequest = await mealRequestRepository.findByDate({
         tenantId,
         userId,
         date,
       });
 
-      if (todayRequest) {
+      /**
+       * ============================================================
+       * UPDATE MEAL REQUEST
+       * ============================================================
+       *
+       * Member ON/OFF only updates the Meal Request.
+       *
+       * IMPORTANT:
+       * We intentionally DO NOT update Meal Entry here.
+       *
+       * Meal Entry is created/managed by the Meal Request
+       * generation/approval flow.
+       */
+      if (mealRequest) {
         await mealRequestRepository.update(
-          { id: todayRequest.id },
+          { id: mealRequest.id },
           {
             breakfast,
             lunch,
             dinner,
             guestMeal: guestMeal ?? 0,
           },
-          { transaction },
+          {
+            transaction,
+          },
         );
       }
 
       /**
-       * Update Meal Entry
-       */
-
-      if (todayRequest && todayRequest.status === MealRequestStatus.APPROVED) {
-        const entry = await mealEntryRepository.findOne({
-          mealRequestId: todayRequest.id,
-        });
-        if (entry) {
-          await mealEntryRepository.update(
-            { mealRequestId: todayRequest.id },
-            {
-              breakfast,
-              lunch,
-              dinner,
-              guestMeal: guestMeal ?? 0,
-            },
-            { transaction },
-          );
-        }
-      }
-
-      /**
-       * Update Meal Preference
+       * ============================================================
+       * UPDATE MEAL PREFERENCE
+       * ============================================================
        */
       return await mealPreferenceRepository.update(
         { id: existingPreference.id },
@@ -154,15 +185,17 @@ class MealPreferenceService {
           dinner,
           guestMeal: guestMeal ?? 0,
         },
-        { transaction },
+        {
+          transaction,
+        },
       );
     });
 
     /**
-     * Transaction successfully committed
-     * Now emit realtime event
+     * Transaction successfully committed.
+     *
+     * Emit realtime event only after successful commit.
      */
-
     socketService.emitToTenant(
       tenantId,
       SocketEvent.MEAL_PLANNING_UPDATED,
