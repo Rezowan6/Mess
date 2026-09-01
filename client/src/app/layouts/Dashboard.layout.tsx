@@ -1,10 +1,16 @@
 import { Outlet } from "react-router-dom";
 
+import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 import { Header } from "@/shared/components/layout/header/Header";
-import { Sidebar } from "@/shared/components/layout/sidebar/Sidebar";
 import { MobileSidebar } from "@/shared/components/layout/sidebar/MobileSidebar";
+import { Sidebar } from "@/shared/components/layout/sidebar/Sidebar";
+import { MobileBottomNav } from "@/shared/components/navigation/MobileBottomNav";
 
 export const DashboardLayout = () => {
+  const currentTenant = useTenantStore((state) => state.currentTenant);
+
+  const role = currentTenant?.role ?? "";
+
   return (
     <div className="flex min-h-screen bg-background overflow-hidden">
       {/* Desktop Sidebar */}
@@ -14,7 +20,7 @@ export const DashboardLayout = () => {
 
       {/* Mobile Sidebar */}
 
-      <MobileSidebar />
+      {role !== "member" && <MobileSidebar />}
 
       <div className="flex min-w-0 flex-1 flex-col">
         <Header />
@@ -23,6 +29,8 @@ export const DashboardLayout = () => {
           <Outlet />
         </main>
       </div>
+
+      {role === "member" && <MobileBottomNav />}
     </div>
   );
 };
