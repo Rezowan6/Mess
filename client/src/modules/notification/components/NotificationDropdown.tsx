@@ -19,7 +19,7 @@ export const NotificationDropdown = ({ isOpen }: { isOpen: boolean }) => {
         ))}
 
       {notifications.length === 0 && (
-        <span className="block py-8 text-center text-sm text-base-content/50">
+        <span className="block py-8 text-center text-sm">
           Notification not found.
         </span>
       )}

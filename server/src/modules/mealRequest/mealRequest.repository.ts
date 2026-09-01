@@ -3,7 +3,6 @@ import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealRequest } from "@/models/index.js";
 import { Op, Sequelize, Transaction } from "sequelize";
 import {
-  IFindTodayMealRequest,
   MealRequestStatus,
   UpdateMealRequestDto,
 } from "./mealRequest.interface.js";
@@ -80,14 +79,27 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     return !!result;
   }
 
-  async findTodayRequest({ tenantId, userId, date }: IFindTodayMealRequest) {
+  async findByDate({
+    tenantId,
+    userId,
+    date,
+    mealSessionId,
+  }: {
+    tenantId: number;
+    userId: number;
+    date: Date;
+    mealSessionId?: number;
+  }): Promise<MealRequest | null> {
     const { start, end } = getRangeTime(date);
 
     return await this.findOneWithOptions({
       where: {
         tenantId,
-
         userId,
+
+        ...(mealSessionId !== undefined && {
+          mealSessionId,
+        }),
 
         date: {
           [Op.between]: [start, end],
@@ -177,75 +189,6 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     });
   }
 
-  async getMealRequestsByUserId(
-    userId: number,
-    tenantId: number,
-  ): Promise<MealRequest[]> {
-    return this.findAll({ where: { userId, tenantId } });
-  }
-
-  async getMyMealRequests({
-    tenantId,
-    userId,
-    mealSessionId,
-  }: {
-    tenantId: number;
-    userId: number;
-    mealSessionId: number;
-  }): Promise<MealRequest[]> {
-    return this.findAll({
-      where: {
-        userId,
-        tenantId,
-        mealSessionId,
-        status: MealRequestStatus.PENDING,
-      },
-      attributes: [
-        "id",
-        "date",
-        "breakfast",
-        "lunch",
-        "dinner",
-        "guest_meal",
-        "status",
-        "createdAt",
-      ],
-
-      include: [
-        {
-          association: "mealSession",
-          attributes: ["id", "month", "year", "status"],
-        },
-      ],
-      order: [["date", "DESC"]],
-    });
-  }
-
-  async getMealRequestsByDateAndTenant(
-    date: Date,
-    tenantId: number,
-  ): Promise<MealRequest[]> {
-    return this.findAll({ where: { date, tenantId } });
-  }
-
-  async getByTenantMealSessionUserIdAndDate(payload: {
-    tenantId: number;
-    mealSessionId: number;
-    userId: number;
-    date: Date;
-  }): Promise<MealRequest | null> {
-    const { tenantId, mealSessionId, userId, date } = payload;
-
-    const { start, end } = getRangeTime(date);
-
-    return this.findOne({
-      tenantId,
-      mealSessionId,
-      userId,
-      date: { [Op.between]: [start, end] },
-    });
-  }
-
   async updateMealRequest(
     id: number,
     mealSessionId: number,
@@ -275,10 +218,6 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
       },
       { transaction },
     );
-  }
-
-  async hasPendingRequests(tenantId: number, mealSessionId: number) {
-    return await this.findAll({ where: { tenantId, mealSessionId, status: MealRequestStatus.PENDING } });
   }
 }
 

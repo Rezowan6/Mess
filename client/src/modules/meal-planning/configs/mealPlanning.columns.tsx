@@ -29,9 +29,6 @@ export const getMealPlanningColumns = (
     className: "w-32",
     render: (row) => (
       <div className="flex items-center gap-2">
-        <Button disabled variant="success">
-          Approve
-        </Button>
 
         <Button
           variant="error"
