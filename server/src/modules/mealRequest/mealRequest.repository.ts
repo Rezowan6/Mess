@@ -50,6 +50,28 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     });
   }
 
+  async findTodayRequest({
+    tenantId,
+    userId,
+    date,
+  }: {
+    tenantId: number;
+    userId: number;
+    date: Date;
+  }): Promise<MealRequest | null> {
+    const { start, end } = getRangeTime(date);
+
+    return this.findOneWithOptions({
+      where: {
+        tenantId,
+        userId,
+        date: {
+          [Op.between]: [start, end],
+        },
+      },
+    });
+  }
+
   async existsByDate({
     tenantId,
     mealSessionId,
@@ -77,6 +99,19 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     });
 
     return !!result;
+  }
+
+  async hasPendingRequests(
+    tenantId: number,
+    mealSessionId: number,
+  ): Promise<boolean> {
+    const request = await this.findOne({
+      tenantId,
+      mealSessionId,
+      status: MealRequestStatus.PENDING,
+    });
+
+    return Boolean(request);
   }
 
   async findByDate({

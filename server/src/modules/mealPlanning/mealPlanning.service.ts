@@ -1,4 +1,3 @@
-import { getCurrentDate } from "@/utils/date.util.js";
 import { mealEntryRepository } from "../mealEntry/mealEntry.repository.js";
 import { mealPreferenceRepository } from "../MealPreference/mealPreference.repository.js";
 import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
@@ -8,6 +7,9 @@ import sequelize from "@/configs/db.js";
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
+import { getCurrentMealDate } from "@/utils/mealDate.js";
+import { Notification } from "../notification/notification.interface.js";
+import { notificationService } from "../notification/notification.service.js";
 import type {
   IMealPlanningEntry,
   IMealPlanningMember,
@@ -15,8 +17,6 @@ import type {
   IMealPlanningSummary,
   IRejectMealPayload,
 } from "./mealPlanning.interface.js";
-import { notificationService } from "../notification/notification.service.js";
-import { Notification } from "../notification/notification.interface.js";
 
 class MealPlanningService {
   private buildMealPlanningSummary(
@@ -114,7 +114,7 @@ class MealPlanningService {
         );
       }
 
-      const date = getCurrentDate();
+      const date = getCurrentMealDate();
 
       /**
        * Update today's meal request

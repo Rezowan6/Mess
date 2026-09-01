@@ -72,7 +72,7 @@ class MealSessionService {
       sessionId,
     );
 
-    if (pendingMealReq.length) {
+    if (pendingMealReq) {
       throw new ApiError(
         400,
         "Approve or reject all meal requests before closing session.",
