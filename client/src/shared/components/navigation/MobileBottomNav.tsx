@@ -26,7 +26,7 @@ const navItems = [
 
 export const MobileBottomNav = () => {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background lg:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-base-300 lg:hidden">
       <div className="grid h-16 grid-cols-4">
         {navItems.map(({ label, path, icon: Icon }) => (
           <NavLink
