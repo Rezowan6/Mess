@@ -41,7 +41,18 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     // notification
     const handleNotification = (notification: any) => {
+      console.log(notification)
       addNotificationToCache(queryClient, notification, currentTenant.tenantId);
+
+      /**
+       * Role updated
+       * Refetch /auth/me so RBAC gets the latest role.
+       */
+      if (notification?.type === "ROLE_UPDATED") {
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.auth.me,
+        });
+      }
     };
 
     socket.on(SocketEvent.MEAL_PLANNING_UPDATED, handleMealPlanningUpdated);

@@ -21,7 +21,7 @@ export const RoleGuard = ({ allowedRoles }: Props) => {
   const role = user?.role === ROLES.SYSTEM_OWNER ? user.role : membership?.role;
 
   if (!role || !allowedRoles.includes(role)) {
-    console.log(user)
+
     return <Navigate to="/403" replace />;
   }
 
