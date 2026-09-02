@@ -1,4 +1,4 @@
-import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 
 import { tokenStorage } from "@/shared/utils/token";
 import { API_ENDPOINTS } from "../constants/api";
@@ -20,6 +20,11 @@ export const API = axios.create({
 
 // Request Interceptor
 API.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+    if (!navigator.onLine) {
+    return Promise.reject(
+      new AxiosError("You are offline. Please check your internet connection."),
+    );
+  }
   const token = tokenStorage.get();
 
   const currentTenant = useTenantStore.getState().currentTenant;

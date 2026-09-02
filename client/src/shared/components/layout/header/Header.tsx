@@ -1,5 +1,4 @@
 import { NotificationBell } from "@/modules/notification/components/NotificationBell";
-import { InstallAppButton } from "../../pwa/InstallAppButton";
 import { TenantName } from "../../ui/TenantName";
 import { HeaderProfile } from "./HeaderProfile";
 
@@ -21,8 +20,6 @@ export const Header = () => {
           <NotificationBell />
 
           <HeaderProfile />
-
-          <InstallAppButton />
         </div>
       </div>
     </header>

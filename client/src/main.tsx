@@ -12,6 +12,7 @@ import "@/styles/globals.css";
 import "@/styles/theme.css";
 import { SocketProvider } from "./app/providers/SocketProvider.tsx";
 import { ThemeProvider } from "./app/providers/ThemeProvider.tsx";
+import { OfflineMessage } from "./shared/components/pwa/OfflineMessage.tsx";
 
 registerSW({ immediate: true });
 
@@ -22,6 +23,7 @@ createRoot(document.getElementById("root")!).render(
         <AuthProvider>
           <SocketProvider>
             <App />
+            <OfflineMessage />
             <Toaster
               position="top-right"
               containerStyle={{
