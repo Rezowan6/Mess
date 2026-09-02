@@ -1,37 +1,74 @@
-import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
+import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 
 import { tokenStorage } from "@/shared/utils/token";
 import { API_ENDPOINTS } from "../constants/api";
 
 import { useTenantStore } from "@/modules/tenant/store/tenant.store";
+import { env } from "../config/env";
 import { HEADERS } from "../constants/headers";
 import { forceLogout } from "../utils/forceLogout";
-import { env } from "../config/env";
 
-// Production Axios Instance
+// ======================================================
+// Types
+// ======================================================
+
+interface RefreshResponse {
+  accessToken: string;
+}
+
+type RetryableRequestConfig = InternalAxiosRequestConfig & {
+  _retry?: boolean;
+};
+
+// ======================================================
+// Axios Instance
+// ======================================================
 
 export const API = axios.create({
-  baseURL: `${env.apiUrl}`,
+  baseURL: env.apiUrl,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
+// ======================================================
 // Request Interceptor
+// ======================================================
+
 API.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-    if (!navigator.onLine) {
+  // ----------------------------------------------
+  // Offline protection
+  // ----------------------------------------------
+
+  if (!navigator.onLine) {
     return Promise.reject(
-      new AxiosError("You are offline. Please check your internet connection."),
+      new axios.AxiosError(
+        "You are offline. Please check your internet connection.",
+        "ERR_NETWORK",
+      ),
     );
   }
-  const token = tokenStorage.get();
 
-  const currentTenant = useTenantStore.getState().currentTenant;
+  // ----------------------------------------------
+  // Access Token
+  // ----------------------------------------------
+
+  const token = tokenStorage.get();
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  // ----------------------------------------------
+  // Current Tenant
+  // ----------------------------------------------
+
+  const currentTenant = useTenantStore.getState().currentTenant;
+
+  // ----------------------------------------------
+  // Routes that don't require Tenant ID
+  // ----------------------------------------------
 
   const skipTenantHeaderRoutes = [
     API_ENDPOINTS.AUTH.LOGIN,
@@ -51,50 +88,85 @@ API.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   return config;
 });
 
-// Refresh Response Type
-interface RefreshResponse {
-  accessToken: string;
-}
+// ======================================================
 // Response Interceptor
+// ======================================================
+
 API.interceptors.response.use(
   (response) => response,
 
   async (error: AxiosError) => {
-    const originalRequest = error.config;
+    const originalRequest = error.config as RetryableRequestConfig | undefined;
 
-    if (
-      error.response?.status === 401 &&
-      originalRequest &&
-      !originalRequest._retry
-    ) {
-      originalRequest._retry = true;
+    // ==================================================
+    // Network Error
+    // ==================================================
 
-      try {
-        const { data } = await axios.post<RefreshResponse>(
-          `${env.apiUrl}${API_ENDPOINTS.AUTH.REFRESH}`,
-          {},
-          {
-            withCredentials: true,
-          },
-        );
-
-        tokenStorage.set(data.accessToken);
-
-        if (originalRequest.headers) {
-          originalRequest.headers.set(
-            "Authorization",
-            `Bearer ${data.accessToken}`,
-          );
-        }
-
-        return API(originalRequest);
-      } catch {
-        forceLogout();
-
-        return Promise.reject(error);
-      }
+    if (!error.response) {
+      return Promise.reject(error);
     }
 
-    return Promise.reject(error);
+    // ==================================================
+    // Unauthorized
+    // ==================================================
+
+    if (
+      error.response.status !== 401 ||
+      !originalRequest ||
+      originalRequest._retry
+    ) {
+      return Promise.reject(error);
+    }
+
+    originalRequest._retry = true;
+
+    // ==================================================
+    // Refresh Access Token
+    // ==================================================
+
+    try {
+      const { data } = await axios.post<RefreshResponse>(
+        `${env.apiUrl}${API_ENDPOINTS.AUTH.REFRESH}`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+
+      // Save new access token
+      tokenStorage.set(data.accessToken);
+
+      // Update original request
+      originalRequest.headers.set(
+        "Authorization",
+        `Bearer ${data.accessToken}`,
+      );
+
+      // Retry original request
+      return API(originalRequest);
+    } catch (refreshError) {
+      const refreshAxiosError = refreshError as AxiosError;
+
+      // ==================================================
+      // Refresh Network Error
+      // ==================================================
+
+      if (!refreshAxiosError.response) {
+        return Promise.reject(refreshError);
+      }
+
+      // ==================================================
+      // Refresh Token Invalid
+      // ==================================================
+
+      if (
+        refreshAxiosError.response.status === 401 ||
+        refreshAxiosError.response.status === 403
+      ) {
+        forceLogout();
+      }
+
+      return Promise.reject(refreshError);
+    }
   },
 );
