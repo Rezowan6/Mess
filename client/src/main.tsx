@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { registerSW } from "virtual:pwa-register";
 
 import { QueryProvider } from "@/app/providers/query.provider";
 import { Toaster } from "react-hot-toast";
@@ -11,6 +12,8 @@ import "@/styles/globals.css";
 import "@/styles/theme.css";
 import { SocketProvider } from "./app/providers/SocketProvider.tsx";
 import { ThemeProvider } from "./app/providers/ThemeProvider.tsx";
+
+registerSW({ immediate: true });
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
