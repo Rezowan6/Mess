@@ -28,17 +28,12 @@ export const InstallAppButton = () => {
       setInstallPrompt(null);
     };
 
-    window.addEventListener(
-      "beforeinstallprompt",
-      handleBeforeInstallPrompt,
-    );
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
     window.addEventListener("appinstalled", handleAppInstalled);
 
     // Check if already running as installed PWA
-    const standalone = window.matchMedia(
-      "(display-mode: standalone)",
-    ).matches;
+    const standalone = window.matchMedia("(display-mode: standalone)").matches;
 
     if (standalone) {
       setIsInstalled(true);
@@ -76,10 +71,12 @@ export const InstallAppButton = () => {
     <Button
       type="button"
       onClick={handleInstall}
+      variant="primary"
+      leftIcon={<Smartphone />}
+      rightIcon={<Download />}
+      iconSize={18}
     >
-      <Smartphone size={18} />
-      <span>Install App</span>
-      <Download size={16} />
+      Install App
     </Button>
   );
 };
