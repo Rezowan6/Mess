@@ -12,18 +12,14 @@ export const DashboardLayout = () => {
         <Sidebar />
       </div>
 
-      {/* Main Application */}
       <div className="flex min-h-dvh min-w-0 flex-col lg:pl-64">
-        {/* Header */}
         <Header />
 
-        {/* Page Content */}
         <main className="min-w-0 flex-1 overflow-x-hidden px-4 pb-24 pt-20 sm:px-6 lg:px-8 lg:pb-6">
           <Outlet />
         </main>
       </div>
 
-      {/* Mobile Navigation */}
       <MobileBottomNav />
     </div>
   );

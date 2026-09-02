@@ -8,13 +8,45 @@
     dark --prefersdark;
 }
 
+/* =====================================================
+   App Root / Viewport
+===================================================== */
+
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+/* =====================================================
+   PWA / Mobile Viewport
+===================================================== */
+
+html,
+body,
+#root {
+  min-height: 100dvh;
+}
+
+/* =====================================================
+   Shimmer
+===================================================== */
+
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
   }
 }
-
-html {
-  scroll-behavior: smooth;
-}
-
