@@ -33,9 +33,7 @@ export const MobileBottomNav = () => {
   /**
    * More menu
    */
-  const moreMenus = accessibleMenus.filter(
-    (item) => item.mobile === "more",
-  );
+  const moreMenus = accessibleMenus.filter((item) => item.mobile === "more");
 
   /**
    * Check whether current route belongs to More menu
@@ -53,17 +51,18 @@ export const MobileBottomNav = () => {
 
   return (
     <>
+      <MobileBottomNavBar
+        menus={primaryMenus}
+        moreMenus={moreMenus}
+        isMoreActive={isMoreActive}
+        isMoreOpen={isMoreOpen}
+        onMoreClick={() => setIsMoreOpen((prev) => !prev)}
+      />
+
       <MobileMoreMenu
         menus={moreMenus}
         isOpen={isMoreOpen}
         onClose={() => setIsMoreOpen(false)}
-      />
-
-      <MobileBottomNavBar
-        menus={primaryMenus}
-        isMoreActive={isMoreActive}
-        isMoreOpen={isMoreOpen}
-        onMoreClick={() => setIsMoreOpen((prev) => !prev)}
       />
     </>
   );

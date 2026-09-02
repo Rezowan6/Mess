@@ -1,5 +1,5 @@
 import { Trash2 } from "lucide-react";
-import { type ChangeEvent } from "react";
+import { useMemo, type ChangeEvent } from "react";
 
 import type { ITenantMember } from "../types/userManagement.types";
 
@@ -38,10 +38,29 @@ export const MemberActions = ({ member }: Props) => {
     });
   };
 
-  const roleOptions =
-    role === ROLES.ADMIN
-      ? ROLE_OPTIONS
-      : ROLE_OPTIONS.filter((item) => item.value !== ROLES.ADMIN);
+  const roleOptions = useMemo(() => {
+    const options =
+      role === ROLES.ADMIN
+        ? ROLE_OPTIONS
+        : ROLE_OPTIONS.filter((item) => item.value !== ROLES.ADMIN);
+
+    // Current role যেন সবসময় select-এর মধ্যে থাকে
+    const currentRoleExists = options.some(
+      (item) => String(item.value) === String(member.role),
+    );
+
+    if (!currentRoleExists && member.role) {
+      return [
+        {
+          label: member.role,
+          value: member.role,
+        },
+        ...options,
+      ];
+    }
+
+    return options;
+  }, [role, member.role]);
 
   const memberName = member.user?.name ?? "this member";
 
