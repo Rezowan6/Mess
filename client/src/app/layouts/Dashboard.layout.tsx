@@ -6,21 +6,24 @@ import { MobileBottomNav } from "@/shared/components/navigation/MobileBottomNav"
 
 export const DashboardLayout = () => {
   return (
-    <div className="flex min-h-screen bg-background overflow-hidden">
+    <div className="min-h-dvh w-full overflow-x-hidden bg-background">
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block lg:w-64">
+      <div className="hidden lg:block">
         <Sidebar />
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      {/* Main Application */}
+      <div className="flex min-h-dvh min-w-0 flex-col lg:pl-64">
+        {/* Header */}
         <Header />
 
-        <main className="mt-16 flex-1 overflow-y-auto p-4 lg:p-6 pb-20 lg:pb-0">
+        {/* Page Content */}
+        <main className="min-w-0 flex-1 overflow-x-hidden px-4 pb-24 pt-20 sm:px-6 lg:px-8 lg:pb-6">
           <Outlet />
         </main>
       </div>
 
-      {/* mobail bottom nav */}
+      {/* Mobile Navigation */}
       <MobileBottomNav />
     </div>
   );
