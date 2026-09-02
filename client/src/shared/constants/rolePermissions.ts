@@ -122,6 +122,9 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     PERMISSIONS.NOTICE_VIEW,
     PERMISSIONS.NOTICE_CREATE,
     PERMISSIONS.NOTICE_UPDATE,
+
+    // settings
+    PERMISSIONS.SETTINGS_VIEW,
   ],
 
   [ROLES.MEMBER]: [

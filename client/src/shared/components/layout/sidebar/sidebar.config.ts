@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   Puzzle,
   Receipt,
+  Settings,
   SlidersHorizontal,
   Users,
   Utensils,
@@ -116,6 +117,13 @@ export const sidebarItems: ISidebarItem[] = [
     path: ROUTES.MONTHLY_CALCULATION,
     icon: Calculator,
     permission: PERMISSIONS.MONTHLY_CALCULATION_VIEW,
+    mobile: "more",
+  },
+  {
+    title: "Settings",
+    path: ROUTES.SETTINGS,
+    icon: Settings,
+    permission: PERMISSIONS.SETTINGS_VIEW,
     mobile: "more",
   },
 
