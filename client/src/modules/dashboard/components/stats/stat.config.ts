@@ -8,39 +8,51 @@ import {
 
 import { ROUTES } from "@/shared/constants/routes";
 
+export interface DashboardStats {
+  totalMeals: number;
+  totalMembers: number;
+  totalExpense: number;
+  totalDeposit: number;
+}
+
 export interface DashboardStat {
+  key: keyof DashboardStats;
   title: string;
-  value: string;
+  value: string | number;
   description: string;
   icon: LucideIcon;
   path: string;
 }
 
-export const dashboardStats: DashboardStat[] = [
+export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => [
   {
+    key: "totalMeals",
     title: "Total Meals",
-    value: "142",
+    value: stats.totalMeals,
     description: "This month",
     icon: Utensils,
     path: ROUTES.MEAL_ENTRY,
   },
   {
+    key: "totalMembers",
     title: "Total Members",
-    value: "18",
+    value: stats.totalMembers,
     description: "Active members",
     icon: Users,
     path: ROUTES.USERS,
   },
   {
+    key: "totalExpense",
     title: "Total Expense",
-    value: "৳24,500",
+    value: `৳ ${stats.totalExpense}`,
     description: "This month",
     icon: DollarSign,
     path: ROUTES.EXPENSE,
   },
   {
+    key: "totalDeposit",
     title: "Total Deposit",
-    value: "৳30,000",
+    value: `৳ ${stats.totalDeposit}`,
     description: "This month",
     icon: CreditCard,
     path: ROUTES.DEPOSIT,

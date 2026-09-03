@@ -11,6 +11,10 @@ export const API_ENDPOINTS = {
     CREATE: "/tenants",
   },
 
+  DASHBOARD: {
+    STATS: "dashboards/stats",
+  },
+
   PLAN: {
     LIST: "/plans",
     BY_ID: (id: number) => `/plans/${id}`,

@@ -138,6 +138,9 @@ export const queryKeys = {
 
     list: (tenantId?: number) => ["deposits", tenantId, "list"] as const,
   },
+  dashboard: {
+    stats: (tenantId?: number) => ["dashboard", tenantId] as const,
+  },
 
   expenses: {
     all: (tenantId?: number) => ["expenses", tenantId] as const,
