@@ -1,20 +1,24 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { queryKeys } from "@/shared/constants/queryKeys";
+import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
 import { userManagementApi } from "../api/userManagement.api";
-import { queryKeys } from '@/shared/constants/queryKeys';
-import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 
 export const useInviteMember = () => {
   const queryClient = useQueryClient();
 
-  const currenttenant = useTenantStore((state) => state.currentTenant);
+  const tenantId = useCurrentTenantId();
 
   return useMutation({
     mutationFn: userManagementApi.inviteMember,
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.tenants.invites(currenttenant?.tenantId),
+        queryKey: queryKeys.tenants.invites(tenantId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.dashboard.stats(tenantId),
       });
     },
   });

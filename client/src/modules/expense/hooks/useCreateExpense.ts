@@ -25,6 +25,10 @@ export const useCreateExpense = () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.monthlyCalculations.current(tenantId),
       });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.dashboard.stats(tenantId),
+      });
     },
   });
 };
