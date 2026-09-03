@@ -5,6 +5,8 @@ import { dashboardController } from "./dashboard.controller.js";
 
 const router = Router();
 
-router.get("/today", ...managerAccess, dashboardController.getTodayDashboard);
+router.get("/today", ...managerAccess, dashboardController.getTodayDashboard); // not use
+
+router.get("/stats", ...managerAccess, dashboardController.getDashboardStats);
 
 export default router;

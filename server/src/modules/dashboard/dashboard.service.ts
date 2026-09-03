@@ -34,6 +34,27 @@ class DashboardService {
       todayTotalPendingMealReq,
     };
   }
+
+  async getDashboardStats(tenantId: number, mealSessionId: number) {
+    const date = getCurrentDate();
+
+    const [totalMembers, totalMeals, totalExpense, totalDeposit] =
+      await Promise.all([
+        dashboardRepository.getTotalMembers(tenantId),
+        dashboardRepository.getTodayMeals(tenantId, mealSessionId, date),
+        dashboardRepository.getTodayExpense(tenantId, mealSessionId, date),
+        dashboardRepository.getTodayDeposit(tenantId, mealSessionId, date),
+      ]);
+
+    return {
+      totalMeals: Number(totalMeals?.totalMeals ?? 0),
+      totalMembers,
+      totalExpense: Number(totalExpense ?? 0),
+      totalDeposit: Number(totalDeposit ?? 0),
+    };
+  }
+
+  
 }
 
-export const dashboardService = new DashboardService()
+export const dashboardService = new DashboardService();
