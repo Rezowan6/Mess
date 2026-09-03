@@ -1,4 +1,4 @@
-import { DashboardPage } from "@/pages/DashboardPage";
+import { DashboardPage } from "@/modules/dashboard/pages/DashboardPage";
 import { ROLES } from "@/shared/constants/roles";
 import { ROUTES } from "@/shared/constants/routes";
 import { RoleGuard } from "@/shared/guards/role.guard";
