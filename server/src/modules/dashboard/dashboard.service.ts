@@ -36,25 +36,21 @@ class DashboardService {
   }
 
   async getDashboardStats(tenantId: number, mealSessionId: number) {
-    const date = getCurrentDate();
-
-    const [totalMembers, totalMeals, totalExpense, totalDeposit] =
+    const [totalMembers, totalMeals, monthlyExpenses, monthlyDeposit] =
       await Promise.all([
         dashboardRepository.getTotalMembers(tenantId),
-        dashboardRepository.getTodayMeals(tenantId, mealSessionId, date),
-        dashboardRepository.getTodayExpense(tenantId, mealSessionId, date),
-        dashboardRepository.getTodayDeposit(tenantId, mealSessionId, date),
+        dashboardRepository.getTotalMeals(tenantId, mealSessionId),
+        dashboardRepository.getTotalExpense(tenantId, mealSessionId),
+        dashboardRepository.getTotalDeposit(tenantId, mealSessionId),
       ]);
 
     return {
-      totalMeals: Number(totalMeals?.totalMeals ?? 0),
+      totalMeals: Number(totalMeals ?? 0),
       totalMembers,
-      totalExpense: Number(totalExpense ?? 0),
-      totalDeposit: Number(totalDeposit ?? 0),
+      totalExpense: Number(monthlyExpenses ?? 0),
+      totalDeposit: Number(monthlyDeposit ?? 0),
     };
   }
-
-  
 }
 
 export const dashboardService = new DashboardService();

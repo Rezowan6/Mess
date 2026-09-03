@@ -3,7 +3,8 @@ import { DashboardStatCard } from "./DashboardStatCard";
 import { getDashboardStats } from "./stat.config";
 
 export const DashboardStats = () => {
-  const { data } = useDashboardStats();
+  const { data, } = useDashboardStats();
+  
 
   const stats = data?.data;
 

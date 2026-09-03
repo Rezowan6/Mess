@@ -12,7 +12,7 @@ import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
 import { ITodayToalMeals } from "./dashboard.interface.js";
 
 class DashboardRepository {
-   async getTotalMembers(tenantId: number) {
+  async getTotalMembers(tenantId: number) {
     return TenantMembership.count({
       where: {
         tenantId,
@@ -20,11 +20,7 @@ class DashboardRepository {
     });
   }
 
-   async getTodayExpense(
-    tenantId: number,
-    mealSessionId: number,
-    date: string,
-  ) {
+  async getTodayExpense(tenantId: number, mealSessionId: number, date: string) {
     const { start, end } = getRangeTime(date);
     return (
       (await Expenses.sum("amount", {
@@ -37,11 +33,7 @@ class DashboardRepository {
     );
   }
 
-   async getTodayDeposit(
-    tenantId: number,
-    mealSessionId: number,
-    date: string,
-  ) {
+  async getTodayDeposit(tenantId: number, mealSessionId: number, date: string) {
     const { start, end } = getRangeTime(date);
     return (
       (await Deposit.sum("amount", {
@@ -54,7 +46,7 @@ class DashboardRepository {
     );
   }
 
-   async getTodayMeals(
+  async getTodayMeals(
     tenantId: number,
     mealSessionId: number,
     date: string,
@@ -79,7 +71,7 @@ class DashboardRepository {
     return result as ITodayToalMeals | null;
   }
 
-   async getTodayPendingMealReq(
+  async getTodayPendingMealReq(
     tenantId: number,
     mealSessionId: number,
     date: string,
@@ -109,7 +101,7 @@ class DashboardRepository {
     });
   }
 
-   async getTodayPendingMealReqCount(
+  async getTodayPendingMealReqCount(
     tenantId: number,
     mealSessionId: number,
     date: string,
@@ -124,5 +116,48 @@ class DashboardRepository {
       },
     });
   }
+
+  async getTotalMeals(tenantId: number, mealSessionId: number) {
+    const mealEntries = await MealEntry.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+      },
+      attributes: ["breakfast", "lunch", "dinner", "guest_meal"],
+      raw: true,
+    });
+
+    return mealEntries.reduce(
+      (total, meal) =>
+        total +
+        Number(meal.breakfast ?? 0) +
+        Number(meal.lunch ?? 0) +
+        Number(meal.dinner ?? 0) +
+        Number(meal.guestMeal ?? 0),
+      0,
+    );
+  }
+
+  async getTotalExpense(tenantId: number, mealSessionId: number) {
+    return (
+      (await Expenses.sum("amount", {
+        where: {
+          tenantId,
+          mealSessionId,
+        },
+      })) || 0
+    );
+  }
+
+  async getTotalDeposit(tenantId: number, mealSessionId: number) {
+    return (
+      (await Deposit.sum("amount", {
+        where: {
+          tenantId,
+          mealSessionId,
+        },
+      })) || 0
+    );
+  }
 }
-export const dashboardRepository = new DashboardRepository()
+export const dashboardRepository = new DashboardRepository();
