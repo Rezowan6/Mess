@@ -34,6 +34,18 @@ class DashboardController {
       data: result,
     });
   });
+
+  getMealTrend = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
+
+    const result = await dashboardService.getMealTrend(tenantId, mealSessionId);
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Meal trend data retrieved successfully.",
+      data: result,
+    });
+  });
 }
 
 export const dashboardController = new DashboardController();

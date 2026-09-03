@@ -51,6 +51,10 @@ class DashboardService {
       totalDeposit: Number(monthlyDeposit ?? 0),
     };
   }
+
+  async getMealTrend(tenantId: number, mealSessionId: number) {
+  return dashboardRepository.getMealTrend(tenantId, mealSessionId);
+}
 }
 
 export const dashboardService = new DashboardService();

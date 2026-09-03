@@ -9,4 +9,6 @@ router.get("/today", ...managerAccess, dashboardController.getTodayDashboard); /
 
 router.get("/stats", ...allAccess, dashboardController.getDashboardStats);
 
+router.get("/meal-trend", ...allAccess, dashboardController.getMealTrend);
+
 export default router;

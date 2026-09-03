@@ -159,5 +159,24 @@ class DashboardRepository {
       })) || 0
     );
   }
+
+  async getMealTrend(tenantId: number, mealSessionId: number) {
+    return MealEntry.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+      },
+      attributes: [
+        "date",
+        [
+          fn("SUM", literal("breakfast + lunch + dinner + guest_meal")),
+          "meals",
+        ],
+      ],
+      group: ["date"],
+      order: [["date", "ASC"]],
+      raw: true,
+    });
+  }
 }
 export const dashboardRepository = new DashboardRepository();
