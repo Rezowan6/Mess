@@ -1,4 +1,5 @@
 import { DashboardHeader } from "../components/header/DashboardHeader";
+import { DashboardStats } from "../components/stats/DashboardStats";
 import { DashboardLayout } from "../layout/DashboardLayout";
 
 export const DashboardPage = () => {
@@ -6,7 +7,7 @@ export const DashboardPage = () => {
     <DashboardLayout>
       <DashboardHeader />
 
-      {/* <DashboardStats /> */}
+      <DashboardStats />
 
       {/* <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <TodaysMeals />
