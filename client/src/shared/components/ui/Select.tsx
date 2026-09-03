@@ -2,14 +2,13 @@ import clsx from "clsx";
 import { ChevronDown } from "lucide-react";
 import {
   forwardRef,
-  useEffect,
-  useRef,
   useState,
   type ReactNode,
   type SelectHTMLAttributes,
 } from "react";
 
 import type { Permission } from "@/shared/constants/permissions";
+import { useClickOutside } from "@/shared/hooks/useClickOutside";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 import "@/styles/modules/select.module.css";
 
@@ -63,7 +62,6 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const { can } = useRBAC();
 
     const [isOpen, setIsOpen] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null);
 
     const initialValue =
       value !== undefined
@@ -80,22 +78,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       (option) => String(option.value) === selectedValue,
     );
 
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (
-          containerRef.current &&
-          !containerRef.current.contains(event.target as Node)
-        ) {
-          setIsOpen(false);
-        }
-      };
+    const closeDropdown = () => {
+      setIsOpen(false);
+    };
 
-      document.addEventListener("mousedown", handleClickOutside);
-
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, []);
+    const containerRef = useClickOutside<HTMLDivElement>(closeDropdown);
 
     if (permission && !can(permission)) {
       return null;
@@ -127,10 +114,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     };
 
     const selectElement = (
-      <div ref={containerRef} className="relative w-full">
+      <div ref={containerRef} className="relative w-full overflow-visible">
         <div
           className={clsx(
-            "flex w-full max-w-28 items-center rounded-md border border-success/40 bg-background transition-all duration-200",
+            "flex w-full min-w-0 items-center rounded-md border border-success/40 bg-background transition-all duration-200",
             error
               ? "border-error"
               : isOpen
@@ -150,14 +137,13 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             aria-haspopup="listbox"
             aria-expanded={isOpen}
             className={clsx(
-              "flex w-full items-center justify-between gap-1 bg-transparent py-2 text-left outline-none",
+              "flex w-full items-center justify-between gap-1 bg-transparent py-2 px-3 text-left outline-none",
               disabled || isLoading ? "cursor-not-allowed" : "cursor-pointer",
               className,
             )}
           >
             <span
               className={clsx(
-                "truncate",
                 selectedOption ? "text-text" : "text-text-muted",
               )}
             >
@@ -178,7 +164,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 
         <div
           className={clsx(
-            "absolute left-0 right-0 top-full z-50 mt-0.5 origin-top overflow-hidden rounded-lg border border-success bg-background p-1 shadow-lg transition-all duration-200",
+            "absolute left-0 right-0 top-full z-999 mt-0.5 origin-top overflow-hidden rounded-lg border border-success bg-background p-1 shadow-lg",
             isOpen
               ? "visible translate-y-0 scale-100 opacity-100"
               : "invisible -translate-y-2 scale-95 opacity-0",

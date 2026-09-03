@@ -4,10 +4,6 @@ import type { SelectOption } from "@/shared/components/ui/Select";
 
 export const ROLE_OPTIONS: SelectOption[] = [
   {
-    label: "Admin",
-    value: ROLES.ADMIN,
-  },
-  {
     label: "Manager",
     value: ROLES.MANAGER,
   },

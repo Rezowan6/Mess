@@ -80,7 +80,6 @@ export const InviteMemberModal = () => {
           />
 
           <Select
-            tooltip="Select role"
             label="Role"
             options={ROLE_OPTIONS}
             error={errors.role?.message}
