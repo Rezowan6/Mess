@@ -21,6 +21,10 @@ export const useDeleteDeposit = () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.monthlyCalculations.current(tenantId),
       });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.dashboard.stats(tenantId),
+      });
     },
   });
 };
