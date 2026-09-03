@@ -10,7 +10,7 @@ export const DashboardWelcome = () => {
           Welcome back {member?.name}
         </h1>
 
-        <Sparkles size={22} className="text-accent" strokeWidth={2} />
+        <Sparkles size={22} className="text-accent animate-pulse" strokeWidth={2} />
       </div>
 
       <p className="text-sm sm:text-base">
