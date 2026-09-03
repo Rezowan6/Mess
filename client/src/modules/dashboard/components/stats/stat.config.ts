@@ -37,7 +37,7 @@ export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => [
     key: "totalMembers",
     title: "Total Members",
     value: stats.totalMembers,
-    description: "Active members",
+    description: "Active",
     icon: Users,
     path: ROUTES.USERS,
   },

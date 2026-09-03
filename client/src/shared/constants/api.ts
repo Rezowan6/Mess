@@ -13,6 +13,7 @@ export const API_ENDPOINTS = {
 
   DASHBOARD: {
     STATS: "dashboards/stats",
+    MEAL_TREND: "dashboards/meal-trend",
   },
 
   PLAN: {

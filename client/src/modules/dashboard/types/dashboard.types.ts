@@ -12,4 +12,11 @@ export interface IApiResponse<T> {
   data: T;
 }
 
+export interface IMealTrend {
+  date: string;
+  meals: string;
+}
+
+export type MealTrendResponse = IApiResponse<IMealTrend[]>;
+
 export type DashboardStatsResponse = IApiResponse<IDashboardStats>;

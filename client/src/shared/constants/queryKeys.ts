@@ -139,7 +139,10 @@ export const queryKeys = {
     list: (tenantId?: number) => ["deposits", tenantId, "list"] as const,
   },
   dashboard: {
-    stats: (tenantId?: number) => ["dashboard", tenantId] as const,
+    stats: (tenantId?: number) => ["dashboard", "stats", tenantId] as const,
+
+    mealTrend: (tenantId?: number) =>
+      ["dashboard", "meal-trend", tenantId] as const,
   },
 
   expenses: {

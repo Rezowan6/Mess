@@ -1,16 +1,10 @@
+import { EmptyState } from "@/shared/components/feedback/EmptyState";
+import { formatDate } from "@/shared/utils/date.utils";
+import { useMealTrend } from "../../hooks/useMealTrend";
 import { MealTrendChartContent } from "./MealTrendChartContent";
+import { MealTrendChartSkeleton } from "./MealTrendChartSkeleton";
 import { MealTrendHeader } from "./MealTrendHeader";
 import { MealTrendSummary } from "./MealTrendSummary";
-
-const mealTrendData = [
-  { date: "01 Aug", meals: 18 },
-  { date: "05 Aug", meals: 24 },
-  { date: "10 Aug", meals: 21 },
-  { date: "15 Aug", meals: 32 },
-  { date: "20 Aug", meals: 28 },
-  { date: "25 Aug", meals: 38 },
-  { date: "30 Aug", meals: 35 },
-];
 
 export interface MealTrendData {
   date: string;
@@ -18,6 +12,26 @@ export interface MealTrendData {
 }
 
 export const MealTrendChart = () => {
+  const { data, isPending } = useMealTrend();
+
+  if (isPending) {
+    return <MealTrendChartSkeleton />;
+  }
+
+  const mealTrendData: MealTrendData[] =
+    data?.data?.map((item) => ({
+      date: formatDate(item.date),
+      meals: Number(item.meals),
+    })) ?? [];
+
+  if (!mealTrendData.length) {
+    return (
+      <EmptyState
+        title="No Meal Trend Data"
+        description="There is no meal consumption data available for this meal session."
+      />
+    );
+  }
   return (
     <div className="rounded-md border border-success/40 bg-background p-5 shadow-sm">
       {/* Header */}
