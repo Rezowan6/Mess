@@ -81,6 +81,7 @@ export const InviteMemberModal = () => {
 
           <Select
             label="Role"
+            defaultValue={ROLES.MEMBER}
             options={ROLE_OPTIONS}
             error={errors.role?.message}
             {...register("role")}
