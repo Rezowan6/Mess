@@ -10,7 +10,7 @@ export const MealTrendHeader = () => {
           </div>
 
           <div>
-            <h3 className="text-base font-semibold text-base-content">
+            <h3 className="text-accent font-semibold">
               Meal Trend
             </h3>
             <p className="mt-0.5 text-xs text-base-content/60">
@@ -19,7 +19,7 @@ export const MealTrendHeader = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 rounded-lg bg-info/10 px-3 py-1.5 text-xs font-medium text-base-content/70">
+        <div className="flex items-center gap-2 rounded-lg bg-info/10 px-3 py-1.5 text-xs font-medium text-info">
           <BarChart3 size={15} />
           This Month
         </div>
