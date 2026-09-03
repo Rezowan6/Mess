@@ -16,7 +16,7 @@ interface Props {
 
 export const MealTrendChartContent = ({ data }: Props) => {
   return (
-    <div className="h-75 w-full">
+    <div className="h-75 w-full  outline-none **:outline-none">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
