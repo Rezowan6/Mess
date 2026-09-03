@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
-import { forceLogout } from "@/shared/utils/forceLogout";
 
 import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 
@@ -41,10 +40,6 @@ export const useMe = (options?: UseMeOptions) => {
           status: memberShip.status,
         });
       }
-    }
-
-    if (query.isError) {
-      forceLogout();
     }
   }, [query.data, query.isError, setUser, setTenant]);
 

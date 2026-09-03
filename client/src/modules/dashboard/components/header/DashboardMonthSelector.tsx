@@ -53,7 +53,7 @@ export const DashboardMonthSelector = () => {
 
       <div
         className={`
-          absolute right-0 top-full z-50 mt-2
+          absolute right-0 top-full z-50 mt-0.5
           w-full min-w-40
           origin-top
           overflow-hidden rounded-lg
