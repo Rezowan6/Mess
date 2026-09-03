@@ -1,10 +1,10 @@
-import { useTenantStore } from "@/modules/tenant/store/tenant.store";
+import { useMealSession } from "@/modules/meal-session/hooks/useMealSession";
 import { Badge } from "@/shared/components/ui/Badge";
 
 export const MealSessionStatus = () => {
-  const currentTenant = useTenantStore((state) => state.currentTenant);
+  const { data } = useMealSession();
 
-  const isOpen = currentTenant?.status === "active";
+  const isOpen = data?.data.data?.status === "open";
 
   return (
     <Badge

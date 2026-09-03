@@ -1,16 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
+import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
 import { mealSessionApi } from "../api/mealSession.api";
-import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 
 export const useMealSession = () => {
-    const currentTenant = useTenantStore((state) => state.currentTenant);
+  const tenantId = useCurrentTenantId();
 
+  return useQuery({
+    queryKey: queryKeys.mealSessions.all(tenantId),
 
-    return useQuery({
-        queryKey: queryKeys.mealSessions.all(currentTenant?.tenantId),
-
-        queryFn: mealSessionApi.getCurrent,
-    })
-}
+    queryFn: mealSessionApi.getCurrent,
+  });
+};

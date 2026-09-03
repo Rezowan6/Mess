@@ -123,7 +123,7 @@ class DashboardRepository {
         tenantId,
         mealSessionId,
       },
-      attributes: ["breakfast", "lunch", "dinner", "guest_meal"],
+      attributes: ["breakfast", "lunch", "dinner", "guestMeal"],
       raw: true,
     });
 
