@@ -10,9 +10,12 @@ import { Sequelize } from "sequelize";
 //   },
 // );
 
-const sequelize = new Sequelize("mysql://root:aVrogHCffyiatVqNamULHDWIuqkklxhi@altaria.proxy.rlwy.net:40495/railway", {
-  dialect: "mysql",
-  logging: false,
-});
+const sequelize = new Sequelize(
+  "mysql://root:aVrogHCffyiatVqNamULHDWIuqkklxhi@altaria.proxy.rlwy.net:40495/railway",
+  {
+    dialect: "mysql",
+    logging: false,
+  },
+);
 
 export default sequelize;
