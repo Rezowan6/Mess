@@ -1,9 +1,12 @@
 import { Avatar } from "@/shared/components/ui/Avatar";
 import { Badge } from "@/shared/components/ui/Badge";
+import { Button } from "@/shared/components/ui/Button";
+import { useConfirmStore } from "@/shared/store/confirm.store";
 import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
 import { formatDateTime } from "@/shared/utils/time";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, Trash2 } from "lucide-react";
 import React from "react";
+import { useParmanetDeleteMealReq } from "../../hooks/useParmanetDeleteMealReq";
 import type { IMyPendingMealReq } from "../../types/mealRequest.types";
 
 interface MealRequestHistoryProps {
@@ -13,6 +16,9 @@ interface MealRequestHistoryProps {
 export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
   requests,
 }) => {
+  const openConfirm = useConfirmStore((state) => state.openConfirm);
+  const { mutate: deleteMealRequest } = useParmanetDeleteMealReq();
+
   return (
     <div className="max-h-92 bg-info/5 overflow-y-auto">
       <div className="py-4">
@@ -44,9 +50,34 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                     {request.requester.name}
                   </h3>
 
-                  <Badge variant="soft-warning" size="sm">
-                    {request.status}
-                  </Badge>
+
+                    <Badge variant="soft-warning" size="sm">
+                      {request.status}
+                    </Badge>
+
+                    <Button
+                      unstyled
+                      className="flex items-center justify-center"
+                      leftIcon={<Trash2 />}
+                      onClick={() =>
+                        openConfirm({
+                          title: "Delete Meal Request",
+                          message: (
+                            <>
+                              Are you sure you want to permanently delete the
+                              meal request for{" "}
+                              <strong className="text-success">
+                                {request.requester.name}
+                              </strong>
+                              ? This action cannot be undone.
+                            </>
+                          ),
+                          onConfirm: async () => {
+                            deleteMealRequest(request.id);
+                          },
+                        })
+                      }
+                    />
                 </div>
 
                 <div className="flex items-center gap-2">

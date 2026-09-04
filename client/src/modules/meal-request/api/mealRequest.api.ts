@@ -11,6 +11,13 @@ export const mealRequestApi = {
 
     return res.data;
   },
+  parmanetDeleteMealReq: async (id: number) => {
+    const res = await API.delete(
+      API_ENDPOINTS.MEAL_REQUEST.PARMANENT_DELETE_REQ(id),
+    );
+
+    return res.data;
+  },
 
   getMyPendingMealReq: async (): Promise<IMyPendingMealReqResponse> => {
     const res = await API.get<IMyPendingMealReqResponse>(
