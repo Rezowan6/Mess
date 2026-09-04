@@ -2,6 +2,7 @@ import { MealSessionSettings } from "@/modules/meal-session/components/MealSessi
 import { MealSettings } from "@/modules/meal-setting/components/MealSettings";
 import { TenantSettings } from "../components/TenantSettings";
 import { ThemeSettings } from "../components/ThemeSettings";
+import LogoutSection from "@/modules/auth/components/LogoutSection";
 
 export const GeneralSettingsPage = () => {
   return (
@@ -10,6 +11,7 @@ export const GeneralSettingsPage = () => {
       <MealSessionSettings />
       <TenantSettings />
       <ThemeSettings />
+      <LogoutSection />
     </div>
   );
 };
