@@ -15,7 +15,7 @@ export const MealPreferenceSkeleton = () => {
         {[1, 2, 3].map((item) => (
           <div
             key={item}
-            className="flex items-center justify-between rounded-lg border border-base-300 p-3"
+            className="flex items-center justify-between overflow-hidden bg-info/5 border-b border-info/40 p-3"
           >
             <Skeleton className="h-5 w-24" />
 

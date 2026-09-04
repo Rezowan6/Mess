@@ -2,12 +2,13 @@ import { useMyPendingMealReq } from "../hooks/useMyPendingMealRequests";
 import { MealRequestHistory } from "./history/MealRequestHistory";
 import { MealRequestForm } from "./MealRequestForm";
 import { MealRequestHeader } from "./MealRequestHeader";
+import { MealRequestHistorySkeleton } from "./MealRequestHistorySkeleton";
 
 export const MealRequestSection = () => {
   const { data, isPending } = useMyPendingMealReq();
 
   if (isPending) {
-    return <span>Loading...</span>;
+    return <MealRequestHistorySkeleton />;
   }
 
   const requests = data?.data ?? [];
