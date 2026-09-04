@@ -10,6 +10,7 @@ import { Sequelize } from "sequelize";
 //   },
 // );
 
+// production
 const sequelize = new Sequelize(
   "mysql://root:aVrogHCffyiatVqNamULHDWIuqkklxhi@altaria.proxy.rlwy.net:40495/railway",
   {
