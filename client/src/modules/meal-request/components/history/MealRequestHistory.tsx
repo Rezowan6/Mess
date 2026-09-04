@@ -2,6 +2,7 @@ import { Avatar } from "@/shared/components/ui/Avatar";
 import { Badge } from "@/shared/components/ui/Badge";
 import { Button } from "@/shared/components/ui/Button";
 import { useConfirmStore } from "@/shared/store/confirm.store";
+import { formatDate } from "@/shared/utils/date.utils";
 import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
 import { formatDateTime } from "@/shared/utils/time";
 import { CalendarDays, Trash2 } from "lucide-react";
@@ -50,34 +51,32 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                     {request.requester.name}
                   </h3>
 
+                  <Badge variant="soft-warning" size="sm">
+                    {request.status}
+                  </Badge>
 
-                    <Badge variant="soft-warning" size="sm">
-                      {request.status}
-                    </Badge>
-
-                    <Button
-                      unstyled
-                      className="flex items-center justify-center"
-                      leftIcon={<Trash2 />}
-                      onClick={() =>
-                        openConfirm({
-                          title: "Delete Meal Request",
-                          message: (
-                            <>
-                              Are you sure you want to permanently delete the
-                              meal request for{" "}
-                              <strong className="text-success">
-                                {request.requester.name}
-                              </strong>
-                              ? This action cannot be undone.
-                            </>
-                          ),
-                          onConfirm: async () => {
-                            deleteMealRequest(request.id);
-                          },
-                        })
-                      }
-                    />
+                  <Button
+                    unstyled
+                    className="flex items-center justify-center"
+                    leftIcon={<Trash2 />}
+                    onClick={() =>
+                      openConfirm({
+                        title: "Delete Meal Request",
+                        message: (
+                          <>
+                            Are you sure you want to permanently delete the meal
+                            request for{" "}
+                            <strong className="text-success">
+                              {formatDate(request.date)}
+                            </strong>
+                          </>
+                        ),
+                        onConfirm: async () => {
+                          deleteMealRequest(request.id);
+                        },
+                      })
+                    }
+                  />
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -91,10 +90,10 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                     Dinner: {request.dinner}
                   </Badge>
                 </div>
-                <div className="mb-2 mt-2 flex flex-col gap-1 text-xs text-base-content/60 sm:flex-row sm:items-center sm:gap-2">
+                <div className="mb-2 mt-2 flex gap-1 text-xs text-base-content/60 sm:flex-row sm:items-center sm:gap-2">
                   <div className="flex items-center gap-1.5">
                     <CalendarDays size={13} />
-                    <span>{formatDateTime(request.date)}</span>
+                    <span>{formatDateTime(request.date)}</span>/
                   </div>
 
                   <div className="flex items-center gap-1.5 text-[11px] text-base-content/50">
