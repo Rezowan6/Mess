@@ -23,9 +23,6 @@ const sizeClasses: Record<AvatarSize, string> = {
   xl: "w-16 h-16",
 };
 
-// avatar style
-// "flex shrink-0 items-center justify-center cursor-pointer",
-//  "rounded-full bg-gradient-success text-white"
 
 export const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
   (
@@ -56,7 +53,8 @@ export const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
         role="img"
         aria-label={alt}
         className={[
-          "w-12 h-12 rounded-full bg-linear-to-tr from-sky-600 to-blue-500 flex items-center justify-center font-bold text-white text-base mr-3.5 shrink-0 shadow-inner",
+          "flex shrink-0 items-center justify-center cursor-pointer",
+          "rounded-full bg-gradient-success text-white",
           `${size === "xl" ? "text-2xl font-bold" : ""}`,
           sizeClasses[size],
           className,

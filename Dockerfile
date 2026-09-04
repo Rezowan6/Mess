@@ -83,4 +83,4 @@ USER node
 
 EXPOSE 5001
 
-CMD ["sh", "-c", "npm run migrate && npm run seed && node dist/server.js"]
+CMD ["node", "dist/server.js"]
