@@ -61,17 +61,26 @@ class MealPlanningService {
   }
 
   async getDailyMealPlanning(tenantId: number): Promise<IMealPlanningResponse> {
-    const preferences = await mealPreferenceRepository.getActivePreferences({
+    const date = getCurrentMealDate();
+
+    const requests = await mealRequestRepository.getPendingRequestsByDate({
       tenantId,
+      date,
     });
 
-    const entries: IMealPlanningEntry[] = preferences.map((preference) => ({
-      userId: preference.userId,
-      breakfast: Number(preference.breakfast),
-      lunch: Number(preference.lunch),
-      dinner: Number(preference.dinner),
-      guestMeal: Number(preference.guestMeal),
-      user: preference.user,
+    const entries: IMealPlanningEntry[] = requests.map((request: any) => ({
+      userId: request.userId,
+
+      breakfast: Number(request.breakfast),
+      lunch: Number(request.lunch),
+      dinner: Number(request.dinner),
+      guestMeal: Number(request.guestMeal),
+
+      user: {
+        id: request.requester.id,
+        name: request.requester.name,
+        avatar: request.requester.avatar,
+      },
     }));
 
     const summary = this.buildMealPlanningSummary(entries);

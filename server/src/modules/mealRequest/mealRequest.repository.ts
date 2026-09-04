@@ -1,6 +1,7 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealRequest } from "@/models/index.js";
+import { ApiError } from "@/utils/ApiError.js";
 import { Op, Sequelize, Transaction } from "sequelize";
 import {
   MealRequestStatus,
@@ -206,13 +207,14 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     });
   }
 
+  // done
   async getPendingRequestsByDate(
     { tenantId, date }: { tenantId: number; date: Date },
     transaction: Transaction | null = null,
-  ) {
+  ): Promise<any> {
     const { start, end } = getRangeTime(date);
 
-    return await this.findAll({
+    return (await this.findAllWithOptions({
       where: {
         tenantId,
         date: {
@@ -220,8 +222,15 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
         },
         status: MealRequestStatus.PENDING,
       },
+      include: [
+        {
+          association: "requester",
+          attributes: ["id", "name", "avatar"],
+          required: true,
+        },
+      ],
       transaction: transaction ?? null,
-    });
+    })) as unknown as any[];
   }
 
   async updateMealRequest(
@@ -233,6 +242,47 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     return await this.update({ id, mealSessionId }, updateData, {
       transaction: transaction ?? null,
     });
+  }
+
+  async findOneByDate({
+    tenantId,
+    userId,
+    date,
+    transaction = null,
+  }: {
+    tenantId: number;
+    userId: number;
+    date: Date;
+    transaction?: Transaction | null;
+  }) {
+    const { start, end } = getRangeTime(date);
+
+    return await this.findOneWithOptions({
+      where: {
+        tenantId,
+        userId,
+        date: {
+          [Op.between]: [start, end],
+        },
+      },
+      transaction,
+    });
+  }
+
+  async updateById(
+    id: number,
+    data: any,
+    transaction: Transaction | null = null,
+  ) {
+    const [affectedRows] = await this.update({ id }, data, {
+      transaction: transaction ?? null,
+    });
+
+    if (!affectedRows) {
+      throw new ApiError(404, "Meal request not found.");
+    }
+
+    return await this.findByIdWithOptions(id, { transaction });
   }
 
   async bulkApproveRequests(

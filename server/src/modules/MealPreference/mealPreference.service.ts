@@ -1,10 +1,12 @@
 import sequelize from "@/configs/db.js";
+import { appTime } from "@/configs/time.js";
 import { checkMealCutoff } from "@/helpers/checkMealCutoff.helper.js";
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { getCurrentMealDate } from "@/utils/mealDate.js";
 import { Transaction } from "sequelize";
+import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
 import { mealRequestRepository } from "../mealRequest/mealRequest.repository.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { mealSettingRepository } from "../mealSetting/mealSetting.repository.js";
@@ -39,6 +41,11 @@ class MealPreferenceService {
 
     const result = await sequelize.transaction(async (transaction) => {
       /**
+       * Get meal setting.
+       */
+      const mealSetting = await this.getMealSetting(tenantId);
+
+      /**
        * Find existing meal preference.
        */
       const existingPreference = await mealPreferenceRepository.findOne({
@@ -47,49 +54,54 @@ class MealPreferenceService {
       });
 
       /**
+       * Validate meal cutoff.
+       *
+       * Apply cutoff validation for both:
+       * - first-time preference
+       * - existing preference
+       */
+      if (existingPreference) {
+        this.validateMealCutoff(existingPreference, payload, mealSetting);
+      }
+
+      /**
        * ============================================================
-       * FIRST TIME CREATE
+       * CREATE / UPDATE MEAL PREFERENCE
        * ============================================================
        */
+      let preference;
+
       if (!existingPreference) {
-        return this.createMealPreference({
+        preference = await this.createMealPreference({
           tenantId,
           userId,
           mealSessionId,
           payload,
           transaction,
         });
+      } else {
+        preference = await this.updateMealPreference({
+          preferenceId: existingPreference.id,
+          payload,
+          transaction,
+        });
       }
 
       /**
-       * Get and validate meal setting.
-       */
-      const mealSetting = await this.getMealSetting(tenantId);
-
-      /**
-       * Validate meal cutoff.
-       */
-      this.validateMealCutoff(existingPreference, payload, mealSetting);
-
-      /**
-       * Update meal request.
+       * ============================================================
+       * CREATE / UPDATE MEAL REQUEST
+       * ============================================================
        */
       await this.updateMealRequest({
         tenantId,
         userId,
+        mealSessionId,
         date,
         payload,
         transaction,
       });
 
-      /**
-       * Update meal preference.
-       */
-      return this.updateMealPreference({
-        preferenceId: existingPreference.id,
-        payload,
-        transaction,
-      });
+      return preference;
     });
 
     /**
@@ -123,8 +135,6 @@ class MealPreferenceService {
     if (!mealSession) {
       throw new ApiError(404, "Meal session not found");
     }
-
-    const mealSetting = await this.getMealSetting(tenantId);
 
     return mealPreferenceRepository.createWithOptions(
       {
@@ -200,37 +210,73 @@ class MealPreferenceService {
   private async updateMealRequest({
     tenantId,
     userId,
+    mealSessionId,
     date,
     payload,
     transaction,
   }: {
     tenantId: number;
     userId: number;
+    mealSessionId: number;
     date: Date;
-    payload: IUpsertPayload["payload"];
+    payload: {
+      breakfast?: number;
+      lunch?: number;
+      dinner?: number;
+      guestMeal?: number;
+    };
     transaction: Transaction;
   }) {
-    const mealRequest = await mealRequestRepository.findByDate({
+    /**
+     * Find request for this specific date.
+     */
+    const existingRequest = await mealRequestRepository.findOneByDate({
       tenantId,
       userId,
       date,
+      transaction,
     });
 
-    if (!mealRequest) {
-      return;
+    console.log(existingRequest)
+
+    /**
+     * ============================================================
+     * CREATE NEW DAILY MEAL REQUEST
+     * ============================================================
+     */
+    if (!existingRequest) {
+      return await mealRequestRepository.createWithOptions(
+        {
+          tenantId,
+          userId,
+          mealSessionId,
+          date,
+
+          breakfast: payload.breakfast ?? 0,
+          lunch: payload.lunch ?? 0,
+          dinner: payload.dinner ?? 0,
+          guestMeal: payload.guestMeal ?? 0,
+
+          status: MealRequestStatus.PENDING,
+        },
+        { transaction },
+      );
     }
 
-    await mealRequestRepository.update(
-      { id: mealRequest.id },
+    /**
+     * ============================================================
+     * UPDATE EXISTING DAILY MEAL REQUEST
+     * ============================================================
+     */
+    return await mealRequestRepository.updateById(
+      existingRequest.id,
       {
-        breakfast: payload.breakfast,
-        lunch: payload.lunch,
-        dinner: payload.dinner,
+        breakfast: payload.breakfast ?? 0,
+        lunch: payload.lunch ?? 0,
+        dinner: payload.dinner ?? 0,
         guestMeal: payload.guestMeal ?? 0,
       },
-      {
-        transaction,
-      },
+      transaction,
     );
   }
 
