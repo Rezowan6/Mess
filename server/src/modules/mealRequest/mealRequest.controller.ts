@@ -49,7 +49,7 @@ export class MealRequestController {
 
     return sendResponse(res, {
       statusCode: 200,
-      message: "Meal requests fetched successfully.",
+      message: "My Meal requests fetched successfully.",
       data: mealRequest,
     });
   });

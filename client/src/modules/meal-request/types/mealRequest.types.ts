@@ -60,47 +60,43 @@ export interface ICreateMealRequestPayload {
 // ===============================
 // My Meal Request Response
 // ===============================
-
-export interface IMyMealRequestResponse {
+export interface IMyPendingMealReqResponse {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  data: IMyPendingMealReq[];
+}
+export interface requester {
   id: number;
 
-  date: string;
+  name: string;
 
-  breakfast: number;
+  email: string;
 
-  lunch: number;
+  avatar?: string;
+}
 
-  dinner: number;
-
-  status: MealRequestStatus;
-
-  createdAt: string;
+export interface mealSession {
+  id: number;
+  month: number;
+  year: number;
+  status: string;
 }
 
 // ===============================
 // Pending Meal Request (Manager)
 // ===============================
 
-export interface IPendingMealRequest extends IMealRequest {
-  requester?: {
-    id: number;
-
-    name: string;
-
-    email: string;
-
-    avatar?: string;
-  };
-
-  mealSession?: {
-    id: number;
-
-    month: number;
-
-    year: number;
-
-    status: string;
-  };
+export interface IMyPendingMealReq {
+  id: number;
+  date: string;
+  breakfast: string;
+  lunch: string;
+  dinner: string;
+  status: string;
+  createdAt: string;
+  requester: requester;
+  mealSession: mealSession;
 }
 
 // ===============================

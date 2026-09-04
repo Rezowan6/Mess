@@ -1,13 +1,25 @@
+import { useMyPendingMealReq } from "../hooks/useMyPendingMealRequests";
+import { MealRequestHistory } from "./history/MealRequestHistory";
 import { MealRequestForm } from "./MealRequestForm";
 import { MealRequestHeader } from "./MealRequestHeader";
 
 export const MealRequestSection = () => {
+  const { data, isPending } = useMyPendingMealReq();
+
+  if (isPending) {
+    return <span>Loading...</span>;
+  }
+
+  const requests = data?.data ?? [];
+
   return (
-    <section className="mt-6 rounded-xl border border-base-300 bg-base-100 p-5 shadow-sm">
+    <section className="mt-6 rounded-xl shadow-sm">
       <MealRequestHeader />
 
-      <div className="mt-5">
+      <div className="space-y-4">
         <MealRequestForm />
+
+        <MealRequestHistory requests={requests} />
       </div>
     </section>
   );

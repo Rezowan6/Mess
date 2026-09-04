@@ -173,6 +173,36 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     });
   }
 
+    async getMyPendingReq(
+    tenantId: number,
+    mealSessionId: number,
+    userId: number
+  ): Promise<MealRequest[]> {
+    return await this.findAll({
+      where: { tenantId, mealSessionId, userId, status: MealRequestStatus.PENDING },
+      attributes: [
+        "id",
+        "date",
+        "breakfast",
+        "lunch",
+        "dinner",
+        "status",
+        "createdAt",
+      ],
+      include: [
+        {
+          association: "requester",
+          attributes: ["id", "name", "email", "avatar"],
+        },
+        {
+          association: "mealSession",
+          attributes: ["id", "month", "year", "status"],
+        },
+      ],
+      order: [["createdAt", "ASC"]],
+    });
+  }
+
   async getPendingRequestsByDateRange({
     tenantId,
     mealSessionId,
@@ -206,6 +236,8 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
       order: [["date", "ASC"]],
     });
   }
+
+  
 
   // done
   async getPendingRequestsByDate(

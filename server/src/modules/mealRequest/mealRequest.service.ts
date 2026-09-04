@@ -15,6 +15,7 @@ import { mealSettingRepository } from "../mealSetting/mealSetting.repository.js"
 import { MealRequest } from "./mealRequest.model.js";
 
 export class MealRequestService {
+  // client site done
   async create({
     payload,
     tenantId,
@@ -28,7 +29,7 @@ export class MealRequestService {
   }) {
     const { fromDate, toDate, breakfast, lunch, dinner } = payload;
 
-    console.log({fromDate, toDate})
+    console.log({ fromDate, toDate });
 
     if (!breakfast && !lunch && !dinner) {
       throw new ApiError(400, "Please select at least one meal");
@@ -217,12 +218,11 @@ export class MealRequestService {
     userId: number;
     mealSessionId: number;
   }) {
-    const request = await mealRequestRepository.findOne({
-      userId,
+    const request = await mealRequestRepository.getMyPendingReq(
       tenantId,
       mealSessionId,
-      status: MealRequestStatus.PENDING,
-    });
+      userId,
+    );
 
     if (!request) {
       throw new ApiError(404, "Meal Request not found.");

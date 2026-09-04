@@ -26,3 +26,21 @@ export const timeToMinutes = (time: string) => {
 
   return hours * 60 + minutes;
 };
+
+export const formatTime = (date: string) => {
+  return new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  }).format(new Date(date));
+};
+export const formatDateTime = (date: string) => {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  }).format(new Date(date));
+};

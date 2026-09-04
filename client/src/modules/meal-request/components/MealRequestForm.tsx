@@ -7,10 +7,11 @@ import { useMealSetting } from "@/modules/meal-setting/hooks/useMealSetting";
 
 import { Button } from "@/shared/components/ui/Button";
 
+import { Input } from "@/shared/components/ui/Input";
+import type z from "zod";
 import { useCreateMealRequest } from "../hooks/useCreateMealRequest";
 import { mealRequestSchema } from "../schemas/mealRequest.schema";
 import type { ICreateMealRequestPayload } from "../types/mealRequest.types";
-import type z from "zod";
 
 type MealRequestFormInput = z.input<typeof mealRequestSchema>;
 type MealRequestFormOutput = z.output<typeof mealRequestSchema>;
@@ -45,21 +46,18 @@ export const MealRequestForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       {/* Date Range */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 bg-info/5 px-4">
         <div>
           <label className="mb-1 block text-sm font-medium text-base-content">
             From Date
           </label>
 
-          <input
+          <Input
             type="date"
             {...register("fromDate")}
-            className="input input-bordered w-full"
+            className="w-full"
+            error={errors?.fromDate?.message}
           />
-
-          {errors.fromDate && (
-            <p className="mt-1 text-xs text-error">{errors.fromDate.message}</p>
-          )}
         </div>
 
         <div>
@@ -67,15 +65,12 @@ export const MealRequestForm = () => {
             To Date
           </label>
 
-          <input
+          <Input
             type="date"
             {...register("toDate")}
-            className="input input-bordered w-full"
+            className=" w-full"
+            error={errors?.toDate?.message}
           />
-
-          {errors.toDate && (
-            <p className="mt-1 text-xs text-error">{errors.toDate.message}</p>
-          )}
         </div>
       </div>
 

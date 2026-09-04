@@ -96,6 +96,7 @@ export const API_ENDPOINTS = {
 
   MEAL_REQUEST: {
     CREATE: "/meal-requests",
+      MY_PENDING_REQ: "/meal-requests/pending/my",
   },
 
   MEAL_SETTING: {

@@ -17,11 +17,15 @@ interface AvatarProps extends Omit<
 
 const sizeClasses: Record<AvatarSize, string> = {
   xs: "w-6 h-6",
-  sm: "w-8 h-8",
-  md: "w-10 h-10",
+  sm: "w-12 h-12",
+  md: "w-12 h-12",
   lg: "w-12 h-12",
   xl: "w-16 h-16",
 };
+
+// avatar style
+// "flex shrink-0 items-center justify-center cursor-pointer",
+//  "rounded-full bg-gradient-success text-white"
 
 export const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
   (
@@ -52,8 +56,7 @@ export const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
         role="img"
         aria-label={alt}
         className={[
-          "flex shrink-0 items-center justify-center cursor-pointer",
-          "rounded-full bg-gradient-success text-white",
+          "w-12 h-12 rounded-full bg-linear-to-tr from-sky-600 to-blue-500 flex items-center justify-center font-bold text-white text-base mr-3.5 shrink-0 shadow-inner",
           `${size === "xl" ? "text-2xl font-bold" : ""}`,
           sizeClasses[size],
           className,

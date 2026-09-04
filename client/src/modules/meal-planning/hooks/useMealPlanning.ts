@@ -1,25 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 import { queryKeys } from "@/shared/constants/queryKeys";
 
 import { mealPlanningApi } from "../api/mealPlanning.api";
 
+import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
 import type { IMealPlanningResponse } from "../types/mealPlanning.types";
 
 export const useMealPlanning = () => {
-  const currentTenant = useTenantStore((state) => state.currentTenant);
+  const tenantId = useCurrentTenantId();
 
   return useQuery<IMealPlanningResponse>({
-    queryKey: queryKeys.mealPlanning.daily(
-      currentTenant?.tenantId,
-    ),
+    queryKey: queryKeys.mealPlanning.daily(tenantId),
 
     queryFn: () => mealPlanningApi.getDailyMealPlanning(),
 
-    enabled: Boolean(
-      currentTenant?.tenantId,
-    ),
+    enabled: Boolean(tenantId),
 
     staleTime: 0,
 

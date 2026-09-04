@@ -46,6 +46,9 @@ export const useCreateMealRequest = () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealRequests.list(tenantId),
       });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealRequests.myRequests(tenantId),
+      });
 
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealPlanning.daily(tenantId),
