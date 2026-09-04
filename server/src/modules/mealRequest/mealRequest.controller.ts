@@ -160,14 +160,14 @@ export class MealRequestController {
   });
 
   parmanetDelete = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, userId } = getTenantContext(req);
 
     const id = Number(req.params.id);
     if (Number.isNaN(id)) {
       throw new ApiError(400, "Valid request id is required");
     }
 
-    const result = await mealRequestService.parmanetDelete(id, tenantId);
+    const result = await mealRequestService.parmanetDelete({id, tenantId, userId});
 
     sendResponse(res, {
       statusCode: 200,

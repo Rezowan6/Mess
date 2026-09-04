@@ -14,3 +14,9 @@ export const showApiErrorToast = (error: unknown) => {
 export const showInfoToast = (message: string) => {
   toast(message);
 };
+
+export const showWarningToast = (message: string) => {
+  toast(message, {
+    icon: "⚠️",
+  });
+};
