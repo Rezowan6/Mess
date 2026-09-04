@@ -14,7 +14,7 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
   requests,
 }) => {
   return (
-    <div className="max-h-92 bg-info/5 overflow-y-auto px-4">
+    <div className="max-h-92 bg-info/5 overflow-y-auto">
       <div className="py-4">
         <h2 className="text-lg font-semibold text-base-content">
           My Meal Requests
@@ -60,10 +60,11 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                     Dinner: {request.dinner}
                   </Badge>
                 </div>
-
-                <div className="mb-2 mt-2 flex items-center gap-2 text-xs text-base-content/60">
-                  <CalendarDays size={13} />
-                  <span>{formatDateTime(request.date)}</span>
+                <div className="mb-2 mt-2 flex flex-col gap-1 text-xs text-base-content/60 sm:flex-row sm:items-center sm:gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <CalendarDays size={13} />
+                    <span>{formatDateTime(request.date)}</span>
+                  </div>
 
                   <div className="flex items-center gap-1.5 text-[11px] text-base-content/50">
                     <span>Created: {formatDateTime(request.createdAt)}</span>
