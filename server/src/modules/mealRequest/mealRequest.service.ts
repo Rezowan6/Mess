@@ -403,6 +403,22 @@ export class MealRequestService {
       };
     });
   }
+
+  async parmanetDelete(id: number, tenantId: number) {
+    const deletedCount = await mealRequestRepository.delete(
+      { id, tenantId, status: MealRequestStatus.PENDING },
+      { force: true },
+    );
+
+    if (!deletedCount) {
+      throw new ApiError(404, "Meal request not found");
+    }
+
+    return {
+      deleted: true,
+      id,
+    };
+  }
 }
 
 export const mealRequestService = new MealRequestService();

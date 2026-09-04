@@ -20,4 +20,6 @@ router.patch("/approve-range", ...adminAndManagerAccess, mealRequestController.a
 
 router.patch("/reject/:id", ...managerAccess, mealRequestController.reject);
 
+router.delete("/:id", ...managerAccess, mealRequestController.parmanetDelete);
+
 export default router;
