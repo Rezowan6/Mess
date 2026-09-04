@@ -18,7 +18,7 @@ export class MealRequestController {
 
     return sendResponse(res, {
       statusCode: 201,
-      message: "Meal request created successfully.",
+      message: "",
       data: mealRequest,
     });
   });

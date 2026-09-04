@@ -104,7 +104,7 @@ export const queryKeys = {
   },
 
   mealRequests: {
-    all: (tenantId?: number) => ["meal-requests", tenantId] as const,
+    list: (tenantId?: number) => ["meal-requests", tenantId] as const,
 
     myRequests: (tenantId?: number) =>
       ["meal-requests", tenantId, "my"] as const,

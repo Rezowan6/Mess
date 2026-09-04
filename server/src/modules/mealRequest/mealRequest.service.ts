@@ -7,6 +7,7 @@ import {
 } from "./mealRequest.interface.js";
 import { mealRequestRepository } from "./mealRequest.repository.js";
 
+import { appTime } from "@/configs/time.js";
 import { formatDate } from "@/utils/date.util.js";
 import { mealEntryGenerator } from "../mealEntry/mealEntry.generator.js";
 import { mealCutoffService } from "../mealSetting/mealCutoff.service.js";
@@ -27,6 +28,8 @@ export class MealRequestService {
   }) {
     const { fromDate, toDate, breakfast, lunch, dinner } = payload;
 
+    console.log({fromDate, toDate})
+
     if (!breakfast && !lunch && !dinner) {
       throw new ApiError(400, "Please select at least one meal");
     }
@@ -46,10 +49,10 @@ export class MealRequestService {
         reason: string;
       }[] = [];
 
-      const startDate = new Date(fromDate);
-      const endDate = new Date(toDate);
+      const startDate = appTime(fromDate).startOf("day");
+      const endDate = appTime(toDate).startOf("day");
 
-      const currentDate = new Date(startDate);
+      let currentDate = startDate;
 
       const existingRequests =
         await mealRequestRepository.getExistingRequestsInRange(
@@ -68,7 +71,7 @@ export class MealRequestService {
       );
 
       while (currentDate <= endDate) {
-        const requestDate = new Date(currentDate);
+        const requestDate = currentDate.toDate();
 
         const existingRequest = existingRequestMap.get(formatDate(requestDate));
 
@@ -78,7 +81,7 @@ export class MealRequestService {
             reason: "Already exists.",
           });
 
-          currentDate.setDate(currentDate.getDate() + 1);
+          currentDate = currentDate.add(1, "day");
 
           continue;
         }
@@ -92,7 +95,7 @@ export class MealRequestService {
             reason: "Breakfast cutoff time passed.",
           });
 
-          currentDate.setDate(currentDate.getDate() + 1);
+          currentDate = currentDate.add(1, "day");
 
           continue;
         }
@@ -106,8 +109,7 @@ export class MealRequestService {
             reason: "Lunch cutoff time passed.",
           });
 
-          currentDate.setDate(currentDate.getDate() + 1);
-
+          currentDate = currentDate.add(1, "day");
           continue;
         }
 
@@ -120,8 +122,7 @@ export class MealRequestService {
             reason: "Dinner cutoff time passed.",
           });
 
-          currentDate.setDate(currentDate.getDate() + 1);
-
+          currentDate = currentDate.add(1, "day");
           continue;
         }
         const requestData: ICreateMealRequestDbDto = {
@@ -145,7 +146,7 @@ export class MealRequestService {
           requestData as MealRequest,
         );
 
-        currentDate.setDate(currentDate.getDate() + 1);
+        currentDate = currentDate.add(1, "day");
       }
 
       if (createdRequests.length) {
@@ -156,9 +157,8 @@ export class MealRequestService {
 
       return {
         createdCount: createdRequests.length,
-
         skippedCount: skippedRequests.length,
-
+        totalRequestedDays: endDate.diff(startDate, "day") + 1,
         skippedRequests,
       };
     });
@@ -341,7 +341,7 @@ export class MealRequestService {
       }
 
       await mealRequestRepository.bulkApproveRequests(
-        requests.map((request) => request.id),
+        requests.map((request: any) => request.id),
         managerId,
         transaction,
       );

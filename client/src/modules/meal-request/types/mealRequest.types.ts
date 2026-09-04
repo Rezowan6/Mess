@@ -1,4 +1,3 @@
-
 export const MealRequestStatus = {
   PENDING: "pending",
   APPROVED: "approved",
@@ -51,13 +50,11 @@ export interface IMealRequest {
 // ===============================
 
 export interface ICreateMealRequestPayload {
-  breakfast?: number;
-
-  lunch?: number;
-
-  dinner?: number;
-
-  note?: string;
+  fromDate: string;
+  toDate: string;
+  breakfast: number;
+  lunch: number;
+  dinner: number;
 }
 
 // ===============================

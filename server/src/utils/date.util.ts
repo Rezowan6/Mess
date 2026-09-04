@@ -1,3 +1,5 @@
+import { appTime } from "@/configs/time.js";
+
 export const getHoursDifference = (
   from: Date,
   to: Date = new Date(),
@@ -16,8 +18,9 @@ export const getCurrentDate = (): string => {
   return new Date().toISOString().split("T")[0] as string;
 };
 
+// done and use
 export const formatDate = (date: Date): string => {
-  return date.toISOString().split("T")[0] as string;
+  return appTime(date).format("YYYY-MM-DD");
 };
 
 export const getMonthName = (month: number, year: number): string => {
