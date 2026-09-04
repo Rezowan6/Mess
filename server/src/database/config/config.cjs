@@ -13,12 +13,9 @@ module.exports = {
   },
 
   production: {
-    username: env.DB_USER,
-    password: env.DB_PASS,
-    database: env.DB_NAME,
-    host: env.DB_HOST,
-    port: Number(env.DB_PORT) || 3306,
+    url: env.DATABASE_URL,
     dialect: "mysql",
+    logging: false,
     dialectOptions: {
       ssl: {
         require: true,
