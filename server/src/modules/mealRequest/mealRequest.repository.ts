@@ -13,6 +13,32 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
   constructor() {
     super(MealRequest);
   }
+  async findPendingByDate({
+    tenantId,
+    mealSessionId,
+    date,
+    transaction = null,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    date: Date;
+    transaction?: Transaction | null;
+  }) {
+    const { start, end } = getRangeTime(date);
+
+    return this.findAllWithOptions({
+      where: {
+        tenantId,
+        mealSessionId,
+        date: {
+          [Op.between]: [start, end],
+        },
+        status: MealRequestStatus.PENDING,
+      },
+      transaction,
+    });
+  }
+  // used
   async getExistingRequestsInRange(
     {
       tenantId,
@@ -37,6 +63,7 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
         tenantId,
         mealSessionId,
         userId,
+        status: MealRequestStatus.PENDING,
         date: {
           [Op.between]: [startDate, endDate],
         },
@@ -299,31 +326,6 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     });
   }
 
-  async findPendingByDate({
-    tenantId,
-    mealSessionId,
-    date,
-    transaction = null,
-  }: {
-    tenantId: number;
-    mealSessionId: number;
-    date: Date;
-    transaction?: Transaction | null;
-  }) {
-    const { start, end } = getRangeTime(date);
-
-    return this.findAllWithOptions({
-      where: {
-        tenantId,
-        mealSessionId,
-        date: {
-          [Op.between]: [start, end],
-        },
-        status: MealRequestStatus.PENDING,
-      },
-      transaction,
-    });
-  }
   async findOneByDateAndId({
     id,
     tenantId,

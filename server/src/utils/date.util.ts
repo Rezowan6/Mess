@@ -22,7 +22,9 @@ export const getCurrentDate = (): string => {
 export const formatDate = (date: Date): string => {
   return appTime(date).format("YYYY-MM-DD");
 };
-
+export const getAppDate = (): Date => {
+  return appTime().startOf("day").toDate();
+};
 export const isSameDate = (
   firstDate: Date | string | number | null | undefined,
   secondDate: Date | string | number | null | undefined,

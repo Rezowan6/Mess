@@ -1,8 +1,6 @@
-
-
 import { mealGeneratorService } from "@/modules/mealGenerator/mealGenerator.service.js";
 import { tenantRepository } from "@/modules/tenant/tenant.repository.js";
-import { getCurrentMealDate } from "@/utils/mealDate.js";
+import { getAppDate } from "@/utils/date.util.js";
 
 export const runMealRequestGeneration = async (): Promise<void> => {
   console.log("[MealRequestJob] Meal request generation started");
@@ -20,7 +18,7 @@ export const runMealRequestGeneration = async (): Promise<void> => {
    * Sep 1 before Maghrib → Sep 1
    * Sep 1 after Maghrib  → Sep 2
    */
-  const mealDate = getCurrentMealDate();
+  const mealDate = getAppDate();
 
   console.log(
     `[MealRequestJob] Generating meal requests for: ${mealDate.toISOString()}`,
