@@ -302,6 +302,32 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
       transaction,
     });
   }
+
+  async findPendingByDate({
+    tenantId,
+    mealSessionId,
+    date,
+    transaction = null,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    date: Date;
+    transaction?: Transaction | null;
+  }) {
+    const { start, end } = getRangeTime(date);
+
+    return this.findAllWithOptions({
+      where: {
+        tenantId,
+        mealSessionId,
+        date: {
+          [Op.between]: [start, end],
+        },
+        status: MealRequestStatus.PENDING,
+      },
+      transaction,
+    });
+  }
   async findOneByDateAndId({
     id,
     tenantId,
@@ -342,6 +368,40 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     }
 
     return await this.findByIdWithOptions(id, { transaction });
+  }
+  async updateByIds(
+    ids: number[],
+    data: any,
+    transaction: Transaction | null = null,
+  ) {
+    if (!ids.length) {
+      return [];
+    }
+
+    const [affectedRows] = await this.update(
+      {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+      data,
+      {
+        transaction: transaction ?? null,
+      },
+    );
+
+    if (!affectedRows) {
+      throw new ApiError(404, "Meal requests not found.");
+    }
+
+    return await this.findAllWithOptions({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+      transaction,
+    });
   }
 
   async bulkApproveRequests(

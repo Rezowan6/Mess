@@ -5,33 +5,14 @@ import { appTime } from "@/configs/time.js";
 
 import { mealEntryGenerator } from "../mealEntry/mealEntry.generator.js";
 import { IGenerateDailyMealRequestPayload } from "../MealPreference/mealPreference.interface.js";
-import { mealPreferenceRepository } from "../MealPreference/mealPreference.repository.js";
 import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
 import { mealRequestRepository } from "../mealRequest/mealRequest.repository.js";
-import { mealSettingRepository } from "../mealSetting/mealSetting.repository.js";
 
 class MealGeneratorService {
   async generateDailyMealRequests({
     tenantId,
     date,
   }: IGenerateDailyMealRequestPayload) {
-    /**
-     * The `date` comes from the job handler.
-     *
-     * Important:
-     * This service does NOT calculate the meal date.
-     *
-     * Example:
-     *
-     * Maghrib + 5 minutes
-     *        ↓
-     * Handler calculates Sep 2
-     *        ↓
-     * This service receives Sep 2
-     *        ↓
-     * Generates Sep 2 meal requests
-     */
-
     const mealSession = await mealSessionRepository.getCurrentSession(tenantId);
 
     if (!mealSession) {
@@ -45,101 +26,57 @@ class MealGeneratorService {
       };
     }
 
-    const mealSetting = await mealSettingRepository.findOneWithOptions({
-      where: {
-        tenantId,
-      },
-    });
-
-    const preferences = await mealPreferenceRepository.getActivePreferences({
-      tenantId,
-    });
-
     return sequelize.transaction(async (transaction) => {
-      const requests = [];
+      const pendingRequests = await mealRequestRepository.findPendingByDate({
+        tenantId,
+        mealSessionId: mealSession.id,
+        date,
+        transaction,
+      });
 
-      const isAutoApproved = mealSetting?.autoApproveMealRequest ?? false;
+      if (!pendingRequests.length) {
+        console.log(
+          `[MealGenerator] No pending meal requests found for tenant ${tenantId}, date ${appTime(date).format("YYYY-MM-DD")}`,
+        );
 
-      /**
-       * Generate one meal request for each active preference.
-       */
-      for (const preference of preferences) {
-        /**
-         * Duplicate protection.
-         *
-         * If the same job accidentally runs twice,
-         * an existing request will not be created again.
-         */
-        const exists = await mealRequestRepository.existsByDate({
-          tenantId,
-          mealSessionId: mealSession.id,
-          userId: preference.userId,
-          date,
-        });
-
-        if (exists) {
-          continue;
-        }
-
-        const status = isAutoApproved
-          ? MealRequestStatus.APPROVED
-          : MealRequestStatus.PENDING;
-
-        requests.push({
-          tenantId,
-          mealSessionId: mealSession.id,
-          userId: preference.userId,
-
-          /**
-           * IMPORTANT:
-           * Use the date received from the handler.
-           */
-          date,
-
-          breakfast: preference.breakfast,
-          lunch: preference.lunch,
-          dinner: preference.dinner,
-          guestMeal: preference.guestMeal ?? 0,
-
-          status,
-
-          approvedAt: isAutoApproved ? appTime().toDate() : undefined,
-        });
+        return {
+          createdRequests: 0,
+          createdEntries: 0,
+        };
       }
 
       /**
-       * Create meal requests.
+       * Create Meal Entries from pending requests.
+       *
+       * If this fails, the transaction will rollback.
+       * Meal Requests will remain PENDING.
        */
-      const createdRequests = requests.length
-        ? await mealRequestRepository.bulkCreate(requests, {
-            transaction,
-          })
-        : [];
+      const entries = await mealEntryGenerator.bulkCreateFromMealRequests(
+        pendingRequests,
+        transaction,
+      );
+
+      const createdEntries = Array.isArray(entries) ? entries.length : 0;
 
       /**
-       * If auto approval is enabled,
-       * immediately create Meal Entries
-       * from the newly approved requests.
+       * Only approve meal requests after Meal Entries
+       * have been successfully created.
        */
-      let createdEntries = 0;
+      if (createdEntries > 0) {
+        const mealRequestIds = pendingRequests.map((request) => request.id);
 
-      if (isAutoApproved && createdRequests.length) {
-        const entries = await mealEntryGenerator.bulkCreateFromMealRequests(
-          createdRequests,
+        await mealRequestRepository.updateByIds(
+          mealRequestIds,
+          {
+            status: MealRequestStatus.APPROVED,
+            approvedAt: appTime().toDate(),
+          },
+
           transaction,
         );
-
-        /**
-         * If the generator returns an array,
-         * count the created entries.
-         *
-         * Otherwise this will safely remain 0.
-         */
-        createdEntries = Array.isArray(entries) ? entries.length : 0;
       }
 
       return {
-        createdRequests: createdRequests.length,
         createdEntries,
       };
     });
