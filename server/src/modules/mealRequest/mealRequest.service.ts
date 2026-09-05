@@ -203,12 +203,13 @@ export class MealRequestService {
   }) {
     const date = getCurrentMealDate();
 
-    const existsToDayPendingReq = await mealRequestRepository.findOneByDate({
-      id,
-      tenantId,
-      userId,
-      date,
-    });
+    const existsToDayPendingReq =
+      await mealRequestRepository.findOneByDateAndId({
+        id,
+        tenantId,
+        userId,
+        date,
+      });
 
     const isToday =
       appTime(existsToDayPendingReq?.date).format("YYYY-MM-DD") ===

@@ -279,11 +279,34 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
   }
 
   async findOneByDate({
-    id,
     tenantId,
     userId,
     date,
     transaction = null,
+  }: {
+    tenantId: number;
+    userId: number;
+    date: Date;
+    transaction?: Transaction | null;
+  }) {
+    const { start, end } = getRangeTime(date);
+
+    return await this.findOneWithOptions({
+      where: {
+        tenantId,
+        userId,
+        date: {
+          [Op.between]: [start, end],
+        },
+      },
+      transaction,
+    });
+  }
+  async findOneByDateAndId({
+    id,
+    tenantId,
+    userId,
+    date,
   }: {
     id: number;
     tenantId: number;
@@ -302,7 +325,6 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
           [Op.between]: [start, end],
         },
       },
-      transaction,
     });
   }
 

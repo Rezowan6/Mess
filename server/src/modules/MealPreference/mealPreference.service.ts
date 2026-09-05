@@ -237,8 +237,6 @@ class MealPreferenceService {
       transaction,
     });
 
-    console.log(existingRequest)
-
     /**
      * ============================================================
      * CREATE NEW DAILY MEAL REQUEST
