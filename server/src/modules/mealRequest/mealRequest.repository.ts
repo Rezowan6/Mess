@@ -279,11 +279,13 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
   }
 
   async findOneByDate({
+    id,
     tenantId,
     userId,
     date,
     transaction = null,
   }: {
+    id: number;
     tenantId: number;
     userId: number;
     date: Date;
@@ -293,6 +295,7 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
 
     return await this.findOneWithOptions({
       where: {
+        id,
         tenantId,
         userId,
         date: {

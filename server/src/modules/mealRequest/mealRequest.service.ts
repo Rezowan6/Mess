@@ -204,6 +204,7 @@ export class MealRequestService {
     const date = getCurrentMealDate();
 
     const existsToDayPendingReq = await mealRequestRepository.findOneByDate({
+      id,
       tenantId,
       userId,
       date,
