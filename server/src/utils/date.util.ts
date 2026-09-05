@@ -23,6 +23,20 @@ export const formatDate = (date: Date): string => {
   return appTime(date).format("YYYY-MM-DD");
 };
 
+export const isSameDate = (
+  firstDate: Date | string | number | null | undefined,
+  secondDate: Date | string | number | null | undefined,
+): boolean => {
+  if (!firstDate || !secondDate) {
+    return false;
+  }
+
+  return (
+    appTime(firstDate).format("YYYY-MM-DD") ===
+    appTime(secondDate).format("YYYY-MM-DD")
+  );
+};
+
 export const getMonthName = (month: number, year: number): string => {
   return new Date(year, month - 1).toLocaleString("default", {
     month: "long",

@@ -8,7 +8,7 @@ import {
 import { mealRequestRepository } from "./mealRequest.repository.js";
 
 import { appTime } from "@/configs/time.js";
-import { formatDate } from "@/utils/date.util.js";
+import { formatDate, isSameDate } from "@/utils/date.util.js";
 import { getCurrentMealDate } from "@/utils/mealDate.js";
 import { mealEntryGenerator } from "../mealEntry/mealEntry.generator.js";
 import { MealRequest } from "./mealRequest.model.js";
@@ -211,13 +211,11 @@ export class MealRequestService {
         date,
       });
 
-    const isToday =
-      appTime(existsToDayPendingReq?.date).format("YYYY-MM-DD") ===
-      appTime(date).format("YYYY-MM-DD");
+    const isTodayPending = isSameDate(existsToDayPendingReq?.date, date);
 
     if (
       existsToDayPendingReq?.status === MealRequestStatus.PENDING &&
-      isToday
+      isTodayPending
     ) {
       throw new ApiError(
         400,
