@@ -1,12 +1,10 @@
-export const getRangeTime = (date: Date | string) => {
-  const start = new Date(date);
-  start.setHours(0, 0, 0, 0);
+import { appTime } from "@/configs/time.js";
 
-  const end = new Date(date);
-  end.setHours(23, 59, 59, 999);
+export const getRangeTime = (date: Date | string) => {
+  const day = appTime(date);
 
   return {
-    start,
-    end,
+    start: day.startOf("day").toDate(),
+    end: day.endOf("day").toDate(),
   };
 };

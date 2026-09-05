@@ -1,4 +1,5 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
+import { appTime } from "@/configs/time.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealRequest } from "@/models/index.js";
 import { ApiError } from "@/utils/ApiError.js";
@@ -28,13 +29,8 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     },
     transaction: Transaction | null = null,
   ): Promise<MealRequest[]> {
-    const startDate = new Date(fromDate);
-
-    startDate.setHours(0, 0, 0, 0);
-
-    const endDate = new Date(toDate);
-
-    endDate.setHours(23, 59, 59, 999);
+    const startDate = appTime(fromDate).startOf("day").toDate();
+    const endDate = appTime(toDate).endOf("day").toDate();
 
     return this.findAllWithOptions({
       where: {
