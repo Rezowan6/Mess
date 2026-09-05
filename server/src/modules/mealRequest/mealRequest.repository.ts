@@ -29,10 +29,8 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     },
     transaction: Transaction | null = null,
   ): Promise<MealRequest[]> {
-    const { start, end } = getRangeTime(fromDate);
-
-    const startDate = appTime(start);
-    const endDate = appTime(end);
+    const startDate = appTime(fromDate).startOf("day").toDate();
+    const endDate = appTime(toDate).endOf("day").toDate();
 
     return this.findAllWithOptions({
       where: {
