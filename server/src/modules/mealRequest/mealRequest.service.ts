@@ -10,8 +10,6 @@ import { mealRequestRepository } from "./mealRequest.repository.js";
 import { appTime } from "@/configs/time.js";
 import { formatDate } from "@/utils/date.util.js";
 import { mealEntryGenerator } from "../mealEntry/mealEntry.generator.js";
-import { mealCutoffService } from "../mealSetting/mealCutoff.service.js";
-import { mealSettingRepository } from "../mealSetting/mealSetting.repository.js";
 import { MealRequest } from "./mealRequest.model.js";
 
 export class MealRequestService {
@@ -38,9 +36,6 @@ export class MealRequestService {
     if (fromDate > toDate) {
       throw new ApiError(400, "From date cannot be greater than to date.");
     }
-
-    const mealSetting =
-      await mealSettingRepository.getRequiredByTenantId(tenantId);
 
     return await sequelize.transaction(async (transaction) => {
       const createdRequests: ICreateMealRequestDbDto[] = [];
@@ -76,51 +71,15 @@ export class MealRequestService {
 
         const existingRequest = existingRequestMap.get(formatDate(requestDate));
 
+        console.log(existingRequest)
+
         if (existingRequest) {
           skippedRequests.push({
             date: requestDate,
-            reason: "Already exists.",
-          });
-
-          currentDate = currentDate.add(1, "day");
-
-          continue;
-        }
-
-        if (
-          breakfast &&
-          !mealCutoffService.canTakeBreakfast(mealSetting, requestDate)
-        ) {
-          skippedRequests.push({
-            date: requestDate,
-            reason: "Breakfast cutoff time passed.",
-          });
-
-          currentDate = currentDate.add(1, "day");
-
-          continue;
-        }
-
-        if (
-          lunch &&
-          !mealCutoffService.canTakeLunch(mealSetting, requestDate)
-        ) {
-          skippedRequests.push({
-            date: requestDate,
-            reason: "Lunch cutoff time passed.",
-          });
-
-          currentDate = currentDate.add(1, "day");
-          continue;
-        }
-
-        if (
-          dinner &&
-          !mealCutoffService.canTakeDinner(mealSetting, requestDate)
-        ) {
-          skippedRequests.push({
-            date: requestDate,
-            reason: "Dinner cutoff time passed.",
+            reason:
+              existingRequest.status === MealRequestStatus.PENDING
+                ? "You already have a pending meal request for this date."
+                : `A meal request already exists for this date with status "${existingRequest.status}".`,
           });
 
           currentDate = currentDate.add(1, "day");
@@ -155,6 +114,13 @@ export class MealRequestService {
           transaction,
         });
       }
+
+      // console.log({
+      //   createdCount: createdRequests.length,
+      //   skippedCount: skippedRequests.length,
+      //   totalRequestedDays: endDate.diff(startDate, "day") + 1,
+      //   skippedRequests,
+      // });
 
       return {
         createdCount: createdRequests.length,

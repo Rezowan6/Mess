@@ -12,7 +12,7 @@ const PORT = env.PORT || 4000;
 const startServer = async (): Promise<void> => {
   try {
     await sequelize.authenticate();
-    await testCloudinaryConnection();
+    // await testCloudinaryConnection();
     setupAssociations();
     console.log("Database connected successfully");
 
