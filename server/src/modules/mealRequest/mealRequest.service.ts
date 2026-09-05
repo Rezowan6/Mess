@@ -9,6 +9,7 @@ import { mealRequestRepository } from "./mealRequest.repository.js";
 
 import { appTime } from "@/configs/time.js";
 import { formatDate } from "@/utils/date.util.js";
+import { getCurrentMealDate } from "@/utils/mealDate.js";
 import { mealEntryGenerator } from "../mealEntry/mealEntry.generator.js";
 import { MealRequest } from "./mealRequest.model.js";
 
@@ -120,50 +121,7 @@ export class MealRequestService {
     });
   }
 
-  async getApproves({
-    tenantId,
-    mealSessionId,
-  }: {
-    tenantId: number;
-    mealSessionId: number;
-  }) {
-    const mealRequest = await mealRequestRepository.findAll({
-      where: {
-        tenantId,
-        mealSessionId,
-        status: MealRequestStatus.APPROVED,
-      },
-    });
-
-    if (!mealRequest.length) {
-      throw new ApiError(404, "today pending request not found.");
-    }
-
-    return mealRequest;
-  }
-
-  async getPendingRequests({
-    tenantId,
-    mealSessionId,
-  }: {
-    tenantId: number;
-    mealSessionId: number;
-  }) {
-    const mealRequest = await mealRequestRepository.findAll({
-      where: {
-        tenantId,
-        mealSessionId,
-        status: MealRequestStatus.PENDING,
-      },
-    });
-
-    if (!mealRequest.length) {
-      throw new ApiError(404, "today pending request not found.");
-    }
-
-    return mealRequest;
-  }
-
+  // done
   async myPendingRequest({
     tenantId,
     userId,
@@ -184,6 +142,100 @@ export class MealRequestService {
     }
 
     return request;
+  }
+  // done
+  async reject({
+    id,
+    tenantId,
+    mealSessionId,
+    managerId,
+  }: {
+    id: number;
+    tenantId: number;
+    mealSessionId: number;
+    managerId: number;
+  }) {
+    return sequelize.transaction(async (transaction) => {
+      const request = await mealRequestRepository.findOne({
+        id,
+        mealSessionId,
+      });
+
+      if (!request) {
+        throw new ApiError(404, "Meal request not found.");
+      }
+
+      if (request.tenantId !== tenantId) {
+        throw new ApiError(403, "You cannot reject this request.");
+      }
+
+      if (request.status !== MealRequestStatus.PENDING) {
+        throw new ApiError(400, "Only pending request can be rejected.");
+      }
+
+      await mealRequestRepository.updateMealRequest(
+        id,
+        mealSessionId,
+        {
+          status: MealRequestStatus.REJECTED,
+          rejectedBy: managerId,
+          rejectedAt: new Date(),
+        },
+        transaction,
+      );
+
+      return {
+        ...request,
+        status: MealRequestStatus.REJECTED,
+      };
+    });
+  }
+
+  // done
+  async parmanetDelete({
+    id,
+    tenantId,
+    userId,
+  }: {
+    id: number;
+    tenantId: number;
+    userId: number;
+  }) {
+    const date = getCurrentMealDate();
+
+    const existsToDayPendingReq = await mealRequestRepository.findOneByDate({
+      tenantId,
+      userId,
+      date,
+    });
+
+    const isToday =
+      appTime(existsToDayPendingReq?.date).format("YYYY-MM-DD") ===
+      appTime(date).format("YYYY-MM-DD");
+
+    if (
+      existsToDayPendingReq?.status === MealRequestStatus.PENDING &&
+      isToday
+    ) {
+      throw new ApiError(
+        400,
+        "You cannot delete today's pending meal request.",
+      );
+    }
+
+    const deletedCount = await mealRequestRepository.delete(
+      { id, tenantId, userId, status: MealRequestStatus.PENDING },
+      { force: true },
+    );
+
+    if (!deletedCount) {
+      throw new ApiError(404, "Meal request not found");
+    }
+
+    return {
+      deleted: true,
+      id,
+    };
   }
 
   async approve({
@@ -312,75 +364,48 @@ export class MealRequestService {
     });
   }
 
-  async reject({
-    id,
+  async getApproves({
     tenantId,
     mealSessionId,
-    managerId,
   }: {
-    id: number;
     tenantId: number;
     mealSessionId: number;
-    managerId: number;
   }) {
-    return sequelize.transaction(async (transaction) => {
-      const request = await mealRequestRepository.findOne({
-        id,
+    const mealRequest = await mealRequestRepository.findAll({
+      where: {
+        tenantId,
         mealSessionId,
-      });
-
-      if (!request) {
-        throw new ApiError(404, "Meal request not found.");
-      }
-
-      if (request.tenantId !== tenantId) {
-        throw new ApiError(403, "You cannot reject this request.");
-      }
-
-      if (request.status !== MealRequestStatus.PENDING) {
-        throw new ApiError(400, "Only pending request can be rejected.");
-      }
-
-      await mealRequestRepository.updateMealRequest(
-        id,
-        mealSessionId,
-        {
-          status: MealRequestStatus.REJECTED,
-          rejectedBy: managerId,
-          rejectedAt: new Date(),
-        },
-        transaction,
-      );
-
-      return {
-        ...request,
-        status: MealRequestStatus.REJECTED,
-      };
+        status: MealRequestStatus.APPROVED,
+      },
     });
-  }
 
-  async parmanetDelete({
-    id,
-    tenantId,
-    userId,
-  }: {
-    id: number;
-    tenantId: number;
-    userId: number;
-  }) {
-    const deletedCount = await mealRequestRepository.delete(
-      { id, tenantId, userId, status: MealRequestStatus.PENDING },
-      { force: true },
-    );
-
-    if (!deletedCount) {
-      throw new ApiError(404, "Meal request not found");
+    if (!mealRequest.length) {
+      throw new ApiError(404, "today pending request not found.");
     }
 
-    return {
-      deleted: true,
-      id,
-    };
+    return mealRequest;
+  }
+
+  async getPendingRequests({
+    tenantId,
+    mealSessionId,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+  }) {
+    const mealRequest = await mealRequestRepository.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+        status: MealRequestStatus.PENDING,
+      },
+    });
+
+    if (!mealRequest.length) {
+      throw new ApiError(404, "today pending request not found.");
+    }
+
+    return mealRequest;
   }
 }
 
