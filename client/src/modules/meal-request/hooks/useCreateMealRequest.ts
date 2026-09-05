@@ -4,7 +4,8 @@ import { mealRequestApi } from "../api/mealRequest.api";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
-import { showApiErrorToast, showSuccessToast } from "@/shared/utils/toast";
+import { formatDateTime } from "@/shared/utils/time";
+import { showApiErrorToast, showSuccessToast, showWarningToast } from "@/shared/utils/toast";
 
 export const useCreateMealRequest = () => {
   const queryClient = useQueryClient();
@@ -25,16 +26,24 @@ export const useCreateMealRequest = () => {
         createdCount = 0,
         skippedCount = 0,
         totalRequestedDays = 0,
+        skippedRequests = [],
       } = result;
 
+      // No request created
       if (createdCount === 0 && skippedCount > 0) {
-        showSuccessToast(
-          `No new meal request created. ${skippedCount} of ${totalRequestedDays} day(s) were skipped.`,
-        );
+        const reasons = skippedRequests
+          .map(
+            (item: { date: string; reason: string }) =>
+              `${formatDateTime(item.date)} — ${item.reason}`,
+          )
+          .join("\n");
+
+        showWarningToast(`No new meal request created.\n${reasons}`);
 
         return;
       }
 
+      // Request created
       if (createdCount > 0) {
         showSuccessToast(
           `${createdCount} meal request${
@@ -43,9 +52,24 @@ export const useCreateMealRequest = () => {
         );
       }
 
+      // Some days skipped
+      if (skippedCount > 0) {
+        const reasons = skippedRequests
+          .map(
+            (item: { date: string; reason: string }) =>
+              `${formatDateTime(item.date)} — ${item.reason}`,
+          )
+          .join("\n");
+
+        showApiErrorToast(
+          `${skippedCount} of ${totalRequestedDays} day(s) were skipped.\n${reasons}`,
+        );
+      }
+
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealRequests.list(tenantId),
       });
+
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealRequests.myRequests(tenantId),
       });

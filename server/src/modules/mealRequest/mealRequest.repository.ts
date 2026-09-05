@@ -52,10 +52,12 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
   }
 
   async findTodayRequest({
+    id,
     tenantId,
     userId,
     date,
   }: {
+    id: number;
     tenantId: number;
     userId: number;
     date: Date;
@@ -64,6 +66,7 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
 
     return this.findOneWithOptions({
       where: {
+        id,
         tenantId,
         userId,
         date: {
@@ -173,13 +176,18 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
     });
   }
 
-    async getMyPendingReq(
+  async getMyPendingReq(
     tenantId: number,
     mealSessionId: number,
-    userId: number
+    userId: number,
   ): Promise<MealRequest[]> {
     return await this.findAll({
-      where: { tenantId, mealSessionId, userId, status: MealRequestStatus.PENDING },
+      where: {
+        tenantId,
+        mealSessionId,
+        userId,
+        status: MealRequestStatus.PENDING,
+      },
       attributes: [
         "id",
         "date",
@@ -236,8 +244,6 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
       order: [["date", "ASC"]],
     });
   }
-
-  
 
   // done
   async getPendingRequestsByDate(
