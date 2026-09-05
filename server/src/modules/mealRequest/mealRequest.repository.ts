@@ -51,12 +51,10 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
   }
 
   async findTodayRequest({
-    id,
     tenantId,
     userId,
     date,
   }: {
-    id: number;
     tenantId: number;
     userId: number;
     date: Date;
@@ -65,7 +63,6 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
 
     return this.findOneWithOptions({
       where: {
-        id,
         tenantId,
         userId,
         date: {

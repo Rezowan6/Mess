@@ -50,6 +50,7 @@ export interface IMealPlanningQuery {
 export type MealPlanningMeal = "breakfast" | "lunch" | "dinner";
 
 export interface IRejectMealPayload {
+
   tenantId: number;
   userId: number;
   managerId: number;
