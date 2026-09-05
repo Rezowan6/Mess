@@ -21,15 +21,7 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
   const { mutate: deleteMealRequest } = useParmanetDeleteMealReq();
 
   return (
-    <div className="max-h-92 bg-info/5 overflow-y-auto">
-      <div className="py-4">
-        <h2 className="text-lg font-semibold text-base-content">
-          My Meal Requests
-        </h2>
-        <p className="mt-1 text-sm text-base-content/60">
-          Your pending meal requests
-        </p>
-      </div>
+    <div className="max-h-92 rounded-md bg-info/5 overflow-y-auto">
 
       <div className="flex-1 overflow-y-auto">
         <div className="divide-y divide-success/40">

@@ -45,7 +45,6 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
           [Op.between]: [startDate, endDate],
         },
       },
-      attributes: ["id", "date"],
 
       transaction: transaction ?? null,
     });

@@ -4,10 +4,27 @@ import { mealRequestApi } from "../api/mealRequest.api";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
-import { formatDateTime } from "@/shared/utils/time";
-import { showApiErrorToast, showSuccessToast, showWarningToast } from "@/shared/utils/toast";
+import {
+  showApiErrorToast,
+  showSuccessToast,
+  showWarningToast,
+} from "@/shared/utils/toast";
 
-export const useCreateMealRequest = () => {
+export interface MealRequestResult {
+  createdCount: number;
+  skippedCount: number;
+  totalRequestedDays: number;
+  skippedRequests: {
+    date: string;
+    reason: string;
+  }[];
+}
+
+export const useCreateMealRequest = (
+  setRequestResult: React.Dispatch<
+    React.SetStateAction<MealRequestResult | null>
+  >,
+) => {
   const queryClient = useQueryClient();
   const tenantId = useCurrentTenantId();
 
@@ -29,18 +46,19 @@ export const useCreateMealRequest = () => {
         skippedRequests = [],
       } = result;
 
-      // No request created
+      // Save result for UI
+      setRequestResult({
+        createdCount,
+        skippedCount,
+        totalRequestedDays,
+        skippedRequests,
+      });
+
+      // Nothing created
       if (createdCount === 0 && skippedCount > 0) {
-        const reasons = skippedRequests
-          .map(
-            (item: { date: string; reason: string }) =>
-              `${formatDateTime(item.date)} — ${item.reason}`,
-          )
-          .join("\n");
-
-        showWarningToast(`No new meal request created.\n${reasons}`);
-
-        return;
+        showWarningToast(
+          `No new meal request created. ${skippedCount} of ${totalRequestedDays} day(s) were skipped.`,
+        );
       }
 
       // Request created
@@ -53,19 +71,13 @@ export const useCreateMealRequest = () => {
       }
 
       // Some days skipped
-      if (skippedCount > 0) {
-        const reasons = skippedRequests
-          .map(
-            (item: { date: string; reason: string }) =>
-              `${formatDateTime(item.date)} — ${item.reason}`,
-          )
-          .join("\n");
-
-        showApiErrorToast(
-          `${skippedCount} of ${totalRequestedDays} day(s) were skipped.\n${reasons}`,
+      if (createdCount > 0 && skippedCount > 0) {
+        showWarningToast(
+          `${skippedCount} of ${totalRequestedDays} day(s) were skipped.`,
         );
       }
 
+      // Invalidate queries
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealRequests.list(tenantId),
       });

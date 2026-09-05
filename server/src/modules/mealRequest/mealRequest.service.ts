@@ -9,7 +9,6 @@ import { mealRequestRepository } from "./mealRequest.repository.js";
 
 import { appTime } from "@/configs/time.js";
 import { formatDate } from "@/utils/date.util.js";
-import { getCurrentMealDate } from "@/utils/mealDate.js";
 import { mealEntryGenerator } from "../mealEntry/mealEntry.generator.js";
 import { MealRequest } from "./mealRequest.model.js";
 
@@ -27,8 +26,6 @@ export class MealRequestService {
     mealSessionId: number;
   }) {
     const { fromDate, toDate, breakfast, lunch, dinner } = payload;
-
-    console.log({ fromDate, toDate });
 
     if (!breakfast && !lunch && !dinner) {
       throw new ApiError(400, "Please select at least one meal");
@@ -72,53 +69,13 @@ export class MealRequestService {
 
         const existingRequest = existingRequestMap.get(formatDate(requestDate));
 
-        console.log(existingRequest)
-
         if (existingRequest) {
           skippedRequests.push({
             date: requestDate,
-            reason: "Already exists.",
-          });
-
-          currentDate = currentDate.add(1, "day");
-
-          continue;
-        }
-
-        if (
-          breakfast &&
-          !mealCutoffService.canTakeBreakfast(mealSetting, requestDate)
-        ) {
-          skippedRequests.push({
-            date: requestDate,
-            reason: "Breakfast cutoff time passed.",
-          });
-
-          currentDate = currentDate.add(1, "day");
-
-          continue;
-        }
-
-        if (
-          lunch &&
-          !mealCutoffService.canTakeLunch(mealSetting, requestDate)
-        ) {
-          skippedRequests.push({
-            date: requestDate,
-            reason: "Lunch cutoff time passed.",
-          });
-
-          currentDate = currentDate.add(1, "day");
-          continue;
-        }
-
-        if (
-          dinner &&
-          !mealCutoffService.canTakeDinner(mealSetting, requestDate)
-        ) {
-          skippedRequests.push({
-            date: requestDate,
-            reason: "Dinner cutoff time passed.",
+            reason:
+              existingRequest.status === MealRequestStatus.PENDING
+                ? "You already have a pending meal request for this date."
+                : `A meal request already exists for this date with status "${existingRequest.status}".`,
           });
 
           currentDate = currentDate.add(1, "day");
@@ -131,9 +88,9 @@ export class MealRequestService {
 
           date: requestDate,
 
-          breakfast: breakfastValue,
-          lunch: lunchValue,
-          dinner: dinnerValue,
+          breakfast: breakfast ?? 0,
+          lunch: lunch ?? 0,
+          dinner: dinner ?? 0,
 
           status: MealRequestStatus.PENDING,
         };
@@ -402,26 +359,7 @@ export class MealRequestService {
     });
   }
 
-  async parmanetDelete({
-    id,
-    tenantId,
-    userId,
-  }: {
-    id: number;
-    tenantId: number;
-    userId: number;
-  }) {
-    const date = getCurrentMealDate();
-    const pendingReq = await mealRequestRepository.findTodayRequest({
-      id,
-      tenantId,
-      userId,
-      date,
-    });
-
-    console.log(pendingReq);
-    console.log(date);
-
+  async parmanetDelete(id: number, tenantId: number) {
     const deletedCount = await mealRequestRepository.delete(
       { id, tenantId, status: MealRequestStatus.PENDING },
       { force: true },
