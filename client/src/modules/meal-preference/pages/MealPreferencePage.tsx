@@ -1,4 +1,4 @@
-import { AddMealReqModal } from "@/modules/meal-request/components/addMealReqModal";
+import { AddMealReqModal } from "@/modules/meal-request/components/AddMealReqModal";
 import { MealRequestPage } from "@/modules/meal-request/pages/MealRequestPage";
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
 import { Button } from "@/shared/components/ui/Button";
@@ -7,8 +7,6 @@ import { MealPreferenceForm } from "../components/MealPreferenceForm";
 
 export function MealPreferencePage() {
   const [isOpen, setIsOpen] = useState(false);
-
-  console.log(isOpen)
   return (
     <>
       <ManagementPage
