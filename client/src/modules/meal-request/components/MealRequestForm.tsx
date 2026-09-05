@@ -61,11 +61,13 @@ export const MealRequestForm = ({ onClose }: { onClose: () => void }) => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 bg-info/5 px-4">
           <div>
             <label className="mb-1 block text-sm font-medium text-base-content">
-              From Date
+              From Date{" "}
+              <span className="text-base-content/50">(Month / Day / Year)</span>
             </label>
 
             <Input
               type="date"
+              placeholder="mm / dd / yyyy"
               {...register("fromDate")}
               className="w-full"
               error={errors?.fromDate?.message}
@@ -74,11 +76,13 @@ export const MealRequestForm = ({ onClose }: { onClose: () => void }) => {
 
           <div>
             <label className="mb-1 block text-sm font-medium text-base-content">
-              To Date
+              To Date{" "}
+              <span className="text-base-content/50">(Month / Day / Year)</span>
             </label>
 
             <Input
               type="date"
+              placeholder="mm / dd / yyyy"
               {...register("toDate")}
               className=" w-full"
               error={errors?.toDate?.message}
@@ -102,11 +106,7 @@ export const MealRequestForm = ({ onClose }: { onClose: () => void }) => {
 
         {/* Submit */}
         <div className="flex justify-end gap-2 pt-4">
-          <Button
-            type="button"
-            variant="error"
-            onClick={onClose}
-          >
+          <Button type="button" variant="error" onClick={onClose}>
             Cancel
           </Button>
           <Button
