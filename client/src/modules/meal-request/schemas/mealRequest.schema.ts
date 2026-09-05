@@ -1,3 +1,4 @@
+import { getLocalDate } from "@/shared/utils/date.utils";
 import { z } from "zod";
 
 export const mealRequestSchema = z
@@ -21,6 +22,17 @@ export const mealRequestSchema = z
       .int("Dinner must be a whole number")
       .min(0, "Dinner cannot be negative"),
   })
+  .refine(
+    (data) => {
+      const today = getLocalDate();
+
+      return data.fromDate >= today;
+    },
+    {
+      message: "You cannot select today or any date before today.",
+      path: ["fromDate"],
+    },
+  )
   .refine((data) => data.fromDate <= data.toDate, {
     message: "From date cannot be greater than to date.",
     path: ["toDate"],

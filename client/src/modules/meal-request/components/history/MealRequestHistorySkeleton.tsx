@@ -1,4 +1,3 @@
-import { MealPreferenceSkeleton } from "@/modules/meal-preference/components/MealPreferenceSkeleton";
 import { Skeleton } from "@/shared/components/feedback/Skeleton";
 
 export const MealRequestHistorySkeleton = () => {
@@ -9,9 +8,6 @@ export const MealRequestHistorySkeleton = () => {
         <Skeleton className="h-5 w-48" />
         <Skeleton className="h-3 w-64" />
       </div>
-
-      {/*  */}
-      <MealPreferenceSkeleton />
       {/* Request list */}
       <div className="h-125 overflow-hidden bg-info/5 px-4">
         <div className="divide-y divide-success/40">

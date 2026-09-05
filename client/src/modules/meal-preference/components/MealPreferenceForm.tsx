@@ -6,7 +6,7 @@ import { Button } from "@/shared/components/ui/Button";
 import { useMealPreference } from "../hooks/useMealPreference";
 import { useUpsertMealPreference } from "../hooks/useUpsertMealPreference";
 
-import { MealCounterField } from "@/modules/meal-request/components/MealCounterField";
+import { MealCounterField } from "@/modules/meal-request/components/createReq/MealCounterField";
 import { mealFields } from "@/modules/meal-request/configs/mealFields";
 import { useMealSetting } from "@/modules/meal-setting/hooks/useMealSetting";
 import type { IUpsertMealPreferenceDto } from "../types/mealPreference.types";

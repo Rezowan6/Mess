@@ -1,4 +1,4 @@
-import { MealRequestSection } from "../components/MealRequestSection";
+import { MealRequestSection } from "./MealRequestSection";
 
 export function MealRequestPage() {
   return (

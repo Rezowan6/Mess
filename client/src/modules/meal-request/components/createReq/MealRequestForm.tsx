@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { MealCounterField } from "@/modules/meal-request/components/MealCounterField";
+import { MealCounterField } from "@/modules/meal-request/components/createReq/MealCounterField";
 import { mealFields } from "@/modules/meal-request/configs/mealFields";
 import { useMealSetting } from "@/modules/meal-setting/hooks/useMealSetting";
 
@@ -11,9 +11,9 @@ import { SkippedDatesCard } from "@/shared/components/feedback/SkippedDatesCard"
 import { Input } from "@/shared/components/ui/Input";
 import { useState } from "react";
 import type z from "zod";
-import { useCreateMealRequest } from "../hooks/useCreateMealRequest";
-import { mealRequestSchema } from "../schemas/mealRequest.schema";
-import type { ICreateMealRequestPayload } from "../types/mealRequest.types";
+import { useCreateMealRequest } from "../../hooks/useCreateMealRequest";
+import { mealRequestSchema } from "../../schemas/mealRequest.schema";
+import type { ICreateMealRequestPayload } from "../../types/mealRequest.types";
 
 type MealRequestFormInput = z.input<typeof mealRequestSchema>;
 type MealRequestFormOutput = z.output<typeof mealRequestSchema>;

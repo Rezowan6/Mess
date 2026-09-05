@@ -1,6 +1,6 @@
+import { MealRequestHistory } from "../components/history/MealRequestHistory";
+import { MealRequestHistorySkeleton } from "../components/history/MealRequestHistorySkeleton";
 import { useMyPendingMealReq } from "../hooks/useMyPendingMealRequests";
-import { MealRequestHistory } from "./history/MealRequestHistory";
-import { MealRequestHistorySkeleton } from "./history/MealRequestHistorySkeleton";
 
 export const MealRequestSection = () => {
   const { data, isPending } = useMyPendingMealReq();
