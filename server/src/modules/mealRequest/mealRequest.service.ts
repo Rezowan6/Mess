@@ -113,7 +113,6 @@ export class MealRequestService {
           currentDate = currentDate.add(1, "day");
           continue;
         }
-        // hi
         const requestData: ICreateMealRequestDbDto = {
           tenantId,
           mealSessionId,
