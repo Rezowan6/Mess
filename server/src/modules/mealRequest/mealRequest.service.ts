@@ -359,9 +359,17 @@ export class MealRequestService {
     });
   }
 
-  async parmanetDelete(id: number, tenantId: number) {
+  async parmanetDelete({
+    id,
+    tenantId,
+    userId,
+  }: {
+    id: number;
+    tenantId: number;
+    userId: number;
+  }) {
     const deletedCount = await mealRequestRepository.delete(
-      { id, tenantId, status: MealRequestStatus.PENDING },
+      { id, tenantId, userId, status: MealRequestStatus.PENDING },
       { force: true },
     );
 
