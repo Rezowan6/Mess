@@ -25,8 +25,9 @@ export const mealRequestSchema = z
   .refine(
     (data) => {
       const today = getLocalDate();
+      const isValid = data.fromDate >= today && data.fromDate !== today;
 
-      return data.fromDate >= today;
+      return isValid;
     },
     {
       message: "You cannot select today or any date before today.",
