@@ -63,7 +63,6 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
         tenantId,
         mealSessionId,
         userId,
-        status: MealRequestStatus.PENDING,
         date: {
           [Op.between]: [startDate, endDate],
         },

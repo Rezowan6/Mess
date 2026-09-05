@@ -10,6 +10,7 @@ import { mealRequestRepository } from "./mealRequest.repository.js";
 import { appTime } from "@/configs/time.js";
 import { formatDate, isSameDate } from "@/utils/date.util.js";
 import { getCurrentMealDate } from "@/utils/mealDate.js";
+import { UniqueConstraintError } from "sequelize";
 import { mealEntryGenerator } from "../mealEntry/mealEntry.generator.js";
 import { MealRequest } from "./mealRequest.model.js";
 
@@ -109,9 +110,20 @@ export class MealRequestService {
       }
 
       if (createdRequests.length) {
-        await mealRequestRepository.bulkCreate(createdRequests, {
-          transaction,
-        });
+        try {
+          await mealRequestRepository.bulkCreate(createdRequests, {
+            transaction,
+          });
+        } catch (error) {
+          if (error instanceof UniqueConstraintError) {
+            throw new ApiError(
+              409,
+              "A meal request already exists for one or more selected dates.",
+            );
+          }
+
+          throw error;
+        }
       }
 
       return {
