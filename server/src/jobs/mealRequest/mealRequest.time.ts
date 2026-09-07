@@ -123,7 +123,7 @@ export const getNextMaghribTime = (): Date => {
 export const getTestRunTime = (): Date => {
   const runAt = new Date();
 
-  runAt.setMinutes(runAt.getMinutes() + 4);
+  runAt.setSeconds(runAt.getSeconds() + 30);
 
   console.log(
     `[MealRequestJob][TEST] Job will run at: ${runAt.toLocaleString(
