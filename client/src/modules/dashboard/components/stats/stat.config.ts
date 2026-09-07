@@ -19,7 +19,6 @@ export interface DashboardStat {
   key: keyof DashboardStats;
   title: string;
   value: string | number;
-  description: string;
   icon: LucideIcon;
   path: string;
 }
@@ -29,7 +28,6 @@ export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => [
     key: "totalMeals",
     title: "Total Meals",
     value: stats.totalMeals,
-    description: "This month",
     icon: Utensils,
     path: ROUTES.MEAL_ENTRY,
   },
@@ -37,7 +35,6 @@ export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => [
     key: "totalMembers",
     title: "Total Members",
     value: stats.totalMembers,
-    description: "Active",
     icon: Users,
     path: ROUTES.USERS,
   },
@@ -45,7 +42,6 @@ export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => [
     key: "totalExpense",
     title: "Total Expense",
     value: `৳ ${stats.totalExpense}`,
-    description: "This month",
     icon: DollarSign,
     path: ROUTES.EXPENSE,
   },
@@ -53,7 +49,6 @@ export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => [
     key: "totalDeposit",
     title: "Total Deposit",
     value: `৳ ${stats.totalDeposit}`,
-    description: "This month",
     icon: CreditCard,
     path: ROUTES.DEPOSIT,
   },

@@ -8,7 +8,6 @@ interface Props extends DashboardStat {}
 export const DashboardStatCard = ({
   title,
   value,
-  description,
   icon: Icon,
   path,
 }: Props) => {
@@ -24,7 +23,6 @@ export const DashboardStatCard = ({
       <InfoCard
         title={title}
         value={value}
-        description={description}
         icon={<Icon size={22} strokeWidth={2} />}
         
       />
