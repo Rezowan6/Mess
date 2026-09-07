@@ -54,6 +54,11 @@ class MealPlanningService {
       .filter((entry) => Number(entry[meal]) > 0)
       .map((entry) => ({
         userId: entry.userId,
+
+        date: entry.date,
+        status: entry.status,
+        createdAt: entry.createdAt,
+
         memberName: entry.user?.name ?? "Unknown Member",
         avatar: entry.user.avatar ?? null,
         meal: Number(entry[meal]),
@@ -61,15 +66,17 @@ class MealPlanningService {
   }
 
   async getDailyMealPlanning(tenantId: number): Promise<IMealPlanningResponse> {
-    const date = getCurrentMealDate();
-
     const requests = await mealRequestRepository.getPendingRequestsByDate({
       tenantId,
-      date,
+      date: getCurrentMealDate(),
     });
 
     const entries: IMealPlanningEntry[] = requests.map((request: any) => ({
       userId: request.userId,
+
+      date: request.date,
+      status: request.status,
+      createdAt: request.createdAt,
 
       breakfast: Number(request.breakfast),
       lunch: Number(request.lunch),

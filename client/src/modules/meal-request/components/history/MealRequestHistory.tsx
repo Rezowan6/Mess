@@ -42,7 +42,7 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                 />
 
                 <div className="min-w-0 flex-1">
-                  <div className="mb-1 flex items-center justify-between gap-3">
+                  <div className="mb-1 flex items-center justify-between  gap-3">
                     <h3 className="truncate text-[15px] font-semibold text-base-content">
                       {request.requester.name}
                     </h3>

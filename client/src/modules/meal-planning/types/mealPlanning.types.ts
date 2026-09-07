@@ -7,6 +7,10 @@ export interface IMealPlanningQuery {
 
 export interface IMealPlanningMember {
   userId: number;
+  status: string;
+  date: string;
+  createdAt: string;
+
   memberName: string;
   meal: number;
   avatar: string;
