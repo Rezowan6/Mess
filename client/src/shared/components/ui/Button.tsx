@@ -51,83 +51,103 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses = {
   tab: `
-  text-info
-`,
+    border border-info/20
+    bg-white/5
+    text-info
+    backdrop-blur-xl
+    hover:bg-info/10
+    hover:border-info/40
+  `,
+
   moduleBtn: `
-    bg-gradient-to-r 
-    from-teal-600 
-    to-green-600
-    hover:from-teal-700
-    hover:to-green-700
-    `,
+    border border-teal-300/20
+    bg-gradient-to-r from-teal-500/80 to-green-600/80
+    backdrop-blur-xl
+    shadow-lg shadow-teal-500/10
+    hover:from-teal-500 hover:to-green-500
+    hover:shadow-xl hover:shadow-teal-500/20
+  `,
+
   primary: `
-    bg-gradient-to-r 
-    from-blue-600 
-    to-blue-900
-    hover:from-blue-800 
-    hover:to-blue-600
-    `,
+    border border-blue-300/20
+    bg-gradient-to-r from-blue-500/80 to-indigo-700/80
+    backdrop-blur-xl
+    shadow-lg shadow-blue-500/10
+    hover:from-blue-500 hover:to-indigo-600
+    hover:shadow-xl hover:shadow-blue-500/20
+  `,
 
   success: `
-    bg-gradient-to-r 
-    from-teal-600 
-    to-green-600
-    hover:from-teal-700
-    hover:to-green-700
-    `,
+    border border-emerald-300/20
+    bg-gradient-to-r from-teal-500/80 to-emerald-600/80
+    backdrop-blur-xl
+    shadow-lg shadow-emerald-500/10
+    hover:from-teal-500 hover:to-emerald-500
+    hover:shadow-xl hover:shadow-emerald-500/20
+  `,
 
   error: `
-    bg-gradient-to-r
-    from-red-500
-    to-pink-600
-    hover:from-red-600
-    hover:to-pink-700
-    `,
+    border border-red-300/20
+    bg-gradient-to-r from-red-500/80 to-pink-600/80
+    backdrop-blur-xl
+    shadow-lg shadow-red-500/10
+    hover:from-red-500 hover:to-pink-500
+    hover:shadow-xl hover:shadow-red-500/20
+  `,
 
   warning: `
-    bg-gradient-to-r
-    from-yellow-500
-    to-orange-500
-    hover:from-yellow-600
-    hover:to-orange-600
-    `,
+    border border-yellow-300/20
+    bg-gradient-to-r from-yellow-500/80 to-orange-500/80
+    backdrop-blur-xl
+    shadow-lg shadow-yellow-500/10
+    hover:from-yellow-500 hover:to-orange-500
+    hover:shadow-xl hover:shadow-orange-500/20
+  `,
 
   secondary: `
-    bg-gradient-to-r
-    from-slate-500
-    to-slate-700
-    hover:from-slate-600
-    hover:to-slate-800
-    `,
+    border border-slate-300/20
+    bg-gradient-to-r from-slate-500/80 to-slate-700/80
+    backdrop-blur-xl
+    shadow-lg shadow-slate-500/10
+    hover:from-slate-500 hover:to-slate-600
+    hover:shadow-xl hover:shadow-slate-500/20
+  `,
 
   accent: `
-    bg-gradient-to-r
-    from-purple-600
-    to-pink-600
-    hover:from-purple-700
-    hover:to-pink-700
-    `,
+    border border-purple-300/20
+    bg-gradient-to-r from-purple-500/80 to-pink-600/80
+    backdrop-blur-xl
+    shadow-lg shadow-purple-500/10
+    hover:from-purple-500 hover:to-pink-500
+    hover:shadow-xl hover:shadow-purple-500/20
+  `,
 
   ghost: `
-    bg-transparent
-    text-text
-    hover:bg-surface-hover
-    `,
+    border border-white/10
+    bg-white/5
+    text-base-content
+    backdrop-blur-xl
+    hover:bg-white/10
+    hover:border-white/20
+  `,
 
   outline: `
-    border
-    border-border
-    text-text
-    hover:bg-surface-hover
-    `,
+    border border-base-content/20
+    bg-white/5
+    text-base-content
+    backdrop-blur-xl
+    hover:bg-white/10
+    hover:border-info/40
+  `,
+
   normal: `
-    bg-gradient-to-r
-    from-teal-500
-    to-teal-900
-    hover:from-teal-600
-    hover:to-teal-600
-  
-    `,
+    border border-teal-300/20
+    bg-gradient-to-r from-teal-500/80 to-teal-800/80
+    backdrop-blur-xl
+    shadow-lg shadow-teal-500/10
+    hover:from-teal-500 hover:to-teal-700
+    hover:shadow-xl hover:shadow-teal-500/20
+  `,
 } satisfies Record<ButtonVariant, string>;
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -174,7 +194,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={clsx(
           !unstyled && [
             variantClasses[variant],
-            "px-4 sm:h-10 flex justify-center items-center text-white",
+            "relative overflow-hidden rounded-xl px-4 sm:h-10 flex items-center justify-center gap-2 text-white font-medium",
+            "backdrop-blur-xl transition-all duration-300 ease-out",
+            "hover:-translate-y-0.5 active:translate-y-0",
+            "disabled:opacity-50 disabled:pointer-events-none",
+            "focus:outline-none focus:ring-2 focus:ring-info/30",
           ],
 
           "cursor-pointer bg-info/20 hover:bg-info/40 p-2 rounded-sm disabled:opacity-50 disabled:pointer-events-none transition-all duration-300",
