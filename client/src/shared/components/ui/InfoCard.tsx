@@ -23,7 +23,7 @@ export const InfoCard = ({
   return (
     <div
       className={clsx(
-        "group relative overflow-hidden rounded-2xl p-5",
+        "group relative overflow-hidden rounded-2xl p-2",
         "border border-white/15 bg-white/5 backdrop-blur-xl",
         "shadow-[0_8px_32px_rgba(0,0,0,0.08)]",
         "transition-all duration-500 ease-out",
