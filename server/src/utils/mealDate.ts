@@ -18,9 +18,13 @@ export const getCurrentMealDate = (): Date => {
   const now = appTime();
   const maghrib = appTime(getTodayMaghribTime());
 
+  // Before today's Maghrib
+  // → Today's meal date
   if (now.isBefore(maghrib)) {
     return now.startOf("day").toDate();
   }
 
+  // After Maghrib
+  // → Tomorrow's meal date
   return now.add(1, "day").startOf("day").toDate();
 };

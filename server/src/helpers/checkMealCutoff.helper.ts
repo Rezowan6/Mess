@@ -1,7 +1,8 @@
+import { appTime } from "@/configs/time.js";
 import { getMaghribTime } from "@/helpers/getPrayerTime.helper.js";
 import { MealSetting } from "@/models/index.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { createAppTime, getAppNow } from "@/utils/timezone.util.js";
+import { getCurrentMealDate } from "@/utils/mealDate.js";
 
 interface ICheckMealCutoffPayload {
   mealSetting: MealSetting;
@@ -12,9 +13,10 @@ interface ICheckMealCutoffPayload {
 export const checkMealCutoff = ({
   mealSetting,
   meal,
-  date = new Date(),
+  date = getCurrentMealDate(),
 }: ICheckMealCutoffPayload): boolean => {
-  const now = getAppNow();
+  const now = appTime();
+  const requestDate = appTime(date);
 
   let cutoffMinute: number;
 
@@ -35,32 +37,41 @@ export const checkMealCutoff = ({
       throw new ApiError(400, "Invalid meal type");
   }
 
-  const requestDate = new Date(date);
-
   const cutoffHours = Math.floor(cutoffMinute / 60);
   const cutoffMinutes = cutoffMinute % 60;
 
   /**
-   * Breakfast:
+   * ============================================
+   * BREAKFAST
+   * ============================================
    *
    * Previous day Maghrib
    *          ↓
-   * Request date Breakfast cutoff
+   * Breakfast cutoff
+   *
+   * Example:
+   *
+   * Sep 7 Maghrib
+   *       ↓
+   * Sep 8 Breakfast cutoff
    */
+
   if (meal === "breakfast") {
-    const previousDay = new Date(requestDate);
+    const previousDay = requestDate.subtract(1, "day");
 
-    previousDay.setDate(previousDay.getDate() - 1);
+    const startTime = appTime(getMaghribTime(previousDay.toDate()));
 
-    const startTime = getMaghribTime(previousDay);
+    const endTime = requestDate
+      .hour(cutoffHours)
+      .minute(cutoffMinutes)
+      .second(0)
+      .millisecond(0);
 
-    const endTime = createAppTime(requestDate, cutoffHours, cutoffMinutes);
-
-    if (now < startTime) {
+    if (now.isBefore(startTime)) {
       throw new ApiError(400, "Breakfast modification has not started yet.");
     }
 
-    if (now > endTime) {
+    if (now.isAfter(endTime)) {
       throw new ApiError(400, "Breakfast modification time has expired.");
     }
 
@@ -68,12 +79,20 @@ export const checkMealCutoff = ({
   }
 
   /**
-   * Lunch / Dinner:
-   * Same day cutoff
+   * ============================================
+   * LUNCH / DINNER
+   * ============================================
+   *
+   * Same meal date cutoff.
    */
-  const cutoff = createAppTime(requestDate, cutoffHours, cutoffMinutes);
 
-  if (now > cutoff) {
+  const cutoff = requestDate
+    .hour(cutoffHours)
+    .minute(cutoffMinutes)
+    .second(0)
+    .millisecond(0);
+
+  if (now.isAfter(cutoff)) {
     throw new ApiError(400, `${meal} modification time has expired.`);
   }
 

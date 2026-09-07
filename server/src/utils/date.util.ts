@@ -1,5 +1,6 @@
 import { appTime } from "@/configs/time.js";
-
+// ================================
+// ingsa-allah ai 3 ta method update korte hobe 
 export const getHoursDifference = (
   from: Date,
   to: Date = new Date(),
@@ -18,13 +19,16 @@ export const getCurrentDate = (): string => {
   return new Date().toISOString().split("T")[0] as string;
 };
 
+// ================================
+
 // done and use
 export const formatDate = (date: Date): string => {
   return appTime(date).format("YYYY-MM-DD");
 };
-export const getAppDate = (): Date => {
-  return appTime().startOf("day").toDate();
+export const getAppDate = (date?: Date | string | number): Date => {
+  return appTime(date).startOf("day").toDate();
 };
+
 export const isSameDate = (
   firstDate: Date | string | number | null | undefined,
   secondDate: Date | string | number | null | undefined,

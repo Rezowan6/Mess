@@ -29,17 +29,3 @@ export const toAppTimezone = (date: Date): Date => {
  * createAppTime(date, 10, 0)
  * => 10:00 AM Asia/Dhaka
  */
-export const createAppTime = (
-  date: Date,
-  hours: number,
-  minutes: number,
-): Date => {
-  const dateString = formatInTimeZone(date, APP_TIMEZONE, "yyyy-MM-dd");
-
-  return fromZonedTime(
-    `${dateString} ${String(hours).padStart(2, "0")}:${String(
-      minutes,
-    ).padStart(2, "0")}:00`,
-    APP_TIMEZONE,
-  );
-};
