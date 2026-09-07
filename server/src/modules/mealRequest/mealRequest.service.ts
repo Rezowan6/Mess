@@ -1,6 +1,7 @@
 import sequelize from "@/configs/db.js";
 import { ApiError } from "@/utils/ApiError.js";
 import {
+  ICreateMealRequestByDateDto,
   ICreateMealRequestDbDto,
   ICreateMealRequestDto,
   MealRequestStatus,
@@ -8,7 +9,7 @@ import {
 import { mealRequestRepository } from "./mealRequest.repository.js";
 
 import { appTime } from "@/configs/time.js";
-import { formatDate, isSameDate } from "@/utils/date.util.js";
+import { formatDate, getAppDate, isSameDate } from "@/utils/date.util.js";
 import { getCurrentMealDate } from "@/utils/mealDate.js";
 import { UniqueConstraintError } from "sequelize";
 import { mealEntryGenerator } from "../mealEntry/mealEntry.generator.js";
@@ -135,6 +136,33 @@ export class MealRequestService {
     });
   }
 
+  async createByDate(payload: ICreateMealRequestByDateDto) {
+    const { tenantId, userId, date, breakfast, lunch, dinner } = payload;
+
+    const today = getAppDate();
+
+    if (date <= today) {
+      throw new ApiError(404, `Meal request not allowed before today.`);
+    }
+
+    if (!breakfast && !lunch && !dinner) {
+      throw new ApiError(400, "Please select at least one meal");
+    }
+    const existsRequest = await mealRequestRepository.findOneByDate({
+      tenantId,
+      userId,
+      date,
+    });
+
+    if (existsRequest) {
+      throw new ApiError(403, `Meal request already exisit for ${date}`);
+    }
+
+    const request = await mealRequestRepository.create(payload);
+
+    return request;
+  }
+
   // done
   async myPendingRequest({
     tenantId,
@@ -215,7 +243,7 @@ export class MealRequestService {
     tenantId: number;
     userId: number;
   }) {
-    const date = getCurrentMealDate();
+    const date = getAppDate();
 
     const existsToDayPendingReq =
       await mealRequestRepository.findOneByDateAndId({

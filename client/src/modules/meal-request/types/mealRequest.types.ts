@@ -48,13 +48,17 @@ export interface IMealRequest {
 // ===============================
 // Create Meal Request Payload
 // ===============================
-
-export interface ICreateMealRequestPayload {
-  fromDate: string;
-  toDate: string;
+interface MealRequest {
   breakfast: number;
   lunch: number;
   dinner: number;
+}
+export interface ICreateMealRequestPayload extends MealRequest {
+  fromDate: string;
+  toDate: string;
+}
+export interface ICreateMealRequestByDatePayload extends MealRequest {
+  date: string;
 }
 
 // ===============================

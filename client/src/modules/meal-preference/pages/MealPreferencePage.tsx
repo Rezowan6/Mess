@@ -14,7 +14,7 @@ export function MealPreferencePage() {
         description="Select your daily meal preference"
         action={
           <Button variant="success" onClick={() => setIsOpen(true)}>
-            Add Request
+            Create Requests
           </Button>
         }
       >

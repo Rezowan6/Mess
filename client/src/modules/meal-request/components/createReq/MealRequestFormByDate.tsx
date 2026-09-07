@@ -7,37 +7,25 @@ import { useMealSetting } from "@/modules/meal-setting/hooks/useMealSetting";
 
 import { Button } from "@/shared/components/ui/Button";
 
-import { SkippedDatesCard } from "@/shared/components/feedback/SkippedDatesCard";
 import { Input } from "@/shared/components/ui/Input";
-import { useState } from "react";
 import type z from "zod";
-import { useCreateMealRequest } from "../../hooks/useCreateMealRequest";
-import { mealRequestSchema } from "../../schemas/mealRequest.schema";
-import type { ICreateMealRequestPayload } from "../../types/mealRequest.types";
+import { useCreateMealRequestByDate } from "../../hooks/useCreateMealRequestByDate";
+import { mealRequestSchemaByDate } from "../../schemas/mealRequest.schema";
+import type { ICreateMealRequestByDatePayload } from "../../types/mealRequest.types";
 
-type MealRequestFormInput = z.input<typeof mealRequestSchema>;
-type MealRequestFormOutput = z.output<typeof mealRequestSchema>;
+type MealRequestFormInput = z.input<typeof mealRequestSchemaByDate>;
+type MealRequestFormOutput = z.output<typeof mealRequestSchemaByDate>;
 
-export const MealRequestForm = ({ onClose }: { onClose: () => void }) => {
-  const [requestResult, setRequestResult] = useState<{
-    createdCount: number;
-    skippedCount: number;
-    totalRequestedDays: number;
-    skippedRequests: {
-      date: string;
-      reason: string;
-    }[];
-  } | null>(null);
+export const MealRequestFormByDate = ({ onClose }: { onClose: () => void }) => {
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<MealRequestFormInput, unknown, MealRequestFormOutput>({
-    resolver: zodResolver(mealRequestSchema),
+    resolver: zodResolver(mealRequestSchemaByDate),
     defaultValues: {
-      fromDate: "",
-      toDate: "",
+      date: "",
       breakfast: 0,
       lunch: 0,
       dinner: 0,
@@ -48,9 +36,9 @@ export const MealRequestForm = ({ onClose }: { onClose: () => void }) => {
 
   const mealSetting = mealSettingData?.data;
 
-  const { mutate, isPending } = useCreateMealRequest(setRequestResult);
+  const { mutate, isPending } = useCreateMealRequestByDate();
 
-  const onSubmit = (values: ICreateMealRequestPayload) => {
+  const onSubmit = (values: ICreateMealRequestByDatePayload) => {
     mutate(values);
   };
 
@@ -61,31 +49,16 @@ export const MealRequestForm = ({ onClose }: { onClose: () => void }) => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 bg-info/5 px-4">
           <div>
             <label className="mb-1 block text-sm font-medium text-base-content">
-              From Date{" "}
+              Date{" "}
               <span className="text-base-content/50">(Month / Day / Year)</span>
             </label>
 
             <Input
               type="date"
               placeholder="mm / dd / yyyy"
-              {...register("fromDate")}
+              {...register("date")}
               className="w-full"
-              error={errors?.fromDate?.message}
-            />
-          </div>
-
-          <div>
-            <label className="mb-1 block text-sm font-medium text-base-content">
-              To Date{" "}
-              <span className="text-base-content/50">(Month / Day / Year)</span>
-            </label>
-
-            <Input
-              type="date"
-              placeholder="mm / dd / yyyy"
-              {...register("toDate")}
-              className=" w-full"
-              error={errors?.toDate?.message}
+              error={errors?.date?.message}
             />
           </div>
         </div>
@@ -119,8 +92,6 @@ export const MealRequestForm = ({ onClose }: { onClose: () => void }) => {
           </Button>
         </div>
       </form>
-
-      <SkippedDatesCard items={requestResult?.skippedRequests ?? []} />
     </>
   );
 };

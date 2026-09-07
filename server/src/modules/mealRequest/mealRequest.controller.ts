@@ -23,6 +23,23 @@ export class MealRequestController {
     });
   });
 
+  createByDate = asyncHandler(async (req: Request, res: Response) => {
+    const { userId, tenantId, mealSessionId } = getTenantContext(req);
+
+    const mealRequest = await mealRequestService.createByDate({
+      ...req.body,
+      userId,
+      tenantId,
+      mealSessionId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 201,
+      message: "Meal request create successfully.",
+      data: mealRequest,
+    });
+  });
+
   getApproves = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
@@ -167,7 +184,11 @@ export class MealRequestController {
       throw new ApiError(400, "Valid request id is required");
     }
 
-    const result = await mealRequestService.parmanetDelete({id, tenantId, userId});
+    const result = await mealRequestService.parmanetDelete({
+      id,
+      tenantId,
+      userId,
+    });
 
     sendResponse(res, {
       statusCode: 200,

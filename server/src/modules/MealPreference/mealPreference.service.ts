@@ -1,5 +1,4 @@
 import sequelize from "@/configs/db.js";
-import { appTime } from "@/configs/time.js";
 import { checkMealCutoff } from "@/helpers/checkMealCutoff.helper.js";
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
@@ -10,6 +9,7 @@ import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
 import { mealRequestRepository } from "../mealRequest/mealRequest.repository.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { mealSettingRepository } from "../mealSetting/mealSetting.repository.js";
+import { tenantRepository } from "../tenant/tenant.repository.js";
 import {
   ICopyMealPreferencePayload,
   IUpsertPayload,
@@ -110,6 +110,117 @@ class MealPreferenceService {
     this.emitMealPlanningUpdated(socketPayload);
 
     return result;
+  }
+
+  async createAutoMealReq() {
+    const today = getCurrentMealDate();
+
+    const tenants = await tenantRepository.getActiveTenants();
+
+    let createdCount = 0;
+    let skippedCount = 0;
+
+    for (const tenant of tenants) {
+      try {
+        const mealSession = await mealSessionRepository.getCurrentSession(
+          tenant.id,
+        );
+
+        if (!mealSession) {
+          console.log(
+            `[AutoMealRequest] Skipped tenant ${tenant.id}: no active meal session.`,
+          );
+          continue;
+        }
+
+        const preferences = await mealPreferenceRepository.getActivePreferences(
+          {
+            tenantId: tenant.id,
+          },
+        );
+
+        for (const preference of preferences) {
+          try {
+            const result = await sequelize.transaction(async (transaction) => {
+              const existingRequest = await mealRequestRepository.findOneByDate(
+                {
+                  tenantId: tenant.id,
+                  userId: preference.userId,
+                  date: today,
+                  transaction,
+                },
+              );
+
+              if (existingRequest) {
+                return {
+                  created: false,
+                  request: existingRequest,
+                };
+              }
+
+              const mealRequest = await mealRequestRepository.createWithOptions(
+                {
+                  tenantId: tenant.id,
+                  userId: preference.userId,
+                  mealSessionId: mealSession.id,
+                  date: today,
+
+                  breakfast: preference.breakfast ?? 0,
+                  lunch: preference.lunch ?? 0,
+                  dinner: preference.dinner ?? 0,
+                  guestMeal: preference.guestMeal ?? 0,
+
+                  status: MealRequestStatus.PENDING,
+                },
+                { transaction },
+              );
+
+              return {
+                created: true,
+                request: mealRequest,
+              };
+            });
+
+            if (!result.created) {
+              skippedCount++;
+              continue;
+            }
+
+            createdCount++;
+
+            /**
+             * Realtime meal planning update
+             */
+            this.emitMealPlanningUpdated({
+              tenantId: tenant.id,
+              mealSessionId: mealSession.id,
+              userId: preference.userId,
+              date: today,
+              breakfast: preference.breakfast ?? 0,
+              lunch: preference.lunch ?? 0,
+              dinner: preference.dinner ?? 0,
+              guestMeal: preference.guestMeal ?? 0,
+            });
+          } catch (error) {
+            console.error(
+              `[AutoMealRequest] Failed for tenant ${tenant.id}, user ${preference.userId}:`,
+              error,
+            );
+          }
+        }
+      } catch (error) {
+        console.error(
+          `[AutoMealRequest] Failed for tenant ${tenant.id}:`,
+          error,
+        );
+      }
+    }
+
+    return {
+      date: today,
+      createdCount,
+      skippedCount,
+    };
   }
 
   /**

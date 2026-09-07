@@ -37,6 +37,7 @@ import {
   tenantRoute,
 } from "@/routes/index.js";
 import { deleteUnverifiedUsersJob } from "./jobs/users/deleteUnverifiedUsers.job.js";
+import { createAutoMealReqJob } from "./jobs/mealPreference/createAutoMealReq.job.js";
 
 const app: Application = express();
 
@@ -131,6 +132,9 @@ if (fs.existsSync(publicDir)) {
 
 // deleteUnverifiedUsersJob
 deleteUnverifiedUsersJob();
+
+// create auto meal req job
+createAutoMealReqJob()
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {
