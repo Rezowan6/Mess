@@ -1,5 +1,6 @@
 import { Avatar } from "@/shared/components/ui/Avatar";
 import { Badge } from "@/shared/components/ui/Badge";
+import { formatDate } from "@/shared/utils/date.utils";
 import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
 import { formatDateTime } from "@/shared/utils/time";
 import { CalendarDays } from "lucide-react";
@@ -8,14 +9,14 @@ interface Props {
   request: {
     status: string;
     date: string;
-    createdAt: string;
+    updatedAt: string;
     memberName: string;
     avatar: string | null;
   };
 }
 
 export const MealPlanningTableHeader = ({ request }: Props) => {
-  const { createdAt, date, memberName, status, avatar } = request;
+  const { updatedAt, date, memberName, status, avatar } = request;
   return (
     <>
       <div className="flex items-center gap-3">
@@ -40,11 +41,11 @@ export const MealPlanningTableHeader = ({ request }: Props) => {
           <div className="mb-2 mt-2 flex flex-col gap-1 text-xs text-base-content/60 sm:flex-row sm:items-center sm:gap-2">
             <div className="flex items-center gap-1.5">
               <CalendarDays size={13} />
-              <span>{formatDateTime(date)}</span>
+              <span>{formatDate(date)}</span>
             </div>
 
             <div className="flex items-center gap-1.5 text-[11px] text-base-content/50">
-              <span>Created: {formatDateTime(createdAt)}</span>
+              <span>Updated: {formatDateTime(updatedAt)}</span>
             </div>
           </div>
         </div>

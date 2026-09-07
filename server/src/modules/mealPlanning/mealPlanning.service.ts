@@ -57,7 +57,7 @@ class MealPlanningService {
 
         date: entry.date,
         status: entry.status,
-        createdAt: entry.createdAt,
+        updatedAt: entry.updatedAt,
 
         memberName: entry.user?.name ?? "Unknown Member",
         avatar: entry.user.avatar ?? null,
@@ -76,7 +76,7 @@ class MealPlanningService {
 
       date: request.date,
       status: request.status,
-      createdAt: request.createdAt,
+      updatedAt: request.updatedAt,
 
       breakfast: Number(request.breakfast),
       lunch: Number(request.lunch),
