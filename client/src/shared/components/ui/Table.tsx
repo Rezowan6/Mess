@@ -129,7 +129,7 @@ export function Table<T>({
                 : (row[rowKey] as React.Key);
 
             return (
-              <tr key={key} className="hover hover:bg-info/20">
+              <tr key={key} className="hover hover:bg-success/5">
                 {columns.map((column) => (
                   <td
                     key={String(column.key)}

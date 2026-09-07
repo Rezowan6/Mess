@@ -1,7 +1,7 @@
 import type { TableColumn } from "@/shared/components/ui/Table";
 
 import { Button } from "@/shared/components/ui/Button";
-import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
+import { MealPlanningTableHeader } from "../components/MealPlanningTableHeader";
 import type { IMealPlanningMember } from "../types/mealPlanning.types";
 
 export const getMealPlanningColumns = (
@@ -13,7 +13,7 @@ export const getMealPlanningColumns = (
     key: "member",
     title: "Member",
     render: (row) => {
-      return <MemberAvatar avatar={row.avatar} name={row?.memberName} />;
+      return <MealPlanningTableHeader request={row} />;
     },
   },
 
@@ -29,7 +29,6 @@ export const getMealPlanningColumns = (
     className: "w-32",
     render: (row) => (
       <div className="flex items-center gap-2">
-
         <Button
           variant="error"
           onClick={() => onReject(row.userId)}

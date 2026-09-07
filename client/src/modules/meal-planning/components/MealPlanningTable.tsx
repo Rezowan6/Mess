@@ -5,6 +5,7 @@ import { Table } from "@/shared/components/ui/Table";
 import { Pagination } from "@/shared/components/ui/Pagination";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Tabs } from "@/shared/components/ui/Tabs";
+import { formatDate, getLocalDate } from "@/shared/utils/date.utils";
 import { mealTabs } from "../configs/meal.tabs.config";
 import { getMealPlanningColumns } from "../configs/mealPlanning.columns";
 import { useMealPlanningTable } from "../hooks/useMealPlanningTable";
@@ -67,13 +68,19 @@ export const MealPlanningTable = ({
   const members = (planning?.[activeMeal] ?? []).filter((member) =>
     member.memberName.toLowerCase().includes(search.toLowerCase()),
   );
+  const today = formatDate(getLocalDate());
 
   return (
     <div className="space-y-4">
       {/* Tabs — fixed */}
       <div>
         <Tabs tabs={mealTabs} activeTab={activeMeal} onChange={setActiveMeal} />
-        <p className="w-fit text-left text-sm text-info -mt-2">{activeMeal}</p>
+        <div className="flex items-center">
+          <p className="min-w-16 text-left text-sm text-info ">
+            {activeMeal}
+          </p>
+          <p className="text-sm text-info">{today}</p>
+        </div>
       </div>
       {/* Search — fixed */}
       <SearchInput value={search} onChange={handleSearch} />
