@@ -22,6 +22,14 @@ export const useUpsertMealPreference = () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.monthlyCalculations.current(tenantId),
       });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealRequests.list(tenantId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealRequests.myRequests(tenantId),
+      });
     },
   });
 };

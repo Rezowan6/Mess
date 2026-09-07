@@ -27,7 +27,7 @@ export const MealRequestSection = () => {
               Your pending meal requests
             </p>
           </div>
-          <Button variant="success" onClick={() => setIsOpen(true)}>
+          <Button className="h-fit" variant="success" onClick={() => setIsOpen(true)}>
             Create Request
           </Button>
         </div>
