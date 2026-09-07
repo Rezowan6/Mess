@@ -87,10 +87,10 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                       Dinner: {request.dinner}
                     </Badge>
                   </div>
-                  <div className="mb-2 mt-2 flex flex-col gap-1 text-xs text-base-content/60 sm:flex-row sm:items-center sm:gap-2">
+                  <div className="mb-2 mt-2 flex gap-1 text-xs text-base-content/60 sm:flex-row sm:items-center sm:gap-2">
                     <div className="flex items-center gap-1.5">
                       <CalendarDays size={13} />
-                      <span>{formatDateTime(request.date)}</span>
+                      <span>{formatDate(request.date)}</span>/
                     </div>
 
                     <div className="flex items-center gap-1.5 text-[11px] text-base-content/50">

@@ -9,7 +9,7 @@ export interface IMealPlanningMember {
   userId: number;
   status: string;
   date: string;
-  createdAt: string;
+  updatedAt: string;
 
   memberName: string;
   meal: number;

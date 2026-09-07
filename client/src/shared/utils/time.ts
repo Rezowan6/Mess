@@ -34,6 +34,13 @@ export const formatTime = (date: string) => {
     hour12: true,
   }).format(new Date(date));
 };
+export const formatDate = (date: string) => {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+  }).format(new Date(date));
+};
 export const formatDateTime = (date: string) => {
   return new Intl.DateTimeFormat("en-US", {
     weekday: "short",

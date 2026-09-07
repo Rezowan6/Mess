@@ -5,7 +5,7 @@ export interface IMealPlanningMember {
   
   date: Date;
   status: MealRequestStatus;
-  createdAt: Date;
+  updatedAt: Date;
 
   memberName: string;
   meal: number;
@@ -37,7 +37,7 @@ export interface IMealPlanningEntry {
 
   date: Date;
   status: MealRequestStatus;
-  createdAt: Date;
+  updatedAt: Date;
 
   breakfast: number;
   lunch: number;
