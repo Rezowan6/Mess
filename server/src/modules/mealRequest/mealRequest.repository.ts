@@ -206,15 +206,6 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
         userId,
         status: MealRequestStatus.PENDING,
       },
-      attributes: [
-        "id",
-        "date",
-        "breakfast",
-        "lunch",
-        "dinner",
-        "status",
-        "createdAt",
-      ],
       include: [
         {
           association: "requester",

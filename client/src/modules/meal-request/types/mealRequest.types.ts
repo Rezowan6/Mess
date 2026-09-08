@@ -99,6 +99,7 @@ export interface IMyPendingMealReq {
   dinner: string;
   status: string;
   createdAt: string;
+  updatedAt: string;
   requester: requester;
   mealSession: mealSession;
 }
