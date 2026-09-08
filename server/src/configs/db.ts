@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import { env } from "./env.js";
 
 // development----
 
@@ -11,12 +12,14 @@ import { Sequelize } from "sequelize";
 //     dialect: "mysql",
 //   },
 // );
+
 // production
 const sequelize = new Sequelize(
   "mysql://root:aVrogHCffyiatVqNamULHDWIuqkklxhi@altaria.proxy.rlwy.net:40495/railway",
   {
     dialect: "mysql",
     logging: false,
+    timezone: "+06:00",
   },
 );
 

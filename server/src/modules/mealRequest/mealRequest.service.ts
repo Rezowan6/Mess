@@ -4,6 +4,7 @@ import {
   ICreateMealRequestByDateDto,
   ICreateMealRequestDbDto,
   ICreateMealRequestDto,
+  IRejectReq,
   MealRequestStatus,
 } from "./mealRequest.interface.js";
 import { mealRequestRepository } from "./mealRequest.repository.js";
@@ -184,7 +185,7 @@ export class MealRequestService {
 
     return request;
   }
-  // done
+  // baki ace
   async reject({
     id,
     tenantId,
@@ -277,6 +278,21 @@ export class MealRequestService {
       deleted: true,
       id,
     };
+  }
+
+// baki ace
+  async getRejectMeals({ tenantId, mealSessionId }: IRejectReq) {
+    const rejectReq = await mealRequestRepository.getRejectMealReq({
+      tenantId,
+      mealSessionId,
+    });
+
+    console.log(rejectReq.length);
+
+    if (rejectReq.length <= 0) {
+      throw new ApiError(404, "Reject meal request not found.");
+    }
+    return rejectReq;
   }
 
   async approve({

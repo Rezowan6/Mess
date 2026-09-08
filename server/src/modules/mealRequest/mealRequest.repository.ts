@@ -5,6 +5,7 @@ import { MealRequest } from "@/models/index.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { Op, Sequelize, Transaction } from "sequelize";
 import {
+  IRejectReq,
   MealRequestStatus,
   UpdateMealRequestDto,
 } from "./mealRequest.interface.js";
@@ -278,6 +279,13 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
       ],
       transaction: transaction ?? null,
     })) as unknown as any[];
+  }
+
+  // done
+  async getRejectMealReq({ tenantId, mealSessionId }: IRejectReq) {
+    return await this.findAll({
+      where: { tenantId, mealSessionId, status: MealRequestStatus.REJECTED },
+    });
   }
 
   async updateMealRequest(

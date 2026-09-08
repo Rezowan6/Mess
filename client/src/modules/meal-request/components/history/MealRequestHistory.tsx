@@ -23,7 +23,6 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
       <div className="flex-1 overflow-y-auto">
         <div className="divide-y divide-success/40">
           {requests.map((request) => {
-            console.log(request);
             const isCurrentMealReqDate =
               formatDate(request.date) === formatDate(getCurrentlDate());
 

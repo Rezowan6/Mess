@@ -1,4 +1,4 @@
-import { fn, literal, Op } from "sequelize";
+import { col, fn, literal, Op } from "sequelize";
 
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import {
@@ -167,14 +167,14 @@ class DashboardRepository {
         mealSessionId,
       },
       attributes: [
-        "date",
+        [fn("DATE", col("date")), "date"],
         [
           fn("SUM", literal("breakfast + lunch + dinner + guest_meal")),
           "meals",
         ],
       ],
-      group: ["date"],
-      order: [["date", "ASC"]],
+      group: [fn("DATE", col("date"))],
+      order: [[fn("DATE", col("date")), "ASC"]],
       raw: true,
     });
   }

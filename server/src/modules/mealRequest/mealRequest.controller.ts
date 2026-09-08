@@ -40,6 +40,21 @@ export class MealRequestController {
     });
   });
 
+  getRejectMeals = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
+
+    const rejectMeals = await mealRequestService.getRejectMeals({
+      tenantId,
+      mealSessionId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Reject Meals retrived successfully.",
+      data: rejectMeals,
+    });
+  });
+
   getApproves = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
