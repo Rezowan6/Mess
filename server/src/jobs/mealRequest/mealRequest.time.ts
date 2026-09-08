@@ -72,7 +72,7 @@ export const getNextMaghribTime = (): Date => {
    * Today's Maghrib + delay has already passed.
    * Calculate tomorrow's Maghrib.
    */
-  const tomorrow = now.add(1, "day");
+  const tomorrow = now.add(1, "day").startOf("day");
 
   const tomorrowPrayerTimes = new PrayerTimes(
     coordinates,

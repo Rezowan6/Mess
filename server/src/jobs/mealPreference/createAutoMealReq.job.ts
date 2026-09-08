@@ -1,9 +1,17 @@
 import { mealPreferenceService } from "@/modules/MealPreference/mealPreference.service.js";
 import cron from "node-cron";
-
+/**
+┌─ minute
+│ ┌─ hour
+│ │ ┌─ day of month
+│ │ │ ┌─ month
+│ │ │ │ ┌─ day of week
+│ │ │ │ │
+0 6 20 * *
+ */
 export const createAutoMealReqJob = () => {
   cron.schedule(
-    "0 4 * * *", // test for "*/30 * * * * *" --- production "0 4 * * *"
+    "0 6 * * *", // test for "*/30 * * * * *" --- production "0 4 * * *"
     async () => {
       try {
         const result = await mealPreferenceService.createAutoMealReq();
