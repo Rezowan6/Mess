@@ -1,9 +1,7 @@
-import { Avatar } from "@/shared/components/ui/Avatar";
 import { Badge } from "@/shared/components/ui/Badge";
 import { Button } from "@/shared/components/ui/Button";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { formatDate, getCurrentlDate } from "@/shared/utils/date.utils";
-import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
 import { formatDateTime } from "@/shared/utils/time";
 import { CalendarDays, Trash2 } from "lucide-react";
 import React from "react";
@@ -37,13 +35,6 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                 key={request.id}
                 className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-background"
               >
-                <Avatar
-                  src={request.requester.avatar}
-                  alt={request.requester.name}
-                  size="md"
-                  fallback={getAvatarInitial(request.requester.name)}
-                />
-
                 <div className="min-w-0 flex-1">
                   <div className="mb-1 flex items-center justify-between  gap-3">
                     <h3 className=" flex items-center gap-1.5 truncate text-[15px] font-semibold text-base-content">
@@ -92,8 +83,8 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                     </Badge>
                   </div>
                   <div className="mb-2 mt-2 flex gap-1 text-xs text-base-content/60 sm:flex-row sm:items-center sm:gap-2">
-                    <div className="flex flex-col sm:flex-row items-center gap-1.5 text-[11px] text-base-content/50">
-                      <span>Created: {formatDateTime(request.createdAt)}</span><span className="hidden sm:block">/</span>
+                    <div className="flex  items-center gap-1.5 text-[11px] text-base-content/50">
+                      <span>Created: {formatDateTime(request.createdAt)}</span>/
                       <span>Updated: {formatDateTime(request.updatedAt)}</span>
                     </div>
                   </div>
