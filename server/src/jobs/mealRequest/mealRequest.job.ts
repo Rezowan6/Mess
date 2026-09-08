@@ -1,6 +1,6 @@
 import { runMealRequestGeneration } from "./mealRequest.handler.js";
 import { scheduleMealRequestJob } from "./mealRequest.scheduler.js";
-import { getNextMaghribTime, getTestRunTime } from "./mealRequest.time.js";
+import { getTestRunTime } from "./mealRequest.time.js";
 
 const scheduleNext = (): void => {
   /**
