@@ -23,14 +23,25 @@ export const getTodayInAppTimezone = (): Date => {
  *
  * The date is calculated using the application timezone.
  */
+// export const getTodayMaghribTime = (): Date => {
+//   const today = appTime();
+
+//   const prayerTimes = new PrayerTimes(coordinates, today.toDate(), params);
+
+//   return prayerTimes.maghrib;
+// };
+
 export const getTodayMaghribTime = (): Date => {
   const today = appTime();
 
-  const prayerTimes = new PrayerTimes(coordinates, today.toDate(), params);
+  const prayerDate = new Date(
+    Date.UTC(today.year(), today.month(), today.date(), 12, 0, 0),
+  );
+
+  const prayerTimes = new PrayerTimes(coordinates, prayerDate, params);
 
   return prayerTimes.maghrib;
 };
-
 /**
  * Get the next Maghrib + configured delay.
  *
@@ -72,11 +83,23 @@ export const getNextMaghribTime = (): Date => {
    * Today's Maghrib + delay has already passed.
    * Calculate tomorrow's Maghrib.
    */
-  const tomorrow = now.add(1, "day").startOf("day");
+  // const tomorrow = now.add(1, "day").startOf("day");
+
+  // const tomorrowPrayerTimes = new PrayerTimes(
+  //   coordinates,
+  //   tomorrow.toDate(),
+  //   params,
+  // );
+
+  const tomorrow = now.add(1, "day");
+
+  const tomorrowPrayerDate = new Date(
+    Date.UTC(tomorrow.year(), tomorrow.month(), tomorrow.date(), 12, 0, 0),
+  );
 
   const tomorrowPrayerTimes = new PrayerTimes(
     coordinates,
-    tomorrow.toDate(),
+    tomorrowPrayerDate,
     params,
   );
 
@@ -126,12 +149,9 @@ export const getTestRunTime = (): Date => {
   runAt.setSeconds(runAt.getSeconds() + 100);
 
   console.log(
-    `[MealRequestJob][TEST] Job will run at: ${runAt.toLocaleString(
-      "en-BD",
-      {
-        timeZone: APP_TIMEZONE,
-      },
-    )}`,
+    `[MealRequestJob][TEST] Job will run at: ${runAt.toLocaleString("en-BD", {
+      timeZone: APP_TIMEZONE,
+    })}`,
   );
 
   return runAt;
