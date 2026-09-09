@@ -3,12 +3,15 @@ import { checkMealCutoff } from "@/helpers/checkMealCutoff.helper.js";
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
+import { getAppDate } from "@/utils/date.util.js";
 import { getCurrentMealDate } from "@/utils/mealDate.js";
 import { Transaction } from "sequelize";
 import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
 import { mealRequestRepository } from "../mealRequest/mealRequest.repository.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { mealSettingRepository } from "../mealSetting/mealSetting.repository.js";
+import { Notification } from "../notification/notification.interface.js";
+import { notificationService } from "../notification/notification.service.js";
 import { tenantRepository } from "../tenant/tenant.repository.js";
 import {
   ICopyMealPreferencePayload,
@@ -113,12 +116,14 @@ class MealPreferenceService {
   }
 
   async createAutoMealReq() {
-    const today = getCurrentMealDate();
+    const today = getAppDate();
 
     const tenants = await tenantRepository.getActiveTenants();
 
     let createdCount = 0;
-    let skippedCount = 0;
+    let existingCount = 0;
+    let failedCount = 0;
+    let noSessionCount = 0;
 
     for (const tenant of tenants) {
       try {
@@ -127,9 +132,12 @@ class MealPreferenceService {
         );
 
         if (!mealSession) {
+          noSessionCount++;
+
           console.log(
             `[AutoMealRequest] Skipped tenant ${tenant.id}: no active meal session.`,
           );
+
           continue;
         }
 
@@ -182,26 +190,41 @@ class MealPreferenceService {
             });
 
             if (!result.created) {
-              skippedCount++;
+              existingCount++;
               continue;
             }
 
             createdCount++;
 
-            /**
-             * Realtime meal planning update
-             */
+            const request = result.request;
+
+            // System-generated notification
+            await notificationService.create(
+              tenant.id,
+              preference.userId,
+              preference.userId,
+              {
+                title: "Meal Request Created",
+                message:
+                  "Your meal request has been automatically created based on your meal preferences.",
+                type: Notification.MEAL_REQUEST_CREATED,
+              },
+            );
+
+            // Realtime meal planning update
             this.emitMealPlanningUpdated({
               tenantId: tenant.id,
               mealSessionId: mealSession.id,
               userId: preference.userId,
               date: today,
-              breakfast: preference.breakfast ?? 0,
-              lunch: preference.lunch ?? 0,
-              dinner: preference.dinner ?? 0,
-              guestMeal: preference.guestMeal ?? 0,
+              breakfast: request.breakfast,
+              lunch: request.lunch,
+              dinner: request.dinner,
+              guestMeal: request.guestMeal,
             });
           } catch (error) {
+            failedCount++;
+
             console.error(
               `[AutoMealRequest] Failed for tenant ${tenant.id}, user ${preference.userId}:`,
               error,
@@ -209,6 +232,8 @@ class MealPreferenceService {
           }
         }
       } catch (error) {
+        failedCount++;
+
         console.error(
           `[AutoMealRequest] Failed for tenant ${tenant.id}:`,
           error,
@@ -219,7 +244,9 @@ class MealPreferenceService {
     return {
       date: today,
       createdCount,
-      skippedCount,
+      existingCount,
+      failedCount,
+      noSessionCount,
     };
   }
 

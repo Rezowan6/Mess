@@ -7,6 +7,8 @@ import { mealEntryGenerator } from "../mealEntry/mealEntry.generator.js";
 import { IGenerateDailyMealRequestPayload } from "../MealPreference/mealPreference.interface.js";
 import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
 import { mealRequestRepository } from "../mealRequest/mealRequest.repository.js";
+import { Notification } from "../notification/notification.interface.js";
+import { notificationService } from "../notification/notification.service.js";
 
 class MealGeneratorService {
   async generateDailyMealRequests({
@@ -26,7 +28,7 @@ class MealGeneratorService {
       };
     }
 
-    return sequelize.transaction(async (transaction) => {
+    const result = await sequelize.transaction(async (transaction) => {
       const pendingRequests = await mealRequestRepository.findPendingByDate({
         tenantId,
         mealSessionId: mealSession.id,
@@ -36,12 +38,15 @@ class MealGeneratorService {
 
       if (!pendingRequests.length) {
         console.log(
-          `[MealGenerator] No pending meal requests found for tenant ${tenantId}, date ${appTime(date).format("YYYY-MM-DD")}`,
+          `[MealGenerator] No pending meal requests found for tenant ${tenantId}, date ${appTime(
+            date,
+          ).format("YYYY-MM-DD")}`,
         );
 
         return {
           createdRequests: 0,
           createdEntries: 0,
+          requests: [],
         };
       }
 
@@ -71,15 +76,52 @@ class MealGeneratorService {
             status: MealRequestStatus.APPROVED,
             approvedAt: appTime().toDate(),
           },
-
           transaction,
         );
       }
 
       return {
+        createdRequests: pendingRequests.length,
         createdEntries,
+        requests: pendingRequests,
       };
     });
+
+    /**
+     * Transaction successfully committed.
+     *
+     * Notifications are intentionally created outside
+     * the transaction so notification failure cannot
+     * rollback Meal Entry or Meal Request changes.
+     */
+    if (result.createdEntries > 0) {
+      for (const request of result.requests) {
+        try {
+          await notificationService.create(
+            tenantId,
+            request.userId,
+            request.userId, // system-generated
+            {
+              title: "Meal Approved",
+              message: `Your meal request for ${appTime(date).format(
+                "DD MMM YYYY",
+              )} has been approved and your meal entry has been created.`,
+              type: Notification.MEAL_REQUEST_APPROVED,
+            },
+          );
+        } catch (error) {
+          console.error(
+            `[MealGenerator] Failed to create notification for tenant ${tenantId}, user ${request.userId}:`,
+            error,
+          );
+        }
+      }
+    }
+
+    return {
+      createdRequests: result.createdRequests,
+      createdEntries: result.createdEntries,
+    };
   }
 }
 

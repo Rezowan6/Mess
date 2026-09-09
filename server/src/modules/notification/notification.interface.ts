@@ -12,6 +12,10 @@ export const Notification = {
   PAYMENT_SUCCESS: "PAYMENT_SUCCESS",
 
   SYSTEM: "SYSTEM",
+
+  MEAL_REQUEST_CREATED: "MEAL_REQUEST_CREATED",
+
+  MEAL_REQUEST_APPROVED: "MEAL_REQUEST_APPROVED",
 } as const;
 
 export type NotificationType = (typeof Notification)[keyof typeof Notification];

@@ -1,4 +1,5 @@
 import { mealPreferenceService } from "@/modules/MealPreference/mealPreference.service.js";
+import { logger } from "@/utils/logger.js";
 import cron from "node-cron";
 /**
 ┌─ minute
@@ -9,23 +10,26 @@ import cron from "node-cron";
 │ │ │ │ │
 0 6 20 * *
  */
+
 export const createAutoMealReqJob = () => {
   cron.schedule(
-    "0 6 * * *", // test for "*/30 * * * * *" --- production "0 4 * * *"
+    "0 6 * * *", // Test: "*/30 * * * * *" | Production: "0 4 * * *"
     async () => {
       try {
         const result = await mealPreferenceService.createAutoMealReq();
 
-        console.log(
-          `[AutoMealRequest] Completed for ${result.date.toISOString()}. ` +
-            `Created: ${result.createdCount}, ` +
-            `Skipped: ${result.skippedCount}`,
+        logger.info(
+          {
+            date: result.date,
+            createdCount: result.createdCount,
+            existingCount: result.existingCount,
+            failedCount: result.failedCount,
+            noSessionCount: result.noSessionCount,
+          },
+          "Auto meal request generation completed",
         );
       } catch (error) {
-        console.error(
-          "[AutoMealRequest] Daily meal request generation failed:",
-          error,
-        );
+        logger.error({ error }, "Daily meal request generation failed");
       }
     },
     {
