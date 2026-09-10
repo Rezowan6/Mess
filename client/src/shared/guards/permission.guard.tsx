@@ -4,6 +4,7 @@ import { useAuthStore } from "@/modules/auth/store/auth.store";
 import type { ReactNode } from "react";
 import { PageLoader } from "../components/feedback/PageLoader";
 import type { Permission } from "../constants/permissions";
+import { useOnlineStatus } from "../hooks/useOnlineStatus";
 import { useRBAC } from "../hooks/useRBAC";
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export const PermissionGuard = ({ permission, children }: Props) => {
+  const { isOffline } = useOnlineStatus();
   const user = useAuthStore((state) => state.user);
   const initialized = useAuthStore((state) => state.isInitialized);
 
@@ -27,6 +29,10 @@ export const PermissionGuard = ({ permission, children }: Props) => {
   }
 
   if (!can(permission)) {
+    if (isOffline) {
+      return <PageLoader />;
+    }
+
     return <Navigate to="/403" replace />;
   }
 
