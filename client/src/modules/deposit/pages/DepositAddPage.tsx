@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Pagination } from "@/shared/components/ui/Pagination";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
@@ -13,11 +12,12 @@ import { useMembers } from "@/modules/user-management/hooks/useMembers";
 import type { ITenantMember } from "@/modules/user-management/types/userManagement.types";
 
 import { ROUTES } from "@/shared/constants/routes";
+import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { useCreateDeposit } from "../hooks/useCreateDeposit";
 
 export const DepositAddPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { page, search, handleSearch, handlePage } = useTableSearchParams();
 
   const navigate = useNavigate();
 
@@ -26,16 +26,6 @@ export const DepositAddPage = () => {
 
   const quickDepositMutation = useCreateDeposit();
 
-  /**
-   * URL Params
-   */
-  const page = Number(searchParams.get("page")) || 1;
-
-  const search = searchParams.get("search") || "";
-
-  /**
-   * Members Query
-   */
   const { data, isPending, isError, refetch } = useMembers({
     page,
     limit: 10,
@@ -46,57 +36,6 @@ export const DepositAddPage = () => {
 
   const meta = data?.meta;
 
-  /**
-   * Search
-   */
-  const handleSearch = (value: string) => {
-    setSearchParams(
-      {
-        page: "1",
-        ...(value && {
-          search: value,
-        }),
-      },
-      {
-        replace: true,
-      },
-    );
-  };
-
-  /**
-   * Pagination
-   */
-  const handlePage = (page: number) => {
-    setSearchParams({
-      page: String(page),
-      ...(search && {
-        search,
-      }),
-    });
-  };
-
-  /**
-   * Reset page
-   */
-  useEffect(() => {
-    if (page !== 1) {
-      setSearchParams(
-        {
-          page: "1",
-          ...(search && {
-            search,
-          }),
-        },
-        {
-          replace: true,
-        },
-      );
-    }
-  }, []);
-
-  /**
-   * Quick Deposit
-   */
   const handleQuickDeposit = async (member: ITenantMember, amount: number) => {
     openConfirm({
       title: "Add Deposit",

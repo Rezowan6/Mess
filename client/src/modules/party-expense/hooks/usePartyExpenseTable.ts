@@ -1,20 +1,17 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 
 import { usePartyExpenses } from "./usePartyExpenses";
 
+import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
 import type { IPartyExpense } from "../types/partyExpense.types";
 
 export const usePartyExpenseTable = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { page, search, handleSearch } = useTableSearchParams();
 
   const [selectedPartyExpense, setSelectedPartyExpense] =
     useState<IPartyExpense | null>(null);
 
   const [isEditOpen, setIsEditOpen] = useState(false);
-
-  const page = Number(searchParams.get("page")) || 1;
-  const search = searchParams.get("search") || "";
 
   const partyExpenseQuery = usePartyExpenses({
     page,
@@ -23,16 +20,6 @@ export const usePartyExpenseTable = () => {
   });
 
   const partyExpenses = partyExpenseQuery.data?.data ?? [];
-
-  const handleSearch = (value: string) => {
-    setSearchParams(
-      {
-        page: "1",
-        ...(value && { search: value }),
-      },
-      { replace: true },
-    );
-  };
 
   const handleEdit = (partyExpense: IPartyExpense) => {
     setSelectedPartyExpense(partyExpense);

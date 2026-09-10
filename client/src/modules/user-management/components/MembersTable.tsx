@@ -5,20 +5,22 @@ import { Table } from "@/shared/components/ui/Table";
 import { useMemberColumns } from "../configs/member.columns";
 import { MEMBER_MESSAGES } from "../configs/member.messages";
 
-import { useMembersTable } from "../hooks/useMembersTable";
+import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
+import { useMembers } from "../hooks/useMembers";
 import { MembersTableSkeleton } from "./MembersTableSkeleton";
 
 export const MembersTable = () => {
-  const {
+  const { page, search, handleSearch, handlePage } = useTableSearchParams();
+
+  const { data, isPending, isError, refetch } = useMembers({
+    page,
+    limit: 10,
     search,
-    members,
-    meta,
-    isPending,
-    isError,
-    refetch,
-    handleSearch,
-    handlePage,
-  } = useMembersTable();
+  });
+
+  const members = data?.data ?? [];
+
+  const meta = data?.meta;
 
   const columns = useMemberColumns();
 

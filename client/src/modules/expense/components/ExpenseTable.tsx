@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
 
 import { Pagination } from "@/shared/components/ui/Pagination";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
@@ -10,28 +9,17 @@ import { EXPENSE_MESSAGES } from "../configs/expense.messages";
 
 import { useExpenses } from "../hooks/useExpenses";
 
+import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
 import type { IExpense } from "../types/expense.types";
 import { AddExpenseModal } from "./AddExpenseModal";
 import { ExpenseTableSkeleton } from "./ExpenseTableSkeleton";
 
 export const ExpenseTable = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-
   const [selectedExpense, setSelectedExpense] = useState<IExpense | null>(null);
 
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  /**
-   * URL Query Params
-   */
-
-  const page = Number(searchParams.get("page")) || 1;
-
-  const search = searchParams.get("search") || "";
-
-  /**
-   * Expense Query
-   */
+  const { page, search, handleSearch, handlePage } = useTableSearchParams();
 
   const { data, isPending, isError, refetch } = useExpenses({
     page,
@@ -44,72 +32,11 @@ export const ExpenseTable = () => {
 
   const meta = data?.meta;
 
-  /**
-   * Search Handler
-   */
-
-  const handleSearch = (value: string) => {
-    setSearchParams(
-      {
-        page: "1",
-
-        ...(value && {
-          search: value,
-        }),
-      },
-      {
-        replace: true,
-      },
-    );
-  };
-
-  /**
-   * Pagination
-   */
-
-  const handlePage = (page: number) => {
-    setSearchParams({
-      page: String(page),
-
-      ...(search && {
-        search,
-      }),
-    });
-  };
-
-  /**
-   * Reset page when tenant changes
-   */
-
-  useEffect(() => {
-    if (page !== 1) {
-      setSearchParams(
-        {
-          page: "1",
-
-          ...(search && {
-            search,
-          }),
-        },
-        {
-          replace: true,
-        },
-      );
-    }
-  }, []);
-
-  /**
-   * handle edit
-   */
   const handleEdit = (expense: IExpense) => {
     setSelectedExpense(expense);
     setIsEditOpen(true);
   };
   const columns = useExpenseColumns(handleEdit);
-
-  /**
-   * First Loading
-   */
 
   if (isPending) {
     return <ExpenseTableSkeleton />;
