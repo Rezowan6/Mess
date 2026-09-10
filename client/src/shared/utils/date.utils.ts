@@ -20,3 +20,9 @@ export const formatDate = (date: string | Date | null): string => {
 
   return dayjs(date).tz(APP_TIMEZONE).format("DD MMM YYYY");
 };
+
+export const formatDateForChart = (date: string | Date | null): string => {
+  if (!date) return "N/A";
+
+  return dayjs(date).tz(APP_TIMEZONE).format("DD MMM");
+};

@@ -1,5 +1,5 @@
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
-import { formatDate } from "@/shared/utils/date.utils";
+import { formatDateForChart } from "@/shared/utils/date.utils";
 import { useMealTrend } from "../../hooks/useMealTrend";
 import { MealTrendChartContent } from "./MealTrendChartContent";
 import { MealTrendChartSkeleton } from "./MealTrendChartSkeleton";
@@ -20,7 +20,7 @@ export const MealTrendChart = () => {
 
   const mealTrendData: MealTrendData[] =
     data?.data?.map((item) => ({
-      date: formatDate(item.date),
+      date: formatDateForChart(item.date),
       meals: Number(item.meals),
     })) ?? [];
 
