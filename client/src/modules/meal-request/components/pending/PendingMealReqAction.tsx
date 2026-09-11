@@ -1,7 +1,9 @@
 import { Button } from "@/shared/components/ui/Button";
+import { useLongPress } from "@/shared/hooks/useLongPress";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { formatDate } from "@/shared/utils/date.utils";
 import { Check, Trash2, X } from "lucide-react";
+import { useState } from "react";
 import { useApprovedMealReq } from "../../hooks/useApprovedMealReq";
 import { useParmanetDeleteMealReq } from "../../hooks/useParmanetDeleteMealReq";
 import { useRejectMealReq } from "../../hooks/useRejectPendingMealReq";
@@ -18,6 +20,8 @@ export const PendingMealReqAction = ({
   isDeleteDisabled: boolean;
   request: IMyPendingMealReq;
 }) => {
+  const [activeRequestId, setActiveRequestId] = useState<number | null>(null);
+
   const openConfirm = useConfirmStore((state) => state.openConfirm);
   const setLoading = useConfirmStore((state) => state.setLoading);
 
@@ -89,29 +93,43 @@ export const PendingMealReqAction = ({
     });
   };
 
+  const longPressHandlers = useLongPress({
+    onLongPress: () => setActiveRequestId(request.id),
+  });
+
   return (
-    <div className="flex justify-end items-center gap-2">
-      <Button
-        unstyled
-        disabled={isApprovedDisabled}
-        onClick={() => handleApprove(request)}
-        leftIcon={<Check size={15} />}
-      />
+    <div
+      {...longPressHandlers}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        setActiveRequestId(request.id);
+      }}
+    >
+      {activeRequestId === request.id && (
+        <div className="flex justify-end items-center gap-2">
+          <Button
+            unstyled
+            disabled={isApprovedDisabled}
+            onClick={() => handleApprove(request)}
+            leftIcon={<Check size={15} />}
+          />
 
-      <Button
-        unstyled
-        disabled={isRejectDisabled}
-        leftIcon={<X size={15} />}
-        onClick={() => handleReject(request)}
-      />
+          <Button
+            unstyled
+            disabled={isRejectDisabled}
+            leftIcon={<X size={15} />}
+            onClick={() => handleReject(request)}
+          />
 
-      <Button
-        unstyled
-        disabled={isDeleteDisabled}
-        className="flex items-center justify-center"
-        leftIcon={<Trash2 size={17} />}
-        onClick={() => handleDelete(request)}
-      />
+          <Button
+            unstyled
+            disabled={isDeleteDisabled}
+            className="flex items-center justify-center"
+            leftIcon={<Trash2 size={17} />}
+            onClick={() => handleDelete(request)}
+          />
+        </div>
+      )}
     </div>
   );
 };

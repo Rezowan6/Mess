@@ -185,7 +185,7 @@ export class MealRequestService {
 
     return request;
   }
-  // baki ace
+
   async reject({
     id,
     tenantId,
