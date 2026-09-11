@@ -5,7 +5,7 @@ import { useAllPendingMealReq } from "../hooks/useAllPendingMealReq";
 
 export const AllPendingMealReqPage = () => {
   const { data, isPending } = useAllPendingMealReq();
-
+  
   const requests = data?.data ?? [];
 
   if (isPending) {

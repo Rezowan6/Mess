@@ -182,7 +182,7 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
           attributes: ["id", "month", "year", "status"],
         },
       ],
-      order: [["createdAt", "ASC"]],
+      order: [["date", "ASC"]],
     });
   }
 
@@ -208,7 +208,7 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
           attributes: ["id", "month", "year", "status"],
         },
       ],
-      order: [["createdAt", "ASC"]],
+      order: [["date", "ASC"]],
     });
   }
 
