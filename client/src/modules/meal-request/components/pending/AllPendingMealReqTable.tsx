@@ -24,7 +24,7 @@ export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
         return (
           <div key={date}>
             {/* date header */}
-            <div className="flex items-center gap-6 top-0 z-10 border-b border-success bg-background px-3 py-2">
+            <div className="flex items-center gap-6 top-0 z-10 border-b border-info bg-background px-3 py-2">
               <h3 className="text-sm font-semibold text-accent">
                 {formatDate(date)}
               </h3>

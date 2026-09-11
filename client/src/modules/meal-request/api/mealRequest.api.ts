@@ -27,6 +27,13 @@ export const mealRequestApi = {
 
     return res.data;
   },
+  rejectPendingMealReq: async (id: number) => {
+    const res = await API.patch(
+      API_ENDPOINTS.MEAL_REQUEST.REJECT_PENDING_REQ(id),
+    );
+
+    return res.data;
+  },
   parmanetDeleteMealReq: async (id: number) => {
     const res = await API.delete(
       API_ENDPOINTS.MEAL_REQUEST.PARMANENT_DELETE_REQ(id),

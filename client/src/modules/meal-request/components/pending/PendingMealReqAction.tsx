@@ -4,6 +4,7 @@ import { formatDate } from "@/shared/utils/date.utils";
 import { Check, Trash2, X } from "lucide-react";
 import { useApprovedMealReq } from "../../hooks/useApprovedMealReq";
 import { useParmanetDeleteMealReq } from "../../hooks/useParmanetDeleteMealReq";
+import { useRejectMealReq } from "../../hooks/useRejectPendingMealReq";
 import type { IMyPendingMealReq } from "../../types/mealRequest.types";
 
 export const PendingMealReqAction = ({
@@ -16,29 +17,9 @@ export const PendingMealReqAction = ({
   const openConfirm = useConfirmStore((state) => state.openConfirm);
   const setLoading = useConfirmStore((state) => state.setLoading);
 
-  const { mutate: deleteMealRequest } = useParmanetDeleteMealReq();
   const { mutate: approvedMealRequest } = useApprovedMealReq();
-
-  const handleDelete = (request: IMyPendingMealReq) => {
-    openConfirm({
-      title: "Delete Meal Request",
-      message: (
-        <>
-          Are you sure you want to permanently delete the meal request of{" "}
-          <strong className="text-error">{request.requester.name}</strong> for{" "}
-          <strong className="text-error">{formatDate(request.date)}</strong>?
-        </>
-      ),
-      onConfirm: async () => {
-        setLoading(true);
-        try {
-          deleteMealRequest(request.id);
-        } finally {
-          setLoading(false);
-        }
-      },
-    });
-  };
+  const { mutate: rejectMealRequest } = useRejectMealReq();
+  const { mutate: deleteMealRequest } = useParmanetDeleteMealReq();
 
   const handleApprove = (request: IMyPendingMealReq) => {
     openConfirm({
@@ -75,14 +56,35 @@ export const PendingMealReqAction = ({
       onConfirm: async () => {
         setLoading(true);
         try {
-          // deleteMealRequest(request.id);
-          console.log("Reject:", request.id);
+          rejectMealRequest(request.id);
         } finally {
           setLoading(false);
         }
       },
     });
   };
+
+  const handleDelete = (request: IMyPendingMealReq) => {
+    openConfirm({
+      title: "Delete Meal Request",
+      message: (
+        <>
+          Are you sure you want to permanently delete the meal request of{" "}
+          <strong className="text-error">{request.requester.name}</strong> for{" "}
+          <strong className="text-error">{formatDate(request.date)}</strong>?
+        </>
+      ),
+      onConfirm: async () => {
+        setLoading(true);
+        try {
+          deleteMealRequest(request.id);
+        } finally {
+          setLoading(false);
+        }
+      },
+    });
+  };
+
   return (
     <div className="flex justify-end items-center gap-2">
       <Button

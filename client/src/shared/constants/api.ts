@@ -100,6 +100,7 @@ export const API_ENDPOINTS = {
     MY_PENDING_REQ: "/meal-requests/pending/my",
     ALL_PENDING_REQ: "/meal-requests/pending-all",
     APPROVED_PENDING_REQ: (id: number) => `/meal-requests/approve/${id}`,
+    REJECT_PENDING_REQ: (id: number) => `/meal-requests/reject/${id}`,
     PARMANENT_DELETE_REQ: (id: number) => `/meal-requests/${id}`,
   },
 
