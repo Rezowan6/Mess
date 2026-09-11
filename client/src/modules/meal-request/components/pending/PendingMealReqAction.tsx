@@ -21,9 +21,9 @@ export const PendingMealReqAction = ({
   const openConfirm = useConfirmStore((state) => state.openConfirm);
   const setLoading = useConfirmStore((state) => state.setLoading);
 
-  const { mutate: approvedMealRequest } = useApprovedMealReq();
-  const { mutate: rejectMealRequest } = useRejectMealReq();
-  const { mutate: deleteMealRequest } = useParmanetDeleteMealReq();
+  const approvedMealRequest = useApprovedMealReq();
+  const rejectMealRequest = useRejectMealReq();
+  const deleteMealRequest = useParmanetDeleteMealReq();
 
   const handleApprove = (request: IMyPendingMealReq) => {
     openConfirm({
@@ -39,7 +39,7 @@ export const PendingMealReqAction = ({
       onConfirm: async () => {
         setLoading(true);
         try {
-          approvedMealRequest(request.id);
+          await approvedMealRequest.mutateAsync(request.id);
         } finally {
           setLoading(false);
         }
@@ -60,7 +60,7 @@ export const PendingMealReqAction = ({
       onConfirm: async () => {
         setLoading(true);
         try {
-          rejectMealRequest(request.id);
+          await rejectMealRequest.mutateAsync(request.id);
         } finally {
           setLoading(false);
         }
@@ -81,7 +81,7 @@ export const PendingMealReqAction = ({
       onConfirm: async () => {
         setLoading(true);
         try {
-          deleteMealRequest(request.id);
+          await deleteMealRequest.mutateAsync(request.id);
         } finally {
           setLoading(false);
         }

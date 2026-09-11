@@ -215,6 +215,14 @@ export class MealRequestService {
         throw new ApiError(400, "Only pending request can be rejected.");
       }
 
+      const appDate = formatDate(getAppDate());
+      const requestDate = formatDate(getAppDate(request.date));
+
+      const isRejectDisabled = requestDate === appDate;
+      
+      if (isRejectDisabled) {
+        throw new ApiError(400, "Today's meal requests cannot be rejected");
+      }
       await mealRequestRepository.updateMealRequest(
         id,
         mealSessionId,
@@ -336,7 +344,7 @@ export class MealRequestService {
           "Meal requests for today and future dates cannot be approved",
         );
       }
-      
+
       await mealRequestRepository.updateMealRequest(
         id,
         mealSessionId,
