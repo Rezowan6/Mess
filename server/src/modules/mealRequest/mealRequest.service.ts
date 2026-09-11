@@ -324,6 +324,19 @@ export class MealRequestService {
         throw new ApiError(400, "Only pending request can be approved");
       }
 
+      const appDate = formatDate(getAppDate());
+      const requestDate = formatDate(getAppDate(request.date));
+
+      // Approve: Previous + Today enabled, Tomorrow+ disabled
+      const isApproveDisabled = requestDate >= appDate;
+
+      if (isApproveDisabled) {
+        throw new ApiError(
+          400,
+          "Meal requests for today and future dates cannot be approved",
+        );
+      }
+      
       await mealRequestRepository.updateMealRequest(
         id,
         mealSessionId,
