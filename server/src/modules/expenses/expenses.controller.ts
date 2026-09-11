@@ -30,7 +30,6 @@ class ExpensesController {
   summary = asyncHandler(async (req: Request, res: Response) => {
     const context = getTenantContext(req);
 
-    console.log("TENANT CONTEXT:", context);
     const { tenantId, session, mealSessionId } = getTenantContext(req);
 
     const data = await expenseService.summary({
@@ -47,10 +46,8 @@ class ExpensesController {
   });
 
   getAll = asyncHandler(async (req: Request, res: Response) => {
-    console.log("hi");
-    const context = getTenantContext(req);
 
-    console.log("TENANT CONTEXT:", context);
+    const context = getTenantContext(req);
     const { tenantId, mealSessionId } = getTenantContext(req);
 
     const query = req.query as IPaginationQuery;

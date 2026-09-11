@@ -1,28 +1,50 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
-import { PERMISSIONS } from "@/shared/constants/permissions";
-import { PermissionGuard } from "@/shared/guards/permission.guard";
+import { PageActionMenu } from "@/shared/components/navigation/PageActionMenu";
+import { ROUTES } from "@/shared/constants/routes";
+import { Calendar, Calendar1, Settings } from "lucide-react";
 import { getMealEntryPageConfig } from "../configs/mealEntry.page.config";
-import { Button } from "@/shared/components/ui/Button";
 
 export const MealEntryPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const currentPage = getMealEntryPageConfig({
     pathname: location.pathname,
   });
+  const menuItems = [
+    {
+      label: "Today Meals ",
+      icon: Calendar1,
+      onClick: () => {
+        navigate(`${ROUTES.MEAL_ENTRY}/today-meals`);
+      },
+    },
+    {
+      label: "Pending Meals ",
+      icon: Calendar,
+      onClick: () => {
+        navigate(`${ROUTES.MEAL_REQUEST}/pending-meals`);
+      },
+    },
+
+    {
+      label: "Meal Settings",
+      icon: Settings,
+      onClick: () => {
+        navigate(`${ROUTES.SETTINGS}/meal-setting`);
+      },
+    },
+  ];
 
   return (
-    <PermissionGuard permission={PERMISSIONS.MEAL_ENTRY_VIEW}>
-      <ManagementPage
-        title={currentPage.title}
-        description={currentPage.description}
-        action={<Button disabled variant="moduleBtn" permission={PERMISSIONS.MEAL_ENTRY_CREATE}>add Meal</Button>}
-        footer={currentPage.footer}
-      >
-        <Outlet />
-      </ManagementPage>
-    </PermissionGuard>
+    <ManagementPage
+      title={currentPage.title}
+      description={currentPage.description}
+      action={<PageActionMenu items={menuItems} placement="bottom-end" />}
+    >
+      <Outlet />
+    </ManagementPage>
   );
 };

@@ -20,6 +20,8 @@ export const ROUTES = {
   MEAL_SESSION: "/meal-sessions",
 
   MEAL_ENTRY: "/meal-entries",
+
+  MEAL_REQUEST: "/meal-request",
   
   MEAL_PLANNING: "/meal-planning",
 

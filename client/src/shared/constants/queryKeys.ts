@@ -108,6 +108,8 @@ export const queryKeys = {
 
     myRequests: (tenantId?: number) =>
       ["meal-requests", tenantId, "my"] as const,
+    allRequests: (tenantId?: number) =>
+      ["meal-requests", tenantId, "all"] as const,
 
     pending: (tenantId?: number) =>
       ["meal-requests", tenantId, "pending"] as const,

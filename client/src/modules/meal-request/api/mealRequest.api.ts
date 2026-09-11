@@ -32,4 +32,11 @@ export const mealRequestApi = {
 
     return res.data;
   },
+  getAllPendingMealReq: async (): Promise<IMyPendingMealReqResponse> => {
+    const res = await API.get<IMyPendingMealReqResponse>(
+      API_ENDPOINTS.MEAL_REQUEST.ALL_PENDING_REQ,
+    );
+
+    return res.data;
+  },
 };

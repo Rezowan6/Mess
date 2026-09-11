@@ -12,7 +12,7 @@ router.get("/approves", ...allAccess, mealRequestController.getApproves);
 
 router.get("/pending/my", ...allAccess, mealRequestController.mypendingRequest);
 
-router.get("/pending-all", ...allAccess, mealRequestController.getPendingRequests);
+router.get("/pending-all", ...managerAccess, mealRequestController.getPendingRequests);
 
 router.patch("/approve/:id", ...managerAccess, mealRequestController.approve);
 
