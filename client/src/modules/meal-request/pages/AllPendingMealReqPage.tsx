@@ -1,15 +1,15 @@
-import { Skeleton } from "@/shared/components/feedback/Skeleton";
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
+import { AllPendingMealReqPageSkeleton } from "../components/pending/AllPendingMealReqPageSkeleton";
 import { AllPendingMealReqTable } from "../components/pending/AllPendingMealReqTable";
 import { useAllPendingMealReq } from "../hooks/useAllPendingMealReq";
 
 export const AllPendingMealReqPage = () => {
   const { data, isPending } = useAllPendingMealReq();
-  
+
   const requests = data?.data ?? [];
 
   if (isPending) {
-    <Skeleton className="w-44 h-10" />;
+    return <AllPendingMealReqPageSkeleton />;
   }
   return (
     <ManagementPage
