@@ -35,11 +35,17 @@ export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
             {/* Group Date */}
             <div className="divide-y divide-success/40">
               {dateRequests.map((request) => {
-                const isCurrentMealReqDate =
-                  formatDate(request.date) === formatDate(getCurrentlDate());
-
                 const isPending = request.status === "pending";
 
+                const currentDate = formatDate(getCurrentlDate());
+                const requestDate = formatDate(request.date);
+
+                const isCurrentMealReqDate = requestDate === currentDate;
+
+                const isPreviousOrCurrentDate = requestDate <= currentDate;
+
+                const isApprovedDisabled = !isPreviousOrCurrentDate;
+                const isRejectDisabled = isCurrentMealReqDate;
                 const isDeleteDisabled = isPending && isCurrentMealReqDate;
 
                 return (
@@ -95,6 +101,8 @@ export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
                         {/* Actions */}
                         <PendingMealReqAction
                           request={request}
+                          isApprovedDisabled={isApprovedDisabled}
+                          isRejectDisabled={isRejectDisabled}
                           isDeleteDisabled={isDeleteDisabled}
                         />
                       </div>

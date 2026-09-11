@@ -8,9 +8,13 @@ import { useRejectMealReq } from "../../hooks/useRejectPendingMealReq";
 import type { IMyPendingMealReq } from "../../types/mealRequest.types";
 
 export const PendingMealReqAction = ({
+  isApprovedDisabled,
+  isRejectDisabled,
   isDeleteDisabled,
   request,
 }: {
+  isApprovedDisabled: boolean;
+  isRejectDisabled: boolean;
   isDeleteDisabled: boolean;
   request: IMyPendingMealReq;
 }) => {
@@ -88,13 +92,15 @@ export const PendingMealReqAction = ({
   return (
     <div className="flex justify-end items-center gap-2">
       <Button
-        variant="success"
+        unstyled
+        disabled={isApprovedDisabled}
         onClick={() => handleApprove(request)}
         leftIcon={<Check size={15} />}
       />
 
       <Button
-        variant="error"
+        unstyled
+        disabled={isRejectDisabled}
         leftIcon={<X size={15} />}
         onClick={() => handleReject(request)}
       />
