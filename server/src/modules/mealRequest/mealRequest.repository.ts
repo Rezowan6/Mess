@@ -172,15 +172,6 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
   ): Promise<MealRequest[]> {
     return await this.findAll({
       where: { tenantId, mealSessionId, status: MealRequestStatus.PENDING },
-      attributes: [
-        "id",
-        "date",
-        "breakfast",
-        "lunch",
-        "dinner",
-        "status",
-        "createdAt",
-      ],
       include: [
         {
           association: "requester",

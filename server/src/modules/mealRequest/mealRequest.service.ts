@@ -280,7 +280,7 @@ export class MealRequestService {
     };
   }
 
-// baki ace
+  // baki ace
   async getRejectMeals({ tenantId, mealSessionId }: IRejectReq) {
     const rejectReq = await mealRequestRepository.getRejectMealReq({
       tenantId,
@@ -450,13 +450,11 @@ export class MealRequestService {
     tenantId: number;
     mealSessionId: number;
   }) {
-    const mealRequest = await mealRequestRepository.findAll({
-      where: {
+    const mealRequest =
+      await mealRequestRepository.getPendingRequestsByTenantId(
         tenantId,
         mealSessionId,
-        status: MealRequestStatus.PENDING,
-      },
-    });
+      );
 
     if (!mealRequest.length) {
       throw new ApiError(404, "today pending request not found.");
