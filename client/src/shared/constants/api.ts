@@ -97,9 +97,10 @@ export const API_ENDPOINTS = {
   MEAL_REQUEST: {
     CREATE: "/meal-requests",
     CREATE_BY_DATE: "/meal-requests/create-by-date",
-      MY_PENDING_REQ: "/meal-requests/pending/my",
-      ALL_PENDING_REQ: "/meal-requests/pending-all",
-      PARMANENT_DELETE_REQ: (id: number) => `/meal-requests/${id}`,
+    MY_PENDING_REQ: "/meal-requests/pending/my",
+    ALL_PENDING_REQ: "/meal-requests/pending-all",
+    APPROVED_PENDING_REQ: (id: number) => `/meal-requests/approve/${id}`,
+    PARMANENT_DELETE_REQ: (id: number) => `/meal-requests/${id}`,
   },
 
   MEAL_SETTING: {

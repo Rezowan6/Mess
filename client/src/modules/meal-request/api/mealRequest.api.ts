@@ -13,7 +13,17 @@ export const mealRequestApi = {
     return res.data;
   },
   createByDate: async (payload: ICreateMealRequestByDatePayload) => {
-    const res = await API.post(API_ENDPOINTS.MEAL_REQUEST.CREATE_BY_DATE, payload);
+    const res = await API.post(
+      API_ENDPOINTS.MEAL_REQUEST.CREATE_BY_DATE,
+      payload,
+    );
+
+    return res.data;
+  },
+  approvedPendingMealReq: async (id: number) => {
+    const res = await API.patch(
+      API_ENDPOINTS.MEAL_REQUEST.APPROVED_PENDING_REQ(id),
+    );
 
     return res.data;
   },

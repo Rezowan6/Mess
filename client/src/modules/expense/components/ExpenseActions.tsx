@@ -15,6 +15,7 @@ interface Props {
 
 export const ExpenseActions = ({ expense, onEdit }: Props) => {
   const openConfirm = useConfirmStore((state) => state.openConfirm);
+  const setLoading = useConfirmStore((state) => state.setLoading);
 
   const deleteMutation = useDeleteExpense();
 
@@ -38,7 +39,12 @@ export const ExpenseActions = ({ expense, onEdit }: Props) => {
               </>
             ),
             onConfirm: async () => {
-              await deleteMutation.mutateAsync(expense.id);
+              setLoading(true);
+              try {
+                await deleteMutation.mutateAsync(expense.id);
+              } finally {
+                setLoading(false);
+              }
             },
           })
         }

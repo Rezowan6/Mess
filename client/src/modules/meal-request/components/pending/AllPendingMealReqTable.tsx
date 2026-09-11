@@ -1,14 +1,19 @@
 import { Badge } from "@/shared/components/ui/Badge";
 import { Button } from "@/shared/components/ui/Button";
 import { useConfirmStore } from "@/shared/store/confirm.store";
-import { formatDate, getCurrentlDate } from "@/shared/utils/date.utils";
+import {
+  formatDate,
+  formatDateForChart,
+  getCurrentlDate,
+} from "@/shared/utils/date.utils";
 import { formatDateTime } from "@/shared/utils/time";
 
-import { CalendarDays, Check, Trash2, X } from "lucide-react";
+import { Check, Trash2, X } from "lucide-react";
 
 import { Avatar } from "@/shared/components/ui/Avatar";
 import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
 import React from "react";
+import { useApprovedMealReq } from "../../hooks/useApprovedMealReq";
 import { useParmanetDeleteMealReq } from "../../hooks/useParmanetDeleteMealReq";
 import type { IMyPendingMealReq } from "../../types/mealRequest.types";
 
@@ -20,20 +25,28 @@ export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
   requests,
 }) => {
   const openConfirm = useConfirmStore((state) => state.openConfirm);
+  const setLoading = useConfirmStore((state) => state.setLoading);
 
   const { mutate: deleteMealRequest } = useParmanetDeleteMealReq();
+  const { mutate: approvedMealRequest } = useApprovedMealReq();
 
   const handleDelete = (request: IMyPendingMealReq) => {
     openConfirm({
       title: "Delete Meal Request",
       message: (
         <>
-          Are you sure you want to permanently delete the meal request for{" "}
-          <strong className="text-success">{formatDate(request.date)}</strong>?
+          Are you sure you want to permanently delete the meal request of{" "}
+          <strong className="text-error">{request.requester.name}</strong> for{" "}
+          <strong className="text-error">{formatDate(request.date)}</strong>?
         </>
       ),
       onConfirm: async () => {
-        deleteMealRequest(request.id);
+        setLoading(true);
+        try {
+          deleteMealRequest(request.id);
+        } finally {
+          setLoading(false);
+        }
       },
     });
   };
@@ -43,13 +56,19 @@ export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
       title: "Approve Meal Request",
       message: (
         <>
-          Are you sure you want to approve the meal request for{" "}
+          Are you sure you want to approve{" "}
+          <strong className="text-success">{request.requester.name}</strong>
+          's meal request for{" "}
           <strong className="text-success">{formatDate(request.date)}</strong>?
         </>
       ),
       onConfirm: async () => {
-        // Approve API এখানে call করবেন
-        console.log("Approve:", request.id);
+        setLoading(true);
+        try {
+          approvedMealRequest(request.id);
+        } finally {
+          setLoading(false);
+        }
       },
     });
   };
@@ -59,13 +78,19 @@ export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
       title: "Reject Meal Request",
       message: (
         <>
-          Are you sure you want to reject the meal request for{" "}
+          Are you sure you want to reject the meal request of{" "}
+          <strong className="text-error">{request.requester.name}</strong> for{" "}
           <strong className="text-error">{formatDate(request.date)}</strong>?
         </>
       ),
       onConfirm: async () => {
-        // Reject API এখানে call করবেন
-        console.log("Reject:", request.id);
+        setLoading(true);
+        try {
+          // deleteMealRequest(request.id);
+          console.log("Reject:", request.id);
+        } finally {
+          setLoading(false);
+        }
       },
     });
   };
@@ -84,7 +109,7 @@ export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
           return (
             <div
               key={request.id}
-              className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-background"
+              className="flex items-center gap-3 px-2 py-3 transition-colors hover:bg-background"
             >
               <Avatar
                 src={request.requester.avatar}
@@ -99,9 +124,7 @@ export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
                     <span>{request.requester.name}</span>
                   </h3>
                   <h3 className="flex min-w-0 items-center gap-1.5 truncate text-[15px] font-semibold text-base-content">
-                    <CalendarDays size={13} />
-
-                    <span>{formatDate(request.date)}</span>
+                    <span>{formatDateForChart(request.date)}</span>
                   </h3>
 
                   <Badge variant="soft-warning" size="sm">
@@ -135,14 +158,12 @@ export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
                   {/* Actions */}
                   <div className="flex justify-end items-center gap-2">
                     <Button
-                      disabled
                       variant="success"
                       onClick={() => handleApprove(request)}
                       leftIcon={<Check size={15} />}
                     />
 
                     <Button
-                      disabled
                       variant="error"
                       leftIcon={<X size={15} />}
                       onClick={() => handleReject(request)}
