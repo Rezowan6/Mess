@@ -3,6 +3,7 @@ import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage"
 import { Button } from "@/shared/components/ui/Button";
 import { useState } from "react";
 import { MealPreferenceForm } from "../components/MealPreferenceForm";
+import { MealRequestSection } from "@/modules/meal-request/pages/MealRequestSection";
 
 export function MealPreferencePage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +19,8 @@ export function MealPreferencePage() {
         }
       >
         <MealPreferenceForm />
+
+        <MealRequestSection />
       </ManagementPage>
 
       <AddMealReqModal isOpen={isOpen} onClose={() => setIsOpen(false)} />

@@ -24,12 +24,7 @@ createRoot(document.getElementById("root")!).render(
           <SocketProvider>
             <App />
             <OfflineMessage />
-            <Toaster
-              position="top-right"
-              containerStyle={{
-                top: "64px",
-              }}
-            />
+            <Toaster position="top-right" containerStyle={{ top: "64px" }} />
           </SocketProvider>
         </AuthProvider>
       </ThemeProvider>
