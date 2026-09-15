@@ -1,12 +1,8 @@
-import { Button } from "@/shared/components/ui/Button";
-import { useState } from "react";
-import { AddMealReqModalByDate } from "../components/createReq/AddMealReqModalByDate";
 import { MealRequestHistory } from "../components/history/MealRequestHistory";
 import { MealRequestHistorySkeleton } from "../components/history/MealRequestHistorySkeleton";
 import { useMyPendingMealReq } from "../hooks/useMyPendingMealRequests";
 
 export const MealRequestSection = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const { data, isPending } = useMyPendingMealReq();
 
   if (isPending) {
@@ -27,14 +23,9 @@ export const MealRequestSection = () => {
               Your pending meal requests
             </p>
           </div>
-          <Button className="h-fit" variant="success" onClick={() => setIsOpen(true)}>
-            Create Request
-          </Button>
         </div>
         <MealRequestHistory requests={requests} />
       </div>
-
-      <AddMealReqModalByDate isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </section>
   );
 };
