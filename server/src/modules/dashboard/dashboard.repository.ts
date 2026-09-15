@@ -167,14 +167,14 @@ class DashboardRepository {
         mealSessionId,
       },
       attributes: [
-        [fn("DATE", col("date")), "date"],
+        [literal("DATE(CONVERT_TZ(`date`, '+00:00', '+06:00'))"), "date"],
         [
           fn("SUM", literal("breakfast + lunch + dinner + guest_meal")),
           "meals",
         ],
       ],
-      group: [fn("DATE", col("date"))],
-      order: [[fn("DATE", col("date")), "ASC"]],
+      group: [fn("DATE", fn("CONVERT_TZ", col("date"), "+00:00", "+06:00"))],
+      order: [[literal("DATE(CONVERT_TZ(`date`, '+00:00', '+06:00'))"), "ASC"]],
       raw: true,
     });
   }
