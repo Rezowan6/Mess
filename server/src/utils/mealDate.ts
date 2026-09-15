@@ -20,16 +20,6 @@ export const getCurrentMealDate = (): Date => {
   const maghrib = appTime(getTodayMaghribTime());
 
 
-  console.log({
-    serverTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    now: now.format("YYYY-MM-DD HH:mm:ss"),
-    maghrib: maghrib.format("YYYY-MM-DD HH:mm:ss"),
-    isBeforeMaghrib: now.isBefore(maghrib),
-    mealDate: now
-      .add(now.isBefore(maghrib) ? 0 : 1, "day")
-      .format("YYYY-MM-DD"),
-  });
-
   // Before today's Maghrib
   // → Today's meal date
   if (now.isBefore(maghrib)) {

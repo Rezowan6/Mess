@@ -55,7 +55,7 @@ export const PageActionMenu = ({
           rounded-lg p-2
           text-base-content
           transition-all duration-200
-          hover:bg-base-content/10
+          hover:bg-info/10
           active:scale-95
         "
       >

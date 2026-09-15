@@ -9,7 +9,7 @@ export const HeroActions = () => {
     <div className="flex flex-wrap gap-4">
       {heroConfig.actions.map((action) => (
         <Link key={action.to} to={action.to}>
-          <Button variant={action.variant}>{action.label}</Button>
+          <Button disabled={action.disabled} variant={action.variant}>{action.label}</Button>
         </Link>
       ))}
     </div>

@@ -1,21 +1,36 @@
 import { AddMealReqModal } from "@/modules/meal-request/components/createReq/AddMealReqModal";
+import { AddMealReqModalByDate } from "@/modules/meal-request/components/createReq/AddMealReqModalByDate";
+import { MealRequestSection } from "@/modules/meal-request/pages/MealRequestSection";
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
-import { Button } from "@/shared/components/ui/Button";
+import { PageActionMenu } from "@/shared/components/navigation/PageActionMenu";
+import { Calendar1, CalendarRange } from "lucide-react";
 import { useState } from "react";
 import { MealPreferenceForm } from "../components/MealPreferenceForm";
-import { MealRequestSection } from "@/modules/meal-request/pages/MealRequestSection";
 
 export function MealPreferencePage() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isDayRequestOpen, setIsDayRequestOpen] = useState(false);
+  const [isRangeRequestOpen, setIsRangeRequestOpen] = useState(false);
   return (
     <>
       <ManagementPage
         title="My Meal Preference"
         description="Select your daily meal preference"
         action={
-          <Button variant="success" onClick={() => setIsOpen(true)}>
-            Create Requests
-          </Button>
+          <PageActionMenu
+            label="Create Meal Request"
+            items={[
+              {
+                label: "For a Specific Day",
+                icon: Calendar1,
+                onClick: () => setIsDayRequestOpen(true),
+              },
+              {
+                label: "For a Date Range",
+                icon: CalendarRange,
+                onClick: () => setIsRangeRequestOpen(true),
+              },
+            ]}
+          />
         }
       >
         <MealPreferenceForm />
@@ -23,7 +38,15 @@ export function MealPreferencePage() {
         <MealRequestSection />
       </ManagementPage>
 
-      <AddMealReqModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <AddMealReqModalByDate
+        isOpen={isDayRequestOpen}
+        onClose={() => setIsDayRequestOpen(false)}
+      />
+
+      <AddMealReqModal
+        isOpen={isRangeRequestOpen}
+        onClose={() => setIsRangeRequestOpen(false)}
+      />
     </>
   );
 }

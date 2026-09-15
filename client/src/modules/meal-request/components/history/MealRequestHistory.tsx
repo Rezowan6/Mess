@@ -16,7 +16,30 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
   requests,
 }) => {
   const openConfirm = useConfirmStore((state) => state.openConfirm);
-  const { mutate: deleteMealRequest } = useParmanetDeleteMealReq();
+
+  const setLoading = useConfirmStore((state) => state.setLoading);
+  const deleteMealRequest = useParmanetDeleteMealReq();
+
+  const handleDelete = (request: IMyPendingMealReq) => {
+    openConfirm({
+      title: "Delete Meal Request",
+      message: (
+        <>
+          Are you sure you want to permanently delete the meal request of{" "}
+          <strong className="text-error">{request.requester.name}</strong> for{" "}
+          <strong className="text-error">{formatDate(request.date)}</strong>?
+        </>
+      ),
+      onConfirm: async () => {
+        setLoading(true);
+        try {
+          await deleteMealRequest.mutateAsync(request.id);
+        } finally {
+          setLoading(false);
+        }
+      },
+    });
+  };
 
   return (
     <div className="max-h-92 rounded-md bg-info/5 overflow-y-auto">
@@ -50,23 +73,7 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                       disabled={isDeleteDisabled}
                       className="flex items-center justify-center"
                       leftIcon={<Trash2 />}
-                      onClick={() =>
-                        openConfirm({
-                          title: "Delete Meal Request",
-                          message: (
-                            <>
-                              Are you sure you want to permanently delete the
-                              meal request for{" "}
-                              <strong className="text-success">
-                                {formatDate(request.date)}
-                              </strong>
-                            </>
-                          ),
-                          onConfirm: async () => {
-                            deleteMealRequest(request.id);
-                          },
-                        })
-                      }
+                      onClick={() => handleDelete(request)}
                     />
                   </div>
 
