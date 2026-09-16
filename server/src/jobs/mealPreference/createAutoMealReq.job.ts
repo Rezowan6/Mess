@@ -13,7 +13,7 @@ import cron from "node-cron";
 
 export const createAutoMealReqJob = () => {
   cron.schedule(
-    "*5 * * * * *", // Test: "*/30 * * * * *" | Production: "0 4 * * *"
+    "*/30 * * * * *", // Test: "*/30 * * * * *" | Production: "0 4 * * *"
     async () => {
       try {
         const result = await mealPreferenceService.createAutoMealReq();
