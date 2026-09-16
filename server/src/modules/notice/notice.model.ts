@@ -22,7 +22,7 @@ export class Notice extends Model<
   declare description: string;
 
   declare tenantId: number;
-  declare mealSessionId: CreationOptional<number>;
+  declare mealSessionId: CreationOptional<number | null>;
   declare createdBy: number;
 
   declare readonly createdAt: CreationOptional<Date>;
@@ -73,9 +73,6 @@ Notice.init(
     indexes: [
       {
         fields: ["tenantId", "mealSessionId"],
-      },
-      {
-        fields: ["tenantId"],
       },
     ],
   },

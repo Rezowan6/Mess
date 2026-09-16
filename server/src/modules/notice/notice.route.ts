@@ -1,4 +1,4 @@
-import { adminAccess, adminAndManagerAccess, allAccess, managerAccess } from "@/helpers/permission.js";
+import { adminAndManagerAccess, allAccess, managerAccess } from "@/helpers/permission.js";
 import express from "express";
 import { NoticeController } from "./notice.controller.js";
 

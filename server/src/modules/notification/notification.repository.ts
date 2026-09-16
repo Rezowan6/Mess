@@ -84,11 +84,16 @@ class NotificationRepository extends BaseRepository<Notification> {
   }
 
   async remove(id: number, tenantId: number, userId: number) {
-    return this.delete({
-      id,
-      tenantId,
-      userId,
-    });
+    return this.delete(
+      {
+        id,
+        tenantId,
+        userId,
+      },
+      {
+        force: true,
+      },
+    );
   }
 }
 
