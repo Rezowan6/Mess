@@ -53,7 +53,7 @@ export const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
         aria-label={alt}
         className={[
           "flex shrink-0 items-center justify-center cursor-pointer",
-          "rounded-full bg-gradient-success text-white font-bold text-xl",
+          "rounded-full bg-gradient-success text-white font-bold",
           sizeClasses[size],
           className,
         ]
