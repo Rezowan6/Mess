@@ -11,7 +11,7 @@ const scheduleNext = (): void => {
    * Every day:
    * Maghrib + 5 minutes
    */
-  const runAt = getNextMaghribTime();
+  // const runAt = getNextMaghribTime();
 
   /**
    * ============================================================
@@ -22,7 +22,7 @@ const scheduleNext = (): void => {
    * when testing the job.
    *
    */
-  // const runAt = getTestRunTime();
+  const runAt = getTestRunTime();
 
   console.log(
     `[MealRequestJob] Next generation scheduled at: ${runAt.toLocaleString(
