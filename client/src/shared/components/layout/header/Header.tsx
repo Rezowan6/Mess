@@ -9,7 +9,7 @@ export const Header = () => {
     <header
       className={`fixed right-0 left-0 top-0 z-30 bg-background transition-all duration-300 ${
         scrolled
-          ? "border-b border-info/10 bg-background shadow-2xl shadow-info backdrop-blur-xl"
+          ? "border-b border-info/10 bg-background shadow-2xl shadow-info/20 backdrop-blur-xl"
           : "border-b border-info/10 bg-background shadow-2xl backdrop-blur-xl"
       }`}
     >
