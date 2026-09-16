@@ -1,10 +1,18 @@
 import { NotificationBell } from "@/modules/notification/components/NotificationBell";
+import useScrolled from "@/shared/hooks/useScrolled";
 import { TenantName } from "../../ui/TenantName";
 import { HeaderProfile } from "./HeaderProfile";
 
 export const Header = () => {
+  const scrolled = useScrolled();
   return (
-    <header className="fixed right-0 left-0 top-0 z-30 border-b border-info bg-base-100">
+    <header
+      className={`fixed right-0 left-0 top-0 z-30 bg-background transition-all duration-300 ${
+        scrolled
+          ? "border-b border-info/10 bg-background shadow-2xl shadow-info backdrop-blur-xl"
+          : "border-b border-info/10 bg-background shadow-2xl backdrop-blur-xl"
+      }`}
+    >
       <div className="flex h-16 items-center justify-between px-4 lg:px-6">
         {/* Left */}
 
