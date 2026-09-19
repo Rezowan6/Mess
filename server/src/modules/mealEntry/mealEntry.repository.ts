@@ -28,6 +28,8 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
           attributes: ["id", "name", "email", "avatar"],
         },
       ],
+
+      order: [["date", "DESC"]],
     });
   }
 
