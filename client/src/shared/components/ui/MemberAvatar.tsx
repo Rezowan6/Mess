@@ -25,7 +25,7 @@ export const MemberAvatar = ({
         fallback={getAvatarInitial(name ?? "")}
       />
 
-      {showName && <span className={`font-medium text-lg`}>{name ?? ""}</span>}
+      {showName && <span className={`font-medium text-[14px]`}>{name ?? ""}</span>}
     </div>
   );
 };
