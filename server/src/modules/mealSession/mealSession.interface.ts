@@ -1,7 +1,6 @@
 export const MealSessionStatus = {
   OPEN: "open",
   CLOSED: "closed",
-  DRAFT: "draft",
 } as const;
 
 export const MEAL_SESSION_STATUS = Object.values(MealSessionStatus);
@@ -14,10 +13,20 @@ export interface IMealSessionReq {
   month: number;
   year: number;
   status: MealSessionStatus;
-};
+}
+
+export interface ICompletedMealSession {
+  id: number;
+  month: number;
+  year: number;
+  sessionNumber: number;
+  openedAt: Date | null;
+  closedAt: Date | null;
+}
 export interface CreateMealSessionPayload {
   tenantId: number;
   month: number;
+  sessionNumber: number;
   year: number;
   openedBy: number;
   openedAt: Date;

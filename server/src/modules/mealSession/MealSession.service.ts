@@ -1,7 +1,11 @@
 import { ApiError } from "@/utils/ApiError.js";
 import { getCurrentMonthAndYear } from "@/utils/date.util.js";
+import { UniqueConstraintError } from "sequelize";
 import { mealRequestRepository } from "../mealRequest/mealRequest.repository.js";
-import { MealSessionStatus } from "./mealSession.interface.js";
+import {
+  ICompletedMealSession,
+  MealSessionStatus,
+} from "./mealSession.interface.js";
 import { mealSessionRepository } from "./mealSession.repository.js";
 
 class MealSessionService {
@@ -15,14 +19,29 @@ class MealSessionService {
       throw new ApiError(409, "A meal session is already open");
     }
 
-    return await mealSessionRepository.create({
+    const sessionNumber = await mealSessionRepository.getNextSessionNumber(
       tenantId,
-      month,
       year,
-      status: MealSessionStatus.OPEN,
-      openedBy: userId,
-      openedAt: new Date(),
-    });
+      month,
+    );
+
+    try {
+      return await mealSessionRepository.create({
+        tenantId,
+        month,
+        year,
+        sessionNumber,
+        status: MealSessionStatus.OPEN,
+        openedBy: userId,
+        openedAt: new Date(),
+      });
+    } catch (error) {
+      // দুটো request একসাথে এলে DB-র unique index দ্বিতীয়টা আটকায়
+      if (error instanceof UniqueConstraintError) {
+        throw new ApiError(409, "A meal session is already open");
+      }
+      throw error;
+    }
   }
 
   async getCurrentSession(tenantId: number) {
@@ -36,15 +55,24 @@ class MealSessionService {
   }
 
   async getAll(tenantId: number) {
-    const session = await mealSessionRepository.findAll({
+    return mealSessionRepository.findAll({
       where: { tenantId },
     });
+  }
 
-    if (!session) {
-      throw new ApiError(404, "No active meal session found.");
-    }
+  async getCompletedSessions(
+    tenantId: number,
+  ): Promise<ICompletedMealSession[]> {
+    const sessions = await mealSessionRepository.getCompletedSessions(tenantId);
 
-    return session;
+    return sessions.map((session) => ({
+      id: session.id,
+      month: session.month,
+      year: session.year,
+      sessionNumber: session.sessionNumber,
+      openedAt: session.openedAt ?? null,
+      closedAt: session.closedAt ?? null,
+    }));
   }
 
   async close(payload: {
@@ -79,7 +107,15 @@ class MealSessionService {
       );
     }
 
-    await mealSessionRepository.closeSession(sessionId, tenantId, userId);
+    const [affectedRows] = await mealSessionRepository.closeSession(
+      sessionId,
+      tenantId,
+      userId,
+    );
+
+    if (affectedRows === 0) {
+      throw new ApiError(409, "Meal session is no longer open.");
+    }
 
     return mealSessionRepository.findById(sessionId);
   }

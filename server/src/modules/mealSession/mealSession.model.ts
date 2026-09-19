@@ -24,6 +24,7 @@ export class MealSession extends Model<
   declare tenantId: number;
   declare month: number;
   declare year: number;
+  declare sessionNumber: CreationOptional<number>;
   declare status: CreationOptional<MealSessionStatus>;
   declare openedBy: CreationOptional<number>;
   declare closedBy: CreationOptional<number>;
@@ -54,6 +55,11 @@ MealSession.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    sessionNumber: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+    },
     status: {
       type: DataTypes.ENUM(...MEAL_SESSION_STATUS),
       defaultValue: MealSessionStatus.OPEN,
@@ -80,14 +86,16 @@ MealSession.init(
     underscored: true,
     indexes: [
       {
-        unique: true,
-        fields: ["tenant_id", "month", "year"],
-      },
-      {
         fields: ["tenant_id"],
       },
       {
-        fields: ["status"],
+        unique: true,
+        name: "tenant_meal_sessions_period_number_unique",
+        fields: ["tenant_id", "year", "month", "session_number"],
+      },
+      {
+        name: "meal_sessions_tenant_status_period_index",
+        fields: ["tenant_id", "status", "year", "month", "session_number"],
       },
     ],
   },

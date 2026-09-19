@@ -1,22 +1,22 @@
 import { appTime } from "@/configs/time.js";
 // ================================
-// ingsa-allah ai 3 ta method update korte hobe 
+// ingsa-allah ai 3 ta method update korte hobe
 export const getHoursDifference = (
-  from: Date,
-  to: Date = new Date(),
+  from: Date | string | number,
+  to: Date | string | number = new Date(),
 ): number => {
-  return (to.getTime() - from.getTime()) / (1000 * 60 * 60);
+  return appTime(to).diff(appTime(from), "hour", true);
 };
 
-export const isWithinHours = (date: Date | string, hours: number): boolean => {
-  const targetDate = new Date(date);
-  const diffHours = (Date.now() - targetDate.getTime()) / (1000 * 60 * 60);
-
-  return diffHours <= hours;
+export const isWithinHours = (
+  date: Date | string | number,
+  hours: number,
+): boolean => {
+  return getHoursDifference(date) <= hours;
 };
 
 export const getCurrentDate = (): string => {
-  return new Date().toISOString().split("T")[0] as string;
+  return appTime().format("YYYY-MM-DD");
 };
 
 // ================================
@@ -50,11 +50,10 @@ export const getMonthName = (month: number, year: number): string => {
 };
 
 export const getCurrentMonthAndYear = () => {
-  const month = new Date().getMonth();
-  const year = new Date().getFullYear();
+  const now = appTime();
 
   return {
-    month,
-    year,
+    month: now.month() + 1, // 1-12
+    year: now.year(),
   };
 };

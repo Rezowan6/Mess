@@ -1,9 +1,10 @@
+import { getTenantBaseContext } from "@/helpers/getTenantBaseContext.js";
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
+import { ApiError } from "@/utils/ApiError.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { mealSessionService } from "./MealSession.service.js";
-import { getTenantBaseContext } from "@/helpers/getTenantBaseContext.js";
 
 class MealSessionController {
   create = asyncHandler(async (req: Request, res: Response) => {
@@ -42,10 +43,26 @@ class MealSessionController {
     });
   });
 
+  getCompletedSessions = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantBaseContext(req);
+
+    const sessions = await mealSessionService.getCompletedSessions(tenantId);
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Completed meal sessions fetched successfully.",
+      data: sessions,
+    });
+  });
+
   close = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId } = getTenantContext(req);
 
     const sessionId = Number(req.params.id);
+
+    if (!Number.isInteger(sessionId) || sessionId <= 0) {
+      throw new ApiError(400, "Invalid meal session id.");
+    }
 
     const session = await mealSessionService.close({
       tenantId,

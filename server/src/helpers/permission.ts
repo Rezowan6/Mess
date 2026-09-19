@@ -27,3 +27,8 @@ export const mealSessionAdminAndManagerAccess = access({
 export const allAccess = access({
   roles: [...allMemberRole],
 });
+
+export const mealSessionAllAccess = access({
+  roles: [...allMemberRole],
+  requireMealSession: false,
+});

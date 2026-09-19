@@ -1,15 +1,16 @@
 import { Button } from "@/shared/components/ui/Button";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 
-import { useCloseMealSession } from "../hooks/useCloseMealSession";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { useCloseMealSession } from "../hooks/useCloseMealSession";
 
 interface Props {
   sessionId: number;
 }
 
 export const CloseSessionButton = ({ sessionId }: Props) => {
-  const { openConfirm } = useConfirmStore();
+  const openConfirm = useConfirmStore((state) => state.openConfirm);
+  const setLoading = useConfirmStore((state) => state.setLoading);
 
   const mutation = useCloseMealSession();
 
@@ -22,13 +23,23 @@ export const CloseSessionButton = ({ sessionId }: Props) => {
       confirmText: "Close",
 
       onConfirm: async () => {
-        await mutation.mutateAsync(sessionId);
+        try {
+          setLoading(true);
+          await mutation.mutateAsync(sessionId);
+        } finally {
+          setLoading(false);
+        }
       },
     });
   };
 
   return (
-    <Button variant="error" onClick={handleClose} loading={mutation.isPending} permission={PERMISSIONS.MEAL_SESSION_CLOSE}>
+    <Button
+      variant="error"
+      onClick={handleClose}
+      loading={mutation.isPending}
+      permission={PERMISSIONS.MEAL_SESSION_CLOSE}
+    >
       Close Session
     </Button>
   );

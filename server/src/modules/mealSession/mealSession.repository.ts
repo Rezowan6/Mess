@@ -16,13 +16,35 @@ export class MealSessionRepository extends BaseRepository<MealSession> {
 
   async closeSession(id: number, tenantId: number, userId: number) {
     return this.update(
-      { id, tenantId },
+      { id, tenantId, status: MealSessionStatus.OPEN },
       {
         status: MealSessionStatus.CLOSED,
         closedBy: userId,
         closedAt: new Date(),
       },
     );
+  }
+
+    async getCompletedSessions(tenantId: number) {
+    return this.findAll({
+      where: { tenantId, status: MealSessionStatus.CLOSED },
+      attributes: ["id", "month", "year", "sessionNumber", "openedAt", "closedAt"],
+      order: [
+        ["year", "DESC"],
+        ["month", "DESC"],
+        ["sessionNumber", "DESC"],
+        ["id", "DESC"],
+      ],
+    });
+  }
+
+  async getNextSessionNumber(tenantId: number, year: number, month: number) {
+    const max = await this.model.max("sessionNumber", {
+      where: { tenantId, year, month },
+      paranoid: false, // soft-delete করা session-এর নম্বরও ধরতে হবে
+    });
+
+    return (Number(max) || 0) + 1;
   }
 }
 
