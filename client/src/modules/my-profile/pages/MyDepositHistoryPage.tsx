@@ -1,3 +1,4 @@
+import { sortByDateDesc } from "@/shared/utils/sort.utils";
 import { DepositHistoryTable } from "../components/DepositHistoryTable";
 import { useMyProfile } from "../hooks/useMyProfile";
 
@@ -6,5 +7,7 @@ export const MyDepositHistoryPage = () => {
 
   const deposits = data?.data?.deposits ?? [];
 
-  return <DepositHistoryTable deposits={deposits} />;
+  const sortedDeposits = sortByDateDesc(deposits, (deposit) => deposit.createdAt)
+
+  return <DepositHistoryTable deposits={sortedDeposits} />;
 };

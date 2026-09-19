@@ -80,7 +80,7 @@ export class TenantMembershipRepository extends BaseRepository<TenantMembership>
 
         include: [userInclude],
 
-        order: [["createdAt", "ASC"]],
+        order: [["id", "ASC"]],
       },
 
       query,
