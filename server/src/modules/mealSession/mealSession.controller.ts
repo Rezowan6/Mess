@@ -4,7 +4,7 @@ import asyncHandler from "@/middlewares/asyncHandler.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
-import { mealSessionService } from "./MealSession.service.js";
+import { mealSessionService } from "./mealSession.service.js";
 
 class MealSessionController {
   create = asyncHandler(async (req: Request, res: Response) => {
