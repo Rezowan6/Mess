@@ -219,7 +219,7 @@ export class MealRequestService {
       const requestDate = formatDate(getAppDate(request.date));
 
       const isRejectDisabled = requestDate === appDate;
-      
+
       if (isRejectDisabled) {
         throw new ApiError(400, "Today's meal requests cannot be rejected");
       }
@@ -335,13 +335,14 @@ export class MealRequestService {
       const appDate = formatDate(getAppDate());
       const requestDate = formatDate(getAppDate(request.date));
 
-      // Approve: Previous + Today enabled, Tomorrow+ disabled
-      const isApproveDisabled = requestDate >= appDate;
+      // Previous + Today enabled
+      // Tomorrow + future dates disabled
+      const isApproveDisabled = requestDate > appDate;
 
       if (isApproveDisabled) {
         throw new ApiError(
           400,
-          "Meal requests for today and future dates cannot be approved",
+          "Meal requests for tomorrow and future dates cannot be approved",
         );
       }
 
