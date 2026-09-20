@@ -141,9 +141,6 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     // meal session
     PERMISSIONS.MEAL_SESSION_VIEW,
 
-    // meal entry
-    PERMISSIONS.MEAL_ENTRY_VIEW,
-
     // expense
     PERMISSIONS.EXPENSE_VIEW,
 
@@ -177,8 +174,6 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     PERMISSIONS.MEAL_SESSION_VIEW,
     PERMISSIONS.MEAL_SESSION_OPEN,
 
-    // meal entry
-    PERMISSIONS.MEAL_ENTRY_VIEW,
 
     // expense
     PERMISSIONS.EXPENSE_VIEW,
