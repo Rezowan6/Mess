@@ -1,5 +1,4 @@
 import { Sequelize } from "sequelize";
-import { env } from "./env.js";
 
 // development----
 
