@@ -3,7 +3,7 @@ import { checkMealCutoff } from "@/helpers/checkMealCutoff.helper.js";
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { getAppDate } from "@/utils/date.util.js";
+import { formatDisplayDate, getAppDate } from "@/utils/date.util.js";
 import { getCurrentMealDate } from "@/utils/mealDate.js";
 import { Transaction } from "sequelize";
 import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
@@ -206,9 +206,8 @@ class MealPreferenceService {
               preference.userId,
               preference.userId,
               {
-                title: "Meal Request Created",
-                message:
-                  "Your meal request has been automatically created based on your meal preferences.",
+                title: `Meal Request Created}`,
+                message: `Your meal request for ${formatDisplayDate(getAppDate())} has been automatically created based on your meal preferences.`,
                 type: Notification.MEAL_REQUEST_CREATED,
               },
             );

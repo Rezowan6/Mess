@@ -57,3 +57,7 @@ export const getCurrentMonthAndYear = () => {
     year: now.year(),
   };
 };
+
+export const formatDisplayDate = (date: Date | string | number): string => {
+  return appTime(date).format("DD MMM YYYY");
+};
