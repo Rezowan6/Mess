@@ -10,8 +10,8 @@ export class MealSessionRepository extends BaseRepository<MealSession> {
   }
 
   async ensureSessionOpen(
-    mealSessionId: number,
     tenantId: number,
+    mealSessionId: number,
     transaction?: Transaction | null,
   ) {
     const mealSession = await this.findOneWithOptions({

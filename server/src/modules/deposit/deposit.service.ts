@@ -17,7 +17,7 @@ class DepositService {
   async createDeposit(data: ICreateDepositPayload) {
     const { tenantId, memberId, depositDate, mealSessionId } = data;
 
-    await mealSessionRepository.ensureSessionOpen(tenantId,mealSessionId);
+    await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
 
     const member = await getActiveMember({ tenantId, userId: memberId });
 
@@ -125,7 +125,7 @@ class DepositService {
     depositId: number;
     payload: IUpdateDepositPayload;
   }) {
-    await mealSessionRepository.ensureSessionOpen(tenantId,mealSessionId);
+    await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
 
     const deposit = await depositRepository.getById({
       tenantId,
@@ -151,7 +151,7 @@ class DepositService {
     depositId,
     mealSessionId,
   }: IDeleteDepositPayload) {
-    await mealSessionRepository.ensureSessionOpen(tenantId,mealSessionId);
+    await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
 
     const deposit = await depositRepository.getById({
       tenantId,
