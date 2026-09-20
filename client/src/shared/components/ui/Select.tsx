@@ -143,9 +143,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             )}
           >
             <span
-              className={clsx(
-                selectedOption ? "text-text" : "text-text-muted",
-              )}
+              className={clsx(selectedOption ? "text-text" : "text-text-muted")}
             >
               {isLoading
                 ? loadingText

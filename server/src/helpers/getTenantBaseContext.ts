@@ -1,6 +1,7 @@
 import { ApiError } from "@/utils/ApiError.js";
 import type { Request } from "express";
 
+// getTenantContext()
 export const getTenantBaseContext = (req: Request) => {
   const { context } = req;
 

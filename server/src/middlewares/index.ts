@@ -1,7 +1,15 @@
 import { auth } from "@/middlewares/auth.middleware.js";
 import asyncHandler from "./asyncHandler.js";
-import { globalErrorHandler } from "./globalErrorHandler.js";
-import { role } from "./role.middleware.js";
 import { contextMiddleware } from "./context.middleware.js";
+import { globalErrorHandler } from "./globalErrorHandler.js";
+import { mealSessionMiddleware } from "./mealSession.middleware.js";
+import { role } from "./role.middleware.js";
 
-export { asyncHandler, auth, globalErrorHandler, role, contextMiddleware };
+export {
+  asyncHandler,
+  auth,
+  contextMiddleware,
+  globalErrorHandler,
+  mealSessionMiddleware,
+  role,
+};

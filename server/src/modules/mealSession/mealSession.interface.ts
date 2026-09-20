@@ -19,6 +19,7 @@ export interface ICompletedMealSession {
   id: number;
   month: number;
   year: number;
+  status: string;
   sessionNumber: number;
   openedAt: Date | null;
   closedAt: Date | null;

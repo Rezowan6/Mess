@@ -1,15 +1,17 @@
-import { useMealSession } from "@/modules/meal-session/hooks/useMealSession";
 import { Skeleton } from "@/shared/components/feedback/Skeleton";
 import { Badge } from "@/shared/components/ui/Badge";
+import { useSelectedMealSession } from "../../hooks/useSelectedMealSession";
 
 export const MealSessionStatus = () => {
-  const { data, isPending } = useMealSession();
+  const { status, isLoading } = useSelectedMealSession();
 
-  if (isPending) {
+  if (isLoading) {
     return <Skeleton className="w-28 h-7 rounded-lg" />;
   }
-
-  const isOpen = data?.data.data?.status === "open";
+  if (!status) {
+    return null;
+  }
+  const isOpen = status === "open";
 
   return (
     <>

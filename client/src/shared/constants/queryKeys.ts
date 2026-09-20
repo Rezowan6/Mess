@@ -119,7 +119,7 @@ export const queryKeys = {
   // Session list itself does not need another session ID.
   // ============================================================
   mealSessions: {
-    all: (tenantId?: number) => ["meal-sessions", tenantId] as const,
+    all: (tenantId?: number, mealSessionId?: number) => ["meal-sessions", tenantId, mealSessionId] as const,
     completed: (tenantId?: number) =>
       ["meal-sessions", tenantId, "completed"] as const,
   },

@@ -1,4 +1,3 @@
-import { CalendarDays } from "lucide-react";
 import { useMemo } from "react";
 
 import { getMealSessionLabel } from "@/modules/meal-session/utils/mealSession.utils";
@@ -50,8 +49,9 @@ export const MealSessionSelector = () => {
       : "Select session";
 
   return (
-    <div className="min-w-56" aria-busy={isLoading}>
+    <div className="w-41 sm:w-48" aria-busy={isLoading}>
       <Select
+        className="text-xs sm:text-sm"
         options={options}
         value={selection?.mealSessionId ?? ""}
         onChange={(event) => {
@@ -60,7 +60,6 @@ export const MealSessionSelector = () => {
         }}
         placeholder={placeholder}
         disabled={isLoading || isEmpty}
-        leftIcon={<CalendarDays size={17} />}
       />
     </div>
   );

@@ -22,3 +22,14 @@ export const formatDateForChart = (date: string | Date | null): string => {
 
   return dayjs(date).tz(APP_TIMEZONE).format("DD MMM");
 };
+
+export const formatMonthName = (month: number): string => {
+  if (!Number.isInteger(month) || month < 1 || month > 12) {
+    return "Unknown";
+  }
+
+  return dayjs()
+    .tz(APP_TIMEZONE)
+    .month(month - 1)
+    .format("MMMM");
+};

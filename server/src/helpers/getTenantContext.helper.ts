@@ -2,28 +2,18 @@ import { MemberShipRole } from "@/middlewares/role.middleware.js";
 import { IMealSessionReq } from "@/modules/mealSession/mealSession.interface.js";
 import { IGetTenantContentRes } from "@/types/requestContext.js";
 import { ApiError } from "@/utils/ApiError.js";
+import { Request } from "express";
 
-export interface AuthRequest {
-  context: {
-    user: {
-      id: number;
-      email: string;
-    };
-
-    membership: {
-      id: number;
-      tenantId: number;
-      role: MemberShipRole;
-    };
-    mealSession?: IMealSessionReq | undefined;
-  };
-}
-
-export const getTenantContext = (req: AuthRequest): IGetTenantContentRes => {
+// getTenantSessionContext()
+export const getTenantContext = (req: Request): IGetTenantContentRes => {
   const { context } = req;
 
-  if (!context?.membership || !context?.user || !context?.mealSession) {
-    throw new ApiError(400, "Tenant context not found");
+  if (!context?.membership || !context?.user) {
+    throw new ApiError(400, "Tenant context not found.");
+  }
+
+  if (!context.mealSession) {
+    throw new ApiError(400, "Meal session context not found.");
   }
 
   const { membership, user, mealSession } = context;
@@ -33,7 +23,9 @@ export const getTenantContext = (req: AuthRequest): IGetTenantContentRes => {
     userId: user.id,
     role: membership.role,
     membershipId: membership.id,
+
     mealSessionId: mealSession.id,
+
     session: {
       id: mealSession.id,
       month: mealSession.month,

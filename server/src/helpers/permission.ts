@@ -20,15 +20,21 @@ export const adminAndManagerAccess = access({
   roles: [MemberRole.ADMIN, MemberRole.MANAGER],
 });
 
-export const mealSessionAdminAndManagerAccess = access({
-  roles: [MemberRole.ADMIN, MemberRole.MANAGER],
-  requireMealSession: false,
-});
 export const allAccess = access({
   roles: [...allMemberRole],
 });
 
-export const mealSessionAllAccess = access({
+export const adminAndManagerTenantAccess = access({
+  roles: [MemberRole.ADMIN, MemberRole.MANAGER],
+  requireMealSession: false,
+});
+
+export const allTenantAccess = access({
   roles: [...allMemberRole],
   requireMealSession: false,
 });
+
+// Backward compatibility
+export const mealSessionAdminAndManagerAccess = adminAndManagerTenantAccess;
+
+export const mealSessionAllAccess = allTenantAccess;

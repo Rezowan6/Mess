@@ -27,11 +27,12 @@ export class MealSessionRepository extends BaseRepository<MealSession> {
 
   async getCompletedSessions(tenantId: number) {
     return this.findAll({
-      where: { tenantId, status: MealSessionStatus.CLOSED },
+      where: { tenantId },
       attributes: [
         "id",
         "month",
         "year",
+        "status",
         "sessionNumber",
         "openedAt",
         "closedAt",

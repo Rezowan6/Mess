@@ -68,6 +68,7 @@ class MealSessionService {
     return sessions.map((session) => ({
       id: session.id,
       month: session.month,
+      status: session.status,
       year: session.year,
       sessionNumber: session.sessionNumber,
       openedAt: session.openedAt ?? null,

@@ -1,5 +1,7 @@
 import { MemberRole } from "@/constans/index.js";
-import { auth, contextMiddleware, role } from "@/middlewares/index.js";
+
+import { auth, contextMiddleware, role, mealSessionMiddleware } from "@/middlewares/index.js";
+
 
 type MemberRoleType = (typeof MemberRole)[keyof typeof MemberRole];
 
@@ -18,14 +20,14 @@ export const access = ({
   requireTenant = true,
   requireMealSession = true,
 }: AccessOptions = {}) => {
-  const middlewares: any = [auth];
+  const middlewares: any[] = [auth];
 
   if (requireTenant) {
-    middlewares.push(
-      contextMiddleware({
-        requireMealSession,
-      }),
-    );
+    middlewares.push(contextMiddleware);
+  }
+
+  if (requireMealSession) {
+    middlewares.push(mealSessionMiddleware);
   }
 
   if (roles.length) {
