@@ -1,0 +1,344 @@
+/* ==========================================================
+   Base (default = primary)
+   ========================================================== */
+.button {
+  --btn-from: #6366f1;
+  --btn-via: #8b5cf6;
+  --btn-to: #d946ef;
+  --btn-glow: 139 92 246;
+  --btn-text: #ffffff;
+  --btn-shine: rgb(255 255 255 / 0.38);
+  --btn-ripple: rgb(255 255 255 / 0.45);
+  --btn-surface: #ffffff; /* outline variant-এর ভেতরের রঙ (dark mode-এ override করুন) */
+
+  --btn-h: 2.75rem;
+  --btn-px: 1.25rem;
+  --btn-fs: 0.9375rem;
+  --btn-radius: 0.875rem;
+
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  width: var(--btn-width, auto);
+  height: var(--btn-height, var(--btn-h));
+  padding: 0 var(--btn-px);
+
+  border: 2px solid transparent;
+  border-radius: var(--btn-radius);
+
+  font: inherit;
+  font-size: var(--btn-fs);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: var(--btn-text);
+
+  background-image: linear-gradient(
+    120deg,
+    var(--btn-from),
+    var(--btn-via),
+    var(--btn-to),
+    var(--btn-from)
+  );
+  background-size: 300% 100%;
+  background-position: 0% 50%;
+  background-origin: border-box;
+
+  box-shadow:
+    0 8px 20px -8px rgb(var(--btn-glow) / 0.6),
+    inset 0 1px 0 rgb(255 255 255 / 0.28);
+
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.3s ease,
+    background-position 0.7s ease,
+    background-color 0.25s ease,
+    filter 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* Shine sweep */
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    var(--btn-shine) 50%,
+    transparent 65%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.button:hover:not(:disabled) {
+  background-position: 100% 50%;
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 30px -10px rgb(var(--btn-glow) / 0.75),
+    inset 0 1px 0 rgb(255 255 255 / 0.32);
+}
+
+.button:hover:not(:disabled)::before {
+  transform: translateX(130%);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 0.08s;
+  box-shadow:
+    0 4px 12px -6px rgb(var(--btn-glow) / 0.6),
+    inset 0 2px 4px rgb(0 0 0 / 0.12);
+}
+
+.button:focus-visible {
+  outline: 3px solid rgb(var(--btn-glow) / 0.55);
+  outline-offset: 3px;
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: grayscale(0.25);
+  box-shadow: none;
+}
+
+.button.loading:disabled {
+  cursor: progress;
+  opacity: 0.85;
+  filter: none;
+}
+
+/* ==========================================================
+   Inner parts
+   ========================================================== */
+.content {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.button:hover:not(:disabled) .iconRight {
+  transform: translateX(3px);
+}
+
+.button:hover:not(:disabled) .iconLeft {
+  transform: scale(1.12) rotate(-6deg);
+}
+
+.spinner {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: btn-spin 0.7s linear infinite;
+}
+
+.ripple {
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: var(--btn-ripple);
+  transform: scale(0);
+  animation: btn-ripple 0.65s ease-out forwards;
+}
+
+/* ==========================================================
+   Variants
+   ========================================================== */
+.primary {
+  --btn-from: #6366f1;
+  --btn-via: #8b5cf6;
+  --btn-to: #d946ef;
+  --btn-glow: 139 92 246;
+}
+
+.success {
+  --btn-from: #10b981;
+  --btn-via: #14b8a6;
+  --btn-to: #06b6d4;
+  --btn-glow: 20 184 166;
+}
+
+.danger {
+  --btn-from: #f43f5e;
+  --btn-via: #ef4444;
+  --btn-to: #f97316;
+  --btn-glow: 244 63 94;
+}
+
+.warning {
+  --btn-from: #fbbf24;
+  --btn-via: #f59e0b;
+  --btn-to: #f97316;
+  --btn-glow: 245 158 11;
+  --btn-text: #2a1500;
+  --btn-shine: rgb(255 255 255 / 0.5);
+  --btn-ripple: rgb(255 255 255 / 0.5);
+}
+
+.dark {
+  --btn-from: #0f172a;
+  --btn-via: #1e293b;
+  --btn-to: #475569;
+  --btn-glow: 51 65 85;
+}
+
+/* Gradient border + স্বচ্ছ ভেতর */
+.outline {
+  --btn-text: var(--btn-from);
+  --btn-shine: rgb(var(--btn-glow) / 0.18);
+  --btn-ripple: rgb(var(--btn-glow) / 0.25);
+
+  background-image:
+    linear-gradient(var(--btn-surface), var(--btn-surface)),
+    linear-gradient(
+      120deg,
+      var(--btn-from),
+      var(--btn-via),
+      var(--btn-to),
+      var(--btn-from)
+    );
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-size:
+    100% 100%,
+    300% 100%;
+  box-shadow: none;
+}
+
+.outline:hover:not(:disabled) {
+  background-position:
+    0 0,
+    100% 50%;
+  box-shadow: 0 10px 22px -12px rgb(var(--btn-glow) / 0.6);
+}
+
+.ghost {
+  --btn-text: var(--btn-from);
+  --btn-shine: rgb(var(--btn-glow) / 0.15);
+  --btn-ripple: rgb(var(--btn-glow) / 0.25);
+
+  background-image: none;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.ghost:hover:not(:disabled) {
+  background-color: rgb(var(--btn-glow) / 0.12);
+  box-shadow: none;
+}
+
+/* ==========================================================
+   Sizes
+   ========================================================== */
+.sm {
+  --btn-h: 2.25rem;
+  --btn-px: 1rem;
+  --btn-fs: 0.8125rem;
+}
+
+.md {
+  --btn-h: 2.75rem;
+  --btn-px: 1.25rem;
+  --btn-fs: 0.9375rem;
+}
+
+.lg {
+  --btn-h: 3.25rem;
+  --btn-px: 1.75rem;
+  --btn-fs: 1.0625rem;
+}
+
+/* ==========================================================
+   Radius & width
+   ========================================================== */
+.roundedMd {
+  --btn-radius: 0.625rem;
+}
+
+.roundedXl {
+  --btn-radius: 0.875rem;
+}
+
+.roundedFull {
+  --btn-radius: 9999px;
+}
+
+.fullWidth {
+  --btn-width: 100%;
+}
+
+/* ==========================================================
+   Animations
+   ========================================================== */
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes btn-ripple {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .button::before,
+  .icon {
+    transition: none;
+  }
+
+  .button:hover:not(:disabled),
+  .button:active:not(:disabled) {
+    transform: none;
+  }
+
+  .button:hover:not(:disabled)::before {
+    transform: translateX(-130%);
+  }
+
+  .ripple {
+    animation: none;
+    opacity: 0;
+  }
+
+  .spinner {
+    animation-duration: 1.6s;
+  }
+}
