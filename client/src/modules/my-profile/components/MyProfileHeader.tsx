@@ -29,7 +29,7 @@ export const MyProfileHeader = ({ member }: Props) => {
         <h2 className="text-xl font-bold">{member.name}</h2>
         <p className="text-sm opacity-60">{member.email}</p>
         <span className="text-sm opacity-60">Member Id: {member.id} & </span>
-        <span className="text-white text-xs">Role: {user?.role}</span>
+        <span className="text-success text-xs">Role: {user?.role}</span>
       </div>
     </div>
   );
