@@ -1,6 +1,6 @@
 import { API_ENDPOINTS } from "@/shared/constants/api";
 import { API } from "@/shared/lib/axios";
-import type { MealType } from "../types/mealPlanning.types";
+import type { IMealType } from "../types/mealPlanning.types";
 
 export const mealPlanningApi = {
   getDailyMealPlanning: async () => {
@@ -11,7 +11,7 @@ export const mealPlanningApi = {
 
   rejectMeal: async (
     userId: number,
-    meal: MealType,
+    meal: IMealType,
   ) => {
     const res = await API.patch(
       `${API_ENDPOINTS.MEAL_PLANNING.REJECT}/${userId}/reject`,

@@ -3,13 +3,13 @@ import { useSearchParams } from "react-router-dom";
 
 import type {
   IMealPlanningResponse,
-  MealType,
+  IMealType,
 } from "../types/mealPlanning.types";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 
 interface Props {
   planning?: IMealPlanningResponse["data"];
-  activeMeal: MealType;
+  activeMeal: IMealType;
 }
 
 export const useMealPlanningTable = ({ planning, activeMeal }: Props) => {

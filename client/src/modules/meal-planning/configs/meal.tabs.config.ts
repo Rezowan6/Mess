@@ -1,7 +1,7 @@
-import type { MealType } from "../types/mealPlanning.types";
+import type { IMealType } from "../types/mealPlanning.types";
 
 export const mealTabs: {
-  key: MealType;
+  key: IMealType;
   label: string;
   disabled?: boolean | undefined;
 }[] = [

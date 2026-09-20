@@ -1,5 +1,5 @@
 import { Badge } from "@/shared/components/ui/Badge";
-import { formatDate, getCurrentlDate } from "@/shared/utils/date.utils";
+import { formatDate, getLocalDate } from "@/shared/utils/date.utils";
 import { formatDateTime } from "@/shared/utils/time";
 
 import { Avatar } from "@/shared/components/ui/Avatar";
@@ -37,7 +37,7 @@ export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
               {dateRequests.map((request) => {
                 const isPending = request.status === "pending";
 
-                const currentDate = formatDate(getCurrentlDate());
+                const currentDate = formatDate(getLocalDate());
                 const requestDate = formatDate(request.date);
 
                 const isCurrentMealReqDate = requestDate === currentDate;

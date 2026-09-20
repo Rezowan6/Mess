@@ -2,27 +2,26 @@ import { useQuery } from "@tanstack/react-query";
 
 import { mealEntryApi } from "../api/mealEntry.api";
 
-import { useTenantStore } from "@/modules/tenant/store/tenant.store";
-
 import { queryKeys } from "@/shared/constants/queryKeys";
 
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import type {
   IMealEntryQuery,
   IMealEntrySummaryResponse,
 } from "../types/mealEntry.types";
 
 export const useMealEntrySummary = (params?: IMealEntryQuery) => {
-  const currentTenant = useTenantStore((state) => state.currentTenant);
+  const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery<IMealEntrySummaryResponse>({
     queryKey: [
-      ...queryKeys.mealEntries.summary(currentTenant?.tenantId),
+      ...queryKeys.mealEntries.summary(tenantId, mealSessionId),
       params,
     ],
 
     queryFn: async () => await mealEntryApi.summary(params),
 
-    enabled: !!currentTenant,
+    enabled: !!tenantId,
 
     placeholderData: (previous) => previous,
 

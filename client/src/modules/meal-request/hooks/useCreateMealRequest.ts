@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mealRequestApi } from "../api/mealRequest.api";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
-import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import {
   showApiErrorToast,
   showSuccessToast,
@@ -26,7 +26,8 @@ export const useCreateMealRequest = (
   >,
 ) => {
   const queryClient = useQueryClient();
-  const tenantId = useCurrentTenantId();
+
+  const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useMutation({
     mutationFn: mealRequestApi.create,
@@ -79,19 +80,19 @@ export const useCreateMealRequest = (
 
       // Invalidate queries
       queryClient.invalidateQueries({
-        queryKey: queryKeys.mealRequests.list(tenantId),
+        queryKey: queryKeys.mealRequests.list(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.mealRequests.myRequests(tenantId),
+        queryKey: queryKeys.mealRequests.myRequests(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPlanning.daily(tenantId),
+        queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.stats(tenantId),
+        queryKey: queryKeys.dashboard.stats(tenantId, mealSessionId),
       });
     },
 

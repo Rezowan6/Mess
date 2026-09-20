@@ -6,13 +6,14 @@ import { queryKeys } from "@/shared/constants/queryKeys";
 
 import { expenseApi } from "../api/expense.api";
 
-import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import type { IUpdateExpenseDto } from "../types/expense.types";
 
 export const useUpdateExpense = () => {
   const queryClient = useQueryClient();
 
-  const tenantId = useCurrentTenantId();
+   const { tenantId, mealSessionId } = useCurrentTenantContext();
+ 
 
   return useMutation({
     mutationFn: ({ id, payload }: { id: number; payload: IUpdateExpenseDto }) =>
@@ -20,15 +21,15 @@ export const useUpdateExpense = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.expenses.list(tenantId),
+        queryKey: queryKeys.expenses.list(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.expenses.summary(tenantId),
+        queryKey: queryKeys.expenses.summary(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(tenantId),
+        queryKey: queryKeys.monthlyCalculations.current(tenantId, mealSessionId),
       });
     },
   });

@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 import { queryKeys } from "@/shared/constants/queryKeys";
+import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
 import { mealSessionApi } from "../api/mealSession.api";
 
 export const useCloseMealSession = () => {
-  const currentTenant = useTenantStore((state) => state.currentTenant);
+  const tenantId = useCurrentTenantId();
 
   const queryClient = useQueryClient();
 
@@ -14,7 +14,7 @@ export const useCloseMealSession = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.mealSessions.all(currentTenant?.tenantId),
+        queryKey: queryKeys.mealSessions.all(tenantId),
       });
     },
   });

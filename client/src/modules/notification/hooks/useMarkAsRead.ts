@@ -1,24 +1,24 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { notificationApi } from "../api/notification.api";
 import { queryKeys } from "@/shared/constants/queryKeys";
-import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
+import { notificationApi } from "../api/notification.api";
 
 export const useMarkAsRead = () => {
   const queryClient = useQueryClient();
 
-  const tenantId = useCurrentTenantId();
+  const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useMutation({
     mutationFn: notificationApi.markAsRead,
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.notifications.all(tenantId),
+        queryKey: queryKeys.notifications.all(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.notifications.count(tenantId),
+        queryKey: queryKeys.notifications.count(tenantId, mealSessionId),
       });
     },
   });

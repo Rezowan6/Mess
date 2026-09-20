@@ -4,13 +4,13 @@ import { queryKeys } from "@/shared/constants/queryKeys";
 
 import { depositApi } from "../api/deposit.api";
 
-import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import type { IUpdateDepositDto } from "../types/deposit.types";
 
 export const useUpdateDeposit = () => {
   const queryClient = useQueryClient();
 
-  const tenantId = useCurrentTenantId();
+  const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useMutation({
     mutationFn: ({ id, payload }: { id: number; payload: IUpdateDepositDto }) =>
@@ -18,11 +18,14 @@ export const useUpdateDeposit = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.deposits.list(tenantId),
+        queryKey: queryKeys.deposits.list(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(tenantId),
+        queryKey: queryKeys.monthlyCalculations.current(
+          tenantId,
+          mealSessionId,
+        ),
       });
     },
   });

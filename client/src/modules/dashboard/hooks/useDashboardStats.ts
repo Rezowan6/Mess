@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
-import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import { dashboardApi } from "../api/dashboard.api";
 import type { DashboardStatsResponse } from "../types/dashboard.types";
 
 export const useDashboardStats = () => {
-  const tenantId = useCurrentTenantId();
+  const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery<DashboardStatsResponse>({
-    queryKey: queryKeys.dashboard.stats(tenantId),
+    queryKey: queryKeys.dashboard.stats(tenantId, mealSessionId),
 
     queryFn: dashboardApi.dashboardStats,
 

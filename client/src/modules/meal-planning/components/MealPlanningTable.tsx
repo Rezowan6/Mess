@@ -12,7 +12,7 @@ import { useMealPlanningTable } from "../hooks/useMealPlanningTable";
 import { useRejectMeal } from "../hooks/useRejectMeal";
 import type {
   IMealPlanningResponse,
-  MealType,
+  IMealType,
 } from "../types/mealPlanning.types";
 
 interface Props {
@@ -28,7 +28,7 @@ export const MealPlanningTable = ({
   error = false,
   refetch,
 }: Props) => {
-  const [activeMeal, setActiveMeal] = useState<MealType>("breakfast");
+  const [activeMeal, setActiveMeal] = useState<IMealType>("breakfast");
   const [pendingUserId, setPendingUserId] = useState<number | null>(null);
 
   const { mutate: rejectMeal, isPending } = useRejectMeal();

@@ -2,16 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 
 import { myProfileApi } from "../api/myProfile.api";
 
-import { useTenantStore } from "@/modules/tenant/store/tenant.store";
-
 import { queryKeys } from "@/shared/constants/queryKeys";
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 
 export const useMyProfile = () => {
-  const currentTenant = useTenantStore((state) => state.currentTenant);
+  const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery({
-    queryKey: queryKeys.myProfile.current(currentTenant?.tenantId),
+    queryKey: queryKeys.myProfile.current(tenantId, mealSessionId),
     queryFn: myProfileApi.getMyProfile,
-    enabled: !!currentTenant?.tenantId,
+    
+    enabled: !!tenantId,
   });
 };

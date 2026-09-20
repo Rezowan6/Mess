@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
-import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import { mealRequestApi } from "../api/mealRequest.api";
 import type { IMyPendingMealReqResponse } from "../types/mealRequest.types";
 
 export const useAllPendingMealReq = () => {
-  const tenantId = useCurrentTenantId();
+  const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery<IMyPendingMealReqResponse>({
-    queryKey: queryKeys.mealRequests.allRequests(tenantId),
+    queryKey: queryKeys.mealRequests.allRequests(tenantId, mealSessionId),
 
     queryFn: () => mealRequestApi.getAllPendingMealReq(),
 

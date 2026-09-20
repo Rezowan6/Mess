@@ -1,5 +1,5 @@
-import { DashboardMonthSelector } from "./DashboardMonthSelector";
 import { DashboardWelcome } from "./DashboardWelcome";
+import { MealSessionSelector } from "./MealSessionSelector";
 import { MealSessionStatus } from "./MealSessionStatus";
 
 export const DashboardHeader = () => {
@@ -8,7 +8,7 @@ export const DashboardHeader = () => {
       <DashboardWelcome />
 
       <div className="flex items-center gap-3">
-        <DashboardMonthSelector />
+        <MealSessionSelector />
         <MealSessionStatus />
       </div>
     </div>

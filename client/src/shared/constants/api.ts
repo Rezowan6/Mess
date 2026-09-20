@@ -120,6 +120,7 @@ export const API_ENDPOINTS = {
     GET_OPEN: "/meal-sessions",
     OPEN: "/meal-sessions",
     CLOSE: (id: number) => `/meal-sessions/${id}/close`,
+    GET_COMPLETED: `/meal-sessions/completed`,
   },
   MEAL_PLANNING: {
     DAILY: "/meal-plannings/daily",

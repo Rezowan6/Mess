@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { useTenantStore } from "@/modules/tenant/store/tenant.store";
-
 import { queryKeys } from "@/shared/constants/queryKeys";
 
+import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
 import { userManagementApi } from "../api/userManagement.api";
 import type {
   IMemberListResponse,
@@ -11,16 +10,16 @@ import type {
 } from "../types/userManagement.types";
 
 export const useMembers = (params: IMemberParams) => {
-  const currentTenant = useTenantStore((state) => state.currentTenant);
+  const tenantId = useCurrentTenantId();
 
   return useQuery<IMemberListResponse>({
-    queryKey: [...queryKeys.tenants.members(currentTenant?.tenantId), params],
+    queryKey: [...queryKeys.tenants.members(tenantId), params],
 
     queryFn: async () => userManagementApi.getMembers(params),
 
     placeholderData: (previous) => previous,
 
-    enabled: !!currentTenant,
+    enabled: !!tenantId,
 
     staleTime: 1000 * 60 * 5,
   });

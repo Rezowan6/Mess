@@ -8,11 +8,7 @@ dayjs.extend(timezone);
 export const APP_TIMEZONE = "Asia/Dhaka";
 
 export const getLocalDate = () => {
-  return dayjs().format("YYYY-MM-DD");
-};
-
-export const getCurrentlDate = () => {
-  return dayjs().format("YYYY-MM-DD");
+  return dayjs().tz(APP_TIMEZONE).format("YYYY-MM-DD");
 };
 
 export const formatDate = (date: string | Date | null): string => {

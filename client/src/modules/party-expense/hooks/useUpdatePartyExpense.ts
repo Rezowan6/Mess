@@ -5,12 +5,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { partyExpenseApi } from "../api/partyExpense.api";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
-import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 
 export const useUpdatePartyExpense = () => {
   const queryClient = useQueryClient();
 
-  const tenantId = useCurrentTenantId();
+  const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useMutation({
     mutationFn: ({
@@ -23,11 +23,14 @@ export const useUpdatePartyExpense = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.partyExpenses.list(tenantId),
+        queryKey: queryKeys.partyExpenses.list(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(tenantId),
+        queryKey: queryKeys.monthlyCalculations.current(
+          tenantId,
+          mealSessionId,
+        ),
       });
     },
   });

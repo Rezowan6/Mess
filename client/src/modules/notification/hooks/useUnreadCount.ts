@@ -1,13 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
-import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import { notificationApi } from "../api/notification.api";
 
 export const useUnreadCount = () => {
-  const tenantId = useCurrentTenantId();
+  const { tenantId, mealSessionId } = useCurrentTenantContext();
+
   return useQuery({
-    queryKey: queryKeys.notifications.count(tenantId),
+    queryKey: queryKeys.notifications.count(tenantId, mealSessionId),
 
     queryFn: notificationApi.unreadCount,
 

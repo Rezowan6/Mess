@@ -1,7 +1,7 @@
 import { Badge } from "@/shared/components/ui/Badge";
 import { Button } from "@/shared/components/ui/Button";
 import { useConfirmStore } from "@/shared/store/confirm.store";
-import { formatDate, getCurrentlDate } from "@/shared/utils/date.utils";
+import { formatDate, getLocalDate } from "@/shared/utils/date.utils";
 import { formatDateTime } from "@/shared/utils/time";
 import { CalendarDays, Trash2 } from "lucide-react";
 import React from "react";
@@ -47,7 +47,7 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
         <div className="divide-y divide-success/40">
           {requests.map((request) => {
             const isCurrentMealReqDate =
-              formatDate(request.date) === formatDate(getCurrentlDate());
+              formatDate(request.date) === formatDate(getLocalDate());
 
             const isDeleteDisabled =
               request.status === "pending" && isCurrentMealReqDate;

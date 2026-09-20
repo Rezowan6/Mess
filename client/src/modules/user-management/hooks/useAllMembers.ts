@@ -1,19 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 import { queryKeys } from "@/shared/constants/queryKeys";
 
+import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
 import { userManagementApi } from "../api/userManagement.api";
 
 export const useAllMembers = () => {
-  const currentTenant = useTenantStore((state) => state.currentTenant);
+  const tenantId = useCurrentTenantId();
 
   return useQuery({
-    queryKey: queryKeys.tenants.allMembers(currentTenant?.tenantId),
+    queryKey: queryKeys.tenants.allMembers(tenantId),
 
     queryFn: userManagementApi.getAllMembers,
 
-    enabled: !!currentTenant,
+    enabled: !!tenantId,
 
     staleTime: 1000 * 60 * 5,
   });

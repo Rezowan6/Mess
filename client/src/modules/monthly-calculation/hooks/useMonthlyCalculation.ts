@@ -2,16 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 
 import { monthlyCalculationApi } from "../api/monthlyCalculation.api";
 
-import { useTenantStore } from "@/modules/tenant/store/tenant.store";
-
 import { queryKeys } from "@/shared/constants/queryKeys";
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 
 export const useMonthlyCalculation = () => {
-  const currentTenant = useTenantStore((state) => state.currentTenant);
+  const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery({
-    queryKey: queryKeys.monthlyCalculations.current(currentTenant?.tenantId),
+    queryKey: queryKeys.monthlyCalculations.current(tenantId, mealSessionId),
     queryFn: monthlyCalculationApi.getCurrent,
-    enabled: !!currentTenant?.tenantId,
+
+    enabled: !!tenantId,
   });
 };

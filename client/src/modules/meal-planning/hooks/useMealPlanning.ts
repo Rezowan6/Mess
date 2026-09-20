@@ -4,14 +4,14 @@ import { queryKeys } from "@/shared/constants/queryKeys";
 
 import { mealPlanningApi } from "../api/mealPlanning.api";
 
-import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import type { IMealPlanningResponse } from "../types/mealPlanning.types";
 
 export const useMealPlanning = () => {
-  const tenantId = useCurrentTenantId();
+  const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery<IMealPlanningResponse>({
-    queryKey: queryKeys.mealPlanning.daily(tenantId),
+    queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
 
     queryFn: () => mealPlanningApi.getDailyMealPlanning(),
 

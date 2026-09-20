@@ -2,27 +2,22 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
 
-import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import { mealPlanningApi } from "../api/mealPlanning.api";
-import type { MealType } from "../types/mealPlanning.types";
+import type { IMealType } from "../types/mealPlanning.types";
 
 export const useRejectMeal = () => {
   const queryClient = useQueryClient();
 
-  const tenantId = useCurrentTenantId();
+  const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useMutation({
-    mutationFn: ({
-      userId,
-      meal,
-    }: {
-      userId: number;
-      meal: MealType
-    }) => mealPlanningApi.rejectMeal(userId, meal),
+    mutationFn: ({ userId, meal }: { userId: number; meal: IMealType }) =>
+      mealPlanningApi.rejectMeal(userId, meal),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPlanning.daily(tenantId),
+        queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
       });
     },
   });
