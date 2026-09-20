@@ -12,6 +12,8 @@ export const useUnreadCount = () => {
 
     queryFn: notificationApi.unreadCount,
 
+    enabled: Boolean(tenantId && mealSessionId),
+
     staleTime: 60 * 1000,
   });
 };

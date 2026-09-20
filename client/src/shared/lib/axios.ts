@@ -3,6 +3,7 @@ import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { tokenStorage } from "@/shared/utils/token";
 import { API_ENDPOINTS } from "../constants/api";
 
+import { useDashboardSessionStore } from "@/modules/dashboard/store/dashboardSession.store";
 import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 import { env } from "../config/env";
 import { HEADERS } from "../constants/headers";
@@ -61,13 +62,15 @@ API.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   }
 
   // ----------------------------------------------
-  // Current Tenant
+  // Current Tenant + Meal Session
   // ----------------------------------------------
 
   const currentTenant = useTenantStore.getState().currentTenant;
 
+  const mealSessionId = useDashboardSessionStore.getState().mealSessionId;
+
   // ----------------------------------------------
-  // Routes that don't require Tenant ID
+  // Routes that don't require Tenant / Session ID
   // ----------------------------------------------
 
   const skipTenantHeaderRoutes = [
@@ -77,12 +80,24 @@ API.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     API_ENDPOINTS.INVITE.ACCEPT,
   ];
 
-  const shouldSkipTenant = skipTenantHeaderRoutes.some((route) =>
+  const shouldSkipContext = skipTenantHeaderRoutes.some((route) =>
     config.url?.includes(route),
   );
 
-  if (currentTenant && !shouldSkipTenant) {
+  // ----------------------------------------------
+  // Tenant Context
+  // ----------------------------------------------
+
+  if (currentTenant && !shouldSkipContext) {
     config.headers[HEADERS.TENANT_ID] = currentTenant.tenantId.toString();
+  }
+
+  // ----------------------------------------------
+  // Meal Session Context
+  // ----------------------------------------------
+
+  if (currentTenant && mealSessionId && !shouldSkipContext) {
+    config.headers[HEADERS.MEAL_SESSION_ID] = mealSessionId.toString();
   }
 
   return config;

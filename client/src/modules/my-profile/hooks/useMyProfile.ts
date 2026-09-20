@@ -11,7 +11,7 @@ export const useMyProfile = () => {
   return useQuery({
     queryKey: queryKeys.myProfile.current(tenantId, mealSessionId),
     queryFn: myProfileApi.getMyProfile,
-    
-    enabled: !!tenantId,
+
+    enabled: Boolean(tenantId && mealSessionId),
   });
 };

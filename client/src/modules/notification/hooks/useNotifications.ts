@@ -14,5 +14,7 @@ export const useNotifications = (params?: {
     queryKey: queryKeys.notifications.list(tenantId, mealSessionId),
 
     queryFn: () => notificationApi.getAll(params),
+
+    enabled: Boolean(tenantId && mealSessionId),
   });
 };

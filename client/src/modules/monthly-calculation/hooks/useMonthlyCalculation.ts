@@ -12,6 +12,6 @@ export const useMonthlyCalculation = () => {
     queryKey: queryKeys.monthlyCalculations.current(tenantId, mealSessionId),
     queryFn: monthlyCalculationApi.getCurrent,
 
-    enabled: !!tenantId,
+    enabled: Boolean(tenantId && mealSessionId),
   });
 };

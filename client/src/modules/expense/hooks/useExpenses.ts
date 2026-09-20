@@ -18,7 +18,7 @@ export const useExpenses = (params?: IExpenseQuery) => {
 
     queryFn: async () => await expenseApi.getAll(params),
 
-    enabled: !!tenantId,
+    enabled: Boolean(tenantId && mealSessionId),
 
     placeholderData: (previous) => previous,
 

@@ -17,7 +17,7 @@ export const usePartyExpenses = (params: IPartyExpenseParams) => {
 
     queryFn: () => partyExpenseApi.getAll(params),
 
-    enabled: !!tenantId,
+    enabled: Boolean(tenantId && mealSessionId),
 
     placeholderData: (previous) => previous,
 

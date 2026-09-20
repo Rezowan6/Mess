@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { useCompletedMealSessions } from "@/modules/meal-session/hooks/useCompletedMealSessions";
 import type { IMealSessionSelection } from "@/modules/meal-session/types/mealSession.types";
@@ -20,22 +20,41 @@ export const useDashboardSessionSelection = () => {
 
   const selectSession = useDashboardSessionStore((state) => state.select);
 
-  const { selectedSession, isSelectionUnavailable } = useMemo(() => {
+  /*
+   * Resolve current session.
+   *
+   * Priority:
+   * 1. User selected session
+   * 2. Latest completed session
+   */
+  const selectedSession = useMemo(() => {
     if (!sessions?.length) {
-      return {
-        selectedSession: null,
-        isSelectionUnavailable: false,
-      };
+      return null;
     }
 
-    const stored = sessions.find((session) => session.id === storedSessionId);
+    const storedSession = sessions.find(
+      (session) => session.id === storedSessionId,
+    );
 
-    return {
-      selectedSession: stored ?? sessions[0] ?? null,
-
-      isSelectionUnavailable: storedSessionId !== null && !stored,
-    };
+    return storedSession ?? sessions[0];
   }, [sessions, storedSessionId]);
+
+  /*
+   * If no session was explicitly selected,
+   * persist the default/latest session into Zustand.
+   *
+   * This makes Axios interceptor and UI use
+   * the exact same session context.
+   */
+  useEffect(() => {
+    if (!selectedSession) {
+      return;
+    }
+
+    if (storedSessionId !== selectedSession.id) {
+      selectSession(selectedSession.id);
+    }
+  }, [selectedSession, storedSessionId, selectSession]);
 
   const selection = useMemo<IMealSessionSelection | null>(
     () =>
@@ -48,6 +67,12 @@ export const useDashboardSessionSelection = () => {
         : null,
     [selectedSession],
   );
+
+  const isSelectionUnavailable =
+    storedSessionId !== null &&
+    sessions !== undefined &&
+    sessions.length > 0 &&
+    !sessions.some((session) => session.id === storedSessionId);
 
   return {
     sessions,

@@ -21,7 +21,7 @@ export const useMemberMealSummary = (params?: IMealEntryQuery) => {
 
     queryFn: async () => await mealEntryApi.memberSummary(params),
 
-    enabled: !!tenantId,
+    enabled: Boolean(tenantId && mealSessionId),
 
     placeholderData: (previous) => previous,
 

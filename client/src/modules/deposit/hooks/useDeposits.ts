@@ -18,7 +18,7 @@ export const useDeposits = (params?: IDepositQuery) => {
 
     queryFn: async () => await depositApi.getAll(params),
 
-    enabled: !!tenantId,
+    enabled: Boolean(tenantId && mealSessionId),
 
     placeholderData: (previous) => previous,
 

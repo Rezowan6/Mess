@@ -15,7 +15,7 @@ export const useMealPlanning = () => {
 
     queryFn: () => mealPlanningApi.getDailyMealPlanning(),
 
-    enabled: Boolean(tenantId),
+    enabled: Boolean(tenantId && mealSessionId),
 
     staleTime: 0,
 

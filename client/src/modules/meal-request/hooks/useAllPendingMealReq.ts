@@ -13,7 +13,7 @@ export const useAllPendingMealReq = () => {
 
     queryFn: () => mealRequestApi.getAllPendingMealReq(),
 
-    enabled: Boolean(tenantId),
+    enabled: Boolean(tenantId && mealSessionId),
 
     staleTime: 0,
 

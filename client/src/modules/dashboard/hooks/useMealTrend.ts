@@ -13,7 +13,7 @@ export const useMealTrend = () => {
 
     queryFn: dashboardApi.dashboardMealTrend,
 
-    enabled: !!tenantId,
+    enabled: Boolean(tenantId && mealSessionId),
 
     placeholderData: (previous) => previous,
 

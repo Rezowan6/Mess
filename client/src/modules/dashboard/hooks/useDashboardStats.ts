@@ -13,7 +13,7 @@ export const useDashboardStats = () => {
 
     queryFn: dashboardApi.dashboardStats,
 
-    enabled: !!tenantId,
+    enabled: Boolean(tenantId && mealSessionId),
 
     placeholderData: (previous) => previous,
 

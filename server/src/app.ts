@@ -59,7 +59,7 @@ app.use(
     origin: env.FRONTEND_URL || "http://localhost:5173",
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Tenant-ID"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Tenant-ID", "X-Meal-Session-ID"],
   }),
 );
 
@@ -93,6 +93,8 @@ app.use("/api/v1/my", (req, res) => {
     mesage: "I Love Allah",
   });
 });
+
+// testing purpose-----
 
 // app.get("/api/test/socket", (req, res) => {
 //   const io = getIO();
