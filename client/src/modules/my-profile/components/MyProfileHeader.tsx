@@ -16,6 +16,8 @@ export const MyProfileHeader = ({ member }: Props) => {
 
   const user = useAuthStore((state) => state.user);
 
+  const role = user?.tenantMemberships?.[0]?.role;
+
   return (
     <div className="flex flex-col gap-4 rounded-2xl bg-info/10 p-5 shadow-sm sm:flex-row sm:items-center">
       <AvatarUploadButton
@@ -29,7 +31,7 @@ export const MyProfileHeader = ({ member }: Props) => {
         <h2 className="text-xl font-bold">{member.name}</h2>
         <p className="text-sm opacity-60">{member.email}</p>
         <span className="text-sm opacity-60">Member Id: {member.id} & </span>
-        <span className="text-success text-xs">Role: {user?.role}</span>
+        <span className="text-success text-xs">Role: {role}</span>
       </div>
     </div>
   );

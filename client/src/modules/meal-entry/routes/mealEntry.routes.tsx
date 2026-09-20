@@ -9,7 +9,16 @@ import { TodayMealEntriesPage } from "../pages/TodayMealEntriesPage";
 export const mealEntryRoutes = {
   path: ROUTES.MEAL_ENTRY,
 
-  element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+  element: (
+    <RoleGuard
+      allowedRoles={[
+        ROLES.ADMIN,
+        ROLES.MANAGER,
+        ROLES.MESS_MALIK,
+        ROLES.MEMBER,
+      ]}
+    />
+  ),
 
   children: [
     {

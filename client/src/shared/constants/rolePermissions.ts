@@ -130,10 +130,6 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
   [ROLES.MEMBER]: [
     // user
     PERMISSIONS.USER_VIEW,
-    PERMISSIONS.USER_CREATE,
-    PERMISSIONS.USER_UPDATE,
-    PERMISSIONS.USER_DELETE,
-    PERMISSIONS.USER_INVITE,
 
     // meal setting
     PERMISSIONS.MEAL_SETTING_VIEW,
@@ -144,7 +140,6 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
 
     // meal session
     PERMISSIONS.MEAL_SESSION_VIEW,
-    PERMISSIONS.MEAL_SESSION_OPEN,
 
     // meal entry
     PERMISSIONS.MEAL_ENTRY_VIEW,
@@ -152,13 +147,8 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     // expense
     PERMISSIONS.EXPENSE_VIEW,
 
-    // deposit
-    PERMISSIONS.DEPOSIT_VIEW,
-
     // notification
     PERMISSIONS.NOTICE_VIEW,
-    PERMISSIONS.NOTICE_CREATE,
-    PERMISSIONS.NOTICE_UPDATE,
 
     // setting
     PERMISSIONS.SETTINGS_VIEW,
@@ -175,10 +165,6 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
   [ROLES.MESS_MALIK]: [
     // user
     PERMISSIONS.USER_VIEW,
-    PERMISSIONS.USER_CREATE,
-    PERMISSIONS.USER_UPDATE,
-    PERMISSIONS.USER_DELETE,
-    PERMISSIONS.USER_INVITE,
 
     // meal setting
     PERMISSIONS.MEAL_SETTING_VIEW,
@@ -196,9 +182,6 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
 
     // expense
     PERMISSIONS.EXPENSE_VIEW,
-
-    // deposit
-    PERMISSIONS.DEPOSIT_VIEW,
 
     // notification
     PERMISSIONS.NOTICE_VIEW,
