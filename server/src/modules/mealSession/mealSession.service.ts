@@ -13,7 +13,7 @@ class MealSessionService {
     const { month, year } = getCurrentMonthAndYear();
 
     const activeSession =
-      await mealSessionRepository.getCurrentSession(tenantId);
+      await mealSessionRepository.getOpenSession(tenantId);
 
     if (activeSession) {
       throw new ApiError(409, "A meal session is already open");
@@ -45,7 +45,7 @@ class MealSessionService {
   }
 
   async getCurrentSession(tenantId: number) {
-    const session = await mealSessionRepository.getCurrentSession(tenantId);
+    const session = await mealSessionRepository.getOpenSession(tenantId);
 
     if (!session) {
       throw new ApiError(404, "No active meal session found.");
