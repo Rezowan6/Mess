@@ -1,10 +1,7 @@
 import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { isWithinHours } from "@/utils/date.util.js";
-import {
-  IMealSessionReq,
-  MealSessionStatus,
-} from "../mealSession/mealSession.interface.js";
+import { IMealSessionReq } from "../mealSession/mealSession.interface.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { CreateExpensesDto, UpdateExpenseDto } from "./expenses.interface.js";
 import { expensesRepository } from "./expenses.repository.js";
@@ -12,6 +9,8 @@ import { expensesRepository } from "./expenses.repository.js";
 class ExpensesService {
   async create(data: CreateExpensesDto) {
     const { tenantId, expenseDate, mealSessionId } = data;
+
+    await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
 
     const count = await expensesRepository.todayExpensesCount({
       tenantId,
@@ -81,6 +80,8 @@ class ExpensesService {
     mealSessionId: number;
     data: UpdateExpenseDto;
   }) {
+    await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
+
     const expense = await expensesRepository.getById(
       id,
       tenantId,
@@ -95,16 +96,6 @@ class ExpensesService {
       throw new ApiError(400, "Amount must be greater than zero.");
     }
 
-    const mealSession = await mealSessionRepository.findById(
-      expense.mealSessionId,
-    );
-
-    if (mealSession?.status === MealSessionStatus.CLOSED) {
-      throw new ApiError(
-        400,
-        "Cannot update expense of a closed meal session.",
-      );
-    }
     if (!isWithinHours(expense.createdAt, 24)) {
       throw new ApiError(
         409,
@@ -125,6 +116,7 @@ class ExpensesService {
     tenantId: number;
     mealSessionId: number;
   }) {
+    await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
     const expense = await expensesRepository.getById(
       id,
       tenantId,
@@ -139,17 +131,6 @@ class ExpensesService {
       throw new ApiError(
         409,
         "This expense can no longer be deleted because the 24-hour deletion period has expired.",
-      );
-    }
-
-    const mealSession = await mealSessionRepository.findById(
-      expense.mealSessionId,
-    );
-
-    if (mealSession?.status === MealSessionStatus.CLOSED) {
-      throw new ApiError(
-        400,
-        "Cannot delete expense from a closed meal session.",
       );
     }
 

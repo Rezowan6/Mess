@@ -1,7 +1,9 @@
 import sequelize from "@/configs/db.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
+import { getAppDate } from "@/utils/date.util.js";
 import { Transaction } from "sequelize";
+import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { partyExpenseMemberRepository } from "../PartyExpenseMember/partyExpenseMember.repository.js";
 import { ICreatePartyExpenseDto } from "./partyExpense.interface.js";
 import { partyExpenseRepository } from "./partyExpense.repository.js";
@@ -40,9 +42,11 @@ class PartyExpenseService {
   async create(data: ICreatePartyExpenseDto, memberIds: number[]) {
     const transaction = await sequelize.transaction();
 
+    await mealSessionRepository.ensureSessionOpen(data?.tenantId,data?.mealSessionId, transaction);
+
     try {
       const partyExpense = await partyExpenseRepository.createWithOptions(
-        { ...data, date: new Date() },
+        { ...data, date: getAppDate() },
         { transaction },
       );
 
@@ -76,6 +80,12 @@ class PartyExpenseService {
     memberIds: number[],
   ) {
     const transaction = await sequelize.transaction();
+
+    await mealSessionRepository.ensureSessionOpen(
+      tenantId,
+      mealSessionId,
+      transaction,
+    );
 
     try {
       const partyExpense = await partyExpenseRepository.findOne({
@@ -143,6 +153,8 @@ class PartyExpenseService {
     tenantId: number;
     mealSessionId: number;
   }) {
+    await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
+
     const partyExpense = await partyExpenseRepository.findOne({
       id,
       tenantId,
@@ -157,7 +169,6 @@ class PartyExpenseService {
 
     return true;
   }
-  async getById() {}
 }
 
 export const partyExpenseService = new PartyExpenseService();

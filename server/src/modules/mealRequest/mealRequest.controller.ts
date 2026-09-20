@@ -192,7 +192,7 @@ export class MealRequestController {
   });
 
   parmanetDelete = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, userId } = getTenantContext(req);
+    const { tenantId, userId, mealSessionId } = getTenantContext(req);
 
     const id = Number(req.params.id);
     if (Number.isNaN(id)) {
@@ -202,6 +202,7 @@ export class MealRequestController {
     const result = await mealRequestService.parmanetDelete({
       id,
       tenantId,
+      mealSessionId,
       userId,
     });
 

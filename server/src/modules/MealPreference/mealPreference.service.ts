@@ -21,6 +21,8 @@ import { mealPreferenceRepository } from "./mealPreference.repository.js";
 
 class MealPreferenceService {
   async upsert({ tenantId, userId, mealSessionId, payload }: IUpsertPayload) {
+    await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
+
     const { breakfast, lunch, dinner, guestMeal } = payload;
 
     /**
@@ -127,7 +129,7 @@ class MealPreferenceService {
 
     for (const tenant of tenants) {
       try {
-        const mealSession = await mealSessionRepository.getCurrentSession(
+        const mealSession = await mealSessionRepository.getOpenSession(
           tenant.id,
         );
 
@@ -268,11 +270,7 @@ class MealPreferenceService {
     payload: IUpsertPayload["payload"];
     transaction: Transaction;
   }) {
-    const mealSession = await mealSessionRepository.findById(mealSessionId);
-
-    if (!mealSession) {
-      throw new ApiError(404, "Meal session not found");
-    }
+    await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
 
     return mealPreferenceRepository.createWithOptions(
       {
@@ -481,7 +479,6 @@ class MealPreferenceService {
   }
 
   // baki ace pore korbo ingsa-allah-----
-
   async copyFromPreviousSession({
     tenantId,
     previousMealSessionId,

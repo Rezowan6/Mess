@@ -1,6 +1,7 @@
 import { MemberStatus } from "@/constans/index.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
+import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { getActiveMember } from "../tenantMembership/tenantMembership.helper.js";
 import {
   ICreateDepositPayload,
@@ -15,6 +16,8 @@ import { depositRepository } from "./deposit.repository.js";
 class DepositService {
   async createDeposit(data: ICreateDepositPayload) {
     const { tenantId, memberId, depositDate, mealSessionId } = data;
+
+    await mealSessionRepository.ensureSessionOpen(tenantId,mealSessionId);
 
     const member = await getActiveMember({ tenantId, userId: memberId });
 
@@ -122,6 +125,8 @@ class DepositService {
     depositId: number;
     payload: IUpdateDepositPayload;
   }) {
+    await mealSessionRepository.ensureSessionOpen(tenantId,mealSessionId);
+
     const deposit = await depositRepository.getById({
       tenantId,
       mealSessionId,
@@ -146,6 +151,8 @@ class DepositService {
     depositId,
     mealSessionId,
   }: IDeleteDepositPayload) {
+    await mealSessionRepository.ensureSessionOpen(tenantId,mealSessionId);
+
     const deposit = await depositRepository.getById({
       tenantId,
       depositId,

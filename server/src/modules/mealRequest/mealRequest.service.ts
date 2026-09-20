@@ -13,6 +13,7 @@ import { appTime } from "@/configs/time.js";
 import { formatDate, getAppDate, isSameDate } from "@/utils/date.util.js";
 import { UniqueConstraintError } from "sequelize";
 import { mealEntryGenerator } from "../mealEntry/mealEntry.generator.js";
+import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { MealRequest } from "./mealRequest.model.js";
 
 export class MealRequestService {
@@ -29,6 +30,8 @@ export class MealRequestService {
     mealSessionId: number;
   }) {
     const { fromDate, toDate, breakfast, lunch, dinner } = payload;
+
+    await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
 
     if (!breakfast && !lunch && !dinner) {
       throw new ApiError(400, "Please select at least one meal");
@@ -139,6 +142,11 @@ export class MealRequestService {
   async createByDate(payload: ICreateMealRequestByDateDto) {
     const { tenantId, userId, date, breakfast, lunch, dinner } = payload;
 
+    await mealSessionRepository.ensureSessionOpen(
+      tenantId,
+      payload.mealSessionId,
+    );
+
     const today = getAppDate();
 
     if (date <= today) {
@@ -198,6 +206,12 @@ export class MealRequestService {
     managerId: number;
   }) {
     return sequelize.transaction(async (transaction) => {
+      await mealSessionRepository.ensureSessionOpen(
+        tenantId,
+        mealSessionId,
+        transaction,
+      );
+
       const request = await mealRequestRepository.findOne({
         id,
         mealSessionId,
@@ -245,13 +259,17 @@ export class MealRequestService {
   async parmanetDelete({
     id,
     tenantId,
+    mealSessionId,
     userId,
   }: {
     id: number;
     tenantId: number;
+    mealSessionId: number;
     userId: number;
   }) {
     const date = getAppDate();
+
+    await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
 
     const existsToDayPendingReq =
       await mealRequestRepository.findOneByDateAndId({
@@ -315,6 +333,12 @@ export class MealRequestService {
     mealSessionId: number;
   }) {
     return await sequelize.transaction(async (transaction) => {
+      await mealSessionRepository.ensureSessionOpen(
+        tenantId,
+        mealSessionId,
+        transaction,
+      );
+
       const request = await mealRequestRepository.findOne({
         id,
         mealSessionId,

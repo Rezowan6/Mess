@@ -15,7 +15,7 @@ class MealGeneratorService {
     tenantId,
     date,
   }: IGenerateDailyMealRequestPayload) {
-    const mealSession = await mealSessionRepository.getCurrentSession(tenantId);
+    const mealSession = await mealSessionRepository.getOpenSession(tenantId);
 
     if (!mealSession) {
       console.log(

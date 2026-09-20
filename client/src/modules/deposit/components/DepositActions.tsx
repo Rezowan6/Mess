@@ -20,6 +20,7 @@ interface Props {
 
 export const DepositActions = ({ deposit, onEdit }: Props) => {
   const openConfirm = useConfirmStore((state) => state.openConfirm);
+  const setLoading = useConfirmStore((state) => state.setLoading);
 
   const { can } = useRBAC();
 
@@ -48,7 +49,12 @@ export const DepositActions = ({ deposit, onEdit }: Props) => {
                 </>
               ),
               onConfirm: async () => {
-                await deleteMutation.mutateAsync(deposit.id);
+                try {
+                  setLoading(true);
+                  await deleteMutation.mutateAsync(deposit.id);
+                } finally {
+                  setLoading(false);
+                }
               },
             })
           }
