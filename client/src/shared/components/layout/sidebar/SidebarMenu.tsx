@@ -29,12 +29,8 @@ export const SidebarMenu = () => {
                   rounded-md px-4 py-2
                   transition-all duration-200 ${
                     isActive
-                      ? `bg-linear-to-r
-                      from-teal-500
-                      to-teal-200
-                      hover:from-teal-600
-                      hover:to-teal-600 text-white`
-                      : "hover:bg-background"
+                      ? `bg-info/20`
+                      : "hover:bg-info/10"
                   }`}
               >
                 <Icon size={18} />

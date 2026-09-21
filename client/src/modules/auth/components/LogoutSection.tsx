@@ -1,10 +1,29 @@
 import { SettingsCard } from "@/modules/settings/components/SettingsCard";
 import { Button } from "@/shared/components/ui/Button";
+import { useConfirmStore } from "@/shared/store/confirm.store";
 import { LogOut } from "lucide-react";
 import { useLogout } from "../hooks/useLoagout";
 
 const LogoutSection = () => {
+  const openConfirm = useConfirmStore((state) => state.openConfirm);
+  const setLoading = useConfirmStore((state) => state.setLoading);
+
   const logoutMutation = useLogout();
+
+  const handleLogout = () => {
+    openConfirm({
+      title: "Logout",
+      message: <>Are you sure you want to logout?</>,
+      onConfirm: async () => {
+        try {
+          setLoading(true);
+          await logoutMutation.mutateAsync();
+        } finally {
+          setLoading(false);
+        }
+      },
+    });
+  };
   return (
     <SettingsCard
       title="Logout"
@@ -25,9 +44,7 @@ const LogoutSection = () => {
         <Button
           type="button"
           variant="error"
-          onClick={() => logoutMutation.mutate()}
-          loading={logoutMutation.isPending}
-          loadingText="Logging out..."
+          onClick={handleLogout}
           disabled={logoutMutation.isPending}
           leftIcon={<LogOut />}
         >

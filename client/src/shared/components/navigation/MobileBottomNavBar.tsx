@@ -30,8 +30,8 @@ export const MobileBottomNavBar = ({
       className={`fixed bottom-0 left-0 right-0 z-40 lg:hidden transition-all duration-300
     ${
       scrolled
-        ? "border-t border-info/10 bg-background shadow-2xl shadow-info backdrop-blur-xl"
-        : "border-t border-info/10 bg-background shadow-2xl backdrop-blur-xl"
+        ? "border-t border-info/20 bg-background shadow-2xl shadow-info backdrop-blur-xl"
+        : "border-t border-info/20 bg-background shadow-2xl backdrop-blur-xl"
     }
   `}
     >
@@ -42,7 +42,7 @@ export const MobileBottomNavBar = ({
             to={path}
             className={({ isActive }) =>
               `flex min-w-0 flex-1 flex-col items-center justify-center gap-1 text-xs transition-all duration-200 ${
-                isActive ? "font-semibold text-accent" : "text-text"
+                isActive ? "font-semibold text-accent" : "text-text hover:text-info"
               }`
             }
           >
@@ -63,7 +63,7 @@ export const MobileBottomNavBar = ({
             className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-1 text-xs transition-all duration-200 ${
               isMoreActive || isMoreOpen
                 ? "font-semibold text-accent"
-                : "text-text"
+                : "text-text hover:text-info"
             }`}
             aria-label="More"
             aria-expanded={isMoreOpen}

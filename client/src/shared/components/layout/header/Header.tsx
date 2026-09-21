@@ -11,8 +11,8 @@ export const Header = () => {
     <header
       className={`fixed left-0 right-0 top-0 z-30 bg-background transition-all duration-300 ${
         scrolled
-          ? "border-b border-info/10 bg-background shadow-2xl shadow-info/20 backdrop-blur-xl"
-          : "border-b border-info/10 bg-background shadow-2xl backdrop-blur-xl"
+          ? "border-b border-info/20 bg-background shadow-2xl shadow-info/20 backdrop-blur-xl"
+          : "border-b border-info/20 bg-background shadow-2xl backdrop-blur-xl"
       }`}
     >
       <div className="flex h-16 w-full items-center px-3 sm:px-4 lg:px-6">
