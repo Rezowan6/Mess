@@ -1,16 +1,16 @@
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
-import { getCurrentDate } from "@/utils/date.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { depositService } from "./deposit.service.js";
+import { getAppDate } from "@/utils/date.util.js";
 
 class DepositController {
   create = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId, mealSessionId } = getTenantContext(req);
 
-    const depositDate = getCurrentDate();
+    const depositDate = getAppDate();
 
     const deposit = await depositService.createDeposit({
       tenantId,

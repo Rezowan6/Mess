@@ -102,11 +102,6 @@ class DepositService {
     memberId,
     mealSessionId,
   }: IGetMemberDepositsPayload) {
-    const member = await getActiveMember({
-      tenantId,
-      userId: memberId,
-    });
-
     return await depositRepository.getMemberDeposits({
       tenantId,
       memberId,
