@@ -1,3 +1,5 @@
+import { setupEggAssociations } from "@/modules/egg/egg.association.js";
+import { setupEggRateAssociations } from "@/modules/eggRates/eggRate.association.js";
 import {
   Deposit,
   Expenses,
@@ -464,4 +466,8 @@ export const setupAssociations = () => {
     foreignKey: "mealSessionId",
     as: "partyExpenses",
   });
+
+  setupEggAssociations();
+
+  setupEggRateAssociations();
 };

@@ -1,4 +1,9 @@
+import { MealPreference } from "@/modules/MealPreference/mealPreference.model.js";
+import { PartyExpense } from "@/modules/PartyExpense/partyExpense.model.js";
+import { PartyExpenseMember } from "@/modules/PartyExpenseMember/partyExpenseMember.model.js";
 import { Deposit } from "@/modules/deposit/deposit.model.js";
+import { Egg } from "@/modules/egg/egg.model.js";
+import { EggRate } from "@/modules/eggRates/eggRate.model.js";
 import { Expenses } from "@/modules/expenses/expenses.model.js";
 import { Feature } from "@/modules/feature/feature.model.js";
 import { Invite } from "@/modules/invite/invite.model.js";
@@ -16,24 +21,23 @@ import { Subscription } from "@/modules/subscription/subscription.model.js";
 import { Tenant } from "@/modules/tenant/tenant.model.js";
 import { TenantMembership } from "@/modules/tenantMembership/tenantMembership.model.js";
 import { User } from "@/modules/user/user.model.js";
-import { MealPreference } from "@/modules/MealPreference/mealPreference.model.js";
-import { PartyExpense } from "@/modules/PartyExpense/partyExpense.model.js";
-import { PartyExpenseMember } from "@/modules/PartyExpenseMember/partyExpenseMember.model.js";
 
 export {
-  PartyExpense,
-  PartyExpenseMember,
-  MealPreference,
   Deposit,
+  Egg,
+  EggRate,
   Expenses,
   Feature,
   Invite,
   MealEntry,
+  MealPreference,
   MealRequest,
   MealSession,
   MealSetting,
   Notice,
   Notification,
+  PartyExpense,
+  PartyExpenseMember,
   Payment,
   Plan,
   PlanFeature,
