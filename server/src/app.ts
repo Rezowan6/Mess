@@ -15,6 +15,8 @@ import {
   authRouter,
   dashboardRouter,
   depositRouter,
+  eggRateRouter,
+  eggRouter,
   expensesRouter,
   featureRouter,
   invitesRouter,
@@ -36,8 +38,8 @@ import {
   tenantMembershipRouter,
   tenantRoute,
 } from "@/routes/index.js";
-import { deleteUnverifiedUsersJob } from "./jobs/users/deleteUnverifiedUsers.job.js";
 import { createAutoMealReqJob } from "./jobs/mealPreference/createAutoMealReq.job.js";
+import { deleteUnverifiedUsersJob } from "./jobs/users/deleteUnverifiedUsers.job.js";
 
 const app: Application = express();
 
@@ -59,7 +61,12 @@ app.use(
     origin: env.FRONTEND_URL || "http://localhost:5173",
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Tenant-ID", "X-Meal-Session-ID"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Tenant-ID",
+      "X-Meal-Session-ID",
+    ],
   }),
 );
 
@@ -74,6 +81,8 @@ app.use("/api/v1/meal-entries", mealEntriesRouter);
 app.use("/api/v1/meal-plannings", mealPlanningRouter);
 app.use("/api/v1/expenses", expensesRouter);
 app.use("/api/v1/party-expenses", partyExpenseRouter);
+app.use("/api/v1/eggs", eggRouter);
+app.use("/api/v1/eggRates", eggRateRouter);
 app.use("/api/v1/deposits", depositRouter);
 app.use("/api/v1/monthly-calculations", monthlyCalculationRouter);
 app.use("/api/v1/dashboards", dashboardRouter);
@@ -136,7 +145,7 @@ if (fs.existsSync(publicDir)) {
 deleteUnverifiedUsersJob();
 
 // create auto meal req job
-createAutoMealReqJob()
+createAutoMealReqJob();
 
 // ------------------- 404 HANDLER -------------------
 app.use((req: Request, res: Response, next: NextFunction) => {

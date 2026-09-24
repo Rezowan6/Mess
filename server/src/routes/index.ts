@@ -1,6 +1,8 @@
 import authRouter from "@/modules/auth/auth.routes.js";
 import dashboardRouter from "@/modules/dashboard/dashboard.route.js";
 import depositRouter from "@/modules/deposit/deposit.route.js";
+import eggRouter from "@/modules/egg/egg.route.js";
+import eggRateRouter from "@/modules/eggRates/eggRate.route.js";
 import expensesRouter from "@/modules/expenses/expenses.route.js";
 import featureRouter from "@/modules/feature/feature.route.js";
 import invitesRouter from "@/modules/invite/invite.route.js";
@@ -26,6 +28,8 @@ export {
   authRouter,
   dashboardRouter,
   depositRouter,
+  eggRateRouter,
+  eggRouter,
   expensesRouter,
   featureRouter,
   invitesRouter,
