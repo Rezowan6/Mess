@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import { Button } from "@/shared/components/ui/Button";
 import { PERMISSIONS } from "@/shared/constants/permissions";
-import { PermissionGuard } from "@/shared/guards/permission.guard";
 
 import { Settings } from "lucide-react";
 
@@ -11,6 +10,7 @@ import { MealSettingCard } from "../components/MealSettingCard";
 import { MealSettingFormModal } from "../components/MealSettingFormModal";
 import { MealSettingManageSkeleton } from "../components/MealSettingManageSkeleton.tsx";
 import { useMealSetting } from "../hooks/useMealSetting";
+import { EggRateCard } from "@/modules/egg-rate/components/EggRateCard.tsx";
 
 export const MealSettingManagePage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +20,7 @@ export const MealSettingManagePage = () => {
   const setting = data?.data;
 
   return (
-    <PermissionGuard permission={PERMISSIONS.MEAL_SETTING_VIEW}>
+    <>
       {isPending ? (
         <MealSettingManageSkeleton />
       ) : setting ? (
@@ -34,6 +34,11 @@ export const MealSettingManagePage = () => {
 
           <div className="rounded-xl border border-accent p-6">
             <MealSettingCard setting={setting} />
+          </div>
+
+          {/* Egg Rate */}
+          <div className="rounded-xl border border-accent p-6">
+            <EggRateCard />
           </div>
         </div>
       ) : (
@@ -57,6 +62,6 @@ export const MealSettingManagePage = () => {
         onClose={() => setIsOpen(false)}
         setting={setting}
       />
-    </PermissionGuard>
+    </>
   );
 };

@@ -119,7 +119,8 @@ export const queryKeys = {
   // Session list itself does not need another session ID.
   // ============================================================
   mealSessions: {
-    all: (tenantId?: number, mealSessionId?: number) => ["meal-sessions", tenantId, mealSessionId] as const,
+    all: (tenantId?: number, mealSessionId?: number) =>
+      ["meal-sessions", tenantId, mealSessionId] as const,
     completed: (tenantId?: number) =>
       ["meal-sessions", tenantId, "completed"] as const,
   },
@@ -220,6 +221,30 @@ export const queryKeys = {
 
     list: (tenantId?: number, mealSessionId?: number) =>
       ["deposits", tenantId, mealSessionId, "list"] as const,
+  },
+  // ============================================================
+  // EGGS
+  // Tenant + Meal Session based
+  // ============================================================
+
+  eggs: {
+    all: (tenantId?: number, mealSessionId?: number) =>
+      ["eggs", tenantId, mealSessionId] as const,
+
+    list: (tenantId?: number, mealSessionId?: number) =>
+      ["eggs", tenantId, mealSessionId, "list"] as const,
+  },
+  // ============================================================
+  // EGG RATES
+  // Tenant based
+  // ============================================================
+
+  eggRates: {
+    all: (tenantId?: number, mealSessionId?: number) =>
+      ["eggRates", tenantId, mealSessionId] as const,
+
+    get: (tenantId?: number, mealSessionId?: number) =>
+      ["eggRates", tenantId, mealSessionId, "get"] as const,
   },
 
   // ============================================================

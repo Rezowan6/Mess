@@ -23,10 +23,11 @@ class EggRateController {
   });
 
   get = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const eggRate = await eggRateService.get({
       tenantId,
+      mealSessionId,
     });
 
     return sendResponse(res, {
@@ -37,10 +38,11 @@ class EggRateController {
   });
 
   update = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const eggRate = await eggRateService.update({
       tenantId,
+      mealSessionId,
       data: req.body,
     });
 
@@ -52,10 +54,11 @@ class EggRateController {
   });
 
   delete = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     await eggRateService.delete({
       tenantId,
+      mealSessionId,
     });
 
     return sendResponse(res, {

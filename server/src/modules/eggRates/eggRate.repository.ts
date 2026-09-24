@@ -18,20 +18,24 @@ class EggRateRepository extends BaseRepository<EggRate> {
 
   async getEggRate(
     tenantId: number,
+    mealSessionId: number,
   ): Promise<EggRate | null> {
     return this.findOne({
       tenantId,
+      mealSessionId,
     });
   }
 
   async updateEggRate(
     tenantId: number,
+    mealSessionId: number,
     data: Partial<Attributes<EggRate>>,
     transaction?: Transaction | null,
   ): Promise<[number]> {
     return this.update(
       {
         tenantId,
+        mealSessionId,
       },
       data,
       {
@@ -42,14 +46,17 @@ class EggRateRepository extends BaseRepository<EggRate> {
 
   async deleteEggRate(
     tenantId: number,
+    mealSessionId: number,
     transaction?: Transaction | null,
   ): Promise<number> {
     return this.delete(
       {
         tenantId,
+        mealSessionId,
       },
       {
         ...(transaction ? { transaction } : {}),
+        force: true,
       },
     );
   }

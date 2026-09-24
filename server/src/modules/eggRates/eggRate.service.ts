@@ -13,7 +13,7 @@ class EggRateService {
       throw new ApiError(400, "Egg rate must be greater than zero.");
     }
 
-    const existingEggRate = await eggRateRepository.getEggRate(tenantId);
+    const existingEggRate = await eggRateRepository.getEggRate(tenantId, mealSessionId);
 
     if (existingEggRate) {
       throw new ApiError(409, "Egg rate already exists for this tenant.");
@@ -22,8 +22,14 @@ class EggRateService {
     return await eggRateRepository.createEggRate(data);
   }
 
-  async get({ tenantId }: { tenantId: number }) {
-    const eggRate = await eggRateRepository.getEggRate(tenantId);
+  async get({
+    tenantId,
+    mealSessionId,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+  }) {
+    const eggRate = await eggRateRepository.getEggRate(tenantId, mealSessionId);
 
     if (!eggRate) {
       throw new ApiError(404, "Egg rate not found.");
@@ -34,12 +40,14 @@ class EggRateService {
 
   async update({
     tenantId,
+    mealSessionId,
     data,
   }: {
     tenantId: number;
+    mealSessionId: number;
     data: IUpdateEggRateDto;
   }) {
-    const eggRate = await eggRateRepository.getEggRate(tenantId);
+    const eggRate = await eggRateRepository.getEggRate(tenantId, mealSessionId);
 
     if (!eggRate) {
       throw new ApiError(404, "Egg rate not found.");
@@ -49,19 +57,25 @@ class EggRateService {
       throw new ApiError(400, "Egg rate must be greater than zero.");
     }
 
-    await eggRateRepository.updateEggRate(tenantId, data);
+    await eggRateRepository.updateEggRate(tenantId, mealSessionId, data);
 
-    return await eggRateRepository.getEggRate(tenantId);
+    return await eggRateRepository.getEggRate(tenantId, mealSessionId);
   }
 
-  async delete({ tenantId }: { tenantId: number }) {
-    const eggRate = await eggRateRepository.getEggRate(tenantId);
+  async delete({
+    tenantId,
+    mealSessionId,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+  }) {
+    const eggRate = await eggRateRepository.getEggRate(tenantId, mealSessionId);
 
     if (!eggRate) {
       throw new ApiError(404, "Egg rate not found.");
     }
 
-    await eggRateRepository.deleteEggRate(tenantId);
+    await eggRateRepository.deleteEggRate(tenantId, mealSessionId);
 
     return null;
   }

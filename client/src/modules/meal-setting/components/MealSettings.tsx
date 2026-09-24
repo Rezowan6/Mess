@@ -2,18 +2,17 @@ import { Utensils } from "lucide-react";
 
 import { SettingsCard } from "@/modules/settings/components/SettingsCard";
 
+import { Skeleton } from "@/shared/components/feedback/Skeleton";
 import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { Button } from "@/shared/components/ui/Button";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
-import { PermissionGate } from "@/shared/guards/PermissionGate";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 import { useState } from "react";
 import { getMealSettingConfigs } from "../configs/mealSetting.config";
 import { useMealSetting } from "../hooks/useMealSetting";
 import { MealSettingFormModal } from "./MealSettingFormModal";
 import { MealSettingItem } from "./MealSettingItem";
-import { Skeleton } from "@/shared/components/feedback/Skeleton";
 
 export const MealSettings = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +24,7 @@ export const MealSettings = () => {
   const configs = setting ? getMealSettingConfigs(setting) : [];
 
   return (
-    <PermissionGate permission={PERMISSIONS.MEAL_SETTING_VIEW}>
+    <>
       <SettingsCard
         title="Meal Settings"
         description="Configure meal rules, cutoff times and preferences."
@@ -70,6 +69,6 @@ export const MealSettings = () => {
       </SettingsCard>
 
       <MealSettingFormModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-    </PermissionGate>
+    </>
   );
 };
