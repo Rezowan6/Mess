@@ -21,10 +21,9 @@ export const EggSummaryTable = () => {
     selectedEgg,
     handleSearch,
     handlePage,
-    handleEdit,
   } = useEggSummaryTable();
 
-  const columns = useEggSummaryColumns(handleEdit);
+  const columns = useEggSummaryColumns();
 
   if (isPending) {
     return <EggTableSkeleton />;
