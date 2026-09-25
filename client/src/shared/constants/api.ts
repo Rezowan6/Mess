@@ -157,6 +157,7 @@ export const API_ENDPOINTS = {
   EGG: {
     CREATE: "/eggs",
     GET_ALL: "/eggs",
+    GET_SUMMARY: "/eggs/summary",
     UPDATE: (id: number) => `/eggs/${id}`,
     DELETE: (id: number) => `/eggs/${id}`,
   },

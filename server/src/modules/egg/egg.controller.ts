@@ -56,6 +56,21 @@ class EggController {
     });
   });
 
+  getEggSummary = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
+
+    const summary = await eggService.getEggSummary({
+      tenantId,
+      mealSessionId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Egg summary fetched successfully",
+      data: summary,
+    });
+  });
+
   update = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 

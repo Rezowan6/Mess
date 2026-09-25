@@ -10,6 +10,12 @@ export const eggApi = {
     return data;
   },
 
+  getSummary: async () => {
+    const { data } = await API.get(API_ENDPOINTS.EGG.GET_SUMMARY);
+
+    return data;
+  },
+
   create: async (payload: ICreateEggDto) => {
     const { data } = await API.post(API_ENDPOINTS.EGG.CREATE, payload);
 

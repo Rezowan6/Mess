@@ -1,10 +1,7 @@
-import {
-  MealTrendChart,
-} from "../components/charts/MealTrendChart";
+import { MealTrendChart } from "../components/charts/MealTrendChart";
 import { DashboardHeader } from "../components/header/DashboardHeader";
 import { DashboardStats } from "../components/stats/DashboardStats";
 import { DashboardLayout } from "../layout/DashboardLayout";
-
 
 export const DashboardPage = () => {
   return (

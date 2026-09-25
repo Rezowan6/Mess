@@ -8,6 +8,8 @@ router.post("/", ...managerAccess, eggController.create);
 
 router.get("/member/:memberId", ...allAccess, eggController.getMemberEggs);
 
+router.get("/summary", ...allAccess, eggController.getEggSummary);
+
 router.get("/", ...allAccess, eggController.getAllEggs);
 
 router.patch("/:id", ...managerAccess, eggController.update);

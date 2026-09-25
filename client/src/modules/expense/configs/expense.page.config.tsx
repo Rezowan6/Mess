@@ -1,16 +1,17 @@
-import { BackButton } from "@/shared/components/ui/BackButton";
 import { ROUTES } from "@/shared/constants/routes";
 
 interface GetExpensePageConfigProps {
   pathname: string;
   onAddExpense: () => void;
   onAddPartyExpense: () => void;
+  onAddEggExpense: () => void;
 }
 
 export const getExpensePageConfig = ({
   pathname,
   onAddExpense,
   onAddPartyExpense,
+  onAddEggExpense,
 }: GetExpensePageConfigProps) => {
   const pageConfig = {
     [ROUTES.EXPENSE]: {
@@ -18,7 +19,6 @@ export const getExpensePageConfig = ({
       description: "Manage mess expenses and records",
       actionText: "Add Expense",
       onAction: onAddExpense,
-      footer: <BackButton />,
     },
 
     [`${ROUTES.EXPENSE}/party`]: {
@@ -26,7 +26,6 @@ export const getExpensePageConfig = ({
       description: "Manage party expenses and participating members",
       actionText: "Add Party Expense",
       onAction: onAddPartyExpense,
-      footer: <BackButton />,
     },
 
     [`${ROUTES.EXPENSE}/party/history`]: {
@@ -34,7 +33,12 @@ export const getExpensePageConfig = ({
       description: "View party expense members and share details",
       actionText: "Add Party Expense",
       onAction: onAddPartyExpense,
-      footer: <BackButton />,
+    },
+    [`${ROUTES.EXPENSE}/egg`]: {
+      title: "Egg Management",
+      description: "Manage member egg records and track egg consumption",
+      actionText: "Add Egg",
+      onAction: onAddEggExpense,
     },
   };
 

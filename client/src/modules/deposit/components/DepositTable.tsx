@@ -23,9 +23,7 @@ export const DepositTable = () => {
 
   const { data, isPending, isError, refetch } = useMemberDepositSummary({
     page,
-
     limit: 10,
-
     search,
   });
 

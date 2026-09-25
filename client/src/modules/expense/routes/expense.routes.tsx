@@ -1,5 +1,4 @@
-// expense.routes.tsx
-
+import { eggRoutes } from "@/modules/egg/routes/egg.routes";
 import { partyExpenseRoutes } from "@/modules/party-expense/routes/partyExpense.routes";
 import { ExpenseTable } from "../components/ExpenseTable";
 import { ExpenseListLayout } from "../layouts/ExpenseListLayout";
@@ -22,5 +21,6 @@ export const expenseRoutes = {
     },
 
     partyExpenseRoutes,
+    eggRoutes,
   ],
 };

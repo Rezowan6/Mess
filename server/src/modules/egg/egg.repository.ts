@@ -1,6 +1,14 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
-import { Attributes, CreationAttributes, Op, Transaction } from "sequelize";
+import { User } from "@/models/index.js";
+import {
+  Attributes,
+  col,
+  CreationAttributes,
+  fn,
+  Op,
+  Transaction,
+} from "sequelize";
 import { Egg } from "./egg.model.js";
 
 class EggRepository extends BaseRepository<Egg> {
@@ -32,17 +40,46 @@ class EggRepository extends BaseRepository<Egg> {
     });
   }
 
+  async getEggSummary(tenantId: number, mealSessionId: number): Promise<any[]> {
+    return this.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+      },
+      attributes: [
+        "tenantId",
+        "mealSessionId",
+        "memberId",
+        [fn("SUM", col("quantity")), "quantity"],
+      ],
+      include: [
+        {
+          model: User,
+          as: "member",
+          attributes: ["id", "name", "email", "avatar"],
+        },
+      ],
+      group: ["tenantId", "mealSessionId", "memberId", "member.id"],
+      order: [["memberId", "ASC"]],
+    });
+  }
+
   async getAllEggs(tenantId: number, mealSessionId: number): Promise<Egg[]> {
     return this.findAll({
       where: {
         tenantId,
         mealSessionId,
       },
+      include: [
+        {
+          model: User,
+          as: "member",
+          attributes: ["id", "name", "email", "avatar"],
+        },
+      ],
       order: [["eggDate", "ASC"]],
     });
   }
-
-  
 
   async getEggByDate(
     tenantId: number,

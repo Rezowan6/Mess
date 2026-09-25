@@ -52,6 +52,21 @@ class EggService {
 
     return eggs;
   }
+  async getEggSummary({
+    tenantId,
+    mealSessionId,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+  }) {
+    const eggs = await eggRepository.getEggSummary(tenantId, mealSessionId);
+
+    if (!eggs.length) {
+      throw new ApiError(404, "No egg summary found.");
+    }
+
+    return eggs;
+  }
 
   async getAllEggs({
     tenantId,

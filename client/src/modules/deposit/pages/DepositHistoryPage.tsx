@@ -44,14 +44,7 @@ export const DepositHistoryPage = () => {
   }
 
   const memberDeposits = data.data.filter((item) => item.memberId === memberId);
-  if (memberDeposits.length === 0) {
-    return (
-      <EmptyState
-        title={DEPOSIT_MESSAGES.empty.title}
-        description={DEPOSIT_MESSAGES.empty.description}
-      />
-    );
-  }
+
   const member = memberDeposits[0].member ?? null;
 
   const totalDeposit = memberDeposits.reduce(

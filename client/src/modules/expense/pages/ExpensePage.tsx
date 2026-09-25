@@ -4,6 +4,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { AddExpenseModal } from "../components/AddExpenseModal";
 import { getExpensePageConfig } from "../configs/expense.page.config";
 
+import { AddEggModal } from "@/modules/egg/components/AddEggModal";
 import { AddPartyExpenseModal } from "@/modules/party-expense/components/AddPartyExpenseModal";
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
 import { Button } from "@/shared/components/ui/Button";
@@ -14,17 +15,21 @@ import { ExpenseRouteTabs } from "../components/ExpenseRouteTabs";
 export const ExpensePage = () => {
   const [isExpenseOpen, setIsExpenseOpen] = useState(false);
   const [isPartyExpenseOpen, setIsPartyExpenseOpen] = useState(false);
+  const [isEggExpenseOpen, setIsEggExpenseOpen] = useState(false);
+
   const location = useLocation();
 
   useEffect(() => {
     setIsExpenseOpen(false);
     setIsPartyExpenseOpen(false);
+    setIsEggExpenseOpen(false);
   }, [location.pathname]);
 
   const currentPage = getExpensePageConfig({
     pathname: location.pathname,
     onAddExpense: () => setIsExpenseOpen(true),
     onAddPartyExpense: () => setIsPartyExpenseOpen(true),
+    onAddEggExpense: () => setIsEggExpenseOpen(true),
   });
 
   return (
@@ -35,17 +40,17 @@ export const ExpensePage = () => {
         description={currentPage.description}
         action={
           <Button
-            variant="moduleBtn"
+            variant="success"
             onClick={currentPage.onAction}
             permission={PERMISSIONS.EXPENSE_CREATE}
           >
             {currentPage.actionText}
           </Button>
         }
-        footer={currentPage.footer}
       >
         <Outlet />
       </ManagementPage>
+
       <AddExpenseModal
         isOpen={isExpenseOpen}
         onClose={() => setIsExpenseOpen(false)}
@@ -53,6 +58,11 @@ export const ExpensePage = () => {
       <AddPartyExpenseModal
         isOpen={isPartyExpenseOpen}
         onClose={() => setIsPartyExpenseOpen(false)}
+      />
+
+      <AddEggModal
+        isOpen={isEggExpenseOpen}
+        onClose={() => setIsEggExpenseOpen(false)}
       />
     </PermissionGuard>
   );
