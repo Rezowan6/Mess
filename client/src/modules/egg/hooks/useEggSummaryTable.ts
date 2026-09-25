@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
-import { useEggs } from "./useEggs";
 
 import type { IEgg } from "../types/egg.types";
+import { useEggSummary } from "./useEggSummary";
 
 export const useEggSummaryTable = () => {
   const { page, search, handleSearch, handlePage } = useTableSearchParams();
@@ -11,7 +11,7 @@ export const useEggSummaryTable = () => {
   const [selectedEgg, setSelectedEgg] = useState<IEgg | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const eggQuery = useEggs();
+  const eggQuery = useEggSummary();
 
   const eggs = eggQuery.data?.data ?? [];
   const meta = eggQuery.data?.meta;

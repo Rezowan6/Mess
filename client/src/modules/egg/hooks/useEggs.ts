@@ -11,6 +11,6 @@ export const useEggs = () => {
   return useQuery({
     queryKey: queryKeys.eggs.list(tenantId, mealSessionId),
     queryFn: eggApi.getAll,
-    enabled: !!tenantId && !!mealSessionId,
+    enabled: Boolean(tenantId && mealSessionId),
   });
 };
