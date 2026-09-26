@@ -55,7 +55,10 @@ class MonthlyCalculationService {
     const normalExpense =
       Number(totalExpense) - Number(totalPartyExpense) - Number(totalEggCost);
 
-    const mealRate = grandTotalMeals > 0 ? normalExpense / grandTotalMeals : 0;
+    const mealRate =
+      grandTotalMeals > 0
+        ? Number((normalExpense / grandTotalMeals).toFixed(2))
+        : 0;
 
     // প্রতিটি member-এর মোট party expense
     const memberPartyCosts =
