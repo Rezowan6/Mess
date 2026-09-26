@@ -4,6 +4,7 @@ import { useRBAC } from "@/shared/hooks/useRBAC";
 import { useSidebarStore } from "@/store/sidebar.store";
 
 import { NavLink } from "react-router-dom";
+import { DesktopMoreMenu } from "./DesktopMoreMenu";
 
 export const SidebarMenu = () => {
   const { can } = useRBAC();
@@ -11,7 +12,8 @@ export const SidebarMenu = () => {
   const close = useSidebarStore((state) => state.close);
 
   const menus = sidebarItems.filter(
-    (item) => !item.permission || can(item.permission),
+    (item) =>
+      item.desktop === "primary" && (!item.permission || can(item.permission)),
   );
 
   return (
@@ -28,9 +30,7 @@ export const SidebarMenu = () => {
                 className={({ isActive }) => `flex items-center gap-3
                   rounded-md px-4 py-2
                   transition-all duration-200 ${
-                    isActive
-                      ? `bg-info/20`
-                      : "hover:bg-info/10"
+                    isActive ? `bg-info/20` : "hover:bg-info/10"
                   }`}
               >
                 <Icon size={18} />
@@ -39,6 +39,9 @@ export const SidebarMenu = () => {
             </li>
           );
         })}
+
+        {/* Desktop More Menu */}
+        <DesktopMoreMenu />
       </ul>
     </nav>
   );

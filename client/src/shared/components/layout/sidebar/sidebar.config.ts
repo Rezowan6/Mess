@@ -5,7 +5,9 @@ import type { LucideIcon } from "lucide-react";
 import {
   Calculator,
   ClipboardList,
+  CreditCard,
   Crown,
+  HandCoins,
   Landmark,
   LayoutDashboard,
   Puzzle,
@@ -30,6 +32,8 @@ export interface ISidebarItem {
    * more    -> show inside More menu
    */
   mobile?: "primary" | "more";
+
+  desktop?: "primary" | "more";
 }
 
 export const sidebarItems: ISidebarItem[] = [
@@ -38,6 +42,7 @@ export const sidebarItems: ISidebarItem[] = [
     path: ROUTES.DASHBOARD,
     icon: LayoutDashboard,
     mobile: "primary",
+    desktop: "primary",
   },
 
   {
@@ -46,6 +51,7 @@ export const sidebarItems: ISidebarItem[] = [
     icon: Crown,
     permission: PERMISSIONS.PLAN_VIEW,
     mobile: "more",
+    desktop: "primary",
   },
 
   {
@@ -54,6 +60,7 @@ export const sidebarItems: ISidebarItem[] = [
     icon: Puzzle,
     permission: PERMISSIONS.FEATURE_VIEW,
     mobile: "more",
+    desktop: "primary",
   },
 
   {
@@ -62,14 +69,7 @@ export const sidebarItems: ISidebarItem[] = [
     icon: SlidersHorizontal,
     permission: PERMISSIONS.PLAN_FEATURE_VIEW,
     mobile: "more",
-  },
-
-  {
-    title: "Members",
-    path: ROUTES.USERS,
-    icon: Users,
-    permission: PERMISSIONS.USER_VIEW,
-    mobile: "primary",
+    desktop: "primary",
   },
 
   {
@@ -78,6 +78,7 @@ export const sidebarItems: ISidebarItem[] = [
     icon: Utensils,
     permission: PERMISSIONS.MEAL_PREFERENCE_VIEW,
     mobile: "primary",
+    desktop: "primary",
   },
 
   {
@@ -85,15 +86,8 @@ export const sidebarItems: ISidebarItem[] = [
     path: ROUTES.MEAL_PLANNING,
     icon: ClipboardList,
     permission: PERMISSIONS.MEAL_PLANNING_VIEW,
-    mobile: "more",
-  },
-
-  {
-    title: "Meal Entry",
-    path: ROUTES.MEAL_ENTRY,
-    icon: ClipboardList,
-    permission: PERMISSIONS.MEAL_ENTRY_VIEW,
-    mobile: "more",
+    mobile: "primary",
+    desktop: "primary",
   },
 
   {
@@ -102,6 +96,7 @@ export const sidebarItems: ISidebarItem[] = [
     icon: Receipt,
     permission: PERMISSIONS.EXPENSE_VIEW,
     mobile: "primary",
+    desktop: "primary",
   },
 
   {
@@ -110,6 +105,23 @@ export const sidebarItems: ISidebarItem[] = [
     icon: Landmark,
     permission: PERMISSIONS.DEPOSIT_VIEW,
     mobile: "more",
+    desktop: "primary",
+  },
+  {
+    title: "Meal Entry",
+    path: ROUTES.MEAL_ENTRY,
+    icon: ClipboardList,
+    permission: PERMISSIONS.MEAL_ENTRY_VIEW,
+    mobile: "more",
+    desktop: "more",
+  },
+  {
+    title: "Members",
+    path: ROUTES.USERS,
+    icon: Users,
+    permission: PERMISSIONS.USER_VIEW,
+    mobile: "more",
+    desktop: "more",
   },
 
   {
@@ -118,26 +130,33 @@ export const sidebarItems: ISidebarItem[] = [
     icon: Calculator,
     permission: PERMISSIONS.MONTHLY_CALCULATION_VIEW,
     mobile: "more",
+    desktop: "more",
   },
+
+  {
+    title: "Subscription",
+    path: ROUTES.SUBSCRIPTION,
+    icon: CreditCard,
+    permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
+    mobile: "more",
+    desktop: "more",
+  },
+
+  {
+    title: "Payment",
+    path: ROUTES.PAYMENT,
+    icon: HandCoins,
+    permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
+    mobile: "more",
+    desktop: "more",
+  },
+
   {
     title: "Settings",
     path: ROUTES.SETTINGS,
     icon: Settings,
     permission: PERMISSIONS.SETTINGS_VIEW,
     mobile: "more",
+    desktop: "primary",
   },
-
-  // {
-  //   title: "Subscription",
-  //   path: ROUTES.SUBSCRIPTION,
-  //   icon: CreditCard,
-  //   permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
-  // },
-
-  // {
-  //   title: "Payment",
-  //   path: ROUTES.PAYMENT,
-  //   icon: HandCoins,
-  //   permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
-  // },
 ];
