@@ -1,7 +1,7 @@
 import sequelize from "@/configs/db.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { getAppDate } from "@/utils/date.util.js";
+import { getAppDate, isWithinHours } from "@/utils/date.util.js";
 import { Transaction } from "sequelize";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { partyExpenseMemberRepository } from "../PartyExpenseMember/partyExpenseMember.repository.js";
@@ -42,7 +42,11 @@ class PartyExpenseService {
   async create(data: ICreatePartyExpenseDto, memberIds: number[]) {
     const transaction = await sequelize.transaction();
 
-    await mealSessionRepository.ensureSessionOpen(data?.tenantId,data?.mealSessionId, transaction);
+    await mealSessionRepository.ensureSessionOpen(
+      data?.tenantId,
+      data?.mealSessionId,
+      transaction,
+    );
 
     try {
       const partyExpense = await partyExpenseRepository.createWithOptions(
@@ -96,6 +100,13 @@ class PartyExpenseService {
 
       if (!partyExpense) {
         throw new ApiError(404, "Party expense not found.");
+      }
+
+      if (!isWithinHours(partyExpense.createdAt, 24)) {
+        throw new ApiError(
+          409,
+          "This party record can only be updated within 24 hours of creation.",
+        );
       }
 
       await partyExpenseRepository.update(
@@ -163,6 +174,13 @@ class PartyExpenseService {
 
     if (!partyExpense) {
       throw new ApiError(404, "Party expense not found.");
+    }
+
+    if (!isWithinHours(partyExpense.createdAt, 24)) {
+      throw new ApiError(
+        409,
+        "This party record can only be deleted within 24 hours of creation.",
+      );
     }
 
     await partyExpenseRepository.delete({ id });
