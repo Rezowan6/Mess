@@ -12,17 +12,19 @@ interface MonthlyCalculationInfoCardConfig {
 export const getMonthlyCalculationInfoCards = (calculation: {
   totalExpense: number;
   totalPartyExpense: number;
+  totalEggCost: number;
+  totalMealCost: number;
   totalDeposit: string | number;
   grandTotalMeals: number;
   mealRate: number;
 }): MonthlyCalculationInfoCardConfig[] => [
   {
-    key: "totalExpense",
-    title: "Total Expense",
-    value: `৳ ${calculation.totalExpense}`,
-    icon: <Wallet size={22} />,
-    iconClassName: "text-error",
-    valueClassName: "text-error",
+    key: "totalDeposit",
+    title: "Total Deposit",
+    value: `৳ ${calculation.totalDeposit}`,
+    icon: <Banknote size={22} />,
+    iconClassName: "text-success",
+    valueClassName: "text-success",
   },
   {
     key: "totalPartyExpense",
@@ -32,13 +34,31 @@ export const getMonthlyCalculationInfoCards = (calculation: {
     iconClassName: "text-warning",
     valueClassName: "text-warning",
   },
+
   {
-    key: "totalDeposit",
-    title: "Total Deposit",
-    value: `৳ ${calculation.totalDeposit}`,
-    icon: <Banknote size={22} />,
-    iconClassName: "text-success",
-    valueClassName: "text-success",
+    key: "totalEggCost",
+    title: "Total Egg Cost",
+    value: `৳ ${calculation.totalEggCost}`,
+    icon: <Wallet size={22} />,
+    iconClassName: "text-warning",
+    valueClassName: "text-warning",
+  },
+  {
+    key: "totalMealCost",
+    title: "Total Meal Cost",
+    value: `৳ ${calculation.totalMealCost}`,
+    icon: <Wallet size={22} />,
+    iconClassName: "text-warning",
+    valueClassName: "text-warning",
+  },
+
+  {
+    key: "totalExpense",
+    title: "Total Expense",
+    value: `৳ ${calculation.totalExpense}`,
+    icon: <Wallet size={22} />,
+    iconClassName: "text-error",
+    valueClassName: "text-error",
   },
   {
     key: "grandTotalMeals",

@@ -4,9 +4,11 @@ export interface IMonthlyCalculationMember {
   email: string;
   avatar: string | null;
   totalMeal: number;
+  normalMealCost: number;
   deposit: number;
   memberCost: number;
   partyCost: number;
+  eggCost: number;
   balance: number;
   status: "Payable" | "Received" | "Settled";
 }

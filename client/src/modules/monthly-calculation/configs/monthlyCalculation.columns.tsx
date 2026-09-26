@@ -25,14 +25,31 @@ export const useMonthlyCalculationColumns =
         render: (member) => member.totalMeal,
       },
       {
-        key: "partyCost",
-        title: "Party Cost",
-        render: (member) => <span className="text-warning">৳ {member.partyCost.toFixed(2)}</span>,
+        key: "totalMealCost",
+        title: "Meal Cost",
+        render: (member) => (
+          <span className="text-warning">
+            ৳ {member?.normalMealCost.toFixed(2)}
+          </span>
+        ),
       },
       {
-        key: "memberCost",
-        title: "Member Cost",
-        hideOnMobile: true,
+        key: "partyCost",
+        title: "Party Cost",
+        render: (member) => (
+          <span className="text-warning">৳ {member.partyCost.toFixed(2)}</span>
+        ),
+      },
+      {
+        key: "eggCost",
+        title: "Egg Cost",
+        render: (member) => (
+          <span className="text-warning">৳ {member.eggCost.toFixed(2)}</span>
+        ),
+      },
+      {
+        key: "memberTotalCost",
+        title: "Total Cost",
         render: (member) => `৳ ${member.memberCost.toFixed(2)}`,
       },
       {

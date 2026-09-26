@@ -149,9 +149,13 @@ class MonthlyCalculationService {
 
     const monthName = getMonthName(session.month, session.year);
 
+    const totalMealCost = Number((grandTotalMeals * mealRate).toFixed(2));
+
     return {
-      totalExpense: Number(normalExpense.toFixed(2)),
+      totalExpense: Number(totalExpense.toFixed(2)),
       totalPartyExpense: Number(totalPartyExpense.toFixed(2)),
+      totalEggCost: Number(totalEggCost.toFixed(2)),
+      totalMealCost,
 
       eggSummary: {
         totalEgg: Number(totalEggQuantity.toFixed(2)),
