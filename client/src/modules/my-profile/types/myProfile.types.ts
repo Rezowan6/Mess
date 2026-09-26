@@ -6,6 +6,7 @@ export interface IMealCalculationSummary {
   normalMealCost: number;
   partyCost: number;
   balance: number;
+  eggCost: number;
   status: "Received" | "Settled" | "Payable";
 }
 

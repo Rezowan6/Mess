@@ -27,6 +27,13 @@ export const MyProfileFinancialSummaryConfig = (
     className: "text-warning",
   },
   {
+    key: "egg-cost",
+    title: "Egg Cost",
+    value: `৳ ${summary.eggCost.toFixed(2)}`,
+    icon: Receipt,
+    className: "text-warning",
+  },
+  {
     key: "total-cost",
     title: "Total Cost",
     value: `৳ ${summary.memberCost.toFixed(2)}`,

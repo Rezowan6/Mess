@@ -130,6 +130,7 @@ class MyProfileService {
       summary: {
         totalMeal,
         deposit: totalDeposit,
+        eggCost: myEggCost,
 
         mealRate,
 
