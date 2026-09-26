@@ -17,19 +17,19 @@ export const useMonthlyCalculationColumns =
       {
         key: "deposit",
         title: "Deposit",
-        render: (member) => `৳ ${member.deposit}`,
+        render: (member) => `৳ ${member?.deposit ?? 0}`,
       },
       {
         key: "totalMeal",
         title: "Meal",
-        render: (member) => member.totalMeal,
+        render: (member) => member?.totalMeal ?? 0,
       },
       {
         key: "totalMealCost",
         title: "Meal Cost",
         render: (member) => (
           <span className="text-warning">
-            ৳ {member?.normalMealCost.toFixed(2)}
+            ৳ {member?.normalMealCost.toFixed(2) ?? 0}
           </span>
         ),
       },
@@ -37,27 +37,31 @@ export const useMonthlyCalculationColumns =
         key: "partyCost",
         title: "Party Cost",
         render: (member) => (
-          <span className="text-warning">৳ {member.partyCost.toFixed(2)}</span>
+          <span className="text-warning">
+            ৳ {member.partyCost.toFixed(2) ?? 0}
+          </span>
         ),
       },
       {
         key: "eggCost",
         title: "Egg Cost",
         render: (member) => (
-          <span className="text-warning">৳ {member.eggCost.toFixed(2)}</span>
+          <span className="text-warning">
+            ৳ {member.eggCost.toFixed(2) ?? 0}
+          </span>
         ),
       },
       {
         key: "memberTotalCost",
         title: "Total Cost",
-        render: (member) => `৳ ${member.memberCost.toFixed(2)}`,
+        render: (member) => `৳ ${member.memberCost.toFixed(2) ?? 0}`,
       },
       {
         key: "balance",
         title: "Balance",
         render: (member) => (
           <span className={member.balance < 0 ? "text-error" : "text-success"}>
-            ৳ {Math.abs(member.balance).toFixed(2)}
+            ৳ {Math.abs(member.balance).toFixed(2) ?? 0}
           </span>
         ),
       },
