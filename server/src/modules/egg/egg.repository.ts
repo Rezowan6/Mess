@@ -64,6 +64,40 @@ class EggRepository extends BaseRepository<Egg> {
     });
   }
 
+  async getTotalEggQuantity(
+    tenantId: number,
+    mealSessionId: number,
+  ): Promise<number> {
+    const result = await this.findOneWithOptions({
+      where: {
+        tenantId,
+        mealSessionId,
+      },
+      attributes: [[fn("SUM", col("quantity")), "totalQuantity"]],
+      raw: true,
+    });
+
+    return Number((result as any)?.totalQuantity ?? 0);
+  }
+
+  async getMemberTotalEggQuantity(
+    tenantId: number,
+    mealSessionId: number,
+    memberId: number,
+  ): Promise<number> {
+    const result = await this.findOneWithOptions({
+      where: {
+        tenantId,
+        mealSessionId,
+        memberId,
+      },
+      attributes: [[fn("SUM", col("quantity")), "totalQuantity"]],
+      raw: true,
+    });
+
+    return Number((result as any)?.totalQuantity ?? 0);
+  }
+
   async getAllEggs(tenantId: number, mealSessionId: number): Promise<Egg[]> {
     return this.findAll({
       where: {

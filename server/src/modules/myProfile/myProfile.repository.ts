@@ -1,11 +1,12 @@
 import { MemberStatus } from "@/constans/index.js";
-import { fn, literal } from "sequelize";
+import { col, fn, literal } from "sequelize";
 
 import { Deposit } from "../deposit/deposit.model.js";
 import { MealEntry } from "../mealEntry/mealEntry.model.js";
 import { TenantMembership } from "../tenantMembership/tenantMembership.model.js";
 
-import { IMealSummary, IMyMealSummary } from "./myProfile.interface.js";
+import { Egg } from "../egg/egg.model.js";
+import { IMyMealSummary } from "./myProfile.interface.js";
 
 class MyProfileRepository {
   async getMyProfileUser({
@@ -121,6 +122,30 @@ class MyProfileRepository {
 
       order: [["createdAt", "DESC"]],
     });
+  }
+
+  async getMyEggSummary({
+    tenantId,
+    mealSessionId,
+    memberId,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    memberId: number;
+  }) {
+    const result = await Egg.findOne({
+      where: {
+        tenantId,
+        mealSessionId,
+        memberId,
+      },
+      attributes: [[fn("SUM", col("quantity")), "totalEgg"]],
+      raw: true,
+    });
+
+    return {
+      totalEgg: Number((result as any)?.totalEgg ?? 0),
+    };
   }
 }
 
