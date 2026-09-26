@@ -1,4 +1,5 @@
 import { getMonthName } from "@/utils/date.util.js";
+import { eggRateRepository } from "../eggRates/eggRate.repository.js";
 import { IMealSessionReq } from "../mealSession/mealSession.interface.js";
 import { partyExpenseRepository } from "../PartyExpense/partyExpense.repository.js";
 import { partyExpenseMemberRepository } from "../PartyExpenseMember/partyExpenseMember.repository.js";
@@ -26,14 +27,33 @@ class MonthlyCalculationService {
         mealSessionId,
       )) || 0;
 
+    // egg related calculation
+    const totalEggQuantity =
+      await monthlyCalculationRepository.getTotalEggQuantity(
+        tenantId,
+        mealSessionId,
+      );
+
+    const eggRateData = await eggRateRepository.getEggRate(
+      tenantId,
+      mealSessionId,
+    );
+
+    const eggRate = Number(eggRateData?.rate ?? 0);
+
+    const totalEggCost = Number(
+      (Number(totalEggQuantity) * eggRate).toFixed(2),
+    );
+
     const mealSummary = await monthlyCalculationRepository.getTotalMeal(
       tenantId,
       mealSessionId,
     );
     const grandTotalMeals = Number(mealSummary?.grandTotalMeals ?? 0);
 
-    // Party expense meal rate-এর মধ্যে যাবে না
-    const normalExpense = Number(totalExpense) - Number(totalPartyExpense);
+    // Party expense + egg cost meal rate-এর মধ্যে যাবে না
+    const normalExpense =
+      Number(totalExpense) - Number(totalPartyExpense) - Number(totalEggCost);
 
     const mealRate = grandTotalMeals > 0 ? normalExpense / grandTotalMeals : 0;
 
@@ -48,6 +68,18 @@ class MonthlyCalculationService {
 
     memberPartyCosts.forEach((item: any) => {
       partyCostMap.set(Number(item.memberId), Number(item.totalPartyCost));
+    });
+
+    // প্রতিটি member-এর মোট egg cost
+    const memberEggs = await monthlyCalculationRepository.getMemberEggs(
+      tenantId,
+      mealSessionId,
+    );
+
+    const eggMap = new Map<number, number>();
+
+    memberEggs.forEach((item: any) => {
+      eggMap.set(Number(item.memberId), Number(item.totalEgg ?? 0));
     });
 
     // active members
@@ -74,18 +106,23 @@ class MonthlyCalculationService {
       const mealData = memberMeals.find(
         (item: any) => item.userId === member.userId,
       );
-      const partyCost = Number(partyCostMap.get(member.userId) ?? 0);
 
       const totalMeal = mealData ? Number(mealData.get("totalMeal")) : 0;
 
+      const partyCost = Number(partyCostMap.get(member.userId) ?? 0);
+
+      const eggQuantity = Number(eggMap.get(member.userId) ?? 0);
+
       const deposit = Number(depositMap.get(member.userId) ?? 0);
 
-      // Normal meal cost + ওই member-এর party cost
-      const normalMealCost = totalMeal * mealRate || 0;
+      // Normal meal cost + ওই member-এর party cost + egg cost
+      const normalMealCost = totalMeal * mealRate;
 
-      const memberCost = normalMealCost + partyCost || 0;
+      const eggCost = Number((eggQuantity * eggRate).toFixed(2));
 
-      const balance = deposit - memberCost || 0;
+      const memberCost = normalMealCost + partyCost + eggCost;
+
+      const balance = deposit - memberCost;
 
       return {
         userId: member.userId,
@@ -98,6 +135,9 @@ class MonthlyCalculationService {
 
         normalMealCost: Number(normalMealCost.toFixed(2)),
         partyCost: Number(partyCost.toFixed(2)),
+
+        eggQuantity: Number(eggQuantity.toFixed(2)),
+        eggCost: Number(eggCost.toFixed(2)),
 
         memberCost: Number(memberCost.toFixed(2)),
         balance: Number(balance.toFixed(2)),
@@ -112,6 +152,12 @@ class MonthlyCalculationService {
     return {
       totalExpense: Number(normalExpense.toFixed(2)),
       totalPartyExpense: Number(totalPartyExpense.toFixed(2)),
+
+      eggSummary: {
+        totalEgg: Number(totalEggQuantity.toFixed(2)),
+        eggRate: Number(eggRate.toFixed(2)),
+        totalEggCost: Number(totalEggCost.toFixed(2)),
+      },
 
       totalDeposit: memberDeposits
         .reduce((sum: number, item: any) => sum + Number(item.totalDeposit), 0)

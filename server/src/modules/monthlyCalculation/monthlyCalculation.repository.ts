@@ -1,5 +1,5 @@
 import { MemberStatus } from "@/constans/index.js";
-import { Deposit, Expenses, MealEntry } from "@/models/index.js";
+import { Deposit, Egg, Expenses, MealEntry } from "@/models/index.js";
 import { col, fn, literal } from "sequelize";
 import { IMealSummary } from "../mealEntry/mealEntry.interface.js";
 import { membershipRepository } from "../tenantMembership/tenantMembership.repository.js";
@@ -95,6 +95,34 @@ class MonthlyCalculationRepository {
 
       raw: true,
     });
+  }
+
+  async getMemberEggs(tenantId: number, mealSessionId: number) {
+    return Egg.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+      },
+      attributes: ["memberId", [fn("SUM", col("quantity")), "totalEgg"]],
+      group: ["memberId"],
+      raw: true,
+    });
+  }
+
+  async getTotalEggQuantity(
+    tenantId: number,
+    mealSessionId: number,
+  ): Promise<number> {
+    const result = await Egg.findOne({
+      where: {
+        tenantId,
+        mealSessionId,
+      },
+      attributes: [[fn("SUM", col("quantity")), "totalEgg"]],
+      raw: true,
+    });
+
+    return Number((result as any)?.totalEgg ?? 0);
   }
 }
 
