@@ -11,13 +11,7 @@ export const useDeleteEgg = () => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useMutation({
-    mutationFn: ({
-      id,
-      memberId,
-    }: {
-      id: number;
-      memberId: number;
-    }) =>
+    mutationFn: ({ id, memberId }: { id: number; memberId: number }) =>
       eggApi.delete(id, {
         memberId,
       }),
@@ -25,6 +19,12 @@ export const useDeleteEgg = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.eggs.list(tenantId, mealSessionId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.eggs.summary(tenantId, mealSessionId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.eggs.all(tenantId, mealSessionId),
       });
     },
   });

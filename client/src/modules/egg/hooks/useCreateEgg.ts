@@ -17,6 +17,12 @@ export const useCreateEgg = () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.eggs.list(tenantId, mealSessionId),
       });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.eggs.summary(tenantId, mealSessionId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.eggs.all(tenantId, mealSessionId),
+      });
     },
   });
 };
