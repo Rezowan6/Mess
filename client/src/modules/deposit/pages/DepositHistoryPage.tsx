@@ -1,7 +1,6 @@
 import { useLocation } from "react-router-dom";
 
 import { Table } from "@/shared/components/ui/Table";
-import { DepositInfoCard } from "../components/DepositInfoCard";
 import { DepositTableSkeleton } from "../components/DepositTableSkeleton";
 import { useDepositHistoryColumns } from "../configs/deposit.history.columns";
 import { DEPOSIT_MESSAGES } from "../configs/deposit.messages";
@@ -10,6 +9,7 @@ import { useDeposits } from "../hooks/useDeposits";
 import { useState } from "react";
 
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
+import { MemberHeader } from "@/shared/components/ui/MemberHeader";
 import { AddDepositModal } from "../components/AddDepositModal";
 import type { IDeposit } from "../types/deposit.types";
 
@@ -43,18 +43,28 @@ export const DepositHistoryPage = () => {
     );
   }
 
-  const memberDeposits = data.data.filter((item) => item.memberId === memberId);
+  const memberDeposits = data?.data?.filter((item) => item.memberId === memberId);
 
-  const member = memberDeposits[0].member ?? null;
+  const name = memberDeposits[0].member.name;
+  const avatar = memberDeposits[0].member.avatar;
 
   const totalDeposit = memberDeposits.reduce(
     (sum, item) => sum + item.amount,
     0,
   );
-
   return (
     <>
-      <DepositInfoCard memberName={member.name} totalDeposit={totalDeposit} />
+      <MemberHeader
+        name={name}
+        avatar={avatar}
+        subtitle="Deposit History"
+        rightContent={
+          <div className="text-right">
+            <p className="text-xs text-base-content/60">Total Deposit</p>
+            <p className="font-bold">{totalDeposit}</p>
+          </div>
+        }
+      />
 
       <Table
         columns={columns}
