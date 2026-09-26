@@ -24,6 +24,7 @@ export const DepositPage = () => {
   return (
     <PermissionGuard permission={PERMISSIONS.DEPOSIT_VIEW}>
       <ManagementPage
+        showBack
         title={currentPage.title}
         description={currentPage.description}
         action={

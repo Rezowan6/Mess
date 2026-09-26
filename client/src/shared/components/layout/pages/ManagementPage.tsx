@@ -11,6 +11,7 @@ interface Props {
   children: ReactNode;
   action?: ReactNode;
   titleClassName?: string;
+  showBack?: boolean;
 }
 
 export const ManagementPage = ({
@@ -20,6 +21,7 @@ export const ManagementPage = ({
   children,
   action,
   titleClassName,
+  showBack = false,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -27,14 +29,16 @@ export const ManagementPage = ({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex min-w-0 flex-1 items-center">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-info transition-colors"
-            aria-label="Go back"
-          >
-            <ChevronLeft size={24} />
-          </button>
+          {showBack && (
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-primary transition-colors"
+              aria-label="Go back"
+            >
+              <ChevronLeft size={24} />
+            </button>
+          )}
 
           <div className="min-w-0 flex-1">
             <h1 className={`text-2xl font-bold ${titleClassName ?? ""}`}>
