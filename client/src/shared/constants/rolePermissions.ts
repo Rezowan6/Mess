@@ -17,6 +17,8 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     PERMISSIONS.PLAN_FEATURE_CREATE,
     PERMISSIONS.PLAN_FEATURE_UPDATE,
     PERMISSIONS.PLAN_FEATURE_DELETE,
+    
+    PERMISSIONS.SETTINGS_VIEW,
   ],
 
   [ROLES.ADMIN]: [
@@ -173,7 +175,6 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     // meal session
     PERMISSIONS.MEAL_SESSION_VIEW,
     PERMISSIONS.MEAL_SESSION_OPEN,
-
 
     // expense
     PERMISSIONS.EXPENSE_VIEW,
