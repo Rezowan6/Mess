@@ -40,6 +40,12 @@ export const getExpensePageConfig = ({
       actionText: "Add Egg",
       onAction: onAddEggExpense,
     },
+    [`${ROUTES.EXPENSE}/egg/history`]: {
+      title: "Egg History",
+      description: "View member egg history and track egg consumption",
+      actionText: "Add Egg",
+      onAction: onAddEggExpense,
+    },
   };
 
   return (
