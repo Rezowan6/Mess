@@ -11,7 +11,16 @@ export const useDeleteEgg = () => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useMutation({
-    mutationFn: eggApi.delete,
+    mutationFn: ({
+      id,
+      memberId,
+    }: {
+      id: number;
+      memberId: number;
+    }) =>
+      eggApi.delete(id, {
+        memberId,
+      }),
 
     onSuccess: () => {
       queryClient.invalidateQueries({

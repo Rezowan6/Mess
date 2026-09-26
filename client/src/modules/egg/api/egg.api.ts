@@ -28,8 +28,17 @@ export const eggApi = {
     return data;
   },
 
-  delete: async (id: number) => {
-    const { data } = await API.delete(API_ENDPOINTS.EGG.DELETE(id));
+  delete: async (
+    id: number,
+    payload: {
+      memberId: number;
+    },
+  ) => {
+    const { data } = await API.delete(API_ENDPOINTS.EGG.DELETE(id), {
+      data: {
+        memberId: payload.memberId,
+      },
+    });
 
     return data;
   },

@@ -83,6 +83,7 @@ class EggController {
       data: req.body,
     });
 
+
     return sendResponse(res, {
       statusCode: 200,
       message: "Egg record updated successfully",

@@ -1,6 +1,7 @@
 import { EggLayout } from "@/modules/egg/layouts/EggLayout";
 
 import { ROUTES } from "@/shared/constants/routes";
+import { EggHistoryPage } from "../pages/EggHistoryPage";
 import { EggManagementPage } from "../pages/EggManagementPage";
 
 export const eggRoutes = {
@@ -10,6 +11,10 @@ export const eggRoutes = {
     {
       index: true,
       element: <EggManagementPage />,
+    },
+    {
+      path: "history",
+      element: <EggHistoryPage />,
     },
   ],
 };

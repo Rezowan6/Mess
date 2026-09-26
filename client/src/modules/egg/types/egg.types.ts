@@ -22,4 +22,5 @@ export interface IEgg {
   memberId: number;
   quantity: string;
   member: IEggMember;
+  eggDate: string | null | Date;
 }

@@ -103,7 +103,10 @@ class EggService {
     );
 
     if (!egg || egg.id !== id) {
-      throw new ApiError(404, "Egg record not found.");
+      throw new ApiError(
+        404,
+        "Past egg records can’t be updated. You can only update today’s egg record.",
+      );
     }
 
     if (data.quantity !== undefined && data.quantity <= 0) {
@@ -150,7 +153,10 @@ class EggService {
     );
 
     if (!egg || egg.id !== id) {
-      throw new ApiError(404, "Egg record not found.");
+      throw new ApiError(
+        404,
+        "Past egg records can’t be deleted. You can only delete today’s egg record.",
+      );
     }
 
     if (!isWithinHours(egg.createdAt, 24)) {

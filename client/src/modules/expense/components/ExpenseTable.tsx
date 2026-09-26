@@ -23,11 +23,10 @@ export const ExpenseTable = () => {
 
   const { data, isPending, isError, refetch } = useExpenses({
     page,
-
     limit: 10,
-
     search,
   });
+
   const expenses = data?.data ?? [];
 
   const meta = data?.meta;
