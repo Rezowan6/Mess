@@ -64,8 +64,6 @@ export const MonthlyCalculationPage = () => {
           isOpen={isSoldProductModalOpen}
           onClose={() => setIsSoldProductModalOpen(false)}
         />
-
-        <MonthlyCalculationTable />
       </ManagementPage>
     </PermissionGuard>
   );
