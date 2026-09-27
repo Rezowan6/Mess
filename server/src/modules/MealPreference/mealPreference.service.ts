@@ -4,6 +4,7 @@ import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { formatDisplayDate, getAppDate } from "@/utils/date.util.js";
+import { logger } from "@/utils/logger.js";
 import { getCurrentMealDate } from "@/utils/mealDate.js";
 import { Transaction } from "sequelize";
 import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
@@ -136,8 +137,9 @@ class MealPreferenceService {
         if (!mealSession) {
           noSessionCount++;
 
-          console.log(
-            `[AutoMealRequest] Skipped tenant ${tenant.id}: no active meal session.`,
+          logger.warn(
+            { tenantId: tenant.id },
+            "Auto meal request skipped: no active meal session",
           );
 
           continue;
@@ -206,7 +208,7 @@ class MealPreferenceService {
               preference.userId,
               preference.userId,
               {
-                title: `Meal Request Created}`,
+                title: `Meal Request Created`,
                 message: `Your meal request for ${formatDisplayDate(getAppDate())} has been automatically created based on your meal preferences.`,
                 type: Notification.MEAL_REQUEST_CREATED,
               },
@@ -226,18 +228,25 @@ class MealPreferenceService {
           } catch (error) {
             failedCount++;
 
-            console.error(
-              `[AutoMealRequest] Failed for tenant ${tenant.id}, user ${preference.userId}:`,
-              error,
+            logger.error(
+              {
+                tenantId: tenant.id,
+                userId: preference.userId,
+                error,
+              },
+              "Auto meal request generation failed for user",
             );
           }
         }
       } catch (error) {
         failedCount++;
 
-        console.error(
-          `[AutoMealRequest] Failed for tenant ${tenant.id}:`,
-          error,
+        logger.error(
+          {
+            tenantId: tenant.id,
+            error,
+          },
+          "Auto meal request generation failed for tenant",
         );
       }
     }

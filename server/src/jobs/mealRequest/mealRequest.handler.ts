@@ -1,9 +1,10 @@
 import { mealGeneratorService } from "@/modules/mealGenerator/mealGenerator.service.js";
 import { tenantRepository } from "@/modules/tenant/tenant.repository.js";
-import { getAppDate } from "@/utils/date.util.js";
+import { formatDisplayDate, getAppDate } from "@/utils/date.util.js";
+import { logger } from "@/utils/logger.js";
 
 export const runMealRequestGeneration = async (): Promise<void> => {
-  console.log("[MealRequestJob] Meal request generation started");
+  logger.info("Meal request generation started");
 
   const tenants = await tenantRepository.getActiveTenants();
 
@@ -20,8 +21,9 @@ export const runMealRequestGeneration = async (): Promise<void> => {
    */
   const mealDate = getAppDate();
 
-  console.log(
-    `[MealRequestJob] Generating meal requests for: ${mealDate.toISOString()}`,
+  logger.info(
+    { mealDate: formatDisplayDate(mealDate) },
+    "Meal request generation started for date",
   );
 
   for (const tenant of tenants) {
@@ -31,19 +33,22 @@ export const runMealRequestGeneration = async (): Promise<void> => {
         date: mealDate,
       });
 
-      console.log(`[MealRequestJob] Tenant ${tenant.id} generation completed`);
+      logger.info(
+        { tenantId: tenant.id },
+        "Tenant meal request generation completed",
+      );
     } catch (error) {
       /**
        * Do not stop the whole job if one tenant fails.
        *
        * Other tenants should still get their meal requests.
        */
-      console.error(
-        `[MealRequestJob] Tenant ${tenant.id} generation failed:`,
-        error,
+      logger.error(
+        { tenantId: tenant.id, error },
+        "Tenant meal request generation failed",
       );
     }
   }
 
-  console.log("[MealRequestJob] Meal request generation completed");
+  logger.info("Meal request generation completed");
 };

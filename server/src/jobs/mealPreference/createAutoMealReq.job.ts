@@ -1,3 +1,4 @@
+import { env } from "@/configs/env.js";
 import { mealPreferenceService } from "@/modules/MealPreference/mealPreference.service.js";
 import { logger } from "@/utils/logger.js";
 import cron from "node-cron";
@@ -34,7 +35,7 @@ export const createAutoMealReqJob = () => {
     },
     {
       name: "auto-meal-request-generation",
-      timezone: "Asia/Dhaka",
+      timezone: `${env.APP_TIMEZONE}`,
       noOverlap: true,
     },
   );
