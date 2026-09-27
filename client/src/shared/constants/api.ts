@@ -149,10 +149,10 @@ export const API_ENDPOINTS = {
   },
 
   EGG_RATE: {
-    CREATE: "/eggRates",
-    GET: "/eggRates",
-    UPDATE: "/eggRates",
-    DELETE: "/eggRates",
+    CREATE: "/egg-rates",
+    GET: "/egg-rates",
+    UPDATE: "/egg-rates",
+    DELETE: "/egg-rates",
   },
   EGG: {
     CREATE: "/eggs",
