@@ -18,6 +18,7 @@ export interface IMonthlyCalculation {
   totalPartyExpense: number;
   totalEggCost: number;
   totalMealCost: number;
+  totalSoldProductAmount: number;
   totalDeposit: string;
   grandTotalMeals: number;
   mealRate: number;

@@ -14,6 +14,7 @@ export const getMonthlyCalculationInfoCards = (calculation: {
   totalPartyExpense: number;
   totalEggCost: number;
   totalMealCost: number;
+  totalSoldProductAmount: number;
   totalDeposit: string | number;
   grandTotalMeals: number;
   mealRate: number;
@@ -47,6 +48,14 @@ export const getMonthlyCalculationInfoCards = (calculation: {
     key: "totalMealCost",
     title: "Total Meal Cost",
     value: `৳ ${calculation.totalMealCost}`,
+    icon: <Wallet size={22} />,
+    iconClassName: "text-warning",
+    valueClassName: "text-warning",
+  },
+  {
+    key: "totalsoldProduct",
+    title: "Sold Product",
+    value: `৳ ${calculation.totalSoldProductAmount}`,
     icon: <Wallet size={22} />,
     iconClassName: "text-warning",
     valueClassName: "text-warning",

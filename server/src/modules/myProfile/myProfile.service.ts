@@ -3,6 +3,7 @@ import { eggRateRepository } from "../eggRates/eggRate.repository.js";
 import { monthlyCalculationRepository } from "../monthlyCalculation/monthlyCalculation.repository.js";
 import { partyExpenseRepository } from "../PartyExpense/partyExpense.repository.js";
 import { partyExpenseMemberRepository } from "../PartyExpenseMember/partyExpenseMember.repository.js";
+import { soldProductRepository } from "../soldProduct/soldProduct.repository.js";
 import { myProfileRepository } from "./myProfile.repository.js";
 
 class MyProfileService {
@@ -28,6 +29,7 @@ class MyProfileService {
       totalEggQuantity,
       myEggSummary,
       eggRate,
+      soldProduct,
     ] = await Promise.all([
       myProfileRepository.getMyProfileUser({
         tenantId,
@@ -77,6 +79,8 @@ class MyProfileService {
         memberId: userId,
       }),
       eggRateRepository.getEggRate(tenantId, mealSessionId),
+
+      soldProductRepository.getSoldProduct(tenantId, mealSessionId),
     ]);
 
     // egg related calculation
@@ -90,13 +94,16 @@ class MyProfileService {
 
     const myEggCost = Number((myEggQuantity * currentEggRate).toFixed(2));
 
+    const totalSoldProductAmount = Number(soldProduct?.totalAmount ?? 0);
+
     const grandTotalMeals = Number(mealSummary?.grandTotalMeals ?? 0);
 
     // Party expense বাদ দিয়ে normal expense
     const normalExpense =
       Number(totalExpense ?? 0) -
       Number(totalPartyExpense ?? 0) -
-      Number(totalEggCost ?? 0);
+      Number(totalEggCost ?? 0) -
+      Number(totalSoldProductAmount ?? 0);
 
     // Normal meal rate
     const mealRate =

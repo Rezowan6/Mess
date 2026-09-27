@@ -3,6 +3,7 @@ import { eggRateRepository } from "../eggRates/eggRate.repository.js";
 import { IMealSessionReq } from "../mealSession/mealSession.interface.js";
 import { partyExpenseRepository } from "../PartyExpense/partyExpense.repository.js";
 import { partyExpenseMemberRepository } from "../PartyExpenseMember/partyExpenseMember.repository.js";
+import { soldProductRepository } from "../soldProduct/soldProduct.repository.js";
 import { monthlyCalculationRepository } from "./monthlyCalculation.repository.js";
 
 class MonthlyCalculationService {
@@ -45,6 +46,13 @@ class MonthlyCalculationService {
       (Number(totalEggQuantity) * eggRate).toFixed(2),
     );
 
+    const soldProductData = await soldProductRepository.getSoldProduct(
+      tenantId,
+      mealSessionId,
+    );
+
+    const totalSoldProductAmount = Number(soldProductData?.totalAmount ?? 0);
+
     const mealSummary = await monthlyCalculationRepository.getTotalMeal(
       tenantId,
       mealSessionId,
@@ -53,7 +61,10 @@ class MonthlyCalculationService {
 
     // Party expense + egg cost meal rate-এর মধ্যে যাবে না
     const normalExpense =
-      Number(totalExpense) - Number(totalPartyExpense) - Number(totalEggCost);
+      Number(totalExpense) -
+      Number(totalPartyExpense) -
+      Number(totalEggCost) -
+      Number(totalSoldProductAmount);
 
     const mealRate =
       grandTotalMeals > 0
@@ -152,12 +163,15 @@ class MonthlyCalculationService {
 
     const monthName = getMonthName(session.month, session.year);
 
-    const totalMealCost = Number((grandTotalMeals * mealRate).toFixed(2));
+    const totalMealCost = Number(normalExpense);
 
     return {
-      totalExpense: Number(totalExpense.toFixed(2)),
+      totalExpense:
+        Number(totalExpense.toFixed(2)) -
+        Number(totalSoldProductAmount.toFixed(2)),
       totalPartyExpense: Number(totalPartyExpense.toFixed(2)),
       totalEggCost: Number(totalEggCost.toFixed(2)),
+      totalSoldProductAmount: Number(totalSoldProductAmount.toFixed(2)),
       totalMealCost,
 
       eggSummary: {
