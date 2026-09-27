@@ -37,12 +37,6 @@ export const useMonthlyMealHistoryColumns =
       },
 
       {
-        key: "guestMeal",
-        title: "Guest",
-        render: (row) => row.guestMeal,
-      },
-
-      {
         key: "total",
         title: "Total",
         render: (row) =>
