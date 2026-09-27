@@ -20,6 +20,13 @@ export const useUpdateSoldProduct = () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.soldProducts.all(tenantId, mealSessionId),
       });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.monthlyCalculations.current(
+          tenantId,
+          mealSessionId,
+        ),
+      });
     },
   });
 };
