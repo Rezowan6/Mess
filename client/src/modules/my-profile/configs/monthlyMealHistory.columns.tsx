@@ -1,4 +1,5 @@
 import type { TableColumn } from "@/shared/components/ui/Table";
+import { formatDate } from "@/shared/utils/date.utils";
 
 interface IMonthlyMealHistory {
   date: string;
@@ -14,7 +15,7 @@ export const useMonthlyMealHistoryColumns =
       {
         key: "date",
         title: "Date",
-        render: (row) => new Date(row.date).toLocaleDateString("en-GB"),
+        render: (row) => formatDate(row.date),
       },
 
       {

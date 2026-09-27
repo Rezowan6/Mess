@@ -1,4 +1,5 @@
 import { OverviewListCard } from "@/shared/components/ui/OverviewListCard";
+import { formatDate } from "@/shared/utils/date.utils";
 import { Banknote } from "lucide-react";
 
 interface Deposit {
@@ -21,7 +22,7 @@ export const MyProfileRecentDeposits = ({ deposits }: Props) => {
     iconClassName: "text-success",
     iconBgClassName: "bg-success/10",
     valueClassName: "text-success",
-    description: new Date(deposit.createdAt).toLocaleDateString(),
+    description: formatDate(deposit.createdAt),
   }));
 
   const totalDeposit = deposits.reduce(

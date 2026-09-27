@@ -1,6 +1,5 @@
-import dayjs from "dayjs";
-
 import type { TableColumn } from "@/shared/components/ui/Table";
+import { formatDate } from "@/shared/utils/date.utils";
 
 interface IEggHistory {
   id: number;
@@ -14,7 +13,7 @@ export const useEggHistoryColumns = (): TableColumn<IEggHistory>[] => {
     {
       key: "eggDate",
       title: "Date",
-      render: (egg) => dayjs(egg.eggDate).format("DD MMM YYYY"),
+      render: (egg) => formatDate(egg.eggDate),
     },
     {
       key: "quantity",

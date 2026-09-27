@@ -8,6 +8,7 @@ interface Props {
     totalPartyExpense: number;
     totalEggCost: number;
     totalMealCost: number;
+    totalSoldProductAmount: number;
     totalDeposit: string | number;
     grandTotalMeals: number;
     mealRate: number;

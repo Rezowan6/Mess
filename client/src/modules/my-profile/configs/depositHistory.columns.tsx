@@ -1,6 +1,5 @@
-import dayjs from "dayjs";
-
 import type { TableColumn } from "@/shared/components/ui/Table";
+import { formatDate } from "@/shared/utils/date.utils";
 
 interface IDepositHistory {
   id: number;
@@ -14,7 +13,7 @@ export const useDepositHistoryColumns = (): TableColumn<IDepositHistory>[] => {
     {
       key: "createdAt",
       title: "Date",
-      render: (deposit) => dayjs(deposit.createdAt).format("DD MMM YYYY"),
+      render: (deposit) => formatDate(deposit.createdAt),
     },
     {
       key: "amount",
