@@ -239,7 +239,7 @@ export const queryKeys = {
   },
   // ============================================================
   // EGG RATES
-  // Tenant based
+  // Tenant + meal-session based
   // ============================================================
 
   eggRates: {
@@ -248,6 +248,19 @@ export const queryKeys = {
 
     get: (tenantId?: number, mealSessionId?: number) =>
       ["eggRates", tenantId, mealSessionId, "get"] as const,
+  },
+
+  // ============================================================
+  // SOLD PRODUCTS
+  // Tenant + meal-session based
+  // ============================================================
+
+  soldProducts: {
+    all: (tenantId?: number, mealSessionId?: number) =>
+      ["soldProducts", tenantId, mealSessionId] as const,
+
+    get: (tenantId?: number, mealSessionId?: number) =>
+      ["soldProducts", tenantId, mealSessionId, "get"] as const,
   },
 
   // ============================================================

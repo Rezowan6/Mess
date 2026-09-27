@@ -1,6 +1,8 @@
+import { env } from "@/configs/env.js";
+import { logger } from "@/utils/logger.js";
 import { runMealRequestGeneration } from "./mealRequest.handler.js";
 import { scheduleMealRequestJob } from "./mealRequest.scheduler.js";
-import { getNextMaghribTime, getTestRunTime } from "./mealRequest.time.js";
+import { getNextMaghribTime } from "./mealRequest.time.js";
 
 const scheduleNext = (): void => {
   /**
@@ -24,24 +26,23 @@ const scheduleNext = (): void => {
    */
   // const runAt = getTestRunTime();
 
-  console.log(
-    `[MealRequestJob] Next generation scheduled at: ${runAt.toLocaleString(
-      "en-BD",
-      {
-        timeZone: "Asia/Dhaka",
-      },
-    )}`,
+  logger.info(
+    {
+      runAt: runAt.toLocaleString("en-BD", {
+        timeZone: env.APP_TIMEZONE,
+      }),
+    },
+    "Next meal request generation scheduled",
   );
 
   scheduleMealRequestJob(runAt, async () => {
     try {
-      console.log("[MealRequestJob] Job execution started");
-
+      logger.info("Meal request job execution started");
       await runMealRequestGeneration();
 
-      console.log("[MealRequestJob] Job execution completed");
+      logger.info("Meal request job execution completed");
     } catch (error) {
-      console.error("[MealRequestJob] Job execution failed:", error);
+      logger.error({ error }, "Meal request job execution failed");
     } finally {
       /**
        * Always schedule the next day's job.
@@ -55,7 +56,7 @@ const scheduleNext = (): void => {
 };
 
 export const startMealRequestJob = (): void => {
-  console.log("[MealRequestJob] Starting scheduler...");
+  logger.info("Meal request scheduler starting");
 
   scheduleNext();
 };

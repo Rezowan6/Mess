@@ -23,6 +23,7 @@ import {
   TenantMembership,
   User,
 } from "./index.js";
+import { setupSoldProductAssociations } from "@/modules/soldProduct/soldProduct.association.js";
 
 export const setupAssociations = () => {
   User.hasMany(TenantMembership, {
@@ -470,4 +471,6 @@ export const setupAssociations = () => {
   setupEggAssociations();
 
   setupEggRateAssociations();
+
+  setupSoldProductAssociations();
 };

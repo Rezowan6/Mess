@@ -1,4 +1,5 @@
 import { appTime } from "@/configs/time.js";
+import { logger } from "@/utils/logger.js";
 import { APP_TIMEZONE } from "@/utils/timezone.util.js";
 import { CalculationMethod, Coordinates, PrayerTimes } from "adhan";
 
@@ -62,18 +63,19 @@ export const getNextMaghribTime = (): Date => {
   const todayRunAt = todayMaghrib.add(MAGHRIB_DELAY_MINUTES, "minute");
 
   if (todayRunAt.isAfter(now)) {
-    console.log(`[MealRequestJob] Timezone: ${APP_TIMEZONE}`);
-
-    console.log(
-      `[MealRequestJob] Today's Maghrib: ${todayMaghrib.format(
-        "YYYY-MM-DD hh:mm:ss A",
-      )}`,
+    logger.info(
+      { timezone: APP_TIMEZONE },
+      "Meal request job timezone configured",
     );
 
-    console.log(
-      `[MealRequestJob] Job will run at: ${todayRunAt.format(
-        "YYYY-MM-DD hh:mm:ss A",
-      )}`,
+    logger.info(
+      { maghribTime: todayMaghrib.format("YYYY-MM-DD hh:mm:ss A") },
+      "Today's Maghrib time calculated",
+    );
+
+    logger.info(
+      { runAt: todayRunAt.format("YYYY-MM-DD hh:mm:ss A") },
+      "Meal request job scheduled run time calculated",
     );
 
     return todayRunAt.toDate();

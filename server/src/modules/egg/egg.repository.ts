@@ -135,6 +135,18 @@ class EggRepository extends BaseRepository<Egg> {
     });
   }
 
+  async existsByMealSession(
+    tenantId: number,
+    mealSessionId: number,
+  ): Promise<boolean> {
+    const egg = await this.findOne({
+      tenantId,
+      mealSessionId,
+    });
+
+    return Boolean(egg);
+  }
+
   async updateEgg(
     id: number,
     tenantId: number,
