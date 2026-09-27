@@ -1,20 +1,21 @@
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { addNotificationToCache } from "@/modules/notification/utils/notification-cache";
-import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 import { socket } from "@/services/socket";
 import { queryKeys } from "@/shared/constants/queryKeys";
 import { SocketEvent } from "@/shared/constants/socket-event";
+import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
-  const currentTenant = useTenantStore((state) => state.currentTenant);
+  const { tenantId, mealSessionId } = useCurrentTenantContext();
+
   const user = useAuthStore((state) => state.user);
 
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (!user?.id || !currentTenant?.tenantId) {
+    if (!user?.id || !tenantId) {
       return;
     }
     socket.connect();
@@ -22,27 +23,32 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     socket.on("connect", () => {
       socket.emit(SocketEvent.JOIN, {
         userId: user?.id,
-        tenantId: currentTenant?.tenantId,
+        tenantId: tenantId,
       });
     });
-    // handlers...
 
     // meal planning
     const handleMealPlanningUpdated = () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPlanning.daily(currentTenant?.tenantId),
+        queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
       });
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealPreference.myPreference(
-          currentTenant?.tenantId,
+          tenantId,
+          mealSessionId,
         ),
       });
     };
 
     // notification
     const handleNotification = (notification: any) => {
-      console.log(notification)
-      addNotificationToCache(queryClient, notification, currentTenant.tenantId);
+      console.log(notification);
+      addNotificationToCache(
+        queryClient,
+        notification,
+        tenantId,
+        mealSessionId as number,
+      );
 
       /**
        * Role updated
@@ -70,7 +76,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       socket.off("disconnect");
       socket.disconnect();
     };
-  }, [user?.id, currentTenant?.tenantId, queryClient]);
+  }, [user?.id, tenantId, queryClient]);
 
   return <>{children}</>;
 };
