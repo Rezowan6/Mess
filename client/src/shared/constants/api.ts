@@ -154,6 +154,13 @@ export const API_ENDPOINTS = {
     UPDATE: "/egg-rates",
     DELETE: "/egg-rates",
   },
+
+  SOLD_PRODUCT: {
+    CREATE: "/sold-products",
+    GET: "/sold-products",
+    UPDATE: "/sold-products",
+    DELETE: "/sold-products",
+  },
   EGG: {
     CREATE: "/eggs",
     GET_ALL: "/eggs",
