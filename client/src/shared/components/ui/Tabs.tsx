@@ -25,7 +25,6 @@ export const Tabs = <T extends string>({
           variant={activeTab === tab.key ? "primary" : "normal"}
           className="sm:w-24 flex-wrap h-fit"
           onClick={() => onChange(tab.key)}
-          disabled={tab.disabled ?? false}
         >
           {tab.label}
         </Button>

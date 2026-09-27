@@ -10,7 +10,6 @@ export const MealEntryTableSkeleton = () => {
             <th>Breakfast</th>
             <th>Lunch</th>
             <th>Dinner</th>
-            <th>Guest Meal</th>
             <th>Total Meal</th>
           </tr>
         </thead>
@@ -36,11 +35,6 @@ export const MealEntryTableSkeleton = () => {
               {/* Dinner */}
               <td>
                 <Skeleton className="h-4 w-16" />
-              </td>
-
-              {/* Guest Meal */}
-              <td>
-                <Skeleton className="h-4 w-20" />
               </td>
 
               {/* Total */}

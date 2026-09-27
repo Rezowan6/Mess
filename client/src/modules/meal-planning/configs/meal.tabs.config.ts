@@ -17,9 +17,4 @@ export const mealTabs: {
     key: "dinner",
     label: "Dinner",
   },
-  {
-    key: "guest",
-    label: "Guest",
-    disabled: true,
-  },
 ];

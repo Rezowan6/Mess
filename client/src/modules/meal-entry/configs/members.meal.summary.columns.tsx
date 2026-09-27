@@ -34,19 +34,9 @@ export const useMembersMealSummaryColumns = (): TableColumn<IMealEntry>[] => {
       render: (meal) => meal.totalDinner,
     },
     {
-      key: "guestMeal",
-      title: "Guest",
-      render: (meal) => meal.totalGuestMeal,
-    },
-    {
       key: "totalMeals",
       title: "Total Meals",
       render: (meal) => meal.totalMeals,
-    },
-    {
-      key: "grandTotalMeals",
-      title: "Grand Total",
-      render: (meal) => meal.grandTotalMeals,
     },
   ];
 

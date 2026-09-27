@@ -29,12 +29,6 @@ export const useMealHistoryColumns = (): TableColumn<IMealEntry>[] => {
     },
 
     {
-      key: "guestMeal",
-      title: "Guest Meal",
-      render: (meal) => meal.guestMeal,
-    },
-
-    {
       key: "total",
       title: "Total Meal",
       render: (meal) =>

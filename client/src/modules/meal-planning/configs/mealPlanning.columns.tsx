@@ -30,13 +30,12 @@ export const getMealPlanningColumns = (
     render: (row) => (
       <div className="flex items-center gap-2">
         <Button
-          variant="error"
+          variant="primary"
           onClick={() => onReject(row.userId)}
           disabled={isPending && pendingUserId === row.userId}
           loading={isPending && pendingUserId === row.userId}
-          loadingText="Rejecting..."
         >
-          Reject
+          Off
         </Button>
       </div>
     ),
