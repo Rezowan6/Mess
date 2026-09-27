@@ -5,12 +5,13 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 
 import { Settings } from "lucide-react";
 
+import { EggRateCard } from "@/modules/egg-rate/components/EggRateCard.tsx";
+import { SoldProductCard } from "@/modules/sold-product/components/SoldProductCard.tsx";
 import { MealSettingActions } from "../components/MealSettingActions.tsx";
 import { MealSettingCard } from "../components/MealSettingCard";
 import { MealSettingFormModal } from "../components/MealSettingFormModal";
 import { MealSettingManageSkeleton } from "../components/MealSettingManageSkeleton.tsx";
 import { useMealSetting } from "../hooks/useMealSetting";
-import { EggRateCard } from "@/modules/egg-rate/components/EggRateCard.tsx";
 
 export const MealSettingManagePage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,6 +40,10 @@ export const MealSettingManagePage = () => {
           {/* Egg Rate */}
           <div className="rounded-xl border border-accent p-6">
             <EggRateCard />
+          </div>
+          {/* Egg Rate */}
+          <div className="rounded-xl border border-accent p-6">
+            <SoldProductCard />
           </div>
         </div>
       ) : (

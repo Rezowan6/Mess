@@ -45,10 +45,6 @@ class SoldProductService {
       mealSessionId,
     );
 
-    if (!soldProduct) {
-      throw new ApiError(404, "Sold product not found.");
-    }
-
     return soldProduct;
   }
 

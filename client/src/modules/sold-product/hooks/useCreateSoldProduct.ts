@@ -17,6 +17,9 @@ export const useCreateSoldProduct = () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.soldProducts.get(tenantId, mealSessionId),
       });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.soldProducts.all(tenantId, mealSessionId),
+      });
     },
   });
 };

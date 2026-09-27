@@ -16,6 +16,10 @@ export const useDeleteSoldProduct = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.soldProducts.get(tenantId, mealSessionId),
+        refetchType: "active",
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.soldProducts.all(tenantId, mealSessionId),
       });
     },
   });
