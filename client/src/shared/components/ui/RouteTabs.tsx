@@ -33,7 +33,6 @@ export const RouteTabs = ({ tabs }: Props) => {
           className={`sm:w-24 flex-wrap h-fit`}
           variant={activeTab === tab.key ? "primary" : "normal"}
           onClick={() => navigate(tab.path)}
-          disabled={tab.disabled ?? false}
         >
           {tab.label}
         </Button>

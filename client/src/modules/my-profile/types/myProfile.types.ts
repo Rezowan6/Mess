@@ -27,12 +27,29 @@ export interface IMyProfile {
 
   summary: IMealCalculationSummary;
 
-  mealSummary: mealSummary
+  mealSummary: mealSummary;
+
+  eggSummary: {
+    totalEgg: number;
+    eggRate: number;
+    eggCost: number;
+  };
 
   deposits: {
     id: number;
     amount: number;
     paymentMethod: string;
+    createdAt: string;
+  }[];
+
+  eggs: {
+    id: number;
+    tenantId: number;
+    mealSessionId: number;
+    memberId: number;
+    createdBy: number;
+    eggDate: string;
+    quantity: number | string;
     createdAt: string;
   }[];
 

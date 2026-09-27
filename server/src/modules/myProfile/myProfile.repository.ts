@@ -147,6 +147,25 @@ class MyProfileRepository {
       totalEgg: Number((result as any)?.totalEgg ?? 0),
     };
   }
+
+  async getMyEggs({
+    tenantId,
+    mealSessionId,
+    memberId,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    memberId: number;
+  }) {
+    return await Egg.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+        memberId,
+      },
+      order: [["eggDate", "DESC"]],
+    });
+  }
 }
 
 export const myProfileRepository = new MyProfileRepository();

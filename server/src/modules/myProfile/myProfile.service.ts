@@ -30,6 +30,7 @@ class MyProfileService {
       myEggSummary,
       eggRate,
       soldProduct,
+      eggs,
     ] = await Promise.all([
       myProfileRepository.getMyProfileUser({
         tenantId,
@@ -81,6 +82,11 @@ class MyProfileService {
       eggRateRepository.getEggRate(tenantId, mealSessionId),
 
       soldProductRepository.getSoldProduct(tenantId, mealSessionId),
+      myProfileRepository.getMyEggs({
+        tenantId,
+        mealSessionId,
+        memberId: userId,
+      }),
     ]);
 
     // egg related calculation
@@ -164,6 +170,7 @@ class MyProfileService {
         eggCost: myEggCost,
       },
 
+      eggs,
       deposits,
       meals,
     };

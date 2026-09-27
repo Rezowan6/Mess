@@ -3,6 +3,7 @@ import { ROUTES } from "@/shared/constants/routes";
 import { RoleGuard } from "@/shared/guards/role.guard";
 
 import { MyDepositHistoryPage } from "../pages/MyDepositHistoryPage";
+import { MyEggHistoryPage } from "../pages/MyEggHistoryPage";
 import { MyMealHistoryPage } from "../pages/MyMealHistoryPage";
 import { MyProfileOverviewPage } from "../pages/MyProfileOverviewPage";
 import { MyProfilePage } from "../pages/MyProfilePage";
@@ -38,6 +39,10 @@ export const myProfileRoutes = {
         {
           path: "meal-history",
           element: <MyMealHistoryPage />,
+        },
+        {
+          path: "eggs-history",
+          element: <MyEggHistoryPage />,
         },
       ],
     },

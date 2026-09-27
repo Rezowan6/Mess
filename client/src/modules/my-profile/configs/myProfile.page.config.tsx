@@ -16,7 +16,7 @@ export const myProfilePageConfig = {
     description: "View your deposit history and payment details.",
   },
 
-  [`${ROUTES.MY_PROFILE}/egg`]: {
+  [`${ROUTES.MY_PROFILE}/eggs-history`]: {
     title: "Egg History",
     description: "View your egg consumption and history.",
   },
