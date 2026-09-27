@@ -97,18 +97,17 @@ class MealGeneratorService {
     if (result.createdEntries > 0) {
       for (const request of result.requests) {
         try {
-          await notificationService.create(
+          await notificationService.create({
             tenantId,
-            request.userId,
-            request.userId, // system-generated
-            {
-              title: "Meal Approved",
-              message: `Your meal request for ${appTime(date).format(
-                "DD MMM YYYY",
-              )} has been approved and your meal entry has been created.`,
-              type: Notification.MEAL_REQUEST_APPROVED,
-            },
-          );
+            userId: request.userId,
+            createdBy: request.userId, // system-generated
+            mealSessionId: mealSession.id,
+            title: "Meal Approved",
+            message: `Your meal request for ${appTime(date).format(
+              "DD MMM YYYY",
+            )} has been approved and your meal entry has been created.`,
+            type: Notification.MEAL_REQUEST_APPROVED,
+          });
         } catch (error) {
           console.error(
             `[MealGenerator] Failed to create notification for tenant ${tenantId}, user ${request.userId}:`,

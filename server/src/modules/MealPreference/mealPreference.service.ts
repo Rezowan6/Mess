@@ -203,16 +203,17 @@ class MealPreferenceService {
             const request = result.request;
 
             // System-generated notification
-            await notificationService.create(
-              tenant.id,
-              preference.userId,
-              preference.userId,
-              {
-                title: `Meal Request Created`,
-                message: `Your meal request for ${formatDisplayDate(getAppDate())} has been automatically created based on your meal preferences.`,
-                type: Notification.MEAL_REQUEST_CREATED,
-              },
-            );
+            await notificationService.create({
+              tenantId: tenant.id,
+              userId: preference.userId,
+              createdBy: preference.userId, // system-generated
+              mealSessionId: mealSession.id,
+              title: "Meal Request Created",
+              message: `Your meal request for ${formatDisplayDate(
+                getAppDate(),
+              )} has been automatically created based on your meal preferences.`,
+              type: Notification.MEAL_REQUEST_CREATED,
+            });
 
             // Realtime meal planning update
             this.emitMealPlanningUpdated({

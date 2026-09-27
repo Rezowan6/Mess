@@ -14,7 +14,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
   const queryClient = useQueryClient();
 
-  console.log(mealSessionId)
 
   useEffect(() => {
     if (!user?.id || !tenantId || !mealSessionId) {
@@ -45,7 +44,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     // notification
     const handleNotification = (notification: any) => {
-      console.log(notification);
+
       addNotificationToCache(
         queryClient,
         notification,
