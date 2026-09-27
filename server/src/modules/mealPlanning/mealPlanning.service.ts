@@ -109,7 +109,13 @@ class MealPlanningService {
     };
   }
 
-  async rejectMeal({ tenantId, userId, managerId, meal }: IRejectMealPayload) {
+  async rejectMeal({
+    tenantId,
+    userId,
+    managerId,
+    mealSessionId,
+    meal,
+  }: IRejectMealPayload) {
     const result = await sequelize.transaction(async (transaction) => {
       const preference = await mealPreferenceRepository.findOneWithOptions({
         where: {
@@ -184,7 +190,11 @@ class MealPlanningService {
       return updatedPreference;
     });
 
-    await notificationService.create(tenantId, userId, managerId, {
+    await notificationService.create({
+      tenantId,
+      userId,
+      createdBy: managerId,
+      mealSessionId,
       title: "Meal Rejected",
       message: `Your ${meal} meal has been turned off by the manager.`,
       type: Notification.MEAL_REJECTED,

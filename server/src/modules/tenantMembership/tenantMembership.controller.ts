@@ -37,6 +37,7 @@ export class TenantMembershipController {
     const {
       tenantId,
       membershipId,
+      mealSessionId,
       role: currentRole,
       userId,
     } = getTenantContext(req);
@@ -48,6 +49,7 @@ export class TenantMembershipController {
       tenantId,
       currentMembershipId: membershipId,
       currentRole,
+      mealSessionId,
       userId,
       id,
       role,

@@ -27,6 +27,7 @@ export class Notification extends Model<
 
   // Multi Tenant
   declare tenantId: number;
+  declare mealSessionId: number | null;
 
   // Receiver
   declare userId: number;
@@ -71,6 +72,11 @@ Notification.init(
     tenantId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+
+    mealSessionId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
 
     userId: {

@@ -20,7 +20,11 @@ class MealPlanningController {
   });
 
   rejectMeal = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, userId: managerId } = getTenantContext(req);
+    const {
+      tenantId,
+      userId: managerId,
+      mealSessionId,
+    } = getTenantContext(req);
 
     const userId = Number(req.params.userId);
     const { meal } = req.body;
@@ -40,6 +44,7 @@ class MealPlanningController {
       userId,
       managerId,
       meal,
+      mealSessionId,
     });
 
     return sendResponse(res, {

@@ -1,19 +1,28 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
 import { Notification, User } from "@/models/index.js";
 
-import { IPaginationQuery } from "@/types/pagination.interface.js";
+import {
+  INotificationContext,
+  INotificationPaginationContext,
+} from "./notification.interface.js";
 
 class NotificationRepository extends BaseRepository<Notification> {
   constructor() {
     super(Notification);
   }
 
-  async getAll(tenantId: number, userId: number, pagination: IPaginationQuery) {
+  async getAll({
+    tenantId,
+    userId,
+    mealSessionId,
+    pagination,
+  }: INotificationPaginationContext) {
     return this.paginate(
       {
         where: {
           tenantId,
           userId,
+          mealSessionId,
         },
 
         include: [
@@ -30,12 +39,16 @@ class NotificationRepository extends BaseRepository<Notification> {
     );
   }
 
-  async getById(id: number, tenantId: number, userId: number) {
+  async getById(
+    id: number,
+    { tenantId, userId, mealSessionId }: INotificationContext,
+  ) {
     return this.findOneWithOptions({
       where: {
         id,
         tenantId,
         userId,
+        mealSessionId,
       },
 
       include: [
@@ -47,22 +60,31 @@ class NotificationRepository extends BaseRepository<Notification> {
     });
   }
 
-  async getUnreadCount(tenantId: number, userId: number) {
+  async getUnreadCount({
+    tenantId,
+    userId,
+    mealSessionId,
+  }: INotificationContext) {
     return this.count({
       where: {
         tenantId,
         userId,
+        mealSessionId,
         isRead: false,
       },
     });
   }
 
-  async markAsRead(id: number, tenantId: number, userId: number) {
+  async markAsRead(
+    id: number,
+    { tenantId, userId, mealSessionId }: INotificationContext,
+  ) {
     return this.update(
       {
         id,
         tenantId,
         userId,
+        mealSessionId,
       },
       {
         isRead: true,
@@ -70,11 +92,16 @@ class NotificationRepository extends BaseRepository<Notification> {
     );
   }
 
-  async markAllAsRead(tenantId: number, userId: number) {
+  async markAllAsRead({
+    tenantId,
+    userId,
+    mealSessionId,
+  }: INotificationContext) {
     return this.update(
       {
         tenantId,
         userId,
+        mealSessionId,
         isRead: false,
       },
       {
@@ -83,12 +110,16 @@ class NotificationRepository extends BaseRepository<Notification> {
     );
   }
 
-  async remove(id: number, tenantId: number, userId: number) {
+  async remove(
+    id: number,
+    { tenantId, userId, mealSessionId }: INotificationContext,
+  ) {
     return this.delete(
       {
         id,
         tenantId,
         userId,
+        mealSessionId,
       },
       {
         force: true,

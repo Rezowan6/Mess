@@ -22,19 +22,30 @@ export const initSocket = (server: HttpServer) => {
 
     console.log("Socket ID:", socket.id);
 
-    socket.on(SocketEvent.JOIN, (payload: { userId: number; tenantId: number }) => {
-      const { tenantId, userId } = payload;
+    socket.on(
+      SocketEvent.JOIN,
+      (payload: {
+        userId: number;
+        tenantId: number;
+        mealSessionId: number;
+      }) => {
+        const { tenantId, userId, mealSessionId } = payload;
 
-      socket.join(SocketRoom.user(userId));
+        socket.join(SocketRoom.user(userId));
 
-      socket.join(SocketRoom.tenant(tenantId));
+        socket.join(SocketRoom.tenant(tenantId));
 
-      console.log(socket.rooms);
+        socket.join(SocketRoom.mealSession(tenantId, mealSessionId));
 
-      console.log(`✅ User ${userId} joined room user:${userId}`);
+        console.log(socket.rooms);
 
-      console.log(`✅ User ${userId} joined tenant:${tenantId}`);
-    });
+        console.log(`✅ User ${userId} joined room user:${userId}`);
+
+        console.log(`✅ User ${userId} joined tenant:${tenantId}`);
+
+        console.log(`✅ User ${userId} joined meal-session:${mealSessionId}`);
+      },
+    );
 
     /**
      * Client Disconnected

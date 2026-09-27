@@ -1,5 +1,7 @@
 import { setupEggAssociations } from "@/modules/egg/egg.association.js";
 import { setupEggRateAssociations } from "@/modules/eggRates/eggRate.association.js";
+import { setupNotificationAssociations } from "@/modules/notification/notification.association.js";
+import { setupSoldProductAssociations } from "@/modules/soldProduct/soldProduct.association.js";
 import {
   Deposit,
   Expenses,
@@ -11,7 +13,6 @@ import {
   MealSession,
   MealSetting,
   Notice,
-  Notification,
   PartyExpense,
   PartyExpenseMember,
   Payment,
@@ -23,7 +24,6 @@ import {
   TenantMembership,
   User,
 } from "./index.js";
-import { setupSoldProductAssociations } from "@/modules/soldProduct/soldProduct.association.js";
 
 export const setupAssociations = () => {
   User.hasMany(TenantMembership, {
@@ -362,27 +362,6 @@ export const setupAssociations = () => {
     as: "subscription",
   });
 
-  // notification
-  Notification.belongsTo(User, {
-    foreignKey: "userId",
-    as: "user",
-  });
-
-  Notification.belongsTo(User, {
-    foreignKey: "createdBy",
-    as: "creator",
-  });
-
-  Notification.belongsTo(Tenant, {
-    foreignKey: "tenantId",
-    as: "tenant",
-  });
-
-  Tenant.hasMany(Notification, {
-    foreignKey: "tenantId",
-    as: "notifications",
-  });
-
   /** MealSetting */
 
   Tenant.hasOne(MealSetting, {
@@ -467,6 +446,8 @@ export const setupAssociations = () => {
     foreignKey: "mealSessionId",
     as: "partyExpenses",
   });
+
+  setupNotificationAssociations();
 
   setupEggAssociations();
 

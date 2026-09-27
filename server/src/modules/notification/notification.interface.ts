@@ -1,3 +1,5 @@
+import { IPaginationQuery } from "@/types/pagination.interface.js";
+
 export const Notification = {
   MEMBER_JOINED: "MEMBER_JOINED",
 
@@ -19,3 +21,21 @@ export const Notification = {
 } as const;
 
 export type NotificationType = (typeof Notification)[keyof typeof Notification];
+
+export interface INotificationContext {
+  tenantId: number;
+  userId: number;
+  mealSessionId: number;
+}
+
+export interface INotificationPaginationContext extends INotificationContext {
+  pagination: IPaginationQuery;
+}
+
+export interface ICreateNotification extends INotificationContext {
+  createdBy: number;
+
+  title: string;
+  message: string;
+  type: string;
+}

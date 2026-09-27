@@ -14,8 +14,10 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
   const queryClient = useQueryClient();
 
+  console.log(mealSessionId)
+
   useEffect(() => {
-    if (!user?.id || !tenantId) {
+    if (!user?.id || !tenantId || !mealSessionId) {
       return;
     }
     socket.connect();
@@ -24,6 +26,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       socket.emit(SocketEvent.JOIN, {
         userId: user?.id,
         tenantId: tenantId,
+        mealSessionId,
       });
     });
 
@@ -76,7 +79,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       socket.off("disconnect");
       socket.disconnect();
     };
-  }, [user?.id, tenantId, queryClient]);
+  }, [user?.id, tenantId, mealSessionId, queryClient]);
 
   return <>{children}</>;
 };

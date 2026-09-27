@@ -59,6 +59,7 @@ export type MealPlanningMeal = "breakfast" | "lunch" | "dinner";
 
 export interface IRejectMealPayload {
   tenantId: number;
+  mealSessionId: number;
   userId: number;
   managerId: number;
   meal: MealPlanningMeal;

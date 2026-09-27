@@ -14,6 +14,17 @@ class SocketService {
     this.io.to(SocketRoom.tenant(tenantId)).emit(event, payload);
   }
 
+  emitToMealSession(
+    tenantId: number,
+    mealSessionId: number,
+    event: string,
+    payload: unknown,
+  ) {
+    this.io
+      .to(SocketRoom.mealSession(tenantId, mealSessionId))
+      .emit(event, payload);
+  }
+
   broadcast(event: string, payload: unknown) {
     this.io.emit(event, payload);
   }

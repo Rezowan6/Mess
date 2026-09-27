@@ -32,6 +32,7 @@ export class TenantMembershipService {
   async updateRole(payload: IUpdateRolePayload) {
     const {
       tenantId,
+      mealSessionId,
       currentMembershipId,
       id,
       role,
@@ -68,16 +69,18 @@ export class TenantMembershipService {
     /**
      * Create Notification
      */
-    await notificationService.create(tenantId, targetMember?.userId, adminId, {
+    await notificationService.create({
+      tenantId,
+      userId: targetMember?.userId,
+      createdBy: adminId,
+      mealSessionId,
       title: "Role Updated",
       message: `Your role has been changed from ${oldRole} to ${role}.`,
-
       type: Notification.ROLE_UPDATED,
     });
 
     return result;
   }
-
   async deleteMember(payload: IDeleteMemberPayload) {
     const { tenantId, currentMembershipId, targetMembershipId: id } = payload;
 
