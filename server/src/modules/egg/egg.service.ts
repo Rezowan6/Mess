@@ -1,3 +1,9 @@
+import {
+  RealtimeAction,
+  RealtimeResource,
+} from "@/socket/realtime.constant.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { isWithinHours } from "@/utils/date.util.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
@@ -28,7 +34,16 @@ class EggService {
       );
     }
 
-    return await eggRepository.createEgg(data);
+    const result = await eggRepository.createEgg(data);
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.EGG,
+      action: RealtimeAction.CREATED,
+      tenantId,
+      mealSessionId,
+    });
+
+    return result;
   }
 
   async getMemberEggs({
@@ -122,12 +137,14 @@ class EggService {
 
     await eggRepository.updateEgg(id, tenantId, mealSessionId, data);
 
-    return await eggRepository.getEggByDate(
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.EGG,
+      action: RealtimeAction.UPDATED,
       tenantId,
       mealSessionId,
-      memberId,
-      eggDate,
-    );
+    });
+
+    return null;
   }
 
   async delete({
@@ -167,6 +184,13 @@ class EggService {
     }
 
     await eggRepository.deleteEgg(id, tenantId, mealSessionId);
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.EGG,
+      action: RealtimeAction.DELETED,
+      tenantId,
+      mealSessionId,
+    });
 
     return null;
   }

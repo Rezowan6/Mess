@@ -1,3 +1,9 @@
+import {
+  RealtimeAction,
+  RealtimeResource,
+} from "@/socket/realtime.constant.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { isWithinHours } from "@/utils/date.util.js";
@@ -19,11 +25,24 @@ class ExpensesService {
     });
 
     if (count >= 3) {
-      throw new ApiError(409, `Today expenses created max limit ${count}.`);
+      throw new ApiError(
+        409,
+        `Maximum ${count} expenses can be created for this day.`,
+      );
     }
-    return await expensesRepository.create({
+
+    const result = await expensesRepository.create({
       ...data,
     });
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.EXPENSE,
+      action: RealtimeAction.CREATED,
+      tenantId,
+      mealSessionId,
+    });
+
+    return result;
   }
 
   async getAll({
@@ -42,7 +61,7 @@ class ExpensesService {
     );
 
     if (!expenses) {
-      throw new ApiError(404, "Expense not foudn.");
+      throw new ApiError(404, "Expense not found.");
     }
     return expenses;
   }
@@ -104,7 +123,14 @@ class ExpensesService {
     }
     await expensesRepository.update({ id }, data);
 
-    return await expensesRepository.findById(id);
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.EXPENSE,
+      action: RealtimeAction.UPDATED,
+      tenantId,
+      mealSessionId,
+    });
+
+    return null;
   }
 
   async delete({
@@ -135,6 +161,13 @@ class ExpensesService {
     }
 
     await expensesRepository.delete({ id });
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.EXPENSE,
+      action: RealtimeAction.DELETED,
+      tenantId,
+      mealSessionId,
+    });
 
     return null;
   }

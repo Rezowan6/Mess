@@ -3,11 +3,7 @@ export const SocketEvent = {
 
   NOTIFICATION: "notification",
 
-  NOTICE_CREATED: "notice-created",
-
-  MEMBER_UPDATED: "member-updated",
-
-  MEMBER_REMOVED: "member-removed",
+  DATA_UPDATED: "data-updated",
 
   MEAL_PLANNING_UPDATED: "meal-planning-updated",
 } as const;

@@ -1,5 +1,7 @@
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { addNotificationToCache } from "@/modules/notification/utils/notification-cache";
+import { invalidateRealtimeQueries } from "@/services/realtime/realtime-invalidation";
+import type { IDataUpdatedPayload } from "@/services/realtime/realtime.types";
 import { socket } from "@/services/socket";
 import { queryKeys } from "@/shared/constants/queryKeys";
 import { SocketEvent } from "@/shared/constants/socket-event";
@@ -28,6 +30,17 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       });
     });
 
+    const handleDataUpdated = (payload: IDataUpdatedPayload) => {
+      if (
+        payload.tenantId !== tenantId ||
+        payload.mealSessionId !== mealSessionId
+      ) {
+        return;
+      }
+
+      invalidateRealtimeQueries(queryClient, payload);
+    };
+
     // meal planning
     const handleMealPlanningUpdated = () => {
       queryClient.invalidateQueries({
@@ -43,8 +56,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     // notification
     const handleNotification = (notification: any) => {
-      console.log("🔔 REALTIME NOTIFICATION:", notification);
-
       addNotificationToCache(
         queryClient,
         notification,
@@ -63,6 +74,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
+    socket.on(SocketEvent.DATA_UPDATED, handleDataUpdated);
     socket.on(SocketEvent.MEAL_PLANNING_UPDATED, handleMealPlanningUpdated);
     socket.on(SocketEvent.NOTIFICATION, handleNotification);
 
@@ -72,6 +84,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     // cleanup...
     return () => {
+      socket.off(SocketEvent.DATA_UPDATED, handleDataUpdated);
       socket.off(SocketEvent.MEAL_PLANNING_UPDATED, handleMealPlanningUpdated);
       socket.off(SocketEvent.NOTIFICATION);
       socket.off("connect");

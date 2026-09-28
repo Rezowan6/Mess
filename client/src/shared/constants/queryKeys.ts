@@ -160,6 +160,9 @@ export const queryKeys = {
   // Tenant + Meal Session based
   // ============================================================
   mealRequests: {
+    all: (tenantId?: number, mealSessionId?: number) =>
+      ["meal-requests", tenantId, mealSessionId] as const,
+    
     list: (tenantId?: number, mealSessionId?: number) =>
       ["meal-requests", tenantId, mealSessionId] as const,
 

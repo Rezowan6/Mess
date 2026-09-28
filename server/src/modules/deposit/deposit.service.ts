@@ -1,4 +1,10 @@
 import { MemberStatus } from "@/constans/index.js";
+import {
+  RealtimeAction,
+  RealtimeResource,
+} from "@/socket/realtime.constant.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
@@ -39,9 +45,18 @@ class DepositService {
       );
     }
 
-    return await depositRepository.create({
+    const result = await depositRepository.create({
       ...data,
     });
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.DEPOSIT,
+      action: RealtimeAction.CREATED,
+      tenantId,
+      mealSessionId,
+    });
+
+    return result;
   }
 
   async getMemberDepositSummary({
@@ -134,11 +149,14 @@ class DepositService {
 
     await depositRepository.update({ id: depositId }, payload);
 
-    return await depositRepository.getById({
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.DEPOSIT,
+      action: RealtimeAction.UPDATED,
       tenantId,
-      depositId,
       mealSessionId,
     });
+
+    return null;
   }
 
   async deleteDeposit({
@@ -160,7 +178,13 @@ class DepositService {
 
     await depositRepository.delete({ id: depositId });
 
-    return true;
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.DEPOSIT,
+      action: RealtimeAction.DELETED,
+      tenantId,
+      mealSessionId,
+    });
+    return null;
   }
 }
 
