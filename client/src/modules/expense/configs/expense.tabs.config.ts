@@ -16,10 +16,10 @@ export const expenseTabs = [
     label: "Egg",
     path: `${ROUTES.EXPENSE}/egg`,
   },
-  {
-    key: "rice",
-    label: "Rice",
-    path: `${ROUTES.EXPENSE}/rice`,
-    disabled: true,
-  },
+  // {
+  //   key: "rice",
+  //   label: "Rice",
+  //   path: `${ROUTES.EXPENSE}/rice`,
+  //   disabled: true,
+  // },
 ] as const;

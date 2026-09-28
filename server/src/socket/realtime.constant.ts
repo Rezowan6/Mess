@@ -1,3 +1,5 @@
+// done list: deposit, expens, egg,
+
 export const RealtimeResource = {
   MEAL_PLANNING: "meal-planning",
   MEAL_PREFERENCE: "meal-preference",
