@@ -21,6 +21,12 @@ export const invalidateRealtimeQueries = (
 
     case "membership": {
       queryClient.invalidateQueries({
+        queryKey: queryKeys.myProfile.all(tenantId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tenants.allMembers(tenantId),
+      });
+      queryClient.invalidateQueries({
         queryKey: queryKeys.tenants.members(tenantId),
       });
 
