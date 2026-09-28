@@ -1,17 +1,18 @@
 export type RealtimeResource =
+  | "tenant"
+  | "membership"
+  | "meal-session"
+  | "meal-setting"
   | "meal-planning"
   | "meal-preference"
   | "meal-request"
-  | "meal-entry"
   | "expense"
   | "deposit"
   | "egg"
+  | "egg-rate"
+  | "party-expense"
   | "sold-product"
-  | "monthly-calculation"
-  | "dashboard"
-  | "my-profile"
-  | "subscription"
-  | "payment";
+  | "my-profile";
 
 export interface IDataUpdatedPayload {
   resource: RealtimeResource;

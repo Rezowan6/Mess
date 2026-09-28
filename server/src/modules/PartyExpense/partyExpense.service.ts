@@ -1,4 +1,10 @@
 import sequelize from "@/configs/db.js";
+import {
+  RealtimeAction,
+  RealtimeResource,
+} from "@/socket/realtime.constant.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { getAppDate, isWithinHours } from "@/utils/date.util.js";
@@ -63,6 +69,13 @@ class PartyExpenseService {
 
       await transaction.commit();
 
+      socketService.emitToTenant(data.tenantId, SocketEvent.DATA_UPDATED, {
+        resource: RealtimeResource.PARTY_EXPENSE,
+        action: RealtimeAction.CREATED,
+        tenantId: data.tenantId,
+        mealSessionId: data.mealSessionId,
+      });
+
       return partyExpense;
     } catch (error) {
       await transaction.rollback();
@@ -122,11 +135,14 @@ class PartyExpenseService {
 
       await transaction.commit();
 
-      return await partyExpenseRepository.findOne({
-        id,
-        tenantId,
-        mealSessionId,
+      socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+        resource: RealtimeResource.PARTY_EXPENSE,
+        action: RealtimeAction.UPDATED,
+        tenantId: tenantId,
+        mealSessionId: mealSessionId,
       });
+
+      return null;
     } catch (error) {
       await transaction.rollback();
       throw error;
@@ -185,7 +201,14 @@ class PartyExpenseService {
 
     await partyExpenseRepository.delete({ id });
 
-    return true;
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.PARTY_EXPENSE,
+      action: RealtimeAction.DELETED,
+      tenantId,
+      mealSessionId,
+    });
+
+    return null;
   }
 }
 

@@ -1,3 +1,9 @@
+import {
+  RealtimeAction,
+  RealtimeResource,
+} from "@/socket/realtime.constant.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
 import {
   ICreateMealSettingDto,
@@ -16,7 +22,15 @@ class MealSettingService {
       throw new ApiError(409, "Meal setting already exists for this tenant");
     }
 
-    return mealSettingRepository.create(payload);
+    const result = await mealSettingRepository.create(payload);
+
+    socketService.emitToTenant(payload.tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.MEAL_SETTING,
+      action: RealtimeAction.CREATED,
+      tenantId: payload.tenantId,
+    });
+
+    return result;
   }
 
   async getMySetting(tenantId: number) {
@@ -25,10 +39,7 @@ class MealSettingService {
     return setting;
   }
 
-  async update(
-    tenantId: number,
-    payload: IUpdateMealSettingDto,
-  ): Promise<MealSetting> {
+  async update(tenantId: number, payload: IUpdateMealSettingDto) {
     const existingSetting = await mealSettingRepository.getByTenantId(tenantId);
 
     if (!existingSetting) {
@@ -36,11 +47,16 @@ class MealSettingService {
     }
     await mealSettingRepository.updateByTenantId(tenantId, payload);
 
-    const updateSetting = await mealSettingRepository.getByTenantId(tenantId);
+    await mealSettingRepository.getByTenantId(tenantId);
 
-    return updateSetting as MealSetting;
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.MEAL_SETTING,
+      action: RealtimeAction.UPDATED,
+      tenantId: tenantId,
+    });
+
+    return null;
   }
-
 }
 
 export const mealSettingService = new MealSettingService();

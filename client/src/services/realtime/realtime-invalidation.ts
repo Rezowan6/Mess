@@ -11,6 +11,38 @@ export const invalidateRealtimeQueries = (
   const { tenantId, mealSessionId, resource } = payload;
 
   switch (resource) {
+    case "tenant": {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tenants.all,
+      });
+
+      break;
+    }
+
+    case "membership": {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tenants.members(tenantId),
+      });
+
+      break;
+    }
+
+    case "meal-session": {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealSessions.all(tenantId),
+      });
+
+      break;
+    }
+
+    case "meal-setting": {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealSettings.all(tenantId, mealSessionId),
+      });
+
+      break;
+    }
+
     case "meal-planning": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
@@ -87,29 +119,6 @@ export const invalidateRealtimeQueries = (
       break;
     }
 
-    case "meal-entry": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealEntries.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(
-          tenantId,
-          mealSessionId,
-        ),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.myProfile.current(tenantId, mealSessionId),
-      });
-
-      break;
-    }
-
     case "expense": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.expenses.all(tenantId, mealSessionId),
@@ -181,9 +190,9 @@ export const invalidateRealtimeQueries = (
       break;
     }
 
-    case "sold-product": {
+    case "party-expense": {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.soldProducts.get(tenantId, mealSessionId),
+        queryKey: queryKeys.partyExpenses.all(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
@@ -200,35 +209,45 @@ export const invalidateRealtimeQueries = (
       break;
     }
 
-    case "subscription": {
+    case "egg-rate": {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.subscriptions.current(tenantId),
+        queryKey: queryKeys.eggRates.all(tenantId, mealSessionId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.eggRates.get(tenantId, mealSessionId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.eggs.all(tenantId, mealSessionId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.eggs.summary(tenantId, mealSessionId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.monthlyCalculations.current(
+          tenantId,
+          mealSessionId,
+        ),
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
+        queryKey: queryKeys.myProfile.current(tenantId, mealSessionId),
       });
 
       break;
     }
 
-    case "payment": {
+    case "sold-product": {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.payments.all(tenantId),
+        queryKey: queryKeys.soldProducts.get(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.subscriptions.current(tenantId),
+        queryKey: queryKeys.monthlyCalculations.current(
+          tenantId,
+          mealSessionId,
+        ),
       });
 
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
-      });
-
-      break;
-    }
-
-    case "dashboard": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
       });

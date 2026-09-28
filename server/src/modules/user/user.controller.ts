@@ -9,7 +9,7 @@ import { userService } from "./user.service.js";
 
 class UserController {
   updateAvatar = asyncHandler(async (req: Request, res: Response) => {
-    const { userId } = getTenantContext(req);
+    const { userId, tenantId, } = getTenantContext(req);
 
     if (!req.file) {
       throw new ApiError(400, "Avatar image is required");
@@ -35,6 +35,7 @@ class UserController {
 
       // Update database
       const updatedUser = await userService.updateAvatar(
+        tenantId,
         userId,
         newAvatar,
         newAvatarPublicId,

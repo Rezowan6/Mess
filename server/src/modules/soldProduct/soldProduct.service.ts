@@ -1,3 +1,9 @@
+import {
+  RealtimeAction,
+  RealtimeResource,
+} from "@/socket/realtime.constant.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import {
@@ -28,7 +34,16 @@ class SoldProductService {
       );
     }
 
-    return await soldProductRepository.createSoldProduct(data);
+    await soldProductRepository.createSoldProduct(data);
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.SOLD_PRODUCT,
+      action: RealtimeAction.CREATED,
+      tenantId,
+      mealSessionId,
+    });
+
+    return null;
   }
 
   async get({
@@ -78,7 +93,14 @@ class SoldProductService {
       data,
     );
 
-    return await soldProductRepository.getSoldProduct(tenantId, mealSessionId);
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.SOLD_PRODUCT,
+      action: RealtimeAction.UPDATED,
+      tenantId,
+      mealSessionId,
+    });
+
+    return null;
   }
 
   async delete({
@@ -100,6 +122,13 @@ class SoldProductService {
     }
 
     await soldProductRepository.deleteSoldProduct(tenantId, mealSessionId);
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.SOLD_PRODUCT,
+      action: RealtimeAction.DELETED,
+      tenantId,
+      mealSessionId,
+    });
 
     return null;
   }

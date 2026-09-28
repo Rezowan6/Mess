@@ -1,6 +1,12 @@
 import { MemberRole } from "@/constans/index.js";
 import { Notification } from "@/modules/notification/notification.interface.js";
 import { notificationService } from "@/modules/notification/notification.service.js";
+import {
+  RealtimeAction,
+  RealtimeResource,
+} from "@/socket/realtime.constant.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import {
@@ -86,6 +92,10 @@ export class TenantMembershipService {
 
     const targetMember = await membershipRepository.findById(id);
 
+    if (!targetMember) {
+      throw new ApiError(404, "Member not found.");
+    }
+
     if (targetMember?.tenantId !== tenantId) {
       throw new ApiError(403, "Access denied");
     }
@@ -110,6 +120,12 @@ export class TenantMembershipService {
     }
 
     await membershipRepository.delete({ id });
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.MEMBERSHIP,
+      action: RealtimeAction.DELETED,
+      tenantId,
+    });
   }
 }
 

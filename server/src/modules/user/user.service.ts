@@ -1,3 +1,9 @@
+import {
+  RealtimeAction,
+  RealtimeResource,
+} from "@/socket/realtime.constant.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 import { Transaction } from "sequelize";
 import { IRegisterPayload } from "../auth/auth.interface.js";
 import { ICreateUserResponse } from "./user.interface.js";
@@ -27,12 +33,30 @@ class UserService {
       status: user.status,
     };
   }
+  
   async getUserById(userId: number) {
     return userRepository.findById(userId);
   }
 
-  async updateAvatar(userId: number, avatar: string, avatarPublicId: string) {
-    return userRepository.updateAvatar(userId, avatar, avatarPublicId);
+  async updateAvatar(
+    tenantId: number,
+    userId: number,
+    avatar: string,
+    avatarPublicId: string,
+  ) {
+    const result = await userRepository.updateAvatar(
+      userId,
+      avatar,
+      avatarPublicId,
+    );
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.MEMBERSHIP,
+      action: RealtimeAction.UPDATED,
+      tenantId,
+    });
+
+    return result;
   }
 
   deleteUnverifiedInactiveUsers = async () => {

@@ -1,3 +1,9 @@
+import {
+  RealtimeAction,
+  RealtimeResource,
+} from "@/socket/realtime.constant.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { getCurrentMonthAndYear } from "@/utils/date.util.js";
 import { UniqueConstraintError } from "sequelize";
@@ -12,8 +18,7 @@ class MealSessionService {
   async create(tenantId: number, userId: number) {
     const { month, year } = getCurrentMonthAndYear();
 
-    const activeSession =
-      await mealSessionRepository.getOpenSession(tenantId);
+    const activeSession = await mealSessionRepository.getOpenSession(tenantId);
 
     if (activeSession) {
       throw new ApiError(409, "A meal session is already open");
@@ -26,7 +31,7 @@ class MealSessionService {
     );
 
     try {
-      return await mealSessionRepository.create({
+      const result = await mealSessionRepository.create({
         tenantId,
         month,
         year,
@@ -34,6 +39,13 @@ class MealSessionService {
         status: MealSessionStatus.OPEN,
         openedBy: userId,
         openedAt: new Date(),
+      });
+
+      socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+        resource: RealtimeResource.MEAL_SESSION,
+        action: RealtimeAction.CREATED,
+        tenantId,
+        mealSessionId: result.id,
       });
     } catch (error) {
       // দুটো request একসাথে এলে DB-র unique index দ্বিতীয়টা আটকায়
@@ -118,7 +130,14 @@ class MealSessionService {
       throw new ApiError(409, "Meal session is no longer open.");
     }
 
-    return mealSessionRepository.findById(sessionId);
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.MEAL_SESSION,
+      action: RealtimeAction.UPDATED,
+      tenantId,
+      mealSessionId: sessionId,
+    });
+
+    return null;
   }
 }
 

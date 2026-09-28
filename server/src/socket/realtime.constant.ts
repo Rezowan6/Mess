@@ -1,23 +1,25 @@
-// done list: deposit, expens, egg,
+
 
 export const RealtimeResource = {
+  TENANT: "tenant",
+
+  MEMBERSHIP: "membership",
+
+  MEAL_SESSION: "meal-session",
+  MEAL_SETTING: "meal-setting",
+
   MEAL_PLANNING: "meal-planning",
   MEAL_PREFERENCE: "meal-preference",
   MEAL_REQUEST: "meal-request",
-  MEAL_ENTRY: "meal-entry",
 
   EXPENSE: "expense",
   DEPOSIT: "deposit",
   EGG: "egg",
+  EGG_RATE: "egg-rate",
+  PARTY_EXPENSE: "party-expense",
   SOLD_PRODUCT: "sold-product",
 
-  MONTHLY_CALCULATION: "monthly-calculation",
-
-  SUBSCRIPTION: "subscription",
-  PAYMENT: "payment",
-
-  DASHBOARD: "dashboard",
-  MY_PROFILE: "my-profile",
+  MY_PROFILE:"my-profile",
 } as const;
 
 export type RealtimeResourceType =

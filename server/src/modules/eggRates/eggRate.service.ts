@@ -1,8 +1,15 @@
 import { ApiError } from "@/utils/ApiError.js";
+import { eggRepository } from "../egg/egg.repository.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { ICreateEggRateDto, IUpdateEggRateDto } from "./eggRate.interface.js";
 import { eggRateRepository } from "./eggRate.repository.js";
-import { eggRepository } from "../egg/egg.repository.js";
+
+import {
+  RealtimeAction,
+  RealtimeResource,
+} from "@/socket/realtime.constant.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 
 class EggRateService {
   async create(data: ICreateEggRateDto) {
@@ -23,7 +30,14 @@ class EggRateService {
       throw new ApiError(409, "Egg rate already exists for this tenant.");
     }
 
-    return await eggRateRepository.createEggRate(data);
+    await eggRateRepository.createEggRate(data);
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.EGG_RATE,
+      action: RealtimeAction.CREATED,
+      tenantId,
+      mealSessionId,
+    });
   }
 
   async get({
@@ -59,7 +73,16 @@ class EggRateService {
 
     await eggRateRepository.updateEggRate(tenantId, mealSessionId, data);
 
-    return await eggRateRepository.getEggRate(tenantId, mealSessionId);
+    await eggRateRepository.getEggRate(tenantId, mealSessionId);
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.EGG_RATE,
+      action: RealtimeAction.UPDATED,
+      tenantId,
+      mealSessionId,
+    });
+
+    return null;
   }
 
   async delete({
@@ -88,6 +111,13 @@ class EggRateService {
     }
 
     await eggRateRepository.deleteEggRate(tenantId, mealSessionId);
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.EGG_RATE,
+      action: RealtimeAction.DELETED,
+      tenantId,
+      mealSessionId,
+    });
 
     return null;
   }
