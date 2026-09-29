@@ -20,14 +20,14 @@ import partyExpenseRouter from "@/modules/PartyExpense/partyExpense.route.js";
 import paymentRouter from "@/modules/payment/payment.route.js";
 import planRouter from "@/modules/plan/plan.route.js";
 import planFeatureRouter from "@/modules/planFeature/planFeature.route.js";
+import riceRouter from "@/modules/rice/rice.route.js";
+import ricePaymentRouter from "@/modules/ricePayment/ricePayment.route.js";
 import soldProductRouter from "@/modules/soldProduct/soldProduct.route.js";
 import subscriptionRouter from "@/modules/subscription/subscription.route.js";
 import tenantRoute from "@/modules/tenant/tenant.route.js";
 import tenantMembershipRouter from "@/modules/tenantMembership/tenantMembership.route.js";
-import riceRouter from "@/modules/rice/rice.route.js";
 
 export {
-  riceRouter,
   authRouter,
   dashboardRouter,
   depositRouter,
@@ -50,6 +50,8 @@ export {
   paymentRouter,
   planFeatureRouter,
   planRouter,
+  ricePaymentRouter,
+  riceRouter,
   soldProductRouter,
   subscriptionRouter,
   tenantMembershipRouter,

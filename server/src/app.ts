@@ -34,6 +34,7 @@ import {
   paymentRouter,
   planFeatureRouter,
   planRouter,
+  ricePaymentRouter,
   riceRouter,
   soldProductRouter,
   subscriptionRouter,
@@ -85,6 +86,7 @@ app.use("/api/v1/expenses", expensesRouter);
 app.use("/api/v1/party-expenses", partyExpenseRouter);
 app.use("/api/v1/eggs", eggRouter);
 app.use("/api/v1/rices", riceRouter);
+app.use("/api/v1/rice-payments", ricePaymentRouter);
 app.use("/api/v1/egg-rates", eggRateRouter);
 app.use("/api/v1/sold-products", soldProductRouter);
 app.use("/api/v1/deposits", depositRouter);

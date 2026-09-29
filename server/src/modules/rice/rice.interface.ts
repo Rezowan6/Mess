@@ -20,26 +20,6 @@ export const RicePaymentStatus = {
 export type RicePaymentStatusValue =
   (typeof RicePaymentStatus)[keyof typeof RicePaymentStatus];
 
-export interface IRice {
-  id: number;
-  tenantId: number;
-  mealSessionId: number;
-  createdBy: number;
-  quantity: number;
-  unitPrice: number;
-  totalAmount: number;
-  purchaseType: RicePurchaseTypeValue;
-  paymentStatus: RicePaymentStatusValue;
-  supplierName: string | null;
-  supplierPhone: string | null;
-  purchaseDate: Date;
-  dueDate: Date | null;
-  note: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
-}
-
 export interface ICreateRiceDto {
   tenantId: number;
   mealSessionId: number;
