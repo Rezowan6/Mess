@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from "@/shared/constants/api";
 import { API } from "@/shared/lib/axios";
 import type { ApiResponse } from "@/shared/types/api.types";
-import type { IRice } from "../types/rice.types";
+import type { ICreateRice, IRice, IUpdateRice } from "../types/rice.types";
 
 export const riceApi = {
   getAll: async (): Promise<ApiResponse<IRice[]>> => {
@@ -34,7 +34,7 @@ export const riceApi = {
     return data;
   },
 
-  create: async (payload: Partial<IRice>): Promise<ApiResponse> => {
+  create: async (payload: ICreateRice): Promise<ApiResponse> => {
     const { data } = await API.post<ApiResponse>(
       API_ENDPOINTS.RICE.CREATE,
       payload,
@@ -43,7 +43,7 @@ export const riceApi = {
     return data;
   },
 
-  update: async (id: number, payload: Partial<IRice>): Promise<ApiResponse> => {
+  update: async (id: number, payload: IUpdateRice): Promise<ApiResponse> => {
     const { data } = await API.patch<ApiResponse>(
       API_ENDPOINTS.RICE.UPDATE(id),
       payload,
