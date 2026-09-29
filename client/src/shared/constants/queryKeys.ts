@@ -319,6 +319,32 @@ export const queryKeys = {
     due: (tenantId?: number, mealSessionId?: number, id?: number) =>
       ["rice", "due", tenantId, mealSessionId, id] as const,
   },
+
+  // ============================================================
+  // RICE PAYMENT
+  // Tenant + Meal Session + Rice based
+  // ============================================================
+
+  ricePayments: {
+    all: (tenantId?: number, mealSessionId?: number) =>
+      ["ricePayments", tenantId, mealSessionId] as const,
+
+    get: (tenantId?: number, mealSessionId?: number, riceId?: number) =>
+      ["ricePayments", "list", tenantId, mealSessionId, riceId] as const,
+
+    byId: (
+      tenantId?: number,
+      mealSessionId?: number,
+      riceId?: number,
+      id?: number,
+    ) => ["ricePayments", "byId", tenantId, mealSessionId, riceId, id] as const,
+
+    totalPaid: (tenantId?: number, mealSessionId?: number, riceId?: number) =>
+      ["ricePayments", "totalPaid", tenantId, mealSessionId, riceId] as const,
+
+    due: (tenantId?: number, mealSessionId?: number, riceId?: number) =>
+      ["ricePayments", "due", tenantId, mealSessionId, riceId] as const,
+  },
   // ============================================================
   // PARTY EXPENSES
   // Tenant + Meal Session based
