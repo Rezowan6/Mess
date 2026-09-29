@@ -9,6 +9,8 @@ export type RealtimeResource =
   | "expense"
   | "deposit"
   | "egg"
+  | "rice"
+  | "rice-payment"
   | "egg-rate"
   | "party-expense"
   | "sold-product"

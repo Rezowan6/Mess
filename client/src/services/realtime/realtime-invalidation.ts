@@ -144,6 +144,60 @@ export const invalidateRealtimeQueries = (
       break;
     }
 
+    case "rice": {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.rice.all(tenantId, mealSessionId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.rice.get(tenantId, mealSessionId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.rice.summary(tenantId, mealSessionId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.monthlyCalculations.current(
+          tenantId,
+          mealSessionId,
+        ),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
+      });
+
+      break;
+    }
+
+    case "rice-payment": {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.ricePayments.all(tenantId, mealSessionId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.rice.get(tenantId, mealSessionId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.rice.all(tenantId, mealSessionId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.monthlyCalculations.current(
+          tenantId,
+          mealSessionId,
+        ),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
+      });
+
+      break;
+    }
+
     case "deposit": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.deposits.all(tenantId, mealSessionId),
