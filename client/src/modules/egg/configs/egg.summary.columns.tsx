@@ -2,10 +2,14 @@ import type { TableColumn } from "@/shared/components/ui/Table";
 
 import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
-import type { IEgg } from "../types/egg.types";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
+import { useRBAC } from "@/shared/hooks/useRBAC";
+import type { IEgg } from "../types/egg.types";
 
 export const useEggSummaryColumns = (): TableColumn<IEgg>[] => {
+  const { can } = useRBAC();
+
   const columns: TableColumn<IEgg>[] = [
     {
       key: "member",
@@ -19,7 +23,10 @@ export const useEggSummaryColumns = (): TableColumn<IEgg>[] => {
       title: "Total Eggs",
       render: (egg) => egg.quantity,
     },
-    {
+  ];
+
+  if (can(PERMISSIONS.EXPENSE_CREATE)) {
+    columns.push({
       key: "details",
       title: "Details",
       render: (egg) => (
@@ -27,8 +34,8 @@ export const useEggSummaryColumns = (): TableColumn<IEgg>[] => {
           Details
         </ActionLink>
       ),
-    },
-  ];
+    });
+  }
 
   return columns;
 };
