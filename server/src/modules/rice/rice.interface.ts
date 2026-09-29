@@ -1,3 +1,5 @@
+import type { RicePaymentMethodValue } from "../ricePayment/ricePayment.interface.js";
+
 export const RicePurchaseType = {
   PAID: "PAID",
   CREDIT: "CREDIT",
@@ -88,4 +90,3 @@ export interface IRiceWithSummary extends IRice {
   remainingDue: number;
 }
 
-import type { RicePaymentMethodValue } from "../ricePayment/ricePayment.interface.js";
