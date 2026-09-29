@@ -34,6 +34,7 @@ import {
   paymentRouter,
   planFeatureRouter,
   planRouter,
+  riceRouter,
   soldProductRouter,
   subscriptionRouter,
   tenantMembershipRouter,
@@ -83,6 +84,7 @@ app.use("/api/v1/meal-plannings", mealPlanningRouter);
 app.use("/api/v1/expenses", expensesRouter);
 app.use("/api/v1/party-expenses", partyExpenseRouter);
 app.use("/api/v1/eggs", eggRouter);
+app.use("/api/v1/rices", riceRouter);
 app.use("/api/v1/egg-rates", eggRateRouter);
 app.use("/api/v1/sold-products", soldProductRouter);
 app.use("/api/v1/deposits", depositRouter);
@@ -98,7 +100,6 @@ app.use("/api/v1/notifications", notificationRouter);
 app.use("/api/v1/meal-settings", mealSettingRouter);
 app.use("/api/v1/meal-preferences", mealPreferenceRouter);
 app.use("/api/v1/my-profile", myProfileRouter);
-
 
 // testing purpose-----
 

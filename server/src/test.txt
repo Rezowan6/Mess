@@ -1,3 +1,53 @@
+RiceService-কে শুধু Rice Purchase business logic-এর জন্য রাখলে এই methodগুলো যথেষ্ট হবে:
+
+RiceService
+create()
+নতুন rice purchase তৈরি করবে। PAID হলে initial payment-এর সাথে transaction handle করবে।
+getById()
+নির্দিষ্ট rice purchase-এর বিস্তারিত তথ্য দেখাবে।
+getAll()
+বর্তমান tenant + meal session-এর সব rice purchase দেখাবে।
+update()
+Rice purchase-এর quantity, price, supplier, date ইত্যাদি update করবে এবং business rules check করবে।
+delete()
+Rice purchase delete করবে; payment history থাকলে deletion-এর আগে business rule check করবে।
+getSummary()
+মোট rice quantity, total purchase amount, paid amount, due amount ইত্যাদির summary দেবে।
+getRemainingDue()
+নির্দিষ্ট rice purchase-এর totalAmount - totalPayments হিসাব করবে।
+recalculatePaymentStatus()
+Payment history অনুযায়ী PAID / DUE / PARTIAL / SETTLED status নির্ধারণ করবে।
+validatePurchase()
+Quantity, unit price, purchase type, due date ইত্যাদির business validation করবে।
+ensurePurchaseAccessible()
+Tenant + mealSession অনুযায়ী rice purchase cross-access হচ্ছে কিনা নিশ্চিত করবে।
+
+
+
+
+RicePaymentService
+create()
+Rice purchase-এর বিপরীতে নতুন payment তৈরি করবে এবং total payment limit check করবে।
+getById()
+নির্দিষ্ট payment-এর বিস্তারিত তথ্য দেখাবে।
+getAll()
+নির্দিষ্ট rice purchase-এর সব payment history দেখাবে।
+update()
+Payment amount, method, date, note ইত্যাদি update করবে এবং business rules validate করবে।
+delete()
+Payment delete করবে এবং payment status পুনরায় calculate করবে।
+getTotalPaid()
+একটি rice purchase-এর মোট কত টাকা payment হয়েছে তা হিসাব করবে।
+getRemainingDue()
+Total amount থেকে মোট payment বাদ দিয়ে বর্তমান due বের করবে।
+recalculatePaymentStatus()
+Payment history অনুযায়ী DUE / PARTIAL / SETTLED status update করবে।
+validatePaymentAmount()
+Payment > 0 এবং remaining due-এর বেশি কিনা check করবে।
+ensurePaymentAccessible()
+tenantId + mealSessionId + riceId অনুযায়ী cross-tenant/session payment access prevent করবে।
+
+
 DB Transaction
    ↓
 Outbox Event
@@ -25,78 +75,7 @@ markAsSuccess() → Manual/admin recovery
 markAsFailed() → Manual/admin recovery
 markAsCancelled() → Cancellation
 refund() → Future refund support
-src/
-└── modules/
-    └── mealPlanning/
-        ├── mealPlanning.interface.ts
-        ├── mealPlanning.service.ts
-        ├── mealPlanning.controller.ts
-        └── mealPlanning.route.ts
 
-{mealPlanning.interface.ts
-→ Request DTO
-→ Response types
-→ Meal planning data types
-
-
-mealPlanning.service.ts
-→ Breakfast planning
-→ Lunch planning
-→ Dinner planning
-→ Guest meal calculation
-→ Member-wise meal list
-→ Daily meal summary
-
-
-mealPlanning.controller.ts
-→ HTTP request handle করবে
-→ tenantId/date নেবে
-→ service call করবে
-→ response পাঠাবে
-
-
-mealPlanning.route.ts
-→ Manager/Admin access
-→ GET daily meal planning endpoint
-  date: "2026-08-10",
-
-  summary: {
-    breakfast: 25,
-    lunch: 38,
-    dinner: 31,
-    guestMeal: 4,
-    totalMeals: 94
-  },
-
-  breakfast: [
-    {
-      userId: 1,
-      memberName: "Rahim",
-      meal: 1
-    },
-    {
-      userId: 2,
-      memberName: "Karim",
-      meal: 1
-    }
-  ],
-
-  lunch: [
-    {
-      userId: 1,
-      memberName: "Rahim",
-      meal: 1
-    }
-  ],
-
-  dinner: [
-    {
-      userId: 2,
-      memberName: "Karim",
-      meal: 1
-    }
-  ]
-}
 
 আপনি এখন Bash shell-এর ভিতরে আছেন, MySQL console-এর ভিতরে না। তাই SET, SELECT এগুলো Bash command হিসেবে নিয়েছে।
 
@@ -141,24 +120,4 @@ DEALLOCATE PREPARE stmt;
 SET FOREIGN_KEY_CHECKS = 1;
 
 তারপর বের হবেন:
-
-done module:
-1.auth
-2.user
-3.tenant
-4.tenantMembership
-5.plan
-6.feature
-7.planFeature
-8.subscription
-9.payment
-10.mealSession
-11.mealRequest
-12.mealEntry
-13.deposit
-14.expense
-15.notice
-
-next target:
-1.refreshToken
 

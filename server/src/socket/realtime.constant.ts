@@ -14,6 +14,8 @@ export const RealtimeResource = {
 
   EXPENSE: "expense",
   DEPOSIT: "deposit",
+  RICE: "rice",
+  RICE_PAYMENT: "rice-payment",
   EGG: "egg",
   EGG_RATE: "egg-rate",
   PARTY_EXPENSE: "party-expense",

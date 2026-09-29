@@ -24,8 +24,10 @@ import soldProductRouter from "@/modules/soldProduct/soldProduct.route.js";
 import subscriptionRouter from "@/modules/subscription/subscription.route.js";
 import tenantRoute from "@/modules/tenant/tenant.route.js";
 import tenantMembershipRouter from "@/modules/tenantMembership/tenantMembership.route.js";
+import riceRouter from "@/modules/rice/rice.route.js";
 
 export {
+  riceRouter,
   authRouter,
   dashboardRouter,
   depositRouter,
