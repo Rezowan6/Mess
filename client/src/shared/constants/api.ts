@@ -139,6 +139,25 @@ export const API_ENDPOINTS = {
     LIST: "/party-expenses",
     CREATE: "/party-expenses",
   },
+  RICE: {
+    LIST: "/rice",
+    SUMMARY: "/rice/summary",
+    BY_ID: (id: number) => `/rice/${id}`,
+    DUE: (id: number) => `/rice/${id}/due`,
+    CREATE: "/rice",
+    UPDATE: (id: number) => `/rice/${id}`,
+    DELETE: (id: number) => `/rice/${id}`,
+  },
+
+  RICE_PAYMENT: {
+    LIST: (riceId: number) => `/rice-payment/${riceId}`,
+    BY_ID: (riceId: number, id: number) => `/rice-payment/${riceId}/${id}`,
+    TOTAL_PAID: (riceId: number) => `/rice-payment/${riceId}/total-paid`,
+    DUE: (riceId: number) => `/rice-payment/${riceId}/due`,
+    CREATE: "/rice-payment",
+    UPDATE: (id: number) => `/rice-payment/${id}`,
+    DELETE: (id: number) => `/rice-payment/${id}`,
+  },
   DEPOSIT: {
     GET_ALL: "/deposits",
     MEMBER_DEPOSIT_SUMMARY: "/deposits/member-summary",
