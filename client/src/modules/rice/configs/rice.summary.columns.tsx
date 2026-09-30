@@ -3,7 +3,9 @@ import type { TableColumn } from "@/shared/components/ui/Table";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 
+import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { Button } from "@/shared/components/ui/Button";
+import { ROUTES } from "@/shared/constants/routes";
 import type { IRice } from "../types/rice.types";
 import { canAddRicePayment, formatKg, formatTaka } from "../utils/rice.utils";
 import {
@@ -13,12 +15,10 @@ import {
 
 interface UseRiceSummaryColumnsProps {
   onPay: (rice: IRice) => void;
-  onDetails: (rice: IRice) => void;
 }
 
 export const useRiceSummaryColumns = ({
   onPay,
-  onDetails,
 }: UseRiceSummaryColumnsProps): TableColumn<IRice>[] => {
   const { can } = useRBAC();
   const canManage = can(PERMISSIONS.EXPENSE_CREATE);
@@ -97,9 +97,10 @@ export const useRiceSummaryColumns = ({
               Pay
             </Button>
           )}
-          <Button variant="outline" type="button" onClick={() => onDetails(rice)}>
+
+          <ActionLink to={`${ROUTES.EXPENSE}/rice/${rice.id}`}>
             Details
-          </Button>
+          </ActionLink>
         </div>
       ),
     });

@@ -160,7 +160,7 @@ class RiceService {
       throw new ApiError(404, "Rice purchase not found.");
     }
 
-    const riceWithSummary = await this.attachPaymentSummary(
+    const [riceWithSummary] = await this.attachPaymentSummary(
       tenantId,
       mealSessionId,
       [rice],

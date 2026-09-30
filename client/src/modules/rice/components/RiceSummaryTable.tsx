@@ -6,7 +6,6 @@ import { AddRicePaymentModal } from "@/modules/rice-payment/components/AddRicePa
 import { RICE_MESSAGES } from "../configs/rice.message";
 import { useRiceSummaryColumns } from "../configs/rice.summary.columns";
 import { useRiceSummaryTable } from "../hooks/useRiceSummaryTable";
-import { RiceDetailsModal } from "./RiceDetailsModal";
 import { RiceTableSkeleton } from "./RiceTableSkeleton";
 
 export const RiceSummaryTable = () => {
@@ -23,15 +22,10 @@ export const RiceSummaryTable = () => {
     payingRice,
     openPayModal,
     closePayModal,
-
-    detailsRice,
-    openDetails,
-    closeDetails,
   } = useRiceSummaryTable();
 
   const columns = useRiceSummaryColumns({
     onPay: openPayModal,
-    onDetails: openDetails,
   });
 
   if (isPending) return <RiceTableSkeleton />;
@@ -66,11 +60,6 @@ export const RiceSummaryTable = () => {
         onClose={closePayModal}
         rice={payingRice}
       />
-
-      {/* Mounted only when open, so payments are fetched only on demand */}
-      {detailsRice && (
-        <RiceDetailsModal rice={detailsRice} onClose={closeDetails} />
-      )}
     </div>
   );
 };
