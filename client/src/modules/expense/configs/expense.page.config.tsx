@@ -1,4 +1,5 @@
 import { ROUTES } from "@/shared/constants/routes";
+import { matchPath } from "react-router-dom";
 
 interface GetExpensePageConfigProps {
   pathname: string;
@@ -56,15 +57,18 @@ export const getExpensePageConfig = ({
     },
 
     [`${ROUTES.EXPENSE}/rice/history`]: {
-      title: "Rice History",
-      description: "View rice purchase history and payment details",
+      title: "Rice Purchase Details",
+      description:
+        "View supplier information, payment progress and payment history",
       actionText: "Add Rice",
       onAction: onAddRiceExpense,
     },
   };
-
+  const configKey = matchPath(`${ROUTES.EXPENSE}/rice/:riceId`, pathname)
+    ? `${ROUTES.EXPENSE}/rice/history`
+    : pathname;
   return (
-    pageConfig[pathname as keyof typeof pageConfig] ??
+    pageConfig[configKey as keyof typeof pageConfig] ??
     pageConfig[ROUTES.EXPENSE]
   );
 };
