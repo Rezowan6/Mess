@@ -5,6 +5,7 @@ import { ExpenseListLayout } from "../layouts/ExpenseListLayout";
 import { ExpensePage } from "../pages/ExpensePage";
 
 import { ROUTES } from "@/shared/constants/routes";
+import { riceRoutes } from "@/modules/rice/routes/rice.routes";
 
 export const expenseRoutes = {
   path: ROUTES.EXPENSE,
@@ -22,5 +23,6 @@ export const expenseRoutes = {
 
     partyExpenseRoutes,
     eggRoutes,
+    riceRoutes,
   ],
 };

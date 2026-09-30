@@ -12,8 +12,8 @@ export const riceApi = {
     return data;
   },
 
-  getSummary: async (): Promise<ApiResponse> => {
-    const { data } = await API.get<ApiResponse>(API_ENDPOINTS.RICE.SUMMARY);
+  getSummary: async (): Promise<ApiResponse<IRice[]>> => {
+    const { data } = await API.get<ApiResponse<IRice[]>>(API_ENDPOINTS.RICE.SUMMARY);
 
     return data;
   },

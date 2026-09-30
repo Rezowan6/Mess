@@ -1,6 +1,7 @@
 import { setupEggAssociations } from "@/modules/egg/egg.association.js";
 import { setupEggRateAssociations } from "@/modules/eggRates/eggRate.association.js";
 import { setupNotificationAssociations } from "@/modules/notification/notification.association.js";
+import { setupRiceAssociations } from "@/modules/rice/rice.association.js";
 import { setupSoldProductAssociations } from "@/modules/soldProduct/soldProduct.association.js";
 import {
   Deposit,
@@ -446,6 +447,7 @@ export const setupAssociations = () => {
     foreignKey: "mealSessionId",
     as: "partyExpenses",
   });
+  setupRiceAssociations();
 
   setupNotificationAssociations();
 

@@ -5,6 +5,7 @@ interface GetExpensePageConfigProps {
   onAddExpense: () => void;
   onAddPartyExpense: () => void;
   onAddEggExpense: () => void;
+  onAddRiceExpense: () => void;
 }
 
 export const getExpensePageConfig = ({
@@ -12,6 +13,7 @@ export const getExpensePageConfig = ({
   onAddExpense,
   onAddPartyExpense,
   onAddEggExpense,
+  onAddRiceExpense,
 }: GetExpensePageConfigProps) => {
   const pageConfig = {
     [ROUTES.EXPENSE]: {
@@ -45,6 +47,19 @@ export const getExpensePageConfig = ({
       description: "View member egg history and track egg consumption",
       actionText: "Add Egg",
       onAction: onAddEggExpense,
+    },
+    [`${ROUTES.EXPENSE}/rice`]: {
+      title: "Rice Management",
+      description: "Manage rice purchases and payment records",
+      actionText: "Add Rice",
+      onAction: onAddRiceExpense,
+    },
+
+    [`${ROUTES.EXPENSE}/rice/history`]: {
+      title: "Rice History",
+      description: "View rice purchase history and payment details",
+      actionText: "Add Rice",
+      onAction: onAddRiceExpense,
     },
   };
 

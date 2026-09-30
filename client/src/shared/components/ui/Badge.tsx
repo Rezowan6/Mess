@@ -51,9 +51,9 @@ const variantStyles: Record<IBadgeVariant, string> = {
 };
 
 const sizeStyles = {
-  sm: "h-6 px-2 text-xs",
-  md: "h-7 px-3 text-sm",
-  lg: "h-8 px-4 text-base",
+  sm: "h-6 p-3 text-xs",
+  md: "h-7 px-4 text-sm",
+  lg: "h-8 px-5 text-base",
 };
 
 export const Badge = ({
@@ -66,7 +66,7 @@ export const Badge = ({
   return (
     <span
       className={cn(
-        "inline-flex text-center items-center justify-center font-medium whitespace-nowrap leading-none align-middle text-white",
+        "inline-flex lowercase text-center items-center justify-center font-medium whitespace-nowrap leading-none align-middle text-white",
 
         variantStyles[variant],
 

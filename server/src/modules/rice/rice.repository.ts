@@ -1,6 +1,7 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
 import { Attributes, CreationAttributes, Transaction } from "sequelize";
 
+import { User } from "@/models/index.js";
 import { Rice } from "./rice.model.js";
 
 class RiceRepository extends BaseRepository<Rice> {
@@ -39,6 +40,13 @@ class RiceRepository extends BaseRepository<Rice> {
         tenantId,
         mealSessionId,
       },
+      include: [
+        {
+          model: User,
+          as: "creator",
+          attributes: ["id", "name", "email", "avatar",],
+        },
+      ],
       order: [["purchaseDate", "DESC"]],
     });
   }

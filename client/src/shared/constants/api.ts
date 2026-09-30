@@ -140,13 +140,13 @@ export const API_ENDPOINTS = {
     CREATE: "/party-expenses",
   },
   RICE: {
-    LIST: "/rice",
-    SUMMARY: "/rice/summary",
-    BY_ID: (id: number) => `/rice/${id}`,
-    DUE: (id: number) => `/rice/${id}/due`,
-    CREATE: "/rice",
-    UPDATE: (id: number) => `/rice/${id}`,
-    DELETE: (id: number) => `/rice/${id}`,
+    LIST: "/rices",
+    SUMMARY: "/rices/summary",
+    BY_ID: (id: number) => `/rices/${id}`,
+    DUE: (id: number) => `/rices/${id}/due`,
+    CREATE: "/rices",
+    UPDATE: (id: number) => `/rices/${id}`,
+    DELETE: (id: number) => `/rices/${id}`,
   },
 
   RICE_PAYMENT: {

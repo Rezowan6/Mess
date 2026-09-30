@@ -18,11 +18,19 @@ export const RicePaymentStatus = {
 export type RicePaymentStatusValue =
   (typeof RicePaymentStatus)[keyof typeof RicePaymentStatus];
 
+interface IMember {
+  id: number;
+  name: string;
+  email: string;
+  avatar: string | null;
+}
+
 export interface IRice {
   id: number;
   tenantId: number;
   mealSessionId: number;
   createdBy: number;
+  creator: IMember;
   quantity: number;
   unitPrice: number;
   totalAmount: number;
