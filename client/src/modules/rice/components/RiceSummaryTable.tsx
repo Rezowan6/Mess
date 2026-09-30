@@ -6,6 +6,7 @@ import { AddRicePaymentModal } from "@/modules/rice-payment/components/AddRicePa
 import { RICE_MESSAGES } from "../configs/rice.message";
 import { useRiceSummaryColumns } from "../configs/rice.summary.columns";
 import { useRiceSummaryTable } from "../hooks/useRiceSummaryTable";
+import { AddRiceModal } from "./AddRiceModal";
 import { RiceTableSkeleton } from "./RiceTableSkeleton";
 
 export const RiceSummaryTable = () => {
@@ -22,10 +23,18 @@ export const RiceSummaryTable = () => {
     payingRice,
     openPayModal,
     closePayModal,
+
+    editingRice,
+    openEditModal,
+    closeEditModal,
+
+    handleDelete,
   } = useRiceSummaryTable();
 
   const columns = useRiceSummaryColumns({
     onPay: openPayModal,
+    onEdit: openEditModal,
+    onDelete: handleDelete,
   });
 
   if (isPending) return <RiceTableSkeleton />;
@@ -59,6 +68,12 @@ export const RiceSummaryTable = () => {
         isOpen={payingRice !== null}
         onClose={closePayModal}
         rice={payingRice}
+      />
+
+      <AddRiceModal
+        isOpen={editingRice !== null}
+        onClose={closeEditModal}
+        rice={editingRice ?? undefined}
       />
     </div>
   );

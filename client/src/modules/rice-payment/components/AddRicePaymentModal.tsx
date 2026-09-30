@@ -17,6 +17,7 @@ import type { IRice } from "@/modules/rice/types/rice.types";
 import { formatTaka } from "@/modules/rice/utils/rice.utils";
 
 import { Button } from "@/shared/components/ui/Button";
+import { getLocalDate } from "@/shared/utils/date.utils";
 import { useUpdateRicePayment } from "../hooks/useUpdateRicePayment";
 import {
   createRicePaymentSchema,
@@ -30,8 +31,6 @@ interface AddRicePaymentModalProps {
   /** When provided, the modal works in edit mode */
   payment?: IRicePayment | null;
 }
-
-const today = () => new Date().toISOString().slice(0, 10);
 
 export const AddRicePaymentModal = ({
   isOpen,
@@ -60,7 +59,7 @@ export const AddRicePaymentModal = ({
     defaultValues: {
       amount: undefined,
       paymentMethod: "CASH",
-      paymentDate: today(),
+      paymentDate: getLocalDate(),
       note: "",
     },
   });
@@ -83,9 +82,9 @@ export const AddRicePaymentModal = ({
       });
     } else {
       reset({
-        amount: undefined,
+        amount: maxAmount ?? undefined,
         paymentMethod: "CASH",
-        paymentDate: today(),
+        paymentDate: getLocalDate(),
         note: "",
       });
     }

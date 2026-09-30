@@ -33,3 +33,9 @@ export const formatMonthName = (month: number): string => {
     .month(month - 1)
     .format("MMMM");
 };
+
+export const formatDateForInput = (date: string | Date | null): string => {
+  if (!date) return "";
+
+  return dayjs(date).tz(APP_TIMEZONE).format("YYYY-MM-DD");
+};

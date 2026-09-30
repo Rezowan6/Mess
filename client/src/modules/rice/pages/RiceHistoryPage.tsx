@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import {
   CalendarDays,
   Pencil,
@@ -13,14 +11,10 @@ import {
 import { Badge } from "@/shared/components/ui/Badge";
 import { Button } from "@/shared/components/ui/Button";
 
-import { useDeleteRicePayment } from "@/modules/rice-payment/hooks/useDeleteRicePayment";
-import { useRicePayments } from "@/modules/rice-payment/hooks/useRicePayments";
-
 import { AddRicePaymentModal } from "@/modules/rice-payment/components/AddRicePaymentModal";
 
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
-import { useConfirmStore } from "@/shared/store/confirm.store";
 
 import {
   RICE_PAYMENT_STATUS_VARIANT,
@@ -30,91 +24,39 @@ import {
 import {
   canAddRicePayment,
   formatTaka,
-  getPaidPercent,
   RICE_PAYMENT_METHOD_LABEL,
+  toTitleCase,
 } from "../utils/rice.utils";
 
-import type { IRicePayment } from "@/modules/rice-payment/types/ricePayment.types";
 import { formatDate } from "@/shared/utils/date.utils";
 import { useParams } from "react-router-dom";
-import { useRiceById } from "../hooks/useRiceById";
+import { useRiceHistory } from "../hooks/useRiceHistory";
 
 export const RiceHistoryPage = () => {
   const { riceId } = useParams<{ riceId: string }>();
   const id = Number(riceId);
 
   const { can } = useRBAC();
-
-  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
-  const [editingPayment, setEditingPayment] = useState<IRicePayment | null>(
-    null,
-  );
-
-  const openConfirm = useConfirmStore((state) => state.openConfirm);
-  const setLoading = useConfirmStore((state) => state.setLoading);
-
-  const { mutateAsync: deletePayment } = useDeleteRicePayment();
-
-  const {
-    data: riceResponse,
-    isPending: isRicePending,
-    isError: isRiceError,
-    refetch: refetchRice,
-  } = useRiceById(id);
-
-  const rice = riceResponse?.data;
-
-  const payments = useRicePayments(id);
-
   const canManage = can(PERMISSIONS.EXPENSE_CREATE);
 
+  const {
+    rice,
+    paymentList,
+    payments,
+    isRicePending,
+    isRiceError,
+    refetchRice,
+    paidPercent,
+    hasDue,
+    isPaymentOpen,
+    editingPayment,
+    handleDelete,
+    openAdd,
+    openEdit,
+    closePayment,
+  } = useRiceHistory(id);
+
   const canEditPayments = canManage && rice?.purchaseType === "CREDIT";
-
-  const paidPercent = rice ? getPaidPercent(rice) : 0;
-  const paymentList = payments.data?.data ?? [];
-  const hasDue = Number(rice?.remainingDue ?? 0) > 0;
-
-  const handleDelete = (payment: IRicePayment) => {
-    if (!rice) return;
-
-    openConfirm({
-      title: "Delete Payment",
-      message: (
-        <>
-          Are you sure you want to delete the payment of{" "}
-          <strong className="text-success">{formatTaka(payment.amount)}</strong>
-          ? The due amount will increase.
-        </>
-      ),
-      onConfirm: async () => {
-        try {
-          setLoading(true);
-
-          await deletePayment({
-            riceId: rice.id,
-            id: payment.id,
-          });
-        } finally {
-          setLoading(false);
-        }
-      },
-    });
-  };
-
-  const openAdd = () => {
-    setEditingPayment(null);
-    setIsPaymentOpen(true);
-  };
-
-  const openEdit = (payment: IRicePayment) => {
-    setEditingPayment(payment);
-    setIsPaymentOpen(true);
-  };
-
-  const closePayment = () => {
-    setIsPaymentOpen(false);
-    setEditingPayment(null);
-  };
 
   if (Number.isNaN(id)) {
     return <p className="text-error">Invalid rice purchase.</p>;
@@ -143,19 +85,26 @@ export const RiceHistoryPage = () => {
       <div className="space-y-5">
         {/* Header */}
         <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge
-              size="sm"
-              variant={RICE_PURCHASE_TYPE_VARIANT[rice.purchaseType]}
-            >
-              {rice.purchaseType}
-            </Badge>
-            <Badge
-              size="sm"
-              variant={RICE_PAYMENT_STATUS_VARIANT[rice.paymentStatus]}
-            >
-              {rice.paymentStatus}
-            </Badge>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <div className="flex items-center gap-2">
+              <span className="text-xs opacity-60">Purchase Type</span>
+              <Badge
+                size="sm"
+                variant={RICE_PURCHASE_TYPE_VARIANT[rice.purchaseType]}
+              >
+                {toTitleCase(rice.purchaseType)}
+              </Badge>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-xs opacity-60">Payment Status</span>
+              <Badge
+                size="sm"
+                variant={RICE_PAYMENT_STATUS_VARIANT[rice.paymentStatus]}
+              >
+                {toTitleCase(rice.paymentStatus)}
+              </Badge>
+            </div>
           </div>
 
           <p className="text-sm opacity-70">
@@ -268,7 +217,7 @@ export const RiceHistoryPage = () => {
             )}
 
           {paymentList.length > 0 && (
-            <ul className="divide-y divide-base-300 rounded-xl border border-base-300">
+            <ul className="divide-y divide-info/10">
               {paymentList.map((payment) => (
                 <li key={payment.id} className="flex items-center gap-3 p-3">
                   <div className="flex size-10 items-center justify-center rounded-full bg-success/10 text-success">
@@ -291,7 +240,7 @@ export const RiceHistoryPage = () => {
                     )}
                   </div>
 
-                  {canEditPayments && (
+                  {canEditPayments && canAddRicePayment(rice) && (
                     <div className="flex items-center gap-1">
                       <Button
                         unstyled

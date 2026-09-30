@@ -6,6 +6,7 @@ import { ExpenseActions } from "../components/ExpenseActions";
 
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
+import { formatDate } from "@/shared/utils/date.utils";
 
 export const useExpenseColumns = (
   onEdit: (expense: IExpense) => void,
@@ -32,7 +33,7 @@ export const useExpenseColumns = (
     {
       key: "expenseDate",
       title: "Date",
-      render: (expense) => new Date(expense.expenseDate).toLocaleDateString(),
+      render: (expense) => formatDate(expense.expenseDate),
     },
   ];
 

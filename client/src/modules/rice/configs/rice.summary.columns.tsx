@@ -6,8 +6,14 @@ import { useRBAC } from "@/shared/hooks/useRBAC";
 import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { Button } from "@/shared/components/ui/Button";
 import { ROUTES } from "@/shared/constants/routes";
+import { Pencil, Trash2 } from "lucide-react";
 import type { IRice } from "../types/rice.types";
-import { canAddRicePayment, formatKg, formatTaka } from "../utils/rice.utils";
+import {
+  canAddRicePayment,
+  formatKg,
+  formatTaka,
+  toTitleCase,
+} from "../utils/rice.utils";
 import {
   RICE_PAYMENT_STATUS_VARIANT,
   RICE_PURCHASE_TYPE_VARIANT,
@@ -15,10 +21,14 @@ import {
 
 interface UseRiceSummaryColumnsProps {
   onPay: (rice: IRice) => void;
+  onEdit: (rice: IRice) => void;
+  onDelete: (rice: IRice) => void;
 }
 
 export const useRiceSummaryColumns = ({
   onPay,
+  onEdit,
+  onDelete,
 }: UseRiceSummaryColumnsProps): TableColumn<IRice>[] => {
   const { can } = useRBAC();
   const canManage = can(PERMISSIONS.EXPENSE_CREATE);
@@ -68,7 +78,7 @@ export const useRiceSummaryColumns = ({
           size="sm"
           variant={RICE_PURCHASE_TYPE_VARIANT[rice.purchaseType]}
         >
-          {rice.purchaseType}
+          {toTitleCase(rice.purchaseType)}
         </Badge>
       ),
     },
@@ -80,7 +90,7 @@ export const useRiceSummaryColumns = ({
           size="sm"
           variant={RICE_PAYMENT_STATUS_VARIANT[rice.paymentStatus]}
         >
-          {rice.paymentStatus}
+          {toTitleCase(rice.paymentStatus)}
         </Badge>
       ),
     },
@@ -91,11 +101,29 @@ export const useRiceSummaryColumns = ({
       key: "actions",
       title: "Actions",
       render: (rice) => (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {canAddRicePayment(rice) && (
-            <Button variant="primary" type="button" onClick={() => onPay(rice)}>
-              Pay
-            </Button>
+            <>
+              <Button
+                variant="secondary"
+                type="button"
+                onClick={() => onPay(rice)}
+              >
+                Pay
+              </Button>
+
+              <Button
+                unstyled
+                leftIcon={<Pencil size={16} />}
+                onClick={() => onEdit(rice)}
+              />
+
+              <Button
+                unstyled
+                leftIcon={<Trash2 size={16} className="text-error" />}
+                onClick={() => onDelete(rice)}
+              />
+            </>
           )}
 
           <ActionLink to={`${ROUTES.EXPENSE}/rice/${rice.id}`}>
@@ -105,6 +133,5 @@ export const useRiceSummaryColumns = ({
       ),
     });
   }
-
   return columns;
 };

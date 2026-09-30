@@ -31,3 +31,6 @@ export const RICE_PAYMENT_METHOD_LABEL: Record<string, string> = {
   BANK: "Bank",
   OTHER: "Other",
 };
+
+export const toTitleCase = (value: string): string =>
+  value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();

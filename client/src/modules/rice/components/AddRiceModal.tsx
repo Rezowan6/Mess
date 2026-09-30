@@ -11,8 +11,14 @@ import { Select } from "@/shared/components/ui/Select";
 import { useCreateRice } from "../hooks/useCreateRice";
 import { useUpdateRice } from "../hooks/useUpdateRice";
 
+import {
+  getSavedRiceSupplier,
+  saveRiceSupplier,
+} from "../utils/riceSupplierStorage";
+
 import { riceSchema, type RiceFormValues } from "../schemas/rice.schema";
 
+import { formatDateForInput, getLocalDate } from "@/shared/utils/date.utils";
 import type { IRice } from "../types/rice.types";
 
 interface Props {
@@ -27,26 +33,45 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
 
   const isEdit = !!rice;
 
+  const savedSupplier = getSavedRiceSupplier();
+
   const methods = useForm<RiceFormValues>({
     resolver: zodResolver(riceSchema),
     defaultValues: {
       quantity: undefined,
-      unitPrice: undefined,
+      unitPrice: savedSupplier.unitPrice,
       purchaseType: "PAID",
-      supplierName: "",
-      supplierPhone: "",
-      purchaseDate: "",
+      supplierName: savedSupplier.supplierName,
+      supplierPhone: savedSupplier.supplierPhone,
+      purchaseDate: getLocalDate(),
       dueDate: "",
-      initialPaymentMethod: "",
-      initialPaymentDate: "",
+      initialPaymentMethod: "CASH",
+      initialPaymentDate: getLocalDate(),
       initialPaymentNote: "",
       note: "",
     },
   });
 
-  const { handleSubmit, reset, register, watch } = methods;
+  const {
+    handleSubmit,
+    reset,
+    register,
+    watch,
+    formState: { errors },
+  } = methods;
 
   const purchaseType = watch("purchaseType");
+  useEffect(() => {
+    if (purchaseType === "PAID") {
+      methods.setValue("dueDate", "");
+    }
+
+    if (purchaseType === "CREDIT") {
+      methods.setValue("initialPaymentMethod", "");
+      methods.setValue("initialPaymentDate", "");
+      methods.setValue("initialPaymentNote", "");
+    }
+  }, [purchaseType, methods]);
 
   useEffect(() => {
     if (rice) {
@@ -57,27 +82,28 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
         supplierName: rice.supplierName ?? "",
         supplierPhone: rice.supplierPhone ?? "",
         purchaseDate: rice.purchaseDate
-          ? new Date(rice.purchaseDate).toISOString().split("T")[0]
-          : "",
-        dueDate: rice.dueDate
-          ? new Date(rice.dueDate).toISOString().split("T")[0]
-          : "",
-        initialPaymentMethod: "",
-        initialPaymentDate: "",
+          ? formatDateForInput(rice.purchaseDate)
+          : getLocalDate(),
+
+        dueDate: rice.dueDate ? formatDateForInput(rice.dueDate) : "",
+        initialPaymentMethod: rice.purchaseType === "PAID" ? "CASH" : "",
+
+        initialPaymentDate: rice.purchaseType === "PAID" ? getLocalDate() : "",
+
         initialPaymentNote: "",
         note: rice.note ?? "",
       });
     } else {
       reset({
         quantity: undefined,
-        unitPrice: undefined,
+        unitPrice: savedSupplier.unitPrice,
         purchaseType: "PAID",
-        supplierName: "",
-        supplierPhone: "",
-        purchaseDate: "",
+        supplierName: savedSupplier.supplierName,
+        supplierPhone: savedSupplier.supplierPhone,
+        purchaseDate: getLocalDate(),
         dueDate: "",
-        initialPaymentMethod: "",
-        initialPaymentDate: "",
+        initialPaymentMethod: "CASH",
+        initialPaymentDate: getLocalDate(),
         initialPaymentNote: "",
         note: "",
       });
@@ -85,6 +111,12 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
   }, [rice, reset]);
 
   const onSubmit = (data: RiceFormValues) => {
+    console.log("SUBMIT DATA:", data);
+    saveRiceSupplier(
+      String(data.supplierName),
+      String(data.supplierPhone),
+      Number(data.unitPrice),
+    );
     if (isEdit) {
       updateMutation.mutate(
         {
@@ -115,12 +147,18 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
       title={isEdit ? "Update Rice Purchase" : "Add Rice Purchase"}
     >
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-5">
+        <form
+          onSubmit={handleSubmit(onSubmit, (errors) => {
+            console.log("FORM ERRORS:", errors);
+          })}
+          className="mt-4 space-y-5"
+        >
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Input
               label="Rice Quantity"
               type="number"
               placeholder="Enter rice quantity"
+              error={errors.quantity?.message}
               {...register("quantity", { valueAsNumber: true })}
             />
 
@@ -128,24 +166,28 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
               label="Unit Price"
               type="number"
               placeholder="Enter unit price"
+              error={errors.unitPrice?.message}
               {...register("unitPrice", { valueAsNumber: true })}
             />
 
             <Input
               label="Supplier Name"
               placeholder="Enter supplier name"
+              error={errors.supplierName?.message}
               {...register("supplierName")}
             />
 
             <Input
               label="Supplier Phone"
               placeholder="Enter supplier phone"
+              error={errors.supplierPhone?.message}
               {...register("supplierPhone")}
             />
 
             <Input
               label="Purchase Date"
               type="date"
+              error={errors.purchaseDate?.message}
               {...register("purchaseDate")}
             />
 
@@ -163,13 +205,20 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
                   event.target.value as RiceFormValues["purchaseType"],
                   {
                     shouldValidate: true,
+                    shouldDirty: true,
+                    shouldTouch: true,
                   },
                 )
               }
             />
 
             {purchaseType === "CREDIT" && (
-              <Input label="Due Date" type="date" {...register("dueDate")} />
+              <Input
+                label="Due Date"
+                type="date"
+                error={errors.dueDate?.message}
+                {...register("dueDate")}
+              />
             )}
 
             {!isEdit && purchaseType === "PAID" && (
@@ -184,6 +233,7 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
                   ]}
                   placeholder="Select payment method"
                   value={methods.watch("initialPaymentMethod")}
+                  error={errors.initialPaymentMethod?.message}
                   onChange={(event) =>
                     methods.setValue(
                       "initialPaymentMethod",
@@ -198,19 +248,26 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
                 <Input
                   label="Payment Date"
                   type="date"
+                  error={errors.initialPaymentDate?.message}
                   {...register("initialPaymentDate")}
                 />
 
                 <Input
                   label="Payment Note"
                   placeholder="Enter payment note"
+                  error={errors.initialPaymentNote?.message}
                   {...register("initialPaymentNote")}
                 />
               </>
             )}
           </div>
 
-          <Input label="Note" placeholder="Enter note" {...register("note")} />
+          <Input
+            label="Note"
+            placeholder="Enter note"
+            error={errors.note?.message}
+            {...register("note")}
+          />
 
           <div className="flex justify-end gap-2 pt-2">
             <Button type="button" variant="error" onClick={onClose}>
