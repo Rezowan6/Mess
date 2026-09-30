@@ -4,6 +4,7 @@ import { ricePaymentApi } from "../api/ricePayment.api";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
+import type { IUpdateRicePayment } from "../types/ricePayment.types";
 
 export const useUpdateRicePayment = () => {
   const queryClient = useQueryClient();
@@ -12,12 +13,14 @@ export const useUpdateRicePayment = () => {
 
   return useMutation({
     mutationFn: ({
+      riceId,
       id,
       payload,
     }: {
+      riceId: number;
       id: number;
-      payload: Parameters<typeof ricePaymentApi.update>[1];
-    }) => ricePaymentApi.update(id, payload),
+      payload: IUpdateRicePayment;
+    }) => ricePaymentApi.update(riceId, id, payload),
 
     onSuccess: () => {
       queryClient.invalidateQueries({

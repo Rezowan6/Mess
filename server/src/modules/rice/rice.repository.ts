@@ -30,6 +30,13 @@ class RiceRepository extends BaseRepository<Rice> {
         tenantId,
         mealSessionId,
       },
+      include: [
+        {
+          model: User,
+          as: "creator",
+          attributes: ["id", "name", "email", "avatar"],
+        },
+      ],
       ...(transaction ? { transaction } : {}),
     });
   }
@@ -44,7 +51,7 @@ class RiceRepository extends BaseRepository<Rice> {
         {
           model: User,
           as: "creator",
-          attributes: ["id", "name", "email", "avatar",],
+          attributes: ["id", "name", "email", "avatar"],
         },
       ],
       order: [["purchaseDate", "DESC"]],

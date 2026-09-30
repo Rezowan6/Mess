@@ -7,39 +7,42 @@ import type { IRice } from "../types/rice.types";
 import { useRice } from "./useRice";
 
 export const useRiceSummaryTable = () => {
-  const { page, search, handleSearch, handlePage } = useTableSearchParams();
+  const { search, handleSearch, handlePage } = useTableSearchParams();
 
-  const [selectedRice, setSelectedRice] = useState<IRice | null>(null);
+  const [payingRice, setPayingRice] = useState<IRice | null>(null);
+  const [detailsRiceId, setDetailsRiceId] = useState<number | null>(null);
+  // page import of usetablesearcparams
+  // {
+  //   page,
+  //   limit: 10,
+  //   search,
+  // }
 
-  const [isEditOpen, setIsEditOpen] = useState(false);
+  const { data, isPending, isError, refetch } = useRice();
 
-  const riceQuery = useRice();
+  const rice = data?.data ?? [];
 
-  const rice = riceQuery.data?.data ?? [];
-
-  const meta = riceQuery.data?.meta;
-
-  const handleEdit = (rice: IRice) => {
-    setSelectedRice(rice);
-    setIsEditOpen(true);
-  };
-
-  const handleCloseEdit = () => {
-    setIsEditOpen(false);
-    setSelectedRice(null);
-  };
+  // Store only the id, then read the live row from the list query.
+  // This way the modal always shows fresh totalPaid / remainingDue after a payment.
+  const detailsRice = rice.find((item) => item.id === detailsRiceId) ?? null;
 
   return {
-    ...riceQuery,
     rice,
-    meta,
-    page,
+    meta: data?.meta,
+    isPending,
+    isError,
+    refetch,
+
     search,
-    selectedRice,
-    isEditOpen,
     handleSearch,
     handlePage,
-    handleEdit,
-    handleCloseEdit,
+
+    payingRice,
+    openPayModal: (rice: IRice) => setPayingRice(rice),
+    closePayModal: () => setPayingRice(null),
+
+    detailsRice,
+    openDetails: (item: IRice) => setDetailsRiceId(item.id),
+    closeDetails: () => setDetailsRiceId(null),
   };
 };

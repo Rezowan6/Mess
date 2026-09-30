@@ -150,13 +150,13 @@ export const API_ENDPOINTS = {
   },
 
   RICE_PAYMENT: {
-    LIST: (riceId: number) => `/rice-payment/${riceId}`,
-    BY_ID: (riceId: number, id: number) => `/rice-payment/${riceId}/${id}`,
-    TOTAL_PAID: (riceId: number) => `/rice-payment/${riceId}/total-paid`,
-    DUE: (riceId: number) => `/rice-payment/${riceId}/due`,
-    CREATE: "/rice-payment",
-    UPDATE: (id: number) => `/rice-payment/${id}`,
-    DELETE: (id: number) => `/rice-payment/${id}`,
+    CREATE: "/rice-payments",
+    LIST: (riceId: number) => `/rice-payments/${riceId}`,
+    TOTAL_PAID: (riceId: number) => `/rice-payments/${riceId}/total-paid`,
+    DUE: (riceId: number) => `/rice-payments/${riceId}/due`,
+    BY_ID: (riceId: number, id: number) => `/rice-payments/${riceId}/${id}`,
+    UPDATE: (riceId: number, id: number) => `/rice-payments/${riceId}/${id}`,
+    DELETE: (riceId: number, id: number) => `/rice-payments/${riceId}/${id}`,
   },
   DEPOSIT: {
     GET_ALL: "/deposits",

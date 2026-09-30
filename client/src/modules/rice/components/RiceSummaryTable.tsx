@@ -2,10 +2,11 @@ import { Pagination } from "@/shared/components/ui/Pagination";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Table } from "@/shared/components/ui/Table";
 
+import { AddRicePaymentModal } from "@/modules/rice-payment/components/AddRicePaymentModal";
 import { RICE_MESSAGES } from "../configs/rice.message";
 import { useRiceSummaryColumns } from "../configs/rice.summary.columns";
 import { useRiceSummaryTable } from "../hooks/useRiceSummaryTable";
-import { AddRiceModal } from "./AddRiceModal";
+import { RiceDetailsModal } from "./RiceDetailsModal";
 import { RiceTableSkeleton } from "./RiceTableSkeleton";
 
 export const RiceSummaryTable = () => {
@@ -16,25 +17,31 @@ export const RiceSummaryTable = () => {
     isError,
     refetch,
     search,
-    isEditOpen,
-    handleCloseEdit,
-    selectedRice,
     handleSearch,
     handlePage,
+
+    payingRice,
+    openPayModal,
+    closePayModal,
+
+    detailsRice,
+    openDetails,
+    closeDetails,
   } = useRiceSummaryTable();
 
-  const columns = useRiceSummaryColumns();
+  const columns = useRiceSummaryColumns({
+    onPay: openPayModal,
+    onDetails: openDetails,
+  });
 
-  if (isPending) {
-    return <RiceTableSkeleton />;
-  }
+  if (isPending) return <RiceTableSkeleton />;
 
   return (
     <div className="space-y-4">
       <SearchInput
         value={search}
         onChange={handleSearch}
-        placeholder="member name"
+        placeholder="Search by supplier name"
       />
 
       <Table
@@ -54,11 +61,16 @@ export const RiceSummaryTable = () => {
         />
       )}
 
-      <AddRiceModal
-        isOpen={isEditOpen}
-        onClose={handleCloseEdit}
-        rice={selectedRice ?? undefined}
+      <AddRicePaymentModal
+        isOpen={payingRice !== null}
+        onClose={closePayModal}
+        rice={payingRice}
       />
+
+      {/* Mounted only when open, so payments are fetched only on demand */}
+      {detailsRice && (
+        <RiceDetailsModal rice={detailsRice} onClose={closeDetails} />
+      )}
     </div>
   );
 };

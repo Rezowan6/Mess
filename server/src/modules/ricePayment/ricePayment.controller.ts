@@ -11,11 +11,12 @@ import { ricePaymentService } from "./ricePayment.service.js";
 
 class RicePaymentController {
   create = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const payment = await ricePaymentService.create({
       ...req.body,
       tenantId,
+      mealSessionId,
       createdBy: req.user!.id,
     } as ICreateRicePaymentDto);
 
@@ -27,11 +28,11 @@ class RicePaymentController {
   });
 
   getById = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const payment = await ricePaymentService.getById({
       tenantId,
-      mealSessionId: Number(req.params.mealSessionId),
+      mealSessionId,
       riceId: Number(req.params.riceId),
       id: Number(req.params.id),
     });
@@ -44,11 +45,11 @@ class RicePaymentController {
   });
 
   getAll = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const payments = await ricePaymentService.getAll({
       tenantId,
-      mealSessionId: Number(req.params.mealSessionId),
+      mealSessionId,
       riceId: Number(req.params.riceId),
     });
 
@@ -60,11 +61,11 @@ class RicePaymentController {
   });
 
   update = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     await ricePaymentService.update({
       tenantId,
-      mealSessionId: Number(req.params.mealSessionId),
+      mealSessionId,
       riceId: Number(req.params.riceId),
       id: Number(req.params.id),
       data: req.body as IUpdateRicePaymentDto,
@@ -78,11 +79,11 @@ class RicePaymentController {
   });
 
   delete = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     await ricePaymentService.delete({
       tenantId,
-      mealSessionId: Number(req.params.mealSessionId),
+      mealSessionId,
       riceId: Number(req.params.riceId),
       id: Number(req.params.id),
     });
@@ -95,11 +96,11 @@ class RicePaymentController {
   });
 
   getTotalPaid = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const totalPaid = await ricePaymentService.getTotalPaid({
       tenantId,
-      mealSessionId: Number(req.params.mealSessionId),
+      mealSessionId,
       riceId: Number(req.params.riceId),
     });
 
@@ -111,11 +112,11 @@ class RicePaymentController {
   });
 
   getRemainingDue = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId, mealSessionId } = getTenantContext(req);
 
     const remainingDue = await ricePaymentService.getRemainingDue({
       tenantId,
-      mealSessionId: Number(req.params.mealSessionId),
+      mealSessionId,
       riceId: Number(req.params.riceId),
     });
 

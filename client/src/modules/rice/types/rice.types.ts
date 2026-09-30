@@ -44,6 +44,10 @@ export interface IRice {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+  /** Sum of all payments. Provided by backend list/details response. */
+  totalPaid: number;
+  /** totalAmount - totalPaid. Provided by backend list/details response. */
+  remainingDue: number;
 }
 
 export interface ICreateRice {

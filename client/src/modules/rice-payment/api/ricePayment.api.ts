@@ -53,20 +53,21 @@ export const ricePaymentApi = {
   },
 
   update: async (
+    riceId: number,
     id: number,
     payload: IUpdateRicePayment,
   ): Promise<ApiResponse> => {
     const { data } = await API.patch<ApiResponse>(
-      API_ENDPOINTS.RICE_PAYMENT.UPDATE(id),
+      API_ENDPOINTS.RICE_PAYMENT.UPDATE(riceId, id),
       payload,
     );
 
     return data;
   },
 
-  delete: async (id: number): Promise<ApiResponse> => {
+  delete: async (riceId: number, id: number): Promise<ApiResponse> => {
     const { data } = await API.delete<ApiResponse>(
-      API_ENDPOINTS.RICE_PAYMENT.DELETE(id),
+      API_ENDPOINTS.RICE_PAYMENT.DELETE(riceId, id),
     );
 
     return data;

@@ -14,7 +14,7 @@ export const riceRoutes = {
       element: <RiceManagementPage />,
     },
     {
-      path: "history",
+      path: ":riceId",
       element: <RiceHistoryPage />,
     },
   ],

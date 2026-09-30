@@ -1,74 +1,53 @@
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { Table } from "@/shared/components/ui/Table";
 
-import { AddRiceModal } from "../components/AddRiceModal";
-import { riceHistoryColumns } from "../configs/rice.history.columns";
-import { useRice } from "../hooks/useRice";
-import type { IRice } from "../types/rice.types";
-import { MemberHeader } from "@/shared/components/ui/MemberHeader";
+import { RICE_MESSAGES } from "@/modules/rice/configs/rice.message";
+import { useRiceRemainingDue } from "@/modules/rice/hooks/useRiceRemainingDue";
+import { formatTaka } from "@/modules/rice/utils/rice.utils";
+import { useRicePaymentColumns } from "@/modules/rice-payment/configs/ricePayment.columns";
+import { useRicePayments } from "@/modules/rice-payment/hooks/useRicePayments";
+import { useRicePaymentTotalPaid } from "@/modules/rice-payment/hooks/useRicePaymentTotalPaid";
 
 export const RiceHistoryPage = () => {
-  const [selectedRice, setSelectedRice] = useState<IRice | null>(null);
-  const [isEditOpen, setIsEditOpen] = useState(false);
+  const { riceId } = useParams<{ riceId: string }>();
+  const id = Number(riceId);
 
-  const location = useLocation();
+  const columns = useRicePaymentColumns();
 
-  const { data, isPending, isError, refetch } = useRice();
+  const payments = useRicePayments(id);
+  const totalPaid = useRicePaymentTotalPaid(id);
+  const remainingDue = useRiceRemainingDue(id);
 
-  const memberId = location.state?.memberId ?? 0;
-
-  const rice: IRice[] = data?.data ?? [];
-
-  const memberRice: IRice[] = rice.filter(
-    (item) => item.createdBy === memberId,
-  );
-
-  const handleEdit = (rice: IRice) => {
-    setSelectedRice(rice);
-    setIsEditOpen(true);
-  };
-
-  const columns = riceHistoryColumns(handleEdit);
-
-  const totalRice = memberRice.reduce(
-    (sum, item) => sum + Number(item.quantity),
-    0,
-  );
+  if (Number.isNaN(id)) {
+    return <p className="text-error">Invalid rice purchase.</p>;
+  }
 
   return (
-    <>
-      <div className="space-y-4">
-        <MemberHeader
-          name={memberRice[0]?.creator?.name}
-          avatar={memberRice[0]?.creator?.avatar}
-          subtitle="Rice History"
-          rightContent={
-            <div className="text-right">
-              <p className="text-xs text-base-content/60">Total Rice</p>
-              <p className="font-bold">{totalRice}</p>
-            </div>
-          }
-        />
-
-        <Table
-          columns={columns}
-          data={memberRice}
-          loading={isPending}
-          error={isError}
-          refetch={refetch}
-        />
+    <div className="space-y-4">
+      <div className="stats w-full shadow">
+        <div className="stat">
+          <div className="stat-title">Total paid</div>
+          <div className="stat-value text-success text-2xl">
+            {formatTaka(totalPaid.data?.data ?? 0)}
+          </div>
+        </div>
+        <div className="stat">
+          <div className="stat-title">Remaining due</div>
+          <div className="stat-value text-error text-2xl">
+            {formatTaka(remainingDue.data?.data ?? 0)}
+          </div>
+        </div>
       </div>
 
-      <AddRiceModal
-        isOpen={isEditOpen}
-        onClose={() => {
-          setIsEditOpen(false);
-          setSelectedRice(null);
-        }}
-        rice={selectedRice ?? undefined}
+      <Table
+        columns={columns}
+        data={payments.data?.data ?? []}
+        loading={payments.isPending}
+        error={payments.isError}
+        message={RICE_MESSAGES}
+        refetch={payments.refetch}
       />
-    </>
+    </div>
   );
 };

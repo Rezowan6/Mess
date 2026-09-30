@@ -1,90 +1,106 @@
+import { Badge } from "@/shared/components/ui/Badge";
 import type { TableColumn } from "@/shared/components/ui/Table";
-
-import { ActionLink } from "@/shared/components/ui/ActionLink";
-import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
 import { PERMISSIONS } from "@/shared/constants/permissions";
-import { ROUTES } from "@/shared/constants/routes";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 
-import { Badge } from "@/shared/components/ui/Badge";
-import type {
-  IRice,
-  RicePaymentStatusValue,
-  RicePurchaseTypeValue,
-} from "../types/rice.types";
+import { Button } from "@/shared/components/ui/Button";
+import type { IRice } from "../types/rice.types";
+import { canAddRicePayment, formatKg, formatTaka } from "../utils/rice.utils";
+import {
+  RICE_PAYMENT_STATUS_VARIANT,
+  RICE_PURCHASE_TYPE_VARIANT,
+} from "./rice.badge";
 
-export const useRiceSummaryColumns = (): TableColumn<IRice>[] => {
+interface UseRiceSummaryColumnsProps {
+  onPay: (rice: IRice) => void;
+  onDetails: (rice: IRice) => void;
+}
+
+export const useRiceSummaryColumns = ({
+  onPay,
+  onDetails,
+}: UseRiceSummaryColumnsProps): TableColumn<IRice>[] => {
   const { can } = useRBAC();
+  const canManage = can(PERMISSIONS.EXPENSE_CREATE);
 
   const columns: TableColumn<IRice>[] = [
     {
-      key: "member",
-      title: "Member",
+      key: "supplier",
+      title: "Supplier",
       render: (rice) => (
-        <MemberAvatar name={rice.creator?.name} avatar={rice.creator?.avatar} />
+        <div className="flex flex-col">
+          <span className="font-medium">{rice.supplierName ?? "—"}</span>
+          {rice.supplierPhone && (
+            <span className="text-xs opacity-60">{rice.supplierPhone}</span>
+          )}
+        </div>
       ),
     },
     {
       key: "quantity",
-      title: "Total Rice",
-      render: (rice) => `${Number(rice.quantity).toFixed(2)} kg`,
+      title: "Quantity",
+      render: (rice) => formatKg(rice.quantity),
     },
     {
       key: "totalAmount",
-      title: "Total Amount",
-      render: (rice) => `৳${Number(rice.totalAmount).toFixed(2)}`,
+      title: "Total",
+      render: (rice) => formatTaka(rice.totalAmount),
+    },
+    {
+      key: "totalPaid",
+      title: "Paid",
+      render: (rice) => formatTaka(rice.totalPaid),
+    },
+    {
+      key: "remainingDue",
+      title: "Due",
+      render: (rice) => (
+        <span className={Number(rice.remainingDue) > 0 ? "text-error" : ""}>
+          {formatTaka(rice.remainingDue)}
+        </span>
+      ),
     },
     {
       key: "purchaseType",
-      title: "Purchase Type",
-      render: (rice) => {
-        const variantMap: Record<RicePurchaseTypeValue, "success" | "warning"> =
-          {
-            PAID: "success",
-            CREDIT: "warning",
-          };
-
-        return (
-          <Badge size="sm" variant={variantMap[rice.purchaseType]}>
-            {rice.purchaseType}
-          </Badge>
-        );
-      },
+      title: "Type",
+      render: (rice) => (
+        <Badge
+          size="sm"
+          variant={RICE_PURCHASE_TYPE_VARIANT[rice.purchaseType]}
+        >
+          {rice.purchaseType}
+        </Badge>
+      ),
     },
     {
       key: "paymentStatus",
-      title: "Payment Status",
-      render: (rice) => {
-        const variantMap: Record<
-          RicePaymentStatusValue,
-          "success" | "warning" | "error" | "info"
-        > = {
-          PAID: "success",
-          DUE: "error",
-          PARTIAL: "warning",
-          SETTLED: "info",
-        };
-
-        return (
-          <Badge size="sm" variant={variantMap[rice.paymentStatus]}>
-            {rice.paymentStatus}
-          </Badge>
-        );
-      },
+      title: "Status",
+      render: (rice) => (
+        <Badge
+          size="sm"
+          variant={RICE_PAYMENT_STATUS_VARIANT[rice.paymentStatus]}
+        >
+          {rice.paymentStatus}
+        </Badge>
+      ),
     },
   ];
 
-  if (can(PERMISSIONS.EXPENSE_CREATE)) {
+  if (canManage) {
     columns.push({
-      key: "details",
-      title: "Details",
+      key: "actions",
+      title: "Actions",
       render: (rice) => (
-        <ActionLink
-          state={{ memberId: rice.createdBy }}
-          to={`${ROUTES.EXPENSE}/rice/history`}
-        >
-          Details
-        </ActionLink>
+        <div className="flex items-center gap-3">
+          {canAddRicePayment(rice) && (
+            <Button variant="primary" type="button" onClick={() => onPay(rice)}>
+              Pay
+            </Button>
+          )}
+          <Button variant="outline" type="button" onClick={() => onDetails(rice)}>
+            Details
+          </Button>
+        </div>
       ),
     });
   }

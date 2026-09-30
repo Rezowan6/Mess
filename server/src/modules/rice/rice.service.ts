@@ -17,6 +17,7 @@ import {
   RicePurchaseType,
   RicePurchaseTypeValue,
 } from "./rice.interface.js";
+import { Rice } from "./rice.model.js";
 import { riceRepository } from "./rice.repository.js";
 
 class RiceService {
@@ -159,7 +160,13 @@ class RiceService {
       throw new ApiError(404, "Rice purchase not found.");
     }
 
-    return rice;
+    const riceWithSummary = await this.attachPaymentSummary(
+      tenantId,
+      mealSessionId,
+      [rice],
+    );
+
+    return riceWithSummary;
   }
 
   async getAll({
@@ -169,7 +176,9 @@ class RiceService {
     tenantId: number;
     mealSessionId: number;
   }) {
-    return riceRepository.getAllRice(tenantId, mealSessionId);
+    const riceList = await riceRepository.getAllRice(tenantId, mealSessionId);
+
+    return this.attachPaymentSummary(tenantId, mealSessionId, riceList);
   }
 
   async update({
@@ -467,7 +476,41 @@ class RiceService {
 
     return paymentStatus;
   }
+  private roundMoney(value: number): number {
+    return Number(value.toFixed(2));
+  }
 
+  /**
+   * Adds totalPaid and remainingDue to rice purchases using a single grouped query.
+   * PAID purchases are fully paid at purchase time, so they never have due.
+   */
+  private async attachPaymentSummary(
+    tenantId: number,
+    mealSessionId: number,
+    riceList: Rice[],
+  ) {
+    const totalsByRiceId = await ricePaymentRepository.getTotalPaidByRiceIds(
+      tenantId,
+      mealSessionId,
+      riceList.map((rice) => rice.id),
+    );
+
+    return riceList.map((rice) => {
+      const plain = rice.toJSON();
+      const totalAmount = Number(plain.totalAmount);
+
+      const totalPaid =
+        plain.purchaseType === RicePurchaseType.PAID
+          ? totalAmount
+          : (totalsByRiceId.get(plain.id) ?? 0);
+
+      return {
+        ...plain,
+        totalPaid: this.roundMoney(totalPaid),
+        remainingDue: Math.max(this.roundMoney(totalAmount - totalPaid), 0),
+      };
+    });
+  }
   private validatePurchase({
     quantity,
     unitPrice,

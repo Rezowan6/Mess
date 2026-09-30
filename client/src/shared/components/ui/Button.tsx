@@ -51,84 +51,98 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses = {
   tab: `
-  text-info
-`,
+    bg-info/20
+    hover:bg-info/40
+    text-info
+  `,
   moduleBtn: `
-    bg-gradient-to-r 
-    from-teal-600 
+    bg-gradient-to-r
+    from-teal-600
     to-green-600
     hover:from-teal-700
     hover:to-green-700
-    `,
+    hover:shadow-teal-500/30
+  `,
   primary: `
-    bg-gradient-to-r 
-    from-blue-600 
+    bg-gradient-to-r
+    from-blue-600
     to-blue-900
-    hover:from-blue-800 
+    hover:from-blue-800
     hover:to-blue-600
-    `,
-
+    hover:shadow-blue-500/30
+  `,
   success: `
-    bg-gradient-to-r 
-    from-teal-600 
+    bg-gradient-to-r
+    from-teal-600
     to-green-600
     hover:from-teal-700
     hover:to-green-700
-    `,
-
+    hover:shadow-green-500/30
+  `,
   error: `
     bg-gradient-to-r
     from-red-500
     to-pink-600
     hover:from-red-600
     hover:to-pink-700
-    `,
-
+    hover:shadow-red-500/30
+  `,
   warning: `
     bg-gradient-to-r
     from-yellow-500
     to-orange-500
     hover:from-yellow-600
     hover:to-orange-600
-    `,
-
+    hover:shadow-orange-500/30
+  `,
   secondary: `
     bg-gradient-to-r
     from-slate-500
     to-slate-700
     hover:from-slate-600
     hover:to-slate-800
-    `,
-
+    hover:shadow-slate-500/30
+  `,
   accent: `
     bg-gradient-to-r
     from-purple-600
     to-pink-600
     hover:from-purple-700
     hover:to-pink-700
-    `,
-
+    hover:shadow-purple-500/30
+  `,
   ghost: `
     bg-transparent
     text-text
     hover:bg-surface-hover
-    `,
-
+  `,
   outline: `
     border
     border-border
     text-text
     hover:bg-surface-hover
-    `,
+  `,
   normal: `
     bg-gradient-to-r
     from-teal-500
     to-teal-900
     hover:from-teal-600
     hover:to-teal-600
-  
-    `,
+    hover:shadow-teal-500/30
+  `,
 } satisfies Record<ButtonVariant, string>;
+
+/** Gradient variants: white text, shadow and lift effect. */
+const SOLID_VARIANTS = new Set<ButtonVariant>([
+  "moduleBtn",
+  "primary",
+  "secondary",
+  "accent",
+  "success",
+  "warning",
+  "error",
+  "normal",
+]);
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -167,17 +181,33 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       return null;
     }
 
+    const isSolid = SOLID_VARIANTS.has(variant);
+    const hasContent = Boolean(children);
+
     const button = (
       <button
         ref={ref}
         disabled={disabled || loading}
+        aria-busy={loading || undefined}
         className={clsx(
-          !unstyled && [
-            variantClasses[variant],
-            "px-4 sm:h-10 flex justify-center items-center text-white",
-          ],
+          // Shared base
+          "cursor-pointer select-none whitespace-nowrap font-medium",
+          "transition-all duration-300 ease-out",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-info/60 focus-visible:ring-offset-2 focus-visible:ring-offset-base-100",
+          "disabled:opacity-50 disabled:pointer-events-none disabled:shadow-none",
 
-          "cursor-pointer bg-info/20 hover:bg-info/40 p-2 rounded-sm disabled:opacity-50 disabled:pointer-events-none transition-all duration-300",
+          unstyled
+            ? "inline-flex items-center justify-center gap-2 rounded-md bg-info/20 p-2  hover:bg-info/40"
+            : [
+                variantClasses[variant],
+                "flex items-center justify-center gap-2 rounded-full py-2 px-6 text-sm sm:h-10",
+                hasContent ? "px-4" : "px-3",
+                isSolid && [
+                  "text-white shadow-sm",
+                  "hover:-translate-y-px hover:shadow-lg",
+                  "active:translate-y-0 active:scale-[0.98]",
+                ],
+              ],
 
           fullWidth && "w-full",
 
@@ -187,7 +217,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {loading ? (
           <>
-            <Loader2 size={16} className="animate-spin" />
+            <Loader2 size={iconSize} className="animate-spin" />
 
             <span>{loadingText}</span>
           </>
@@ -216,7 +246,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <div className="tooltip tooltip-top" data-tip={tooltip}>
+      <div
+        className={clsx("tooltip tooltip-top", fullWidth && "w-full")}
+        data-tip={tooltip}
+      >
         {button}
       </div>
     );

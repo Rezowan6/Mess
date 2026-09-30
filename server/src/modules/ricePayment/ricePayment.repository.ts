@@ -1,5 +1,5 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
-import { Attributes, CreationAttributes, Transaction } from "sequelize";
+import { Attributes, col, CreationAttributes, fn, Op, Transaction } from "sequelize";
 
 import { RicePayment } from "./ricePayment.model.js";
 
@@ -105,6 +105,35 @@ class RicePaymentRepository extends BaseRepository<RicePayment> {
     });
 
     return Number(totalPaid ?? 0);
+  }
+
+    /**
+   * Returns total paid amount for many rice purchases in one query.
+   * Purchases without any payment are not present in the map (treat as 0).
+   */
+  async getTotalPaidByRiceIds(
+    tenantId: number,
+    mealSessionId: number,
+    riceIds: number[],
+    transaction?: Transaction | null,
+  ): Promise<Map<number, number>> {
+    if (riceIds.length === 0) {
+      return new Map();
+    }
+
+    const rows = (await this.findAll({
+      attributes: ["riceId", [fn("SUM", col("amount")), "totalPaid"]],
+      where: {
+        tenantId,
+        mealSessionId,
+        riceId: { [Op.in]: riceIds },
+      },
+      group: ["riceId"],
+      raw: true,
+      ...(transaction ? { transaction } : {}),
+    })) as unknown as Array<{ riceId: number; totalPaid: string | null }>;
+
+    return new Map(rows.map((row) => [row.riceId, Number(row.totalPaid ?? 0)]));
   }
 
   async updateWithTransaction(

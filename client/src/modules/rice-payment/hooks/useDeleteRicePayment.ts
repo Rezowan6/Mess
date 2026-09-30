@@ -4,14 +4,18 @@ import { ricePaymentApi } from "../api/ricePayment.api";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
-
+interface DeleteRicePaymentVariables {
+  riceId: number;
+  id: number;
+}
 export const useDeleteRicePayment = () => {
   const queryClient = useQueryClient();
 
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useMutation({
-    mutationFn: ricePaymentApi.delete,
+    mutationFn: ({ riceId, id }: DeleteRicePaymentVariables) =>
+      ricePaymentApi.delete(riceId, id),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
