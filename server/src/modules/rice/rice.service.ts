@@ -166,6 +166,10 @@ class RiceService {
       [rice],
     );
 
+    if (!riceWithSummary) {
+      throw new ApiError(404, "Rice purchase not found.");
+    }
+
     return riceWithSummary;
   }
 
