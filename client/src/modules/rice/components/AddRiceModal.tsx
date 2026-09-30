@@ -18,8 +18,12 @@ import {
 
 import { riceSchema, type RiceFormValues } from "../schemas/rice.schema";
 
-import { formatDateForInput, getLocalDate } from "@/shared/utils/date.utils";
-import type { IRice } from "../types/rice.types";
+import {
+  formatDateForInput,
+  getLocalDate,
+  isLocked,
+} from "@/shared/utils/date.utils";
+import { RicePaymentStatus, type IRice } from "../types/rice.types";
 
 interface Props {
   isOpen: boolean;
@@ -28,6 +32,7 @@ interface Props {
 }
 
 export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
+  console.log(rice);
   const createMutation = useCreateRice();
   const updateMutation = useUpdateRice();
 
@@ -111,7 +116,6 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
   }, [rice, reset]);
 
   const onSubmit = (data: RiceFormValues) => {
-    console.log("SUBMIT DATA:", data);
     saveRiceSupplier(
       String(data.supplierName),
       String(data.supplierPhone),
@@ -147,12 +151,7 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
       title={isEdit ? "Update Rice Purchase" : "Add Rice Purchase"}
     >
       <FormProvider {...methods}>
-        <form
-          onSubmit={handleSubmit(onSubmit, (errors) => {
-            console.log("FORM ERRORS:", errors);
-          })}
-          className="mt-4 space-y-5"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-5">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Input
               label="Rice Quantity"
@@ -187,17 +186,23 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
             <Input
               label="Purchase Date"
               type="date"
+              disabled={
+                rice?.paymentStatus === RicePaymentStatus.PARTIAL ||
+                isLocked(String(rice?.createdAt))
+              }
               error={errors.purchaseDate?.message}
               {...register("purchaseDate")}
             />
 
             <Select
               label="Purchase Type"
+              disabled={
+                rice?.paymentStatus === RicePaymentStatus.PARTIAL || isEdit
+              }
               options={[
                 { label: "Paid", value: "PAID" },
                 { label: "Credit", value: "CREDIT" },
               ]}
-              placeholder="Select purchase type"
               value={purchaseType}
               onChange={(event) =>
                 methods.setValue(
@@ -205,8 +210,6 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
                   event.target.value as RiceFormValues["purchaseType"],
                   {
                     shouldValidate: true,
-                    shouldDirty: true,
-                    shouldTouch: true,
                   },
                 )
               }

@@ -7,7 +7,7 @@ import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { Button } from "@/shared/components/ui/Button";
 import { ROUTES } from "@/shared/constants/routes";
 import { Pencil, Trash2 } from "lucide-react";
-import type { IRice } from "../types/rice.types";
+import { RicePaymentStatus, type IRice } from "../types/rice.types";
 import {
   canAddRicePayment,
   formatKg,
@@ -111,7 +111,11 @@ export const useRiceSummaryColumns = ({
               >
                 Pay
               </Button>
+            </>
+          )}
 
+          {rice.paymentStatus === RicePaymentStatus.DUE && (
+            <>
               <Button
                 unstyled
                 leftIcon={<Pencil size={16} />}

@@ -28,7 +28,7 @@ import {
   toTitleCase,
 } from "../utils/rice.utils";
 
-import { formatDate } from "@/shared/utils/date.utils";
+import { formatDate, isLocked } from "@/shared/utils/date.utils";
 import { useParams } from "react-router-dom";
 import { useRiceHistory } from "../hooks/useRiceHistory";
 
@@ -240,7 +240,7 @@ export const RiceHistoryPage = () => {
                     )}
                   </div>
 
-                  {canEditPayments && canAddRicePayment(rice) && (
+                  {canEditPayments && canAddRicePayment(rice) && !isLocked(String(payment.createdAt)) && (
                     <div className="flex items-center gap-1">
                       <Button
                         unstyled
