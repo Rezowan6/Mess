@@ -5,6 +5,7 @@ import type {
   ICreateRicePayment,
   IRicePayment,
   IUpdateRicePayment,
+  RicePaymentMethodValue,
 } from "../types/ricePayment.types";
 
 export const ricePaymentApi = {
@@ -42,6 +43,23 @@ export const ricePaymentApi = {
 
     return data;
   },
+
+  bulkSettleDue: (payload: {
+  paymentMethod: RicePaymentMethodValue;
+  paymentDate?: string;
+  note?: string;
+}): Promise<ApiResponse<{
+  settledCount: number;
+  totalSettledAmount: number;
+  paymentMethod: RicePaymentMethodValue;
+  paymentDate: string;
+  riceIds: number[];
+}>> => {
+  return API.post(
+    API_ENDPOINTS.RICE_PAYMENT.BULK_SETTLE,
+    payload,
+  ).then(({ data }) => data);
+},
 
   create: async (payload: ICreateRicePayment): Promise<ApiResponse> => {
     const { data } = await API.post<ApiResponse>(

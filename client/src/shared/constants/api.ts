@@ -151,6 +151,7 @@ export const API_ENDPOINTS = {
 
   RICE_PAYMENT: {
     CREATE: "/rice-payments",
+    BULK_SETTLE: "/rice-payments/bluk-settle",
     LIST: (riceId: number) => `/rice-payments/${riceId}`,
     TOTAL_PAID: (riceId: number) => `/rice-payments/${riceId}/total-paid`,
     DUE: (riceId: number) => `/rice-payments/${riceId}/due`,
