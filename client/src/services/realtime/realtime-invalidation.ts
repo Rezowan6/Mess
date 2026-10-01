@@ -90,6 +90,12 @@ export const invalidateRealtimeQueries = (
           mealSessionId,
         ),
       });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealRequests.myRequests(tenantId, mealSessionId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealRequests.all(tenantId, mealSessionId),
+      });
 
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
@@ -101,6 +107,18 @@ export const invalidateRealtimeQueries = (
     case "meal-request": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealRequests.all(tenantId, mealSessionId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealPreference.myPreference(
+          tenantId,
+          mealSessionId,
+        ),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealPreference.all(tenantId, mealSessionId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealRequests.myRequests(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
