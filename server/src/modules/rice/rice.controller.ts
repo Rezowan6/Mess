@@ -120,6 +120,26 @@ class RiceController {
       data: remainingDue,
     });
   });
+
+  bulkSettleDue = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, userId, mealSessionId } = getTenantContext(req);
+    const { paymentMethod, paymentDate, note } = req.body;
+
+    const result = await riceService.bulkSettleDue({
+      tenantId,
+      mealSessionId,
+      createdBy: userId,
+      paymentMethod,
+      paymentDate,
+      note,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Rice dues settled successfully",
+      data: result,
+    });
+  });
 }
 
 export const riceController = new RiceController();

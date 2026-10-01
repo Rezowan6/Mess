@@ -1,7 +1,8 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
-import { Attributes, CreationAttributes, Transaction } from "sequelize";
+import { Attributes, CreationAttributes, Op, Transaction } from "sequelize";
 
 import { User } from "@/models/index.js";
+import { RicePaymentStatus, RicePurchaseType } from "./rice.interface.js";
 import { Rice } from "./rice.model.js";
 
 class RiceRepository extends BaseRepository<Rice> {
@@ -55,6 +56,31 @@ class RiceRepository extends BaseRepository<Rice> {
         },
       ],
       order: [["purchaseDate", "DESC"]],
+    });
+  }
+
+  /**
+   * Locks and returns all CREDIT rice purchases that may still have due
+   * for the given tenant + meal session. Must run inside a transaction.
+   * Ordered by id so concurrent transactions always lock rows in the same order.
+   */
+  async getOutstandingCreditRiceForUpdate(
+    tenantId: number,
+    mealSessionId: number,
+    transaction: Transaction,
+  ): Promise<Rice[]> {
+    return this.findAll({
+      where: {
+        tenantId,
+        mealSessionId,
+        purchaseType: RicePurchaseType.CREDIT,
+        paymentStatus: {
+          [Op.in]: [RicePaymentStatus.DUE, RicePaymentStatus.PARTIAL],
+        },
+      },
+      order: [["id", "ASC"]],
+      transaction,
+      lock: transaction.LOCK.UPDATE,
     });
   }
 

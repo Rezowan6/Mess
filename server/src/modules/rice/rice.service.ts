@@ -7,6 +7,10 @@ import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
+import {
+  RICE_PAYMENT_METHODS,
+  RicePaymentMethodValue,
+} from "../ricePayment/ricePayment.interface.js";
 import { ricePaymentRepository } from "../ricePayment/ricePayment.repository.js";
 import {
   ICreateRiceDto,
@@ -19,6 +23,7 @@ import {
 } from "./rice.interface.js";
 import { Rice } from "./rice.model.js";
 import { riceRepository } from "./rice.repository.js";
+import { getAppDate } from "@/utils/date.util.js";
 
 class RiceService {
   async create(data: ICreateRiceDto) {
@@ -398,6 +403,118 @@ class RiceService {
     );
 
     return Number((Number(rice.totalAmount) - totalPaid).toFixed(2));
+  }
+
+  async bulkSettleDue({
+    tenantId,
+    mealSessionId,
+    createdBy,
+    paymentMethod,
+    paymentDate,
+    note,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    createdBy: number;
+    paymentMethod: RicePaymentMethodValue;
+    paymentDate?: Date | undefined;
+    note?: string | null | undefined;
+  }) {
+    await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
+
+    if (!RICE_PAYMENT_METHODS.includes(paymentMethod)) {
+      throw new ApiError(400, "Invalid rice payment method.");
+    }
+
+    const settledAt = paymentDate ?? getAppDate();
+
+    const result = await sequelize.transaction(async (transaction) => {
+      // Lock rows first, so a concurrent bulk settle waits and then finds nothing to settle
+      const riceList = await riceRepository.getOutstandingCreditRiceForUpdate(
+        tenantId,
+        mealSessionId,
+        transaction,
+      );
+
+      const totalsByRiceId = await ricePaymentRepository.getTotalPaidByRiceIds(
+        tenantId,
+        mealSessionId,
+        riceList.map((rice) => rice.id),
+        transaction,
+      );
+
+      // Due is always calculated on the backend from real payment history
+      const dues = riceList
+        .map((rice) => ({
+          riceId: rice.id,
+          amount: this.roundMoney(
+            Number(rice.totalAmount) - (totalsByRiceId.get(rice.id) ?? 0),
+          ),
+        }))
+        .filter((item) => item.amount > 0);
+
+      if (dues.length === 0) {
+        throw new ApiError(400, "There is no outstanding rice due to settle.");
+      }
+
+      for (const due of dues) {
+        await ricePaymentRepository.createRicePayment(
+          {
+            tenantId,
+            mealSessionId,
+            riceId: due.riceId,
+            createdBy,
+            amount: due.amount,
+            paymentMethod,
+            paymentDate: settledAt,
+            note: note ?? null,
+          },
+          transaction,
+        );
+
+        const paymentStatus = await this.recalculatePaymentStatus({
+          tenantId,
+          mealSessionId,
+          id: due.riceId,
+          transaction,
+        });
+
+        // Safety net: if any purchase is not fully settled, rollback everything
+        if (paymentStatus !== RicePaymentStatus.SETTLED) {
+          throw new ApiError(
+            500,
+            "Rice due settlement failed. No changes were saved.",
+          );
+        }
+      }
+
+      return {
+        settledCount: dues.length,
+        totalSettledAmount: this.roundMoney(
+          dues.reduce((sum, item) => sum + item.amount, 0),
+        ),
+        paymentMethod,
+        paymentDate: settledAt,
+        riceIds: dues.map((item) => item.riceId),
+      };
+    });
+
+    // Emit only after the transaction is committed
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.RICE_PAYMENT,
+      action: RealtimeAction.CREATED,
+      tenantId,
+      mealSessionId,
+    });
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.RICE,
+      action: RealtimeAction.UPDATED,
+      tenantId,
+      mealSessionId,
+    });
+
+    return result;
   }
 
   async recalculatePaymentStatus({

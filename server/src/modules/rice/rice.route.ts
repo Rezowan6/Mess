@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.post("/", ...managerAccess, riceController.create);
 
+router.post("/bulk-settle", ...managerAccess, riceController.bulkSettleDue);
+
 router.get("/", ...allAccess, riceController.getAll);
 
 router.get("/summary", ...allAccess, riceController.getSummary);
