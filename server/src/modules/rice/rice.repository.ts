@@ -143,6 +143,14 @@ class RiceRepository extends BaseRepository<Rice> {
       ),
     };
   }
+  async getTotalRiceExpense(
+    tenantId: number,
+    mealSessionId: number,
+  ): Promise<number> {
+    const riceRecords = await this.getAllRice(tenantId, mealSessionId);
+
+    return riceRecords.reduce((sum, rice) => sum + Number(rice.totalAmount), 0);
+  }
 
   async updatePaymentStatus(
     tenantId: number,

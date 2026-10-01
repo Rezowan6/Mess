@@ -3,6 +3,7 @@ import { eggRateRepository } from "../eggRates/eggRate.repository.js";
 import { IMealSessionReq } from "../mealSession/mealSession.interface.js";
 import { partyExpenseRepository } from "../PartyExpense/partyExpense.repository.js";
 import { partyExpenseMemberRepository } from "../PartyExpenseMember/partyExpenseMember.repository.js";
+import { riceRepository } from "../rice/rice.repository.js";
 import { soldProductRepository } from "../soldProduct/soldProduct.repository.js";
 import { monthlyCalculationRepository } from "./monthlyCalculation.repository.js";
 
@@ -59,9 +60,16 @@ class MonthlyCalculationService {
     );
     const grandTotalMeals = Number(mealSummary?.grandTotalMeals ?? 0);
 
+    const totalRiceExpense = await riceRepository.getTotalRiceExpense(
+      tenantId,
+      mealSessionId,
+    );
+
+    const grandTotalMealCost = totalExpense + totalRiceExpense;
+
     // Party expense + egg cost meal rate-এর মধ্যে যাবে না
     const normalExpense =
-      Number(totalExpense) -
+      Number(grandTotalMealCost) -
       Number(totalPartyExpense) -
       Number(totalEggCost) -
       Number(totalSoldProductAmount);

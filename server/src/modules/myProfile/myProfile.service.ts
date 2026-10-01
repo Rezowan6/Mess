@@ -3,6 +3,7 @@ import { eggRateRepository } from "../eggRates/eggRate.repository.js";
 import { monthlyCalculationRepository } from "../monthlyCalculation/monthlyCalculation.repository.js";
 import { partyExpenseRepository } from "../PartyExpense/partyExpense.repository.js";
 import { partyExpenseMemberRepository } from "../PartyExpenseMember/partyExpenseMember.repository.js";
+import { riceRepository } from "../rice/rice.repository.js";
 import { soldProductRepository } from "../soldProduct/soldProduct.repository.js";
 import { myProfileRepository } from "./myProfile.repository.js";
 
@@ -31,6 +32,7 @@ class MyProfileService {
       eggRate,
       soldProduct,
       eggs,
+      totalRiceExpense,
     ] = await Promise.all([
       myProfileRepository.getMyProfileUser({
         tenantId,
@@ -87,6 +89,7 @@ class MyProfileService {
         mealSessionId,
         memberId: userId,
       }),
+      riceRepository.getTotalRiceExpense(tenantId, mealSessionId),
     ]);
 
     // egg related calculation
@@ -106,10 +109,11 @@ class MyProfileService {
 
     // Party expense বাদ দিয়ে normal expense
     const normalExpense =
-      Number(totalExpense ?? 0) -
-      Number(totalPartyExpense ?? 0) -
-      Number(totalEggCost ?? 0) -
-      Number(totalSoldProductAmount ?? 0);
+      Number(totalExpense) -
+      Number(totalPartyExpense) -
+      Number(totalEggCost) -
+      Number(totalSoldProductAmount) +
+      Number(totalRiceExpense);
 
     // Normal meal rate
     const mealRate =

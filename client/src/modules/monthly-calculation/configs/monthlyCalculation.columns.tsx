@@ -73,10 +73,10 @@ export const useMonthlyCalculationColumns =
             size="sm"
             variant={`${
               member.status === "Payable"
-                ? "accent"
+                ? "soft-error"
                 : member.status === "Received"
-                  ? "success"
-                  : "primary"
+                  ? "soft-success"
+                  : "soft-info"
             }`}
           >
             {member.status}

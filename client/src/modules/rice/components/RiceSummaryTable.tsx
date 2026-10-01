@@ -59,7 +59,7 @@ export const RiceSummaryTable = () => {
   return (
     <div className="space-y-4">
       {showDueBar && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-info/10 p-3 text-sm">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-warning/10 p-3 text-sm">
           <p>
             Total due{" "}
             <strong className="text-error">
