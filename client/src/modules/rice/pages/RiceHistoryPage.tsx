@@ -240,20 +240,22 @@ export const RiceHistoryPage = () => {
                     )}
                   </div>
 
-                  {canEditPayments && canAddRicePayment(rice) && !isLocked(String(payment.createdAt)) && (
-                    <div className="flex items-center gap-1">
-                      <Button
-                        unstyled
-                        leftIcon={<Pencil size={16} />}
-                        onClick={() => openEdit(payment)}
-                      />
-                      <Button
-                        unstyled
-                        leftIcon={<Trash2 size={16} className="text-error" />}
-                        onClick={() => handleDelete(payment)}
-                      />
-                    </div>
-                  )}
+                  {canEditPayments &&
+                    canAddRicePayment(rice) &&
+                    !isLocked(String(payment.createdAt)) && (
+                      <div className="flex items-center gap-1">
+                        <Button
+                          unstyled
+                          leftIcon={<Pencil size={16} />}
+                          onClick={() => openEdit(payment)}
+                        />
+                        <Button
+                          unstyled
+                          leftIcon={<Trash2 size={16} className="text-error" />}
+                          onClick={() => handleDelete(payment)}
+                        />
+                      </div>
+                    )}
                 </li>
               ))}
             </ul>

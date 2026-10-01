@@ -32,7 +32,7 @@ interface Props {
 }
 
 export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
-  console.log(rice);
+
   const createMutation = useCreateRice();
   const updateMutation = useUpdateRice();
 
@@ -113,7 +113,7 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
         note: "",
       });
     }
-  }, [rice, reset]);
+  }, [rice, reset,]);
 
   const onSubmit = (data: RiceFormValues) => {
     saveRiceSupplier(
@@ -187,7 +187,7 @@ export const AddRiceModal = ({ isOpen, onClose, rice }: Props) => {
               label="Purchase Date"
               type="date"
               disabled={
-                rice?.paymentStatus === RicePaymentStatus.PARTIAL ||
+                rice?.paymentStatus === RicePaymentStatus.PARTIAL &&
                 isLocked(String(rice?.createdAt))
               }
               error={errors.purchaseDate?.message}

@@ -1,3 +1,8 @@
+ami akon r akta feture add korbo seta holo
+tenantId r mealSessionId diye all rice er modde joto gula rice er tk baki ba due ace ba partial ace mane remaining balance jotogula ace seitar akta sum korbe r oi total remaining blance ta je je riceId er thakbe seita seita paid hoye jabe manage jodi paid kore tahole bujcen ki?
+ki bujcen short a bolen age code diben na
+
+
 RiceService-কে শুধু Rice Purchase business logic-এর জন্য রাখলে এই methodগুলো যথেষ্ট হবে:
 
 RiceService

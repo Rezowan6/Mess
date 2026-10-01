@@ -1,14 +1,14 @@
-// import { env } from "@/shared/config/env";
-// import { io } from "socket.io-client";
-
-// export const socket = io(env.socketUrl, {
-//   withCredentials: true,
-//   autoConnect: true,
-// });
-
+import { env } from "@/shared/config/env";
 import { io } from "socket.io-client";
 
-export const socket = io({
+// for development
+export const socket = io(env.socketUrl, {
   withCredentials: true,
-  autoConnect: false,
+  autoConnect: true,
 });
+
+// for production
+// export const socket = io({
+//   withCredentials: true,
+//   autoConnect: false,
+// });

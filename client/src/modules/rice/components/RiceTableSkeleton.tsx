@@ -6,8 +6,10 @@ export const RiceTableSkeleton = () => {
       <table className="table">
         <thead className="bg-base-200">
           <tr>
-            <th>Member</th>
-            <th>Total Rice</th>
+            <th>Supplier</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>totalPaid</th>
           </tr>
         </thead>
 

@@ -37,6 +37,10 @@ export const useCreateRicePayment = () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.rice.due(tenantId, mealSessionId, variables.riceId),
       });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.rice.get(tenantId, mealSessionId),
+      });
     },
   });
 };

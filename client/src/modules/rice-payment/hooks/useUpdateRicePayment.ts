@@ -6,7 +6,7 @@ import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import type { IUpdateRicePayment } from "../types/ricePayment.types";
 
-export const useUpdateRicePayment = () => {
+export const useUpdateRicePayment = (riceId: number) => {
   const queryClient = useQueryClient();
 
   const { tenantId, mealSessionId } = useCurrentTenantContext();
@@ -25,6 +25,9 @@ export const useUpdateRicePayment = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.ricePayments.all(tenantId, mealSessionId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.ricePayments.get(tenantId, mealSessionId, riceId),
       });
 
       queryClient.invalidateQueries({

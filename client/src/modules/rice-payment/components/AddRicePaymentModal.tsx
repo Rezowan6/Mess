@@ -18,6 +18,7 @@ import { formatTaka } from "@/modules/rice/utils/rice.utils";
 
 import { Button } from "@/shared/components/ui/Button";
 import { getLocalDate } from "@/shared/utils/date.utils";
+import { useParams } from "react-router-dom";
 import { useUpdateRicePayment } from "../hooks/useUpdateRicePayment";
 import {
   createRicePaymentSchema,
@@ -38,6 +39,9 @@ export const AddRicePaymentModal = ({
   rice,
   payment = null,
 }: AddRicePaymentModalProps) => {
+  const { riceId } = useParams<{ riceId: string }>();
+  const id = Number(riceId);
+
   const isEdit = payment !== null;
   // In edit mode the current payment amount is available again
   const maxAmount = Number(
@@ -67,7 +71,7 @@ export const AddRicePaymentModal = ({
   const paymentMethod = watch("paymentMethod");
 
   const create = useCreateRicePayment();
-  const update = useUpdateRicePayment();
+  const update = useUpdateRicePayment(id);
 
   const isPending = create.isPending || update.isPending;
 

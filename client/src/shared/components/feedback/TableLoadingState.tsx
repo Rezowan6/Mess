@@ -1,3 +1,5 @@
+import { Skeleton } from "./Skeleton";
+
 interface TableLoadingStateProps {
   rows?: number;
   columns?: number;
@@ -14,7 +16,7 @@ export const TableLoadingState = ({
           <tr>
             {Array.from({ length: columns }).map((_, index) => (
               <th key={index}>
-                <div className="h-4 w-20 animate-pulse rounded bg-base-300" />
+                <Skeleton className="h-4 w-20" />
               </th>
             ))}
           </tr>
