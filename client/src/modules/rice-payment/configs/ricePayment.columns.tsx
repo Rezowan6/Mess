@@ -1,8 +1,8 @@
 import { Badge } from "@/shared/components/ui/Badge";
 import type { TableColumn } from "@/shared/components/ui/Table";
 
+import { formatTaka } from "@/shared/utils/format.utils";
 import type { IRicePayment } from "../types/ricePayment.types";
-import { formatTaka } from "@/modules/rice/utils/rice.utils";
 
 export const useRicePaymentColumns = (): TableColumn<IRicePayment>[] => [
   {

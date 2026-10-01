@@ -15,7 +15,7 @@ import { getLocalDate } from "@/shared/utils/date.utils";
 
 import { useBulkSettleRiceDue } from "../hooks/useBulkSettleRiceDue";
 
-import { formatTaka } from "@/modules/rice/utils/rice.utils";
+import { formatTaka } from "@/shared/utils/format.utils"; 
 import {
   bulkSettleRiceDueSchema,
   type BulkSettleRiceDueFormValues,

@@ -13,7 +13,8 @@ export type IBadgeVariant =
   | "soft-info"
   | "soft-success"
   | "soft-secondary"
-  | "soft-warning";
+  | "soft-warning"
+  | "soft-error";
 
 interface BadgeProps {
   children: ReactNode;
@@ -48,6 +49,7 @@ const variantStyles: Record<IBadgeVariant, string> = {
   "soft-success": "bg-success/10 text-success",
   "soft-secondary": "bg-secondary/10 text-secondary",
   "soft-warning": "bg-warning/10 text-warning",
+  "soft-error": "bg-error/10 text-error",
 };
 
 const sizeStyles = {

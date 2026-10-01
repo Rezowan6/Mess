@@ -34,6 +34,10 @@ export const useBulkSettleRiceDue = () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.ricePayments.due(tenantId, mealSessionId, 0),
       });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.rice.get(tenantId, mealSessionId),
+      });
     },
   });
 };

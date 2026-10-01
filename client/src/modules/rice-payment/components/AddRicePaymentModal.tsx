@@ -14,10 +14,9 @@ import {
 } from "../types/ricePayment.types";
 
 import type { IRice } from "@/modules/rice/types/rice.types";
-import { formatTaka } from "@/modules/rice/utils/rice.utils";
-
 import { Button } from "@/shared/components/ui/Button";
 import { getLocalDate } from "@/shared/utils/date.utils";
+import { formatTaka } from "@/shared/utils/format.utils";
 import { useParams } from "react-router-dom";
 import { useUpdateRicePayment } from "../hooks/useUpdateRicePayment";
 import {

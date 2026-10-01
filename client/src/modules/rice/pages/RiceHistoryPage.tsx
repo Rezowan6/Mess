@@ -21,11 +21,10 @@ import {
   RICE_PURCHASE_TYPE_VARIANT,
 } from "../configs/rice.badge";
 
+import { formatTaka, toTitleCase } from "@/shared/utils/format.utils";
 import {
   canAddRicePayment,
-  formatTaka,
   RICE_PAYMENT_METHOD_LABEL,
-  toTitleCase,
 } from "../utils/rice.utils";
 
 import { formatDate, isLocked } from "@/shared/utils/date.utils";
@@ -181,7 +180,7 @@ export const RiceHistoryPage = () => {
 
             {canManage && canAddRicePayment(rice) && (
               <Button
-                variant="secondary"
+                variant="pay"
                 type="button"
                 onClick={openAdd}
                 leftIcon={<Plus size={16} />}

@@ -6,14 +6,10 @@ import { useRBAC } from "@/shared/hooks/useRBAC";
 import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { Button } from "@/shared/components/ui/Button";
 import { ROUTES } from "@/shared/constants/routes";
+import { formatKg, formatTaka, toTitleCase } from "@/shared/utils/format.utils";
 import { Pencil, Trash2 } from "lucide-react";
 import { RicePaymentStatus, type IRice } from "../types/rice.types";
-import {
-  canAddRicePayment,
-  formatKg,
-  formatTaka,
-  toTitleCase,
-} from "../utils/rice.utils";
+import { canAddRicePayment } from "../utils/rice.utils";
 import {
   RICE_PAYMENT_STATUS_VARIANT,
   RICE_PURCHASE_TYPE_VARIANT,
@@ -105,7 +101,7 @@ export const useRiceSummaryColumns = ({
           {canAddRicePayment(rice) && (
             <>
               <Button
-                variant="secondary"
+                variant="pay"
                 type="button"
                 onClick={() => onPay(rice)}
               >

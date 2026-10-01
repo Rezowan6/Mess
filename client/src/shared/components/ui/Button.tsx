@@ -23,7 +23,8 @@ type ButtonVariant =
   | "ghost"
   | "outline"
   | "normal"
-  | "tab";
+  | "tab"
+  | "pay";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
@@ -130,6 +131,19 @@ const variantClasses = {
     hover:to-teal-600
     hover:shadow-teal-500/30
   `,
+  pay: `
+    bg-gradient-to-b
+    from-blue-500
+    to-blue-700
+    ring-1
+    ring-inset
+    ring-white/20
+    shadow-md
+    shadow-blue-900/30
+    hover:from-blue-400
+    hover:to-blue-600
+    hover:shadow-blue-500/40
+  `,
 } satisfies Record<ButtonVariant, string>;
 
 /** Gradient variants: white text, shadow and lift effect. */
@@ -142,6 +156,7 @@ const SOLID_VARIANTS = new Set<ButtonVariant>([
   "warning",
   "error",
   "normal",
+  "pay",
 ]);
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
 
@@ -13,6 +13,7 @@ export const useRiceSummaryTable = () => {
 
   const [payingRice, setPayingRice] = useState<IRice | null>(null);
   const [editingRice, setEditingRice] = useState<IRice | null>(null);
+  const [isPayAllOpen, setIsPayAllOpen] = useState(false);
 
   const openConfirm = useConfirmStore((state) => state.openConfirm);
   const setLoading = useConfirmStore((state) => state.setLoading);
@@ -67,6 +68,18 @@ export const useRiceSummaryTable = () => {
     });
   };
 
+  const dueSummary = useMemo(() => {
+    const dueItems = rice.filter((item) => Number(item.remainingDue) > 0);
+    return {
+      dueCount: dueItems.length,
+      totalDue: Number(
+        dueItems
+          .reduce((sum, item) => sum + Number(item.remainingDue), 0)
+          .toFixed(2),
+      ),
+    };
+  }, [rice]);
+
   return {
     rice,
     meta: data?.meta,
@@ -87,5 +100,10 @@ export const useRiceSummaryTable = () => {
     closeEditModal,
 
     handleDelete,
+
+    isPayAllOpen,
+    openPayAll: () => setIsPayAllOpen(true),
+    closePayAll: () => setIsPayAllOpen(false),
+    dueSummary,
   };
 };
