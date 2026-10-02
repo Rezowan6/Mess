@@ -55,7 +55,7 @@ class RiceRepository extends BaseRepository<Rice> {
           attributes: ["id", "name", "email", "avatar"],
         },
       ],
-      order: [["purchaseDate", "DESC"]],
+      order: [["createdAt", "DESC"]],
     });
   }
 
