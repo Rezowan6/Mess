@@ -24,6 +24,6 @@ router.patch("/reject/:id", ...managerAccess, mealRequestController.reject);
 
 router.get("/rejects", ...managerAccess, mealRequestController.getRejectMeals);
 
-router.delete("/:id", ...managerAccess, mealRequestController.parmanetDelete);
+router.delete("/:id", ...allAccess, mealRequestController.parmanetDelete);
 
 export default router;
