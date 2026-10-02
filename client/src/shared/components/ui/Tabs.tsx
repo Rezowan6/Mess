@@ -18,7 +18,7 @@ export const Tabs = <T extends string>({
   onChange,
 }: Props<T>) => {
   return (
-    <div className="flex flex-wrap gap-2 pb-3">
+    <div className="flex overflow-x-auto gap-2 pb-3">
       {tabs.map((tab) => (
         <Button
           key={tab.key}
