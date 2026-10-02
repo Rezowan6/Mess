@@ -16,7 +16,7 @@ interface AllPendingMealReqTableProps {
 export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
   requests,
 }) => {
-  const groupedRequests = groupByDate(requests, (request) => request.date);
+  const groupedRequests = groupByDate(requests, (request) => formatDate(request.date));
 
   return (
     <div className="overflow-y-auto rounded-md bg-info/5">

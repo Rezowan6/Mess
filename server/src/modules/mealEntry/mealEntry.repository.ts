@@ -147,7 +147,7 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
 
         group: ["userId", "user.id", "user.name", "user.email", "user.avatar"],
 
-        order: [[literal("grandTotalMeals"), "DESC"]],
+        order: [["userId", "ASC"]],
       },
       query,
     );

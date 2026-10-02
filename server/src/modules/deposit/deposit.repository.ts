@@ -3,7 +3,7 @@ import { buildSearchCondition } from "@/common/utils/search.util.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { Deposit } from "@/models/index.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
-import { Op, col, fn, literal } from "sequelize";
+import { Op, col, fn } from "sequelize";
 
 class DepositRepository extends BaseRepository<Deposit> {
   constructor() {
@@ -81,7 +81,7 @@ class DepositRepository extends BaseRepository<Deposit> {
 
         group: ["memberId", "member.id", "member.name"],
 
-        order: [[literal("totalDeposit"), "DESC"]],
+        order: [["memberId", "ASC"]],
       },
       query,
     );

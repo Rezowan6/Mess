@@ -182,7 +182,7 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
           attributes: ["id", "month", "year", "status"],
         },
       ],
-      order: [["date", "ASC"]],
+      order: [["userId", "ASC"]],
     });
   }
 
@@ -269,6 +269,7 @@ class MealRequestRepository extends BaseRepository<MealRequest> {
         },
       ],
       transaction: transaction ?? null,
+      order: [["userId", "ASC"]],
     })) as unknown as any[];
   }
 
