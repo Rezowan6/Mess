@@ -24,6 +24,13 @@ import {
 } from "./auth.interface.js";
 import { authRepository } from "./auth.repository.js";
 
+type LoginTenantMembership = {
+  tenantId: number;
+  role: string;
+  status: string;
+  tenant?: { id: number; name: string; slug: string };
+};
+
 class AuthService {
   register = async (payload: IRegisterPayload) => {
     const transaction = await sequelize.transaction();
@@ -102,7 +109,7 @@ class AuthService {
     }
 
     await userRepository.update(
-      { email: token.email },
+      { id: user.id },
       {
         isVerified: true,
       },
@@ -125,7 +132,7 @@ class AuthService {
     const { email, password, ip, userAgent } = data;
 
     // 2. user check
-    const user = await authRepository.findOne({ email });
+    const user = await authRepository.findUserForLogin(email);
 
     if (!user) {
       throw new ApiError(403, "Invalid credentials");
@@ -163,16 +170,24 @@ class AuthService {
       userAgent,
     });
 
-    const saveUser = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
+    const plainUser = user.toJSON() as typeof user.dataValues & {
+      tenantMemberships?: LoginTenantMembership[];
     };
+
+    const saveUser = {
+      id: plainUser.id,
+      name: plainUser.name,
+      email: plainUser.email,
+      avatar: plainUser.avatar ?? null,
+      role: plainUser.role,
+      tenantMemberships: plainUser.tenantMemberships ?? [],
+    };
+
     return {
       refreshToken,
       data: {
         accessToken,
-        user: saveUser || null,
+        user: saveUser,
       },
     };
   };

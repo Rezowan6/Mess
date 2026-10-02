@@ -20,13 +20,11 @@ export const heroConfig = {
       label: "Get Started",
       to: ROUTES.REGISTER,
       variant: "success" as const,
-      disabled: true,
     },
     {
       label: "Login",
       to: ROUTES.LOGIN,
       variant: "primary" as const,
-      disabled: false,
     },
   ],
 };

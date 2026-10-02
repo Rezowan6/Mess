@@ -9,19 +9,27 @@ export const RiceTableSkeleton = () => {
             <th>Supplier</th>
             <th>Quantity</th>
             <th>Total</th>
-            <th>totalPaid</th>
+            <th>Total Paid</th>
           </tr>
         </thead>
 
         <tbody>
           {[1, 2, 3, 4, 5].map((item) => (
             <tr key={item} className="odd:bg-base-100 even:bg-base-200/30">
-              {/* Member */}
+              {/* Supplier */}
               <td>
                 <Skeleton className="h-4 w-32" />
               </td>
 
-              {/* Total Rice */}
+              {/* Quantity */}
+              <td>
+                <Skeleton className="h-4 w-20" />
+              </td>
+              {/* TTotal */}
+              <td>
+                <Skeleton className="h-4 w-20" />
+              </td>
+              {/* Total Paid */}
               <td>
                 <Skeleton className="h-4 w-20" />
               </td>

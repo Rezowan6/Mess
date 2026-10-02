@@ -1,13 +1,10 @@
-import type {
-  IAuthUser,
-  ILoginResponse,
-} from "../types/auth.types";
+import type { IAuthUser, ILoginResponse } from "../types/auth.types";
 
 import { API } from "@/shared/lib/axios";
 
 import { API_ENDPOINTS } from "@/shared/constants/api";
 import type { ApiResponse } from "@/shared/types/api.types";
-import type { IRegisterFormData, ILoginFormData } from "../schemas/auth.schema";
+import type { ILoginFormData, IRegisterFormData } from "../schemas/auth.schema";
 
 export const authApi = {
   login: async (payload: ILoginFormData): Promise<ILoginResponse> => {
@@ -35,6 +32,14 @@ export const authApi = {
 
   register: async (payload: IRegisterFormData) => {
     const { data } = await API.post(API_ENDPOINTS.AUTH.REGISTER, payload);
+
+    return data;
+  },
+
+  verifyEmail: async (token: string) => {
+    const { data } = await API.post<ApiResponse<null>>(
+      API_ENDPOINTS.AUTH.VERIFY_EMAIL(token),
+    );
 
     return data;
   },

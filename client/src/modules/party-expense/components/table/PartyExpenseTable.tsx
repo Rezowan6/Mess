@@ -3,12 +3,12 @@
 import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Table } from "@/shared/components/ui/Table";
 
-import { usePartyExpenseColumns } from "../configs/partyExpense.columns";
-import { PARTY_EXPENSE_MESSAGES } from "../configs/partyExpense.messages";
-import { PartyExpenseTableSkeleton } from "./PartyExpenseTableSkeleton";
+import { usePartyExpenseColumns } from "../../configs/partyExpense.columns";
+import { PARTY_EXPENSE_MESSAGES } from "../../configs/partyExpense.messages";
+import { PartyExpenseTableSkeleton } from "../skeleton/PartyExpenseTableSkeleton";
 
-import { usePartyExpenseTable } from "../hooks/usePartyExpenseTable";
-import { AddPartyExpenseModal } from "./AddPartyExpenseModal";
+import { usePartyExpenseTable } from "../../hooks/usePartyExpenseTable";
+import { AddPartyExpenseModal } from "../modla/AddPartyExpenseModal";
 
 export const PartyExpenseTable = () => {
   const {
@@ -32,7 +32,11 @@ export const PartyExpenseTable = () => {
 
   return (
     <div className="space-y-4">
-      <SearchInput value={search} onChange={handleSearch} placeholder="description" />
+      <SearchInput
+        value={search}
+        onChange={handleSearch}
+        placeholder="description"
+      />
 
       <Table
         columns={columns}

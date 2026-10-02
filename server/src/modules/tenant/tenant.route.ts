@@ -1,11 +1,12 @@
 import express from "express";
 
-import { adminAccess, allAccess } from "@/helpers/permission.js";
+import { allAccess } from "@/helpers/permission.js";
 import { tenantController } from "./tenant.controller.js";
+import { auth } from "@/middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.post("/", ...allAccess, tenantController.create);
+router.post("/", auth, tenantController.create);
 // router.get("/", ...systemOwnerAccess, getTenants);
 // router.get("/:id", auth, getTenant);
 

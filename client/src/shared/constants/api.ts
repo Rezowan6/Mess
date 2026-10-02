@@ -5,6 +5,9 @@ export const API_ENDPOINTS = {
     REFRESH: "/auth/refresh",
     LOGOUT: "/auth/logout",
     ME: "/auth/me",
+    VERIFY_EMAIL_BASE: "/auth/verify-email",
+    VERIFY_EMAIL: (token: string) =>
+      `/auth/verify-email/${encodeURIComponent(token)}`,
   },
 
   TENANT: {
@@ -151,7 +154,7 @@ export const API_ENDPOINTS = {
 
   RICE_PAYMENT: {
     CREATE: "/rice-payments",
-    //server site use of rice route 
+    //server site use of rice route
     BULK_SETTLE: "/rices/bulk-settle",
     LIST: (riceId: number) => `/rice-payments/${riceId}`,
     TOTAL_PAID: (riceId: number) => `/rice-payments/${riceId}/total-paid`,

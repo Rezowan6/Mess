@@ -6,8 +6,8 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 import { formatDate } from "@/shared/utils/date.utils";
-import { PartyExpenseActions } from "../components/PartyExpenseActions";
 import type { IPartyExpense } from "../types/partyExpense.types";
+import { PartyExpenseActions } from "../components/action/PartyExpenseActions";
 
 export const usePartyExpenseColumns = (
   onEdit: (expense: IPartyExpense) => void,

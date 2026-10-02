@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { registerSW } from "virtual:pwa-register";
 
@@ -17,17 +16,15 @@ import { OfflineMessage } from "./shared/components/pwa/OfflineMessage.tsx";
 registerSW({ immediate: true });
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <QueryProvider>
-      <ThemeProvider>
-        <AuthProvider>
-          <SocketProvider>
-            <App />
-            <OfflineMessage />
-            <Toaster position="top-right" containerStyle={{ top: "64px" }} />
-          </SocketProvider>
-        </AuthProvider>
-      </ThemeProvider>
-    </QueryProvider>
-  </StrictMode>,
+  <QueryProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <SocketProvider>
+          <App />
+          <OfflineMessage />
+          <Toaster position="top-right" containerStyle={{ top: "64px" }} />
+        </SocketProvider>
+      </AuthProvider>
+    </ThemeProvider>
+  </QueryProvider>,
 );

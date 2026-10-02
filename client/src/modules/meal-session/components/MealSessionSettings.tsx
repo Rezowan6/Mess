@@ -2,14 +2,15 @@ import { CalendarDays } from "lucide-react";
 
 import { SettingsCard } from "@/modules/settings/components/SettingsCard";
 
+import { Skeleton } from "@/shared/components/feedback/Skeleton";
+import { Badge } from "@/shared/components/ui/Badge";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { PermissionGate } from "@/shared/guards/PermissionGate";
 import { useRBAC } from "@/shared/hooks/useRBAC";
+import { formatDate } from "@/shared/utils/date.utils";
 import { useMealSession } from "../hooks/useMealSession";
 import { CloseSessionButton } from "./CloseSessionButton";
 import { OpenMealSessionButton } from "./OpenMealSessionButton";
-import { Badge } from "@/shared/components/ui/Badge";
-import { Skeleton } from "@/shared/components/feedback/Skeleton";
 
 export const MealSessionSettings = () => {
   const { data, isLoading } = useMealSession();
@@ -41,7 +42,7 @@ export const MealSessionSettings = () => {
 
                 <div>
                   Status:
-                  <Badge variant="success" size="sm">
+                  <Badge variant="soft-success" size="sm">
                     {session.status}
                   </Badge>
                 </div>
@@ -49,9 +50,7 @@ export const MealSessionSettings = () => {
                 <div>
                   <div className="text-sm">
                     Opened At:
-                    <span className="ml-2">
-                      {new Date(session.openedAt).toLocaleDateString()}
-                    </span>
+                    <span className="ml-2">{formatDate(session.openedAt)}</span>
                   </div>
                 </div>
               </div>

@@ -5,7 +5,7 @@ import {
   type Path,
 } from "react-hook-form";
 
-import { PartyMemberSelectorSkeleton } from "@/modules/party-expense/components/PartyMemberSelectorSkeleton";
+import { PartyMemberSelectorSkeleton } from "@/modules/party-expense/components/skeleton/PartyMemberSelectorSkeleton";
 import { useAllMembers } from "@/modules/user-management/hooks/useAllMembers";
 import { Avatar } from "@/shared/components/ui/Avatar";
 import { Checkbox } from "@/shared/components/ui/Checkbox";

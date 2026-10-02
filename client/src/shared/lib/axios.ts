@@ -78,6 +78,7 @@ API.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     API_ENDPOINTS.AUTH.REFRESH,
     API_ENDPOINTS.AUTH.ME,
     API_ENDPOINTS.INVITE.ACCEPT,
+    API_ENDPOINTS.AUTH.VERIFY_EMAIL_BASE,
   ];
 
   const shouldSkipContext = skipTenantHeaderRoutes.some((route) =>
@@ -125,10 +126,15 @@ API.interceptors.response.use(
     // Unauthorized
     // ==================================================
 
+    const isVerifyEmailRequest = originalRequest?.url?.includes(
+      API_ENDPOINTS.AUTH.VERIFY_EMAIL_BASE,
+    );
+
     if (
       error.response.status !== 401 ||
       !originalRequest ||
-      originalRequest._retry
+      originalRequest._retry ||
+      isVerifyEmailRequest
     ) {
       return Promise.reject(error);
     }

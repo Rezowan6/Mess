@@ -1,12 +1,12 @@
 import { Edit, Trash2 } from "lucide-react";
 
-import type { IPartyExpense } from "../types/partyExpense.types";
 
 import { Button } from "@/shared/components/ui/Button";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 
 import { formatDate } from "@/shared/utils/date.utils";
-import { useDeletePartyExpense } from "../hooks/useDeletePartyExpense";
+import type { IPartyExpense } from "../../types/partyExpense.types";
+import { useDeletePartyExpense } from "../../hooks/useDeletePartyExpense";
 
 interface Props {
   partyExpense: IPartyExpense;

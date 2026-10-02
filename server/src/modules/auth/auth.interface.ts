@@ -34,7 +34,14 @@ export interface LoginResponse {
       id: number;
       name: string | null;
       email: string;
-      role?: string;
+      avatar: string | null;
+      role: string;
+      tenantMemberships: {
+        tenantId: number;
+        role: string;
+        status: string;
+        tenant?: { id: number; name: string; slug: string };
+      }[];
     };
   };
 }

@@ -7,8 +7,11 @@ import {
 } from "@/socket/realtime.constant.js";
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
+import { getAppDate, getCurrentMonthAndYear } from "@/utils/date.util.js";
 import { generateSlug } from "@/utils/generate.slug.js";
 import { ApiError } from "@/utils/index.js";
+import { MealSessionStatus } from "../mealSession/mealSession.interface.js";
+import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { membershipRepository } from "../tenantMembership/tenantMembership.repository.js";
 import { tenantRepository } from "./tenant.repository.js";
 
@@ -52,9 +55,26 @@ class TenantService {
         { transaction },
       );
 
+      // First meal session is created together with the tenant
+      const { month, year } = getCurrentMonthAndYear();
+
+      const mealSession = await mealSessionRepository.createWithOptions(
+        {
+          tenantId: tenant.id,
+          month,
+          year,
+          sessionNumber: 1,
+          status: MealSessionStatus.OPEN,
+          openedBy: id,
+          openedAt: getAppDate(),
+        },
+        { transaction },
+      );
+
       return {
         tenant,
         membership,
+        mealSession,
       };
     });
 
@@ -62,6 +82,7 @@ class TenantService {
       resource: RealtimeResource.TENANT,
       action: RealtimeAction.CREATED,
       tenantId: result.tenant.id,
+      mealSessionId: result.mealSession.id,
     });
 
     return result;

@@ -9,6 +9,7 @@ import { NotFoundPage } from "@/pages/errors/NotFoundPage";
 import { ROUTES } from "@/shared/constants/routes";
 
 import { RegisterPage } from "@/modules/auth/pages/RegisterPage";
+import { VerifyEmailPage } from "@/modules/auth/pages/VerifyEmailPage";
 import { AcceptInvitePage } from "@/modules/invite/pages/AcceptInvitePage";
 import { LandingLayout } from "@/modules/landing/layouts/LandingLayout";
 import { LandingPage } from "@/modules/landing/pages/LandingPage";
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.LOGIN,
         element: <LoginPage />,
+      },
+      {
+        path: ROUTES.VERIFY_EMAIL,
+        element: <VerifyEmailPage />,
       },
       {
         path: ROUTES.INVITES_ACCEPT,

@@ -15,7 +15,7 @@ export interface ITenantMembership {
 }
 export interface IUser {
   id: number;
-  name: string;
+  name: string | null;
   email: string;
   avatar: string;
   role: string;
@@ -46,6 +46,6 @@ export interface ILoginResponse {
   message: string;
   data: {
     accessToken: string;
-    user: IUser;
+    user: IAuthUser;
   };
 }

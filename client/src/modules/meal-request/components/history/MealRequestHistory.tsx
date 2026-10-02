@@ -1,3 +1,4 @@
+import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { Badge } from "@/shared/components/ui/Badge";
 import { Button } from "@/shared/components/ui/Button";
 import { useConfirmStore } from "@/shared/store/confirm.store";
@@ -7,6 +8,7 @@ import { CalendarDays, Trash2 } from "lucide-react";
 import React from "react";
 import { useParmanetDeleteMealReq } from "../../hooks/useParmanetDeleteMealReq";
 import type { IMyPendingMealReq } from "../../types/mealRequest.types";
+import { MEAL_REQUEST_HISTORY_MESSAGES } from "../../configs/mealRequestHistory.message";
 
 interface MealRequestHistoryProps {
   requests: IMyPendingMealReq[];
@@ -41,6 +43,10 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
     });
   };
 
+  if (requests.length === 0) {
+    const { title, description } = MEAL_REQUEST_HISTORY_MESSAGES.empty;
+    return <EmptyState title={title} description={description} />;
+  }
   return (
     <div className="max-h-92 rounded-md bg-info/5 overflow-y-auto">
       <div className="flex-1 overflow-y-auto">

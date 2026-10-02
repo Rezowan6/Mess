@@ -5,9 +5,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   Calculator,
   ClipboardList,
-  CreditCard,
   Crown,
-  HandCoins,
   Landmark,
   LayoutDashboard,
   Puzzle,
@@ -41,6 +39,7 @@ export const sidebarItems: ISidebarItem[] = [
     title: "Dashboard",
     path: ROUTES.DASHBOARD,
     icon: LayoutDashboard,
+    permission: PERMISSIONS.USER_VIEW,
     mobile: "primary",
     desktop: "primary",
   },
@@ -133,23 +132,23 @@ export const sidebarItems: ISidebarItem[] = [
     desktop: "more",
   },
 
-  {
-    title: "Subscription",
-    path: ROUTES.SUBSCRIPTION,
-    icon: CreditCard,
-    permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
-    mobile: "more",
-    desktop: "more",
-  },
+  // {
+  //   title: "Subscription",
+  //   path: ROUTES.SUBSCRIPTION,
+  //   icon: CreditCard,
+  //   permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
+  //   mobile: "more",
+  //   desktop: "more",
+  // },
 
-  {
-    title: "Payment",
-    path: ROUTES.PAYMENT,
-    icon: HandCoins,
-    permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
-    mobile: "more",
-    desktop: "more",
-  },
+  // {
+  //   title: "Payment",
+  //   path: ROUTES.PAYMENT,
+  //   icon: HandCoins,
+  //   permission: PERMISSIONS.SUBSCRIPTION_MANAGE,
+  //   mobile: "more",
+  //   desktop: "more",
+  // },
 
   {
     title: "Settings",
@@ -157,6 +156,6 @@ export const sidebarItems: ISidebarItem[] = [
     icon: Settings,
     permission: PERMISSIONS.SETTINGS_VIEW,
     mobile: "more",
-    desktop: "primary",
+    desktop: "more",
   },
 ];

@@ -124,9 +124,7 @@ const variantClasses = {
     hover:bg-surface-hover
   `,
   normal: `
-    bg-gradient-to-r
-    from-teal-500
-    to-teal-900
+    bg-secondary/10 text-secondary
     hover:from-teal-600
     hover:to-teal-600
     hover:shadow-teal-500/30

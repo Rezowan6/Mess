@@ -6,7 +6,7 @@ import { tenantService } from "./tenant.service.js";
 
 class TenantController {
   create = asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.context.user;
+    const { id } = req.user;
 
     const data = await tenantService.create(id, req.body.name ?? "");
 

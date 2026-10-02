@@ -2,6 +2,7 @@ export const ROUTES = {
   HOME: "/home",
 
   LOGIN: "/login",
+  VERIFY_EMAIL: "/verify-email/:token",
 
   INVITES_ACCEPT: "/invite/accept/:token",
 

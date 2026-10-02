@@ -71,7 +71,7 @@ export const MealPreferenceForm = () => {
           <p className="text-text-muted">
             You haven't set your meal preference yet.
           </p>
-          <p className="text-xs text-info">
+          <p className="text-xs text-success">
             Save your preference to enable automatic meal requests.
           </p>
         </div>
