@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { Header } from "@/shared/components/layout/header/Header";
 import { Sidebar } from "@/shared/components/layout/sidebar/Sidebar";
 import { MobileBottomNav } from "@/shared/components/navigation/MobileBottomNav";
+import { ScrollToTopButton } from "@/shared/components/ui/ScrollToTopButton";
 
 export const DashboardLayout = () => {
   return (
@@ -21,6 +22,8 @@ export const DashboardLayout = () => {
       </div>
 
       <MobileBottomNav />
+
+      <ScrollToTopButton />
     </div>
   );
 };
