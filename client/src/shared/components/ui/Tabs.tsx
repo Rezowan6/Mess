@@ -1,4 +1,5 @@
 import { Button } from "@/shared/components/ui/Button";
+import { useSlidingIndicator } from "@/shared/hooks/useSlidingIndicator";
 
 export interface TabItem<T extends string> {
   key: T;
@@ -17,18 +18,51 @@ export const Tabs = <T extends string>({
   activeTab,
   onChange,
 }: Props<T>) => {
+  const { containerRef, setItemRef, indicator } = useSlidingIndicator({
+    activeKey: activeTab,
+    itemCount: tabs.length,
+  });
+
   return (
-    <div className="flex overflow-x-auto gap-2 pb-3">
-      {tabs.map((tab) => (
-        <Button
-          key={tab.key}
-          variant={activeTab === tab.key ? "primary" : "normal"}
-          className="sm:w-24 flex-wrap h-fit"
-          onClick={() => onChange(tab.key)}
-        >
-          {tab.label}
-        </Button>
-      ))}
+    <div
+      ref={containerRef}
+      role="tablist"
+      className="relative mb-3 flex w-fit max-w-full flex-nowrap gap-1 overflow-x-auto rounded-full bg-success/10 p-1 scrollbar-none [&::-webkit-scrollbar]:hidden"
+    >
+      {/* Sliding pill (same look as the primary Button variant) */}
+      <span
+        aria-hidden="true"
+        style={{
+          width: indicator.width,
+          transform: `translateX(${indicator.left}px)`,
+        }}
+        className={`pointer-events-none absolute bottom-1 left-0 top-1 rounded-full bg-linear-to-r from-blue-600 to-blue-900 shadow-md shadow-blue-900/30 ${
+          indicator.ready
+            ? "transition-[transform,width] duration-300 ease-[cubic-bezier(0.34,1.4,0.64,1)]"
+            : "transition-none"
+        }`}
+      />
+
+      {tabs.map((tab) => {
+        const isActive = activeTab === tab.key;
+
+        return (
+          <Button
+            key={tab.key}
+            ref={setItemRef(tab.key)}
+            role="tab"
+            aria-selected={isActive}
+            variant="ghost"
+            disabled={tab.disabled}
+            onClick={() => onChange(tab.key)}
+            className={`relative z-10 shrink-0 sm:min-w-24 active:scale-95 ${
+              isActive ? "text-white! hover:bg-transparent!" : ""
+            }`}
+          >
+            {tab.label}
+          </Button>
+        );
+      })}
     </div>
   );
 };
