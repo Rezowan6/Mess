@@ -119,7 +119,7 @@ export class TenantMembershipRepository extends BaseRepository<TenantMembership>
           }),
         },
       ],
-      order: [["createdAt", "ASC"]],
+      order: [["id", "ASC"]],
     });
   }
 
