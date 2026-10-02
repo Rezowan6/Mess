@@ -14,6 +14,7 @@ export type RealtimeResource =
   | "egg-rate"
   | "party-expense"
   | "sold-product"
+  | "meal-entry"
   | "my-profile";
 
 export interface IDataUpdatedPayload {

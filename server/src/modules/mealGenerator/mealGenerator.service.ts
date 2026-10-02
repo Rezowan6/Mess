@@ -9,6 +9,9 @@ import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
 import { mealRequestRepository } from "../mealRequest/mealRequest.repository.js";
 import { Notification } from "../notification/notification.interface.js";
 import { notificationService } from "../notification/notification.service.js";
+import { socketService } from "@/socket/socket.service.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { RealtimeAction, RealtimeResource } from "@/socket/realtime.constant.js";
 
 class MealGeneratorService {
   async generateDailyMealRequests({
@@ -95,6 +98,21 @@ class MealGeneratorService {
      * rollback Meal Entry or Meal Request changes.
      */
     if (result.createdEntries > 0) {
+
+         // Realtime: signal only, the frontend refetches fresh data
+      socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+        resource: RealtimeResource.MEAL_REQUEST,
+        action: RealtimeAction.UPDATED,
+        tenantId,
+        mealSessionId: mealSession.id,
+      });
+
+      socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+        resource: RealtimeResource.MEAL_ENTRY,
+        action: RealtimeAction.CREATED,
+        tenantId,
+        mealSessionId: mealSession.id,
+      });
       for (const request of result.requests) {
         try {
           await notificationService.create({

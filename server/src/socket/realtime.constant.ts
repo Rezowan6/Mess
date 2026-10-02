@@ -1,5 +1,3 @@
-
-
 export const RealtimeResource = {
   TENANT: "tenant",
 
@@ -20,8 +18,9 @@ export const RealtimeResource = {
   EGG_RATE: "egg-rate",
   PARTY_EXPENSE: "party-expense",
   SOLD_PRODUCT: "sold-product",
+  MEAL_ENTRY: "meal-entry",
 
-  MY_PROFILE:"my-profile",
+  MY_PROFILE: "my-profile",
 } as const;
 
 export type RealtimeResourceType =

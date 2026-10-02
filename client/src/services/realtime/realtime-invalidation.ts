@@ -143,6 +143,33 @@ export const invalidateRealtimeQueries = (
       break;
     }
 
+    case "meal-entry": {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealEntries.all(tenantId, mealSessionId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.monthlyCalculations.current(
+          tenantId,
+          mealSessionId,
+        ),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.myProfile.current(tenantId, mealSessionId),
+      });
+
+      break;
+    }
+
     case "expense": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.expenses.all(tenantId, mealSessionId),
