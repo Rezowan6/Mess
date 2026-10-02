@@ -24,7 +24,12 @@ export class TenantMembershipController {
   getAllMembers = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 
-    const members = await membershipService.getAllMembers(tenantId);
+    const search =
+      typeof req.query.search === "string"
+        ? req.query.search.trim()
+        : undefined;
+
+    const members = await membershipService.getAllMembers(tenantId, search);
 
     return sendResponse(res, {
       statusCode: 200,

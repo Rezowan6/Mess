@@ -14,7 +14,7 @@ import { eggSchema, type EggFormValues } from "../schemas/egg.schema";
 
 import type { IEgg } from "../types/egg.types";
 
-import { EggMemberSelector } from "./EggMemberSelector";
+import { MemberSelector } from "@/shared/components/ui/MemberSelector";
 
 interface Props {
   isOpen: boolean;
@@ -86,7 +86,10 @@ export const AddEggModal = ({ isOpen, onClose, egg }: Props) => {
     >
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-5">
-          <EggMemberSelector />
+          <MemberSelector<EggFormValues>
+            name="memberId"
+            label="Select Member"
+          />
 
           <div className="flex items-center justify-between rounded-xl border border-base-300 px-4 py-4">
             <div>

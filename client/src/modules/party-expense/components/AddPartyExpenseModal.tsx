@@ -20,7 +20,7 @@ import {
 
 import type { IPartyExpense } from "../types/partyExpense.types";
 
-import { PartyMemberSelector } from "./PartyMemberSelector";
+import { MemberSelector } from "@/shared/components/ui/MemberSelector";
 
 interface Props {
   isOpen: boolean;
@@ -122,7 +122,12 @@ export const AddPartyExpenseModal = ({
             {...register("description")}
           />
 
-          <PartyMemberSelector />
+          <MemberSelector<PartyExpenseFormValues>
+            name="memberIds"
+            label="Select Members"
+            multiple
+            showSelectAll
+          />
 
           <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="error" onClick={onClose}>

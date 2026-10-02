@@ -6,6 +6,7 @@ import { DepositActions } from "../components/DepositActions";
 
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
+import { formatDate } from "@/shared/utils/date.utils";
 
 export const useDepositHistoryColumns = (
   onEdit: (deposit: IDeposit) => void,
@@ -21,7 +22,7 @@ export const useDepositHistoryColumns = (
     {
       key: "depositDate",
       title: "Date",
-      render: (deposit) => new Date(deposit.depositDate).toLocaleDateString(),
+      render: (deposit) => formatDate(deposit.depositDate),
     },
     {
       key: "amount",

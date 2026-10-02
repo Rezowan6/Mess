@@ -7,11 +7,11 @@ interface Props {
 
 export const MemberRole = ({ role }: Props) => {
   const roleVariant = {
-    systemOwner: "error",
-    admin: "info",
-    manager: "accent",
-    messMalik: "warning",
-    member: "error",
+    systemOwner: "soft-error",
+    admin: "soft-info",
+    manager: "soft-secondary",
+    messMalik: "soft-warning",
+    member: "soft-warning",
   } as const;
 
   return (

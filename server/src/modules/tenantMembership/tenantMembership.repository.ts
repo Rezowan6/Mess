@@ -87,7 +87,7 @@ export class TenantMembershipRepository extends BaseRepository<TenantMembership>
     );
   }
 
-  async getAllMembers(tenantId: number) {
+  async getAllMembers(tenantId: number, search?: string) {
     return await this.findAll({
       where: {
         tenantId,
@@ -98,6 +98,25 @@ export class TenantMembershipRepository extends BaseRepository<TenantMembership>
           model: User,
           as: "user",
           attributes: ["id", "name", "email", "avatar"],
+
+          required: !!search,
+
+          ...(search && {
+            where: {
+              [Op.or]: [
+                {
+                  name: {
+                    [Op.like]: `%${search}`,
+                  },
+                },
+                {
+                  email: {
+                    [Op.like]: `%${search}%`,
+                  },
+                },
+              ],
+            },
+          }),
         },
       ],
       order: [["createdAt", "ASC"]],

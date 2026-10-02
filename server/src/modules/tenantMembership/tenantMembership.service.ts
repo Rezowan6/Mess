@@ -26,8 +26,8 @@ export class TenantMembershipService {
 
     return result;
   }
-  async getAllMembers(tenantId: number) {
-    const members = await membershipRepository.getAllMembers(tenantId);
+  async getAllMembers(tenantId: number, search?: string) {
+    const members = await membershipRepository.getAllMembers(tenantId, search);
 
     if (!members.length) {
       throw new ApiError(404, "Members not found.");

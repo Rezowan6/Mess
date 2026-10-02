@@ -5,15 +5,15 @@ import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantId } from "@/shared/hooks/useCurrentTenantId";
 import { userManagementApi } from "../api/userManagement.api";
 
-export const useAllMembers = () => {
+export const useAllMembers = (search?: string) => {
   const tenantId = useCurrentTenantId();
 
   return useQuery({
-    queryKey: queryKeys.tenants.allMembers(tenantId),
+    queryKey: queryKeys.tenants.allMembers(tenantId, search),
 
-    queryFn: userManagementApi.getAllMembers,
+    queryFn: () => userManagementApi.getAllMembers(search),
 
-    enabled: !!tenantId,
+    enabled: Boolean(tenantId),
 
     staleTime: 1000 * 60 * 5,
   });

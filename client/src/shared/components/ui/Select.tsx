@@ -162,7 +162,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 
         <div
           className={clsx(
-            "absolute left-0 right-0 top-full z-999 mt-0.5 origin-top overflow-hidden rounded-lg border border-success bg-background p-1 shadow-lg",
+            "absolute left-0 right-0 top-full z-999 mt-0.5 origin-top overflow-hidden rounded-lg border border-success/40 bg-background p-1 shadow-lg",
             isOpen
               ? "visible translate-y-0 scale-100 opacity-100"
               : "invisible -translate-y-2 scale-95 opacity-0",

@@ -6,9 +6,9 @@ interface Props {
 
 export const MemberStatus = ({ status }: Props) => {
   const map = {
-    active: "success",
-    pending: "warning",
-    inactive: "error",
+    active: "soft-success",
+    pending: "soft-warning",
+    inactive: "soft-error",
   } as const;
 
   return (
