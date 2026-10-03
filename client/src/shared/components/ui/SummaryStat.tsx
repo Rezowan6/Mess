@@ -48,7 +48,7 @@ export const SummaryStat = ({
         className,
       )}
     >
-      <div className="flex flex-wrap items-center gap-x-2">
+      <div className="flex w-full items-center justify-between gap-x-2 sm:w-auto sm:justify-start">
         <span className="text-xs font-medium uppercase tracking-wide text-base-content/60">
           {label}
         </span>

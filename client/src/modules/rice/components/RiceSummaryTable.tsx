@@ -100,6 +100,7 @@ export const RiceSummaryTable = () => {
                     variant="pay"
                     leftIcon={<Wallet />}
                     onClick={openPayAll}
+                    className="w-full sm:w-fit"
                   >
                     Pay All Due
                   </Button>
