@@ -1,3 +1,5 @@
+import type { ApiResponse } from "@/shared/types/api.types";
+
 export const RicePurchaseType = {
   PAID: "PAID",
   CREDIT: "CREDIT",
@@ -48,6 +50,17 @@ export interface IRice {
   totalPaid: number;
   /** totalAmount - totalPaid. Provided by backend list/details response. */
   remainingDue: number;
+}
+export interface IRiceDueSummary {
+  dueCount: number;
+  totalDue: number;
+  totalAmount: number;
+  totalPaid: number;
+}
+
+// Same shape as ApiResponse, plus the rice-only due summary
+export interface IRiceListResponse extends ApiResponse<IRice[]> {
+  dueSummary?: IRiceDueSummary;
 }
 
 export interface ICreateRice {

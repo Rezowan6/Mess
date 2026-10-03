@@ -104,6 +104,7 @@ export const useRiceSummaryColumns = ({
                 variant="pay"
                 type="button"
                 onClick={() => onPay(rice)}
+                className="h-8 w-fit"
               >
                 Pay
               </Button>

@@ -59,6 +59,35 @@ class RiceRepository extends BaseRepository<Rice> {
     });
   }
 
+  async getPaginatedRice(
+    tenantId: number,
+    mealSessionId: number,
+    query: { page: number; limit: number; search?: string },
+  ) {
+    const { page, limit, search } = query;
+
+    return this.paginate(
+      {
+        where: {
+          tenantId,
+          mealSessionId,
+          ...(search && {
+            supplierName: { [Op.like]: `%${search}%` },
+          }),
+        },
+        include: [
+          {
+            model: User,
+            as: "creator",
+            attributes: ["id", "name", "email", "avatar"],
+          },
+        ],
+        order: [["createdAt", "DESC"]],
+      },
+      { page, limit },
+    );
+  }
+
   /**
    * Locks and returns all CREDIT rice purchases that may still have due
    * for the given tenant + meal session. Must run inside a transaction.

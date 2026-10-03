@@ -1,19 +1,27 @@
 import { API_ENDPOINTS } from "@/shared/constants/api";
 import { API } from "@/shared/lib/axios";
 import type { ApiResponse } from "@/shared/types/api.types";
-import type { ICreateRice, IRice, IUpdateRice } from "../types/rice.types";
+import type { IPaginationParams } from "@/shared/types/pagination.types";
+import type {
+  ICreateRice,
+  IRice,
+  IRiceListResponse,
+  IUpdateRice,
+} from "../types/rice.types";
 
 export const riceApi = {
-  getAll: async (): Promise<ApiResponse<IRice[]>> => {
-    const { data } = await API.get<ApiResponse<IRice[]>>(
-      API_ENDPOINTS.RICE.LIST,
-    );
+  getAll: async (params?: IPaginationParams): Promise<IRiceListResponse> => {
+    const { data } = await API.get<IRiceListResponse>(API_ENDPOINTS.RICE.LIST, {
+      params,
+    });
 
     return data;
   },
 
   getSummary: async (): Promise<ApiResponse<IRice[]>> => {
-    const { data } = await API.get<ApiResponse<IRice[]>>(API_ENDPOINTS.RICE.SUMMARY);
+    const { data } = await API.get<ApiResponse<IRice[]>>(
+      API_ENDPOINTS.RICE.SUMMARY,
+    );
 
     return data;
   },

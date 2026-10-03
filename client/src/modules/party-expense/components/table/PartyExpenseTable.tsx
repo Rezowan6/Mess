@@ -1,14 +1,10 @@
-// File: PartyExpenseTable.tsx
-
-import { SearchInput } from "@/shared/components/ui/SearchInput";
-import { Table } from "@/shared/components/ui/Table";
+import { DataTableSection } from "@/shared/components/ui/DataTableSection";
 
 import { usePartyExpenseColumns } from "../../configs/partyExpense.columns";
 import { PARTY_EXPENSE_MESSAGES } from "../../configs/partyExpense.messages";
-import { PartyExpenseTableSkeleton } from "../skeleton/PartyExpenseTableSkeleton";
-
 import { usePartyExpenseTable } from "../../hooks/usePartyExpenseTable";
 import { AddPartyExpenseModal } from "../modla/AddPartyExpenseModal";
+import { PartyExpenseTableSkeleton } from "../skeleton/PartyExpenseTableSkeleton";
 
 export const PartyExpenseTable = () => {
   const {
@@ -26,32 +22,34 @@ export const PartyExpenseTable = () => {
 
   const columns = usePartyExpenseColumns(handleEdit);
 
-  if (isPending) {
-    return <PartyExpenseTableSkeleton />;
-  }
+  // future server side pagination, for now we are fetching all the data and calculating total expense
+  const totalPartyExpense =
+    partyExpenses.reduce((sum, item) => sum + Number(item.amount), 0) ?? 0;
 
   return (
-    <div className="space-y-4">
-      <SearchInput
-        value={search}
-        onChange={handleSearch}
-        placeholder="description"
-      />
-
-      <Table
-        columns={columns}
-        data={partyExpenses}
-        loading={isPending}
-        error={isError}
-        message={PARTY_EXPENSE_MESSAGES}
-        refetch={refetch}
-      />
-
+    <DataTableSection
+      columns={columns}
+      data={partyExpenses}
+      isPending={isPending}
+      isError={isError}
+      refetch={refetch}
+      skeleton={<PartyExpenseTableSkeleton />}
+      message={PARTY_EXPENSE_MESSAGES}
+      search={search}
+      onSearch={handleSearch}
+      searchPlaceholder="description"
+      summary={{
+        label: "Total Expense",
+        amount: Number(totalPartyExpense),
+        prefix: "৳ ",
+        className: "text-error",
+      }}
+    >
       <AddPartyExpenseModal
         isOpen={isEditOpen}
         onClose={handleCloseEdit}
         partyExpense={selectedPartyExpense ?? undefined}
       />
-    </div>
+    </DataTableSection>
   );
 };

@@ -42,15 +42,32 @@ class RiceController {
   getAll = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
-    const rice = await riceService.getAll({
+    const page = Math.max(1, Math.floor(Number(req.query.page)) || 1);
+
+    const limit = Math.min(
+      100,
+      Math.max(1, Math.floor(Number(req.query.limit)) || 10),
+    );
+
+    const search =
+      typeof req.query.search === "string"
+        ? req.query.search.trim().slice(0, 100)
+        : "";
+
+    const result = await riceService.getAll({
       tenantId,
       mealSessionId,
+      page,
+      limit,
+      ...(search && { search }),
     });
 
     return sendResponse(res, {
       statusCode: 200,
       message: "Rice purchases fetched successfully",
-      data: rice,
+      data: result.data,
+      meta: result.meta,
+      extra: { dueSummary: result.dueSummary },
     });
   });
 

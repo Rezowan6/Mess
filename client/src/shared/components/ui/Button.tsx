@@ -213,7 +213,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             ? "inline-flex items-center justify-center gap-2 rounded-md bg-info/20 p-2  hover:bg-info/40"
             : [
                 variantClasses[variant],
-                "flex items-center justify-center gap-2 rounded-full py-2 px-6 text-sm sm:h-10",
+                "flex items-center justify-center gap-2 rounded-full py-2 px-6 text-sm ",
                 hasContent ? "px-4" : "px-3",
                 isSolid && [
                   "text-white shadow-sm",

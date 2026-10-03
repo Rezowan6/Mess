@@ -1,6 +1,4 @@
-import { Pagination } from "@/shared/components/ui/Pagination";
-import { SearchInput } from "@/shared/components/ui/SearchInput";
-import { Table } from "@/shared/components/ui/Table";
+import { DataTableSection } from "@/shared/components/ui/DataTableSection";
 
 import { EGG_MESSAGES } from "../configs/egg.message";
 import { useEggSummaryColumns } from "../configs/egg.summary.columns";
@@ -25,40 +23,38 @@ export const EggSummaryTable = () => {
 
   const columns = useEggSummaryColumns();
 
-  if (isPending) {
-    return <EggTableSkeleton />;
-  }
+  const totalEgg = eggs.reduce(
+    (sum, item) => sum + Number(item.quantity ?? 0),
+    0,
+  );
 
   return (
-    <div className="space-y-4">
-      <SearchInput
-        value={search}
-        onChange={handleSearch}
-        placeholder="member name"
-      />
-
-      <Table
+    <>
+      <DataTableSection
         columns={columns}
         data={eggs}
-        loading={isPending}
-        error={isError}
-        message={EGG_MESSAGES}
+        meta={meta}
+        isPending={isPending}
+        isError={isError}
         refetch={refetch}
+        skeleton={<EggTableSkeleton />}
+        message={EGG_MESSAGES}
+        search={search}
+        onSearch={handleSearch}
+        onPageChange={handlePage}
+        searchPlaceholder="member name"
+        summary={{
+          label: "Total Egg",
+          amount: totalEgg,
+          suffix: " pcs",
+        }}
       />
-
-      {meta && (
-        <Pagination
-          page={meta.page}
-          totalPages={meta.totalPages}
-          onChange={handlePage}
-        />
-      )}
 
       <AddEggModal
         isOpen={isEditOpen}
         onClose={handleCloseEdit}
         egg={selectedEgg ?? undefined}
       />
-    </div>
+    </>
   );
 };

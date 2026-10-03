@@ -1,7 +1,8 @@
 import { API_ENDPOINTS } from "@/shared/constants/api";
 import { API } from "@/shared/lib/axios";
 
-import type { ICreateEggDto, IUpdateEggDto } from "../types/egg.types";
+import type { ApiResponse } from "@/shared/types/api.types";
+import type { ICreateEggDto, IEgg, IUpdateEggDto } from "../types/egg.types";
 
 export const eggApi = {
   getAll: async () => {
@@ -10,8 +11,10 @@ export const eggApi = {
     return data;
   },
 
-  getSummary: async () => {
-    const { data } = await API.get(API_ENDPOINTS.EGG.GET_SUMMARY);
+  getSummary: async (): Promise<ApiResponse<IEgg[]>> => {
+    const { data } = await API.get<ApiResponse<IEgg[]>>(
+      API_ENDPOINTS.EGG.GET_SUMMARY,
+    );
 
     return data;
   },

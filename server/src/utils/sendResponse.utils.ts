@@ -8,6 +8,8 @@ interface ISendResponseOptions<T> {
   message?: string;
   data?: T;
   meta?: IPaginationMeta;
+  /** Extra top-level fields, e.g. { dueSummary } */
+  extra?: Record<string, unknown>;
 }
 
 export const sendResponse = <T>(
@@ -19,8 +21,10 @@ export const sendResponse = <T>(
     message = "Success",
     data = null,
     meta = undefined,
+    extra,
   } = options;
+
   return res
     .status(statusCode)
-    .json(new ApiResponse(statusCode, message, data, meta));
+    .json(new ApiResponse(statusCode, message, data, meta, extra));
 };

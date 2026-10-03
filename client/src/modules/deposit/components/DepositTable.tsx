@@ -1,6 +1,4 @@
-import { Pagination } from "@/shared/components/ui/Pagination";
-import { SearchInput } from "@/shared/components/ui/SearchInput";
-import { Table } from "@/shared/components/ui/Table";
+import { DataTableSection } from "@/shared/components/ui/DataTableSection";
 import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
 
 import { useDepositMemberSummaryColumns } from "../configs/deposit.member.summary.columns";
@@ -19,38 +17,29 @@ export const DepositTable = () => {
     search,
   });
 
-  const deposits = data?.data ?? [];
-
-  const meta = data?.meta;
-
   const columns = useDepositMemberSummaryColumns();
 
+  const totalDeposit =
+    data?.data?.reduce((sum, item) => sum + Number(item.totalDeposit), 0) ?? 0;
+
   return (
-    <div className="space-y-4">
-      {/* Always rendered, so typing never loses focus */}
-      <SearchInput value={search} onChange={handleSearch} />
-
-      {isPending ? (
-        <DepositTableSkeleton />
-      ) : (
-        <>
-          <Table
-            columns={columns}
-            data={deposits}
-            error={isError}
-            message={DEPOSIT_MESSAGES}
-            refetch={refetch}
-          />
-
-          {meta && meta.totalPages > 1 && (
-            <Pagination
-              page={meta.page}
-              totalPages={meta.totalPages}
-              onChange={handlePage}
-            />
-          )}
-        </>
-      )}
-    </div>
+    <DataTableSection
+      columns={columns}
+      data={data?.data ?? []}
+      meta={data?.meta}
+      isPending={isPending}
+      isError={isError}
+      refetch={refetch}
+      skeleton={<DepositTableSkeleton />}
+      message={DEPOSIT_MESSAGES}
+      search={search}
+      onSearch={handleSearch}
+      onPageChange={handlePage}
+      summary={{
+        label: "Total Deposit",
+        amount: Number(totalDeposit),
+        prefix: "৳ ",
+      }}
+    />
   );
 };

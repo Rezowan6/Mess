@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
 
@@ -8,8 +8,17 @@ import { useConfirmStore } from "@/shared/store/confirm.store";
 import { useDeleteRice } from "./useDeleteRice";
 import { useRice } from "./useRice";
 
+const PAGE_LIMIT = 10;
+const EMPTY_RICE: IRice[] = [];
+const EMPTY_DUE_SUMMARY = {
+  dueCount: 0,
+  totalDue: 0,
+  totalAmount: 0,
+  totalPaid: 0,
+};
+
 export const useRiceSummaryTable = () => {
-  const { search, handleSearch, handlePage } = useTableSearchParams();
+  const { page, search, handleSearch, handlePage } = useTableSearchParams();
 
   const [payingRice, setPayingRice] = useState<IRice | null>(null);
   const [editingRice, setEditingRice] = useState<IRice | null>(null);
@@ -17,17 +26,16 @@ export const useRiceSummaryTable = () => {
 
   const openConfirm = useConfirmStore((state) => state.openConfirm);
   const setLoading = useConfirmStore((state) => state.setLoading);
-  // page import of usetablesearcparams
-  // {
-  //   page,
-  //   limit: 10,
-  //   search,
-  // }
+
   const { mutateAsync: deleteRice } = useDeleteRice();
 
-  const { data, isPending, isError, refetch } = useRice();
+  const { data, isPending, isError, refetch } = useRice({
+    page,
+    limit: PAGE_LIMIT,
+    search,
+  });
 
-  const rice = data?.data ?? [];
+  const rice: IRice[] = data?.data ?? EMPTY_RICE;
 
   const openPayModal = (rice: IRice) => {
     setPayingRice(rice);
@@ -45,13 +53,13 @@ export const useRiceSummaryTable = () => {
     setEditingRice(null);
   };
 
-  const handleDelete = (rice: IRice) => {
+  const handleDelete = (item: IRice) => {
     openConfirm({
       title: "Delete Rice Purchase",
       message: (
         <>
           Are you sure you want to delete this rice purchase from{" "}
-          <strong>{rice.supplierName || "this supplier"}</strong>?
+          <strong>{item.supplierName || "this supplier"}</strong>?
           <br />
           This action cannot be undone.
         </>
@@ -60,7 +68,12 @@ export const useRiceSummaryTable = () => {
         try {
           setLoading(true);
 
-          await deleteRice(rice.id);
+          await deleteRice(item.id);
+
+          // Last row of a later page was removed: go back one page
+          if (rice.length === 1 && page > 1) {
+            handlePage(page - 1);
+          }
         } finally {
           setLoading(false);
         }
@@ -68,17 +81,8 @@ export const useRiceSummaryTable = () => {
     });
   };
 
-  const dueSummary = useMemo(() => {
-    const dueItems = rice.filter((item) => Number(item.remainingDue) > 0);
-    return {
-      dueCount: dueItems.length,
-      totalDue: Number(
-        dueItems
-          .reduce((sum, item) => sum + Number(item.remainingDue), 0)
-          .toFixed(2),
-      ),
-    };
-  }, [rice]);
+  // Total of ALL due purchases, calculated by the backend
+  const dueSummary = data?.dueSummary ?? EMPTY_DUE_SUMMARY;
 
   return {
     rice,

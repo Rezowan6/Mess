@@ -6,6 +6,7 @@ import {
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
+import { getAppDate } from "@/utils/date.util.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import {
   RICE_PAYMENT_METHODS,
@@ -23,7 +24,6 @@ import {
 } from "./rice.interface.js";
 import { Rice } from "./rice.model.js";
 import { riceRepository } from "./rice.repository.js";
-import { getAppDate } from "@/utils/date.util.js";
 
 class RiceService {
   async create(data: ICreateRiceDto) {
@@ -181,13 +181,53 @@ class RiceService {
   async getAll({
     tenantId,
     mealSessionId,
+    page,
+    limit,
+    search,
   }: {
     tenantId: number;
     mealSessionId: number;
+    page: number;
+    limit: number;
+    search?: string;
   }) {
-    const riceList = await riceRepository.getAllRice(tenantId, mealSessionId);
+    // Current page (filtered by search) and ALL rows (for the due summary)
+    const [paginated, allRice] = await Promise.all([
+      riceRepository.getPaginatedRice(tenantId, mealSessionId, {
+        page,
+        limit,
+        ...(search && { search }),
+      }),
+      riceRepository.getAllRice(tenantId, mealSessionId),
+    ]);
 
-    return this.attachPaymentSummary(tenantId, mealSessionId, riceList);
+    const [data, allWithSummary] = await Promise.all([
+      this.attachPaymentSummary(tenantId, mealSessionId, paginated.data),
+      this.attachPaymentSummary(tenantId, mealSessionId, allRice),
+    ]);
+
+    const dueItems = allWithSummary.filter(
+      (item) => Number(item.remainingDue) > 0,
+    );
+
+    const sumOf = (values: number[]) =>
+      Number(values.reduce((sum, value) => sum + value, 0).toFixed(2));
+
+    const dueSummary = {
+      dueCount: dueItems.length,
+      totalDue: sumOf(dueItems.map((item) => Number(item.remainingDue))),
+      // All purchases together: PAID + PARTIAL + DUE
+      totalAmount: sumOf(
+        allWithSummary.map((item) => Number(item.totalAmount)),
+      ),
+      totalPaid: sumOf(allWithSummary.map((item) => Number(item.totalPaid))),
+    };
+
+    return {
+      data,
+      meta: paginated.meta,
+      dueSummary,
+    };
   }
 
   async update({
