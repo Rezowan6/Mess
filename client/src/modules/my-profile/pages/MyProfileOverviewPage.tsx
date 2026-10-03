@@ -1,9 +1,9 @@
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { ErrorState } from "@/shared/components/feedback/ErrorState";
 import { MyProfileFinancialSummary } from "../components/MyProfileFinancialSummary";
-import { MyProfileInfoCardsSkeleton } from "../components/MyProfileInfoCardsSkeleton";
 import { MyProfileMealBreakdown } from "../components/MyProfileMealBreakdown";
 import { MyProfileRecentDeposits } from "../components/MyProfileRecentDeposits";
+import { MyProfileOverviewSkeleton } from "../components/skeleton/MyProfileOverviewSkeleton";
 import { MY_PROFILE_MESSAGES } from "../configs/myProfile.messages";
 import { useMyProfile } from "../hooks/useMyProfile";
 
@@ -13,7 +13,7 @@ export const MyProfileOverviewPage = () => {
   const profile = data?.data;
 
   if (isPending) {
-    return <MyProfileInfoCardsSkeleton />;
+    return <MyProfileOverviewSkeleton />;
   }
 
   // Show the error only when there is no cached data to display

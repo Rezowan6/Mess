@@ -51,7 +51,7 @@ export const OverviewListCard = ({
   totalDecimals,
   totalClassName = "text-info",
   emptyMessage = "No data found",
-  duration = 3000,
+  duration = 2000,
 }: Props) => {
   const mounted = useMountAnimation();
   return (

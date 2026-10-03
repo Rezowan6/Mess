@@ -25,14 +25,24 @@ export const getMealSettingConfigs = (setting: any) => [
     title: "Preferences",
 
     items: [
-      {
-        label: "Guest Meal",
-        value: setting.allowGuestMeal ? "Allowed" : "Disabled",
-      },
+      // {
+      //   label: "Guest Meal",
+      //   value: (
+      //     <Badge
+      //       size="sm"
+      //       variant={`${setting.allowGuestMeal ? "soft-success" : "soft-error"}`}
+      //     >
+      //       {setting.allowGuestMeal ? "Enabled" : "Disabled"}
+      //     </Badge>
+      //   ),
+      // },
       {
         label: "Auto Approve",
         value: (
-          <Badge size="sm" variant={`${setting.autoApproveMealRequest ? "success" : "accent"}`}>
+          <Badge
+            size="sm"
+            variant={`${setting.autoApproveMealRequest ? "soft-success" : "soft-error"}`}
+          >
             {setting.autoApproveMealRequest ? "Enabled" : "Disabled"}
           </Badge>
         ),

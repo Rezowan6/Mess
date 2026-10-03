@@ -4,8 +4,8 @@ import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { ErrorState } from "@/shared/components/feedback/ErrorState";
 import { Outlet, useLocation } from "react-router-dom";
 import { MyProfileHeader } from "../components/MyProfileHeader";
-import { MyProfileInfoCardsSkeleton } from "../components/MyProfileInfoCardsSkeleton";
 import { MyProfileRouteTabs } from "../components/MyProfileRouteTabs";
+import { MyProfilePageSkeleton } from "../components/skeleton/MyProfilePageSkeleton";
 import { MY_PROFILE_MESSAGES } from "../configs/myProfile.messages";
 import { getMyProfilePageConfig } from "../configs/myProfile.page.config";
 import { useMyProfile } from "../hooks/useMyProfile";
@@ -20,7 +20,7 @@ export const MyProfilePage = () => {
   const currentPage = getMyProfilePageConfig(location.pathname);
 
   if (isPending) {
-    return <MyProfileInfoCardsSkeleton />;
+    return <MyProfilePageSkeleton />;
   }
 
   // Show the error only when there is no cached data to display
