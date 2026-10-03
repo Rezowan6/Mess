@@ -5,7 +5,9 @@ import type { ITenantMember } from "@/modules/user-management/types/userManageme
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 
+import { CopyBadge } from "@/shared/components/ui/CopyBadge";
 import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
+import { Hash } from "lucide-react";
 import { QuickDepositButtons } from "../components/QuickDepositButtons";
 
 export const useDepositAddColumns = (): TableColumn<ITenantMember>[] => {
@@ -24,7 +26,15 @@ export const useDepositAddColumns = (): TableColumn<ITenantMember>[] => {
     columns.push({
       key: "id",
       title: "Member ID",
-      render: (member) => member.user.id,
+      render: (member) => (
+        <CopyBadge
+          value={member.user.id}
+          label={`Copy ${member.user.name}'s ID`}
+          leftIcon={<Hash />}
+        >
+          {member.user.id}
+        </CopyBadge>
+      ),
     });
 
     columns.push({

@@ -11,9 +11,12 @@ import { DEPOSIT_MESSAGES } from "../configs/deposit.messages";
 import { useMembers } from "@/modules/user-management/hooks/useMembers";
 import type { ITenantMember } from "@/modules/user-management/types/userManagement.types";
 
+import { EmptyState } from "@/shared/components/feedback/EmptyState";
+import { ErrorState } from "@/shared/components/feedback/ErrorState";
 import { ROUTES } from "@/shared/constants/routes";
 import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
 import { useConfirmStore } from "@/shared/store/confirm.store";
+import { DEPOSIT_ADD_MESSAGES } from "../configs/depositAdd.messages";
 import { useCreateDeposit } from "../hooks/useCreateDeposit";
 
 export const DepositAddPage = () => {
@@ -75,21 +78,50 @@ export const DepositAddPage = () => {
     return <DepositTableSkeleton />;
   }
 
+  // Show the error only when there is no cached data to display
+  if (isError && !data) {
+    const { title, description } = DEPOSIT_ADD_MESSAGES.error;
+
+    return (
+      <ErrorState
+        title={title}
+        description={description}
+        onRetry={() => refetch()}
+      />
+    );
+  }
   return (
     <>
-      <SearchInput value={search} onChange={handleSearch} />
+      {members.length === 0 ? (
+        <EmptyState
+          title={
+            search
+              ? DEPOSIT_ADD_MESSAGES.emptySearch.title
+              : DEPOSIT_ADD_MESSAGES.empty.title
+          }
+          description={
+            search
+              ? DEPOSIT_ADD_MESSAGES.emptySearch.description
+              : DEPOSIT_ADD_MESSAGES.empty.description
+          }
+        />
+      ) : (
+        <>
+          <SearchInput value={search} onChange={handleSearch} />
 
-      <Table
-        columns={columns}
-        data={members}
-        actions={{
-          onAddDeposit: handleQuickDeposit,
-        }}
-        loading={isPending}
-        error={isError}
-        message={DEPOSIT_MESSAGES}
-        refetch={refetch}
-      />
+          <Table
+            columns={columns}
+            data={members}
+            actions={{
+              onAddDeposit: handleQuickDeposit,
+            }}
+            loading={isPending}
+            error={isError}
+            message={DEPOSIT_MESSAGES}
+            refetch={refetch}
+          />
+        </>
+      )}
 
       {meta && (
         <Pagination
