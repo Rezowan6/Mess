@@ -1,10 +1,20 @@
-import type { LucideIcon } from "lucide-react";
+import { useEffect, useState, type CSSProperties } from "react";
+
+import { useCountUp } from "@/shared/hooks/useCountUp";
 
 export interface FinancialSummaryItem {
   key: string;
   title: string;
-  value: string | number;
-  icon: LucideIcon;
+  /** Static value. Used when `amount` is not provided. */
+  value?: string | number;
+  /** Numeric value. When provided, it is animated with a count-up. */
+  amount?: number;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
+  /** Optional small text under the value */
+  description?: string;
+  /** Text color class, e.g. "text-success". Drives all gradients of the cell */
   className?: string;
 }
 
@@ -12,27 +22,87 @@ interface Props {
   items: FinancialSummaryItem[];
 }
 
-export const FinancialSummary = ({ items }: Props) => {
-  return (
-    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-      {items.map((item) => {
-        const Icon = item.icon;
+const MAX_DESKTOP_COLUMNS = 5;
 
-        return (
+const AnimatedValue = ({
+  amount,
+  prefix = "",
+  suffix = "",
+  decimals = 2,
+}: Pick<FinancialSummaryItem, "amount" | "prefix" | "suffix" | "decimals">) => {
+  const animated = useCountUp(amount ?? 0);
+
+  return (
+    <>
+      {prefix}
+      {animated.toFixed(decimals)}
+      {suffix}
+    </>
+  );
+};
+
+export const FinancialSummary = ({ items }: Props) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const frameId = requestAnimationFrame(() => setMounted(true));
+
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
+  const columns = Math.min(items.length, MAX_DESKTOP_COLUMNS);
+
+  return (
+    <div className="overflow-hidden rounded-xl  bg-base-100 shadow-sm">
+      <div
+        className="-mb-px -mr-px grid grid-cols-2 lg:grid-cols-[repeat(var(--cols),minmax(0,1fr))]"
+        style={{ "--cols": columns } as CSSProperties}
+      >
+        {items.map((item, index) => (
           <div
             key={item.key}
-            className="rounded-2xl bg-info/10 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            style={{ transitionDelay: `${index * 60}ms` }}
+            className={`group relative overflow-hidden px-3 py-3 transition-all duration-500 ease-out hover:z-10 sm:px-4 ${
+              mounted ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+            } max-lg:[&:last-child:nth-child(odd)]:col-span-2 ${
+              item.className ?? "text-primary"
+            }`}
           >
-            <div className={`mb-3 ${item.className ?? ""}`}>
-              <Icon size={22} />
-            </div>
+            {/* Top gradient line */}
+            <span className="absolute inset-x-0 top-0 h-0.5 bg-linear-to-r from-current via-current/40 to-transparent" />
 
-            <p className="text-sm opacity-60">{item.title}</p>
+            {/* Hover gradient wash */}
+            <span className="pointer-events-none absolute inset-0 bg-linear-to-br from-current/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-            <p className="mt-1 text-xl font-bold">{item.value}</p>
+            {/* Title */}
+            <p className="relative flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-base-content/55 sm:text-xs">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-linear-to-br from-current to-current/40 transition-transform duration-300 group-hover:scale-150" />
+              <span className="truncate">{item.title}</span>
+            </p>
+
+            {/* Value (gradient text) */}
+            <p className="relative mt-1 truncate bg-linear-to-r from-current to-base-content/70 bg-clip-text text-lg font-bold tabular-nums tracking-tight  transition-transform duration-300 group-hover:translate-x-0.5 sm:text-xl">
+              {item.amount !== undefined ? (
+                <AnimatedValue
+                  amount={item.amount}
+                  prefix={item.prefix}
+                  suffix={item.suffix}
+                  decimals={item.decimals}
+                />
+              ) : (
+                item.value
+              )}
+            </p>
+
+            {/* Description */}
+            {item.description && (
+              <p className="relative mt-0.5 truncate text-[11px] text-base-content/45">
+                {item.description}
+              </p>
+            )}
           </div>
-        );
-      })}
+        ))}
+      </div>
     </div>
   );
 };

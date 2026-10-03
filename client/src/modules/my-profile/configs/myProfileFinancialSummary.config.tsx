@@ -1,6 +1,7 @@
-import { ArrowDownToLine, CircleDollarSign, Receipt, Utensils } from "lucide-react";
 import type { FinancialSummaryItem } from "@/shared/components/ui/FinancialSummary";
 import type { IMealCalculationSummary } from "../types/myProfile.types";
+
+const CURRENCY_PREFIX = "৳ ";
 
 export const MyProfileFinancialSummaryConfig = (
   summary: IMealCalculationSummary,
@@ -8,36 +9,36 @@ export const MyProfileFinancialSummaryConfig = (
   {
     key: "total-deposit",
     title: "Total Deposit",
-    value: `৳ ${summary.deposit.toFixed(2)}`,
-    icon: ArrowDownToLine,
+    amount: summary.deposit,
+    prefix: CURRENCY_PREFIX,
     className: "text-success",
   },
   {
     key: "meal-cost",
     title: "Meal Cost",
-    value: `৳ ${summary.normalMealCost.toFixed(2)}`,
-    icon: Utensils,
+    amount: summary.normalMealCost,
+    prefix: CURRENCY_PREFIX,
     className: "text-primary",
   },
   {
     key: "party-cost",
     title: "Party Cost",
-    value: `৳ ${summary.partyCost.toFixed(2)}`,
-    icon: Receipt,
+    amount: summary.partyCost,
+    prefix: CURRENCY_PREFIX,
     className: "text-warning",
   },
   {
     key: "egg-cost",
     title: "Egg Cost",
-    value: `৳ ${summary.eggCost.toFixed(2)}`,
-    icon: Receipt,
+    amount: summary.eggCost,
+    prefix: CURRENCY_PREFIX,
     className: "text-warning",
   },
   {
     key: "total-cost",
     title: "Total Cost",
-    value: `৳ ${summary.memberCost.toFixed(2)}`,
-    icon: CircleDollarSign,
+    amount: summary.memberCost,
+    prefix: CURRENCY_PREFIX,
     className: "text-error",
   },
 ];
