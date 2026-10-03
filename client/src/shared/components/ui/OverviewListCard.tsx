@@ -1,9 +1,18 @@
 import type { LucideIcon } from "lucide-react";
 
+import { useMountAnimation } from "@/shared/hooks/useMountAnimation";
+import { AnimatedNumber } from "./AnimatedNumber";
+
 interface OverviewListItem {
   id: string | number;
   label: string;
-  value: string | number;
+  /** Static value. Used when `amount` is not provided. */
+  value?: string | number;
+  /** Numeric value. When provided, it is animated with a count-up. */
+  amount?: number;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
   icon: LucideIcon;
   iconClassName?: string;
   iconBgClassName?: string;
@@ -16,10 +25,18 @@ interface Props {
   description: string;
   items: OverviewListItem[];
   totalLabel: string;
-  totalValue: string | number;
+  /** Static total. Used when `totalAmount` is not provided. */
+  totalValue?: string | number;
+  /** Numeric total. When provided, it is animated with a count-up. */
+  totalAmount?: number;
+  totalPrefix?: string;
+  totalSuffix?: string;
+  totalDecimals?: number;
   totalClassName?: string;
   emptyMessage?: string;
 }
+
+const MAX_STAGGER_STEPS = 8;
 
 export const OverviewListCard = ({
   title,
@@ -27,9 +44,14 @@ export const OverviewListCard = ({
   items,
   totalLabel,
   totalValue,
+  totalAmount,
+  totalPrefix,
+  totalSuffix,
+  totalDecimals,
   totalClassName = "text-info",
   emptyMessage = "No data found",
 }: Props) => {
+  const mounted = useMountAnimation();
   return (
     <div className="rounded-2xl bg-background p-5 shadow-sm">
       <div className="mb-5">
@@ -41,13 +63,20 @@ export const OverviewListCard = ({
         <p className="py-6 text-center text-sm opacity-60">{emptyMessage}</p>
       ) : (
         <div className="space-y-3">
-          {items.map((item) => {
+          {items.map((item, index) => {
             const Icon = item.icon;
 
             return (
               <div
                 key={item.id}
-                className="flex items-center justify-between rounded-xl bg-info/10 p-3"
+                style={{
+                  transitionDelay: `${Math.min(index, MAX_STAGGER_STEPS) * 60}ms`,
+                }}
+                className={`flex items-center justify-between rounded-xl bg-info/10 p-3 transition-all duration-500 ease-out ${
+                  mounted
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-2 opacity-0"
+                }`}
               >
                 <div className="flex items-center gap-3">
                   <div
@@ -68,11 +97,21 @@ export const OverviewListCard = ({
                 </div>
 
                 <span
-                  className={`font-semibold ${
+                  className={`font-semibold tabular-nums ${
                     item.valueClassName ?? "text-info"
                   }`}
                 >
-                  {item.value}
+                  {item.amount !== undefined ? (
+                    <AnimatedNumber
+                      value={item.amount}
+                      prefix={item.prefix}
+                      suffix={item.suffix}
+                      decimals={item.decimals}
+                      duration={3000}
+                    />
+                  ) : (
+                    item.value
+                  )}
                 </span>
               </div>
             );
@@ -83,8 +122,18 @@ export const OverviewListCard = ({
       <div className="mt-4 flex items-center justify-between border-t border-info pt-4">
         <span className="font-medium">{totalLabel}</span>
 
-        <span className={`text-lg font-bold ${totalClassName}`}>
-          {totalValue}
+        <span className={`text-lg font-bold tabular-nums ${totalClassName}`}>
+          {totalAmount !== undefined ? (
+            <AnimatedNumber
+              value={totalAmount}
+              prefix={totalPrefix}
+              suffix={totalSuffix}
+              decimals={totalDecimals}
+              duration={3000}
+            />
+          ) : (
+            totalValue
+          )}
         </span>
       </div>
     </div>

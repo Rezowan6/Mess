@@ -1,6 +1,7 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { type CSSProperties } from "react";
 
-import { useCountUp } from "@/shared/hooks/useCountUp";
+import { useMountAnimation } from "@/shared/hooks/useMountAnimation";
+import { AnimatedNumber } from "./AnimatedNumber";
 
 export interface FinancialSummaryItem {
   key: string;
@@ -24,36 +25,13 @@ interface Props {
 
 const MAX_DESKTOP_COLUMNS = 5;
 
-const AnimatedValue = ({
-  amount,
-  prefix = "",
-  suffix = "",
-  decimals = 2,
-}: Pick<FinancialSummaryItem, "amount" | "prefix" | "suffix" | "decimals">) => {
-  const animated = useCountUp(amount ?? 0);
-
-  return (
-    <>
-      {prefix}
-      {animated.toFixed(decimals)}
-      {suffix}
-    </>
-  );
-};
-
 export const FinancialSummary = ({ items }: Props) => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const frameId = requestAnimationFrame(() => setMounted(true));
-
-    return () => cancelAnimationFrame(frameId);
-  }, []);
+  const mounted = useMountAnimation();
 
   const columns = Math.min(items.length, MAX_DESKTOP_COLUMNS);
 
   return (
-    <div className="overflow-hidden rounded-xl  bg-base-100 shadow-sm">
+    <div className="overflow-hidden rounded-xl shadow-lg shadow-info/20">
       <div
         className="-mb-px -mr-px grid grid-cols-2 lg:grid-cols-[repeat(var(--cols),minmax(0,1fr))]"
         style={{ "--cols": columns } as CSSProperties}
@@ -62,7 +40,7 @@ export const FinancialSummary = ({ items }: Props) => {
           <div
             key={item.key}
             style={{ transitionDelay: `${index * 60}ms` }}
-            className={`group relative overflow-hidden px-3 py-3 transition-all duration-500 ease-out hover:z-10 sm:px-4 ${
+            className={`group relative overflow-hidden border-r px-3 py-3 transition-all duration-500 ease-out hover:z-10 sm:px-4 ${
               mounted ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
             } max-lg:[&:last-child:nth-child(odd)]:col-span-2 ${
               item.className ?? "text-primary"
@@ -80,11 +58,11 @@ export const FinancialSummary = ({ items }: Props) => {
               <span className="truncate">{item.title}</span>
             </p>
 
-            {/* Value (gradient text) */}
-            <p className="relative mt-1 truncate bg-linear-to-r from-current to-base-content/70 bg-clip-text text-lg font-bold tabular-nums tracking-tight  transition-transform duration-300 group-hover:translate-x-0.5 sm:text-xl">
+            {/* Value */}
+            <p className="relative mt-1 truncate  text-lg font-bold tabular-nums tracking-tight  transition-transform duration-300 group-hover:translate-x-0.5 sm:text-xl">
               {item.amount !== undefined ? (
-                <AnimatedValue
-                  amount={item.amount}
+                <AnimatedNumber
+                  value={item.amount}
                   prefix={item.prefix}
                   suffix={item.suffix}
                   decimals={item.decimals}

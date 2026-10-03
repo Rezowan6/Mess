@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export const useCountUp = (target: number, duration = 900) => {
+export const useCountUp = (target: number, duration = 1800) => {
   const [value, setValue] = useState(0);
   const fromRef = useRef(0);
 

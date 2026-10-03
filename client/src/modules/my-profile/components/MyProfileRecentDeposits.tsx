@@ -17,7 +17,8 @@ export const MyProfileRecentDeposits = ({ deposits }: Props) => {
   const items = deposits.slice(0, 5).map((deposit) => ({
     id: deposit.id,
     label: deposit.paymentMethod,
-    value: `+৳ ${Number(deposit.amount).toFixed(2)}`,
+    amount: Number(deposit.amount),
+    prefix: "+৳ ",
     icon: Banknote,
     iconClassName: "text-success",
     iconBgClassName: "bg-success/10",
@@ -36,7 +37,8 @@ export const MyProfileRecentDeposits = ({ deposits }: Props) => {
       description="Your latest deposit history"
       items={items}
       totalLabel="Total Deposit"
-      totalValue={`৳ ${totalDeposit.toFixed(2)}`}
+      totalAmount={totalDeposit}
+      totalPrefix="৳ "
       totalClassName="text-success"
       emptyMessage="No deposits found"
     />
