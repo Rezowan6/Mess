@@ -1,5 +1,7 @@
+import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROLES } from "@/shared/constants/roles";
 import { ROUTES } from "@/shared/constants/routes";
+import { PermissionGuard } from "@/shared/guards/permission.guard";
 import { RoleGuard } from "@/shared/guards/role.guard";
 import { DepositTable } from "../components/DepositTable";
 import { DepositAddPage } from "../pages/DepositAddPage";
@@ -22,10 +24,14 @@ export const depositRoutes = {
         },
         {
           path: "quick-add",
-          element: <DepositAddPage />,
+          element: (
+            <PermissionGuard permission={PERMISSIONS.DEPOSIT_CREATE}>
+              <DepositAddPage />
+            </PermissionGuard>
+          ),
         },
         {
-          path: "history",
+          path: "history/:memberId",
           element: <DepositHistoryPage />,
         },
       ],

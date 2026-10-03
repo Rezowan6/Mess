@@ -8,4 +8,9 @@ export const DEPOSIT_MESSAGES = {
     title: "Failed to Load Deposits",
     description: "Unable to fetch deposit list. Please try again.",
   },
+  memberNotFound: {
+    title: "No Deposit History Found",
+    description:
+      "This member has no deposit records, or no member was selected.",
+  },
 } as const;

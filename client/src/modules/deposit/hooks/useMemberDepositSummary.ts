@@ -13,14 +13,23 @@ import type {
 export const useMemberDepositSummary = (params?: IDepositQuery) => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
+  const baseKey = queryKeys.deposits.list(tenantId, mealSessionId);
+
   return useQuery<IDepositListResponse>({
-    queryKey: [...queryKeys.deposits.list(tenantId, mealSessionId), params],
+    queryKey: [...baseKey, params],
 
     queryFn: async () => await depositApi.memberDepositSummary(params),
 
     enabled: Boolean(tenantId && mealSessionId),
 
-    placeholderData: (previous) => previous,
+    // Keep previous data only for search/page changes within the same tenant + session
+    placeholderData: (previousData, previousQuery) => {
+      const previousBaseKey = previousQuery?.queryKey.slice(0, -1);
+
+      return JSON.stringify(previousBaseKey) === JSON.stringify(baseKey)
+        ? previousData
+        : undefined;
+    },
 
     staleTime: 1000 * 60 * 5,
   });

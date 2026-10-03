@@ -33,7 +33,10 @@ export const useDepositMemberSummaryColumns = (): TableColumn<IDeposit>[] => {
       key: "action",
       title: "Actions",
       render: (deposit) => (
-        <ActionLink state={deposit} to={`${ROUTES.DEPOSIT}/history`}>
+        <ActionLink
+          state={deposit}
+          to={`${ROUTES.DEPOSIT}/history/${deposit.memberId}`}
+        >
           Details
         </ActionLink>
       ),

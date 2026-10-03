@@ -12,17 +12,20 @@ export const useSearchParamsOnly = ({
   const search = searchParams.get(key) || "";
 
   const handleSearch = (value: string) => {
-    const params = new URLSearchParams(searchParams);
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
 
-    if (value.trim()) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
+        if (value.trim()) {
+          next.set(key, value);
+        } else {
+          next.delete(key);
+        }
 
-    setSearchParams(params, {
-      replace: true,
-    });
+        return next;
+      },
+      { replace: true },
+    );
   };
 
   return {

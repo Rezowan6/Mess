@@ -16,41 +16,50 @@ export const useTableSearchParams = (
   /**
    * URL Query Params
    */
-  const page = Number(searchParams.get("page")) || defaultPage;
+  const rawPage = Number(searchParams.get("page"));
+
+  // Accept only positive whole numbers
+  const page = Number.isInteger(rawPage) && rawPage > 0 ? rawPage : defaultPage;
 
   const search = searchParams.get("search") || "";
 
   /**
-   * Search
+   * Search (keeps other params, goes back to the first page)
    */
   const handleSearch = (value: string) => {
     setSearchParams(
-      {
-        page: String(defaultPage),
-        ...(value && {
-          search: value,
-        }),
+      (prev) => {
+        const next = new URLSearchParams(prev);
+
+        next.set("page", String(defaultPage));
+
+        if (value) {
+          next.set("search", value);
+        } else {
+          next.delete("search");
+        }
+
+        return next;
       },
-      {
-        replace: true,
-      },
+      { replace: true },
     );
   };
 
   /**
-   * Pagination
+   * Pagination (keeps other params)
    */
   const handlePage = (nextPage: number) => {
-    setSearchParams({
-      page: String(nextPage),
-      ...(search && {
-        search,
-      }),
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+
+      next.set("page", String(nextPage));
+
+      return next;
     });
   };
 
   /**
-   * Reset page
+   * Reset page on mount
    */
   useEffect(() => {
     if (!resetPageOnMount || page === defaultPage) {
@@ -58,16 +67,17 @@ export const useTableSearchParams = (
     }
 
     setSearchParams(
-      {
-        page: String(defaultPage),
-        ...(search && {
-          search,
-        }),
+      (prev) => {
+        const next = new URLSearchParams(prev);
+
+        next.set("page", String(defaultPage));
+
+        return next;
       },
-      {
-        replace: true,
-      },
+      { replace: true },
     );
+    // Intentionally runs only once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

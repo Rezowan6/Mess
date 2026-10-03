@@ -27,19 +27,22 @@ export const DepositPage = () => {
         title={currentPage.title}
         description={currentPage.description}
         action={
-          <Button
-            variant="success"
-            permission={PERMISSIONS.DEPOSIT_CREATE}
-            onClick={() => setIsOpen(true)}
-          >
-            Add Deposit
-          </Button>
+          currentPage.showAddButton && (
+            <Button
+              variant="success"
+              permission={PERMISSIONS.DEPOSIT_CREATE}
+              onClick={() => setIsOpen(true)}
+            >
+              Add Deposit
+            </Button>
+          )
         }
         footer={currentPage.footer}
       >
         <Outlet />
       </ManagementPage>
-      <AddDepositModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+
+      {isOpen && <AddDepositModal isOpen onClose={() => setIsOpen(false)} />}
     </PermissionGuard>
   );
 };
