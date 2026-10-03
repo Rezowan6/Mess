@@ -33,7 +33,7 @@ export const ScrollToTopButton = ({
       aria-label="Scroll to top"
       aria-hidden={!isVisible}
       tabIndex={isVisible ? 0 : -1}
-      className={`fixed bottom-22 right-4 z-30 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-info text-info-content shadow-lg transition-all duration-300 hover:bg-info/80 sm:bottom-6 sm:right-6 sm:h-12 sm:w-12 ${
+      className={`fixed bottom-18 right-4 z-30 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-info text-info-content shadow-lg transition-all duration-300 hover:bg-info/80 sm:bottom-6 sm:right-6 sm:h-12 sm:w-12 ${
         isVisible
           ? "translate-y-0 opacity-100"
           : "pointer-events-none translate-y-4 opacity-0"
