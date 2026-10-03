@@ -1,5 +1,8 @@
 import { OverviewListCard } from "@/shared/components/ui/OverviewListCard";
-import { myProfileMealBreakdownConfig } from "../configs/myProfileMealBreakdown.config";
+import {
+  getMealDecimals,
+  myProfileMealBreakdownConfig,
+} from "../configs/myProfileMealBreakdown.config";
 import type { mealSummary } from "../types/myProfile.types";
 
 interface Props {
@@ -15,7 +18,9 @@ export const MyProfileMealBreakdown = ({ summary }: Props) => {
       description="Your meal consumption this month"
       items={items}
       totalLabel="Total Meals"
-      totalValue={summary.total}
+      totalAmount={summary.total}
+      totalDecimals={getMealDecimals(summary.total)}
+      duration={1500}
     />
   );
 };

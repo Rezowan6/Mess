@@ -34,6 +34,7 @@ interface Props {
   totalDecimals?: number;
   totalClassName?: string;
   emptyMessage?: string;
+  duration?: number;
 }
 
 const MAX_STAGGER_STEPS = 8;
@@ -50,10 +51,11 @@ export const OverviewListCard = ({
   totalDecimals,
   totalClassName = "text-info",
   emptyMessage = "No data found",
+  duration = 3000,
 }: Props) => {
   const mounted = useMountAnimation();
   return (
-    <div className="rounded-2xl bg-background p-5 shadow-sm">
+    <div className="overflow-hidden rounded-xl p-4 shadow-lg shadow-info/20">
       <div className="mb-5">
         <h3 className="font-semibold">{title}</h3>
         <p className="text-sm opacity-60">{description}</p>
@@ -107,7 +109,7 @@ export const OverviewListCard = ({
                       prefix={item.prefix}
                       suffix={item.suffix}
                       decimals={item.decimals}
-                      duration={3000}
+                      duration={duration}
                     />
                   ) : (
                     item.value
@@ -119,7 +121,7 @@ export const OverviewListCard = ({
         </div>
       )}
 
-      <div className="mt-4 flex items-center justify-between border-t border-info pt-4">
+      <div className="mt-4 flex items-center justify-between border-t border-info/30 pt-4">
         <span className="font-medium">{totalLabel}</span>
 
         <span className={`text-lg font-bold tabular-nums ${totalClassName}`}>
@@ -129,7 +131,7 @@ export const OverviewListCard = ({
               prefix={totalPrefix}
               suffix={totalSuffix}
               decimals={totalDecimals}
-              duration={3000}
+              duration={duration}
             />
           ) : (
             totalValue
