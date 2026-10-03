@@ -58,7 +58,7 @@ class NotificationController {
 
     sendResponse(res, {
       statusCode: 200,
-      message: "Notification marked as read.",
+      message: "",
       data: null,
     });
   });

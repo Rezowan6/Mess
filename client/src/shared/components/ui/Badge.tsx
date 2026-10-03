@@ -1,5 +1,10 @@
 import { cn } from "@/shared/utils/cn";
-import type { ReactNode } from "react";
+import {
+  cloneElement,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 
 export type IBadgeVariant =
   | "success"
@@ -25,8 +30,18 @@ interface BadgeProps {
 
   rounded?: "full" | "md" | "sm";
 
+  leftIcon?: ReactNode;
+
+  rightIcon?: ReactNode;
+
   className?: string;
 }
+
+const iconSizes = {
+  sm: 12,
+  md: 14,
+  lg: 16,
+} as const;
 
 const variantStyles: Record<IBadgeVariant, string> = {
   success: "bg-gradient-success",
@@ -63,12 +78,21 @@ export const Badge = ({
   variant = "neutral",
   size = "md",
   rounded = "full",
+  leftIcon,
+  rightIcon,
   className,
 }: BadgeProps) => {
+  const renderIcon = (icon: ReactNode) =>
+    isValidElement(icon)
+      ? cloneElement(icon as ReactElement<{ size?: number }>, {
+          size: iconSizes[size],
+        })
+      : null;
+
   return (
     <span
       className={cn(
-        "inline-flex capitalize text-center items-center justify-center font-medium whitespace-nowrap leading-none align-middle text-white",
+        "inline-flex capitalize text-center items-center justify-center gap-1 font-medium whitespace-nowrap leading-none align-middle text-white",
 
         variantStyles[variant],
 
@@ -79,7 +103,11 @@ export const Badge = ({
         className,
       )}
     >
+      {renderIcon(leftIcon)}
+
       {children}
+
+      {renderIcon(rightIcon)}
     </span>
   );
 };

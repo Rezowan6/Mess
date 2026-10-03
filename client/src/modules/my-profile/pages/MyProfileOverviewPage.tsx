@@ -1,4 +1,5 @@
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
+import { ErrorState } from "@/shared/components/feedback/ErrorState";
 import { MonthlyMealSummaryCard } from "../components/MonthlyMealSummaryCard";
 import { MyProfileFinancialSummary } from "../components/MyProfileFinancialSummary";
 import { MyProfileInfoCardsSkeleton } from "../components/MyProfileInfoCardsSkeleton";
@@ -8,7 +9,7 @@ import { MY_PROFILE_MESSAGES } from "../configs/myProfile.messages";
 import { useMyProfile } from "../hooks/useMyProfile";
 
 export const MyProfileOverviewPage = () => {
-  const { data, isPending } = useMyProfile();
+  const { data, isPending, isError, refetch } = useMyProfile();
 
   const profile = data?.data;
 
@@ -16,10 +17,22 @@ export const MyProfileOverviewPage = () => {
     return <MyProfileInfoCardsSkeleton />;
   }
 
-  if (!profile) {
-    const { empty } = MY_PROFILE_MESSAGES;
+  // Show the error only when there is no cached data to display
+  if (isError && !data) {
+    const { title, description } = MY_PROFILE_MESSAGES.error;
+    return (
+      <ErrorState
+        title={title}
+        description={description}
+        onRetry={() => refetch()}
+      />
+    );
+  }
 
-    return <EmptyState title={empty.title} description={empty.description} />;
+  if (!profile) {
+    const { title, description } = MY_PROFILE_MESSAGES.empty;
+
+    return <EmptyState title={title} description={description} />;
   }
 
   return (

@@ -26,7 +26,7 @@ class MyProfileRepository {
       include: [
         {
           association: "user",
-          attributes: ["id", "name", "email", "avatar"],
+          attributes: ["id", "name", "email", "avatar", "isVerified"],
         },
       ],
     });
