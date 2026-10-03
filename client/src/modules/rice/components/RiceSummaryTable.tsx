@@ -13,7 +13,7 @@ import { RICE_MESSAGES } from "../configs/rice.message";
 import { useRiceSummaryColumns } from "../configs/rice.summary.columns";
 import { useRiceSummaryTable } from "../hooks/useRiceSummaryTable";
 import { AddRiceModal } from "./AddRiceModal";
-import { RiceTableSkeleton } from "./RiceTableSkeleton";
+import { RiceTableSkeleton } from "./skeleton/RiceTableSkeleton";
 
 export const RiceSummaryTable = () => {
   const { can } = useRBAC();

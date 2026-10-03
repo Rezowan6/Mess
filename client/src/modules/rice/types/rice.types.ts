@@ -58,6 +58,11 @@ export interface IRiceDueSummary {
   totalPaid: number;
 }
 
+export interface IRiceWithSummary extends IRice {
+  totalPaid: number;
+  remainingDue: number;
+}
+
 // Same shape as ApiResponse, plus the rice-only due summary
 export interface IRiceListResponse extends ApiResponse<IRice[]> {
   dueSummary?: IRiceDueSummary;

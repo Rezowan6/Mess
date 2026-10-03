@@ -8,8 +8,6 @@ import { getPaidPercent } from "../utils/rice.utils";
 import { useRiceById } from "./useRiceById";
 
 export const useRiceHistory = (riceId: number) => {
-  const { mutateAsync: deletePayment } = useDeleteRicePayment();
-
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [editingPayment, setEditingPayment] = useState<IRicePayment | null>(
     null,
@@ -28,6 +26,7 @@ export const useRiceHistory = (riceId: number) => {
   const rice = riceResponse?.data;
 
   const payments = useRicePayments(riceId);
+  const { mutateAsync: deletePayment } = useDeleteRicePayment(riceId);
 
   const paidPercent = rice ? getPaidPercent(rice) : 0;
   const paymentList = payments.data?.data ?? [];

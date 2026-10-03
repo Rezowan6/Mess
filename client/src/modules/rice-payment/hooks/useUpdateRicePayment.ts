@@ -24,14 +24,24 @@ export const useUpdateRicePayment = (riceId: number) => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.ricePayments.all(tenantId, mealSessionId),
-      });
-      queryClient.invalidateQueries({
         queryKey: queryKeys.ricePayments.get(tenantId, mealSessionId, riceId),
       });
 
       queryClient.invalidateQueries({
+        queryKey: queryKeys.ricePayments.all(tenantId, mealSessionId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.rice.byId(tenantId, mealSessionId, riceId),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.rice.due(tenantId, mealSessionId, riceId),
+      });
+
+      queryClient.invalidateQueries({
         queryKey: queryKeys.rice.get(tenantId, mealSessionId),
+        refetchType: "active",
       });
 
       queryClient.invalidateQueries({

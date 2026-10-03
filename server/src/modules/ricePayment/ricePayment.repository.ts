@@ -42,7 +42,7 @@ class RicePaymentRepository extends BaseRepository<RicePayment> {
         mealSessionId,
         riceId,
       },
-      order: [["paymentDate", "DESC"]],
+      order: [["createdAt", "DESC"]],
     });
   }
 
