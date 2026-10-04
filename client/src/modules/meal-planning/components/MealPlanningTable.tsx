@@ -107,7 +107,7 @@ export const MealPlanningTable = ({
             variant="soft-info"
             size="sm"
             leftIcon={<Utensils />}
-            className="min-w-28"
+            className="min-w-28 tabular-nums"
           >
             {activeMeal}
           </Badge>
@@ -116,7 +116,7 @@ export const MealPlanningTable = ({
             variant="soft-success"
             size="sm"
             leftIcon={<CalendarDays />}
-            className="min-w-32 tabular-nums"
+            className="min-w-28 tabular-nums"
           >
             {!loading && planningDate ? formatDate(planningDate) : "—"}
           </Badge>
@@ -125,7 +125,7 @@ export const MealPlanningTable = ({
             variant="soft-secondary"
             size="sm"
             leftIcon={<Users />}
-            className="min-w-32 tabular-nums"
+            className="min-w-28 tabular-nums"
           >
             {loading
               ? "—"

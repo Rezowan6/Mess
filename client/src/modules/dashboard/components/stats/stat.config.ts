@@ -28,7 +28,7 @@ export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => {
   return [
     {
       key: "totalMeals",
-      title: "Total Meals",
+      title: "Meals",
       amount: totalMeals,
       prefix: "",
       decimals: getDecimals(totalMeals),
@@ -38,7 +38,7 @@ export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => {
     },
     {
       key: "totalMembers",
-      title: "Total Members",
+      title: "Members",
       amount: Number(stats.totalMembers),
       prefix: "",
       decimals: 0,
@@ -48,7 +48,7 @@ export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => {
     },
     {
       key: "totalExpense",
-      title: "Total Expense",
+      title: "Expenses",
       amount: Number(stats.totalExpense),
       prefix: "৳ ",
       decimals: 2,
@@ -58,7 +58,7 @@ export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => {
     },
     {
       key: "totalDeposit",
-      title: "Total Deposit",
+      title: "Deposits",
       amount: Number(stats.totalDeposit),
       prefix: "৳ ",
       decimals: 2,
