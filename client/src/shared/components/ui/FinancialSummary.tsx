@@ -78,13 +78,13 @@ export const FinancialSummary = ({
   const desktopColumns = columns ?? Math.min(cells.length, MAX_DESKTOP_COLUMNS);
 
   return (
-    <div className="overflow-hidden rounded-xl shadow-lg shadow-info/20 p-4 bg-info/5">
+    <div className="overflow-hidden rounded-xl shadow-lg shadow-info/20 bg-info/5">
       {/* Small screens: horizontal slider, 2 cards per page. Large screens: grid. */}
       <div
         ref={ref}
         {...handlers}
         style={{ "--cols": desktopColumns } as CSSProperties}
-        className="-mb-px -mr-px flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain scrollbar-none lg:grid lg:grid-cols-[repeat(var(--cols),minmax(0,1fr))] lg:overflow-visible [&::-webkit-scrollbar]:hidden"
+        className="-mb-px -mr-px p-2 flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain scrollbar-none lg:grid lg:grid-cols-[repeat(var(--cols),minmax(0,1fr))] lg:overflow-visible [&::-webkit-scrollbar]:hidden"
       >
         {cells.map((cell, index) => (
           <div
@@ -101,7 +101,7 @@ export const FinancialSummary = ({
 
       {/* Page dots (small screens only) */}
       {pages > 1 && (
-        <div className="flex justify-center lg:hidden">
+        <div className="flex justify-center gap-1.5 py-2 lg:hidden">
           {Array.from({ length: pages }, (_, page) => (
             <button
               key={page}
