@@ -54,3 +54,21 @@ export const isLocked = (createdAt: string | Date | null): boolean => {
   // Created হওয়ার 2 ঘণ্টা পার হলে locked
   return now.diff(created, "hour", true) >= 2;
 };
+
+/**
+ * Mirrors the backend rule: a record can be edited or deleted within `lockHours` of creation.
+ * This only controls the UI. The backend is the real authority.
+ */
+export const isRecordLocked = (
+  createdAt: string | Date | null,
+  lockHours = 24,
+): boolean => {
+  if (!createdAt) return true;
+
+  const created = dayjs(createdAt);
+
+  // Invalid date: lock, same as the backend
+  if (!created.isValid()) return true;
+
+  return dayjs().diff(created, "hour", true) > lockHours;
+};

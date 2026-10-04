@@ -10,6 +10,7 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 
 import { useConfirmStore } from "@/shared/store/confirm.store";
 
+import { isRecordLocked } from "@/shared/utils/date.utils";
 import { useDeleteDeposit } from "../hooks/useDeleteDeposit";
 
 interface Props {
@@ -26,15 +27,25 @@ export const DepositActions = ({ deposit, onEdit }: Props) => {
 
   const deleteMutation = useDeleteDeposit();
 
+  const locked = isRecordLocked(deposit.createdAt);
+
   return (
     <div className="flex items-center gap-2">
       {can(PERMISSIONS.DEPOSIT_UPDATE) && (
-        <Button unstyled leftIcon={<Edit />} onClick={() => onEdit(deposit)} />
+        <Button
+          unstyled
+          disabled={locked}
+          leftIcon={<Edit />}
+          onClick={() => onEdit(deposit)}
+          tooltip={locked ? "Locked after 24h" : undefined}
+        />
       )}
 
       {can(PERMISSIONS.DEPOSIT_DELETE) && (
         <Button
           unstyled
+          disabled={locked}
+          tooltip={locked ? "Locked after 24h" : undefined}
           leftIcon={<Trash2 />}
           onClick={() =>
             openConfirm({

@@ -119,11 +119,12 @@ class DepositController {
   });
 
   update = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, mealSessionId } = getTenantContext(req);
+    const { tenantId, mealSessionId, userId } = getTenantContext(req);
 
     const deposit = await depositService.updateDeposit({
       tenantId,
       mealSessionId,
+      userId,
       depositId: Number(req.params.id),
       payload: req.body,
     });
@@ -136,11 +137,12 @@ class DepositController {
   });
 
   delete = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, mealSessionId } = getTenantContext(req);
+    const { tenantId, mealSessionId, userId } = getTenantContext(req);
 
     await depositService.deleteDeposit({
       tenantId,
       mealSessionId,
+      userId,
       depositId: Number(req.params.id),
     });
 

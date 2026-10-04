@@ -18,6 +18,10 @@ export const Notification = {
   MEAL_REQUEST_CREATED: "MEAL_REQUEST_CREATED",
 
   MEAL_REQUEST_APPROVED: "MEAL_REQUEST_APPROVED",
+
+  DEPOSIT_ADDED: "DEPOSIT_ADDED",
+  DEPOSIT_UPDATED: "DEPOSIT_UPDATED",
+  DEPOSIT_DELETED: "DEPOSIT_DELETED",
 } as const;
 
 export type NotificationType = (typeof Notification)[keyof typeof Notification];

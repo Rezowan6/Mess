@@ -1,18 +1,34 @@
+import dayjs from "dayjs";
+
 import { appTime } from "@/configs/time.js";
-// ================================
-// ingsa-allah ai 3 ta method update korte hobe
+
+const HAS_OFFSET = /(Z|[+-]\d{2}:?\d{2})$/i;
+
+// Turns any input into one exact moment, so the comparison never depends on a timezone
+const toInstant = (value: Date | string | number) => {
+  if (typeof value === "string" && !HAS_OFFSET.test(value.trim())) {
+    // Plain DB string without an offset: Sequelize stores UTC by default
+    return dayjs.utc(value);
+  }
+
+  return dayjs(value);
+};
+
 export const getHoursDifference = (
   from: Date | string | number,
-  to: Date | string | number = new Date(),
+  to: Date | string | number = Date.now(),
 ): number => {
-  return appTime(to).diff(appTime(from), "hour", true);
+  return toInstant(to).diff(toInstant(from), "hour", true);
 };
 
 export const isWithinHours = (
   date: Date | string | number,
   hours: number,
 ): boolean => {
-  return getHoursDifference(date) <= hours;
+  const diff = getHoursDifference(date);
+
+  // Invalid dates give NaN, which is treated as "not within"
+  return Number.isFinite(diff) && diff <= hours;
 };
 
 export const getCurrentDate = (): string => {

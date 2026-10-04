@@ -38,6 +38,7 @@ export interface IUpdateDepositPayload {
 export interface IDeleteDepositPayload {
   tenantId: number;
   mealSessionId: number;
+  userId: number;
   depositId: number;
 }
 export interface IGetMemberDepositsPayload {

@@ -75,15 +75,22 @@ export class TenantMembershipService {
     /**
      * Create Notification
      */
-    await notificationService.create({
-      tenantId,
-      userId: targetMember?.userId,
-      createdBy: adminId,
-      mealSessionId,
-      title: "Role Updated",
-      message: `Your role has been changed from ${oldRole} to ${role}.`,
-      type: Notification.ROLE_UPDATED,
-    });
+    try {
+      await notificationService.create({
+        tenantId,
+        userId: targetMember.userId,
+        createdBy: adminId,
+        mealSessionId,
+        title: "Role Updated",
+        message: `Your role has been changed from ${oldRole} to ${role}.`,
+        type: Notification.ROLE_UPDATED,
+      });
+    } catch (error) {
+      console.error(
+        `[Membership] Failed to create role notification for user ${targetMember.userId}:`,
+        error,
+      );
+    }
 
     return result;
   }
