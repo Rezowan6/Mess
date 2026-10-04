@@ -1,5 +1,6 @@
 import { PERMISSIONS, type Permission } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
+import { getDecimals } from "@/shared/utils/number.utils";
 
 export interface DashboardStats {
   totalMeals: number;
@@ -19,8 +20,7 @@ export interface DashboardStat {
   permission: Permission;
 }
 
-// Half meals are possible, so show decimals only when needed
-const getMealDecimals = (value: number) => (Number.isInteger(value) ? 0 : 2);
+
 
 export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => {
   const totalMeals = Number(stats.totalMeals);
@@ -31,7 +31,7 @@ export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => {
       title: "Total Meals",
       amount: totalMeals,
       prefix: "",
-      decimals: getMealDecimals(totalMeals),
+      decimals: getDecimals(totalMeals),
       tone: "info",
       path: ROUTES.MEAL_ENTRY,
       permission: PERMISSIONS.MEAL_ENTRY_VIEW,
