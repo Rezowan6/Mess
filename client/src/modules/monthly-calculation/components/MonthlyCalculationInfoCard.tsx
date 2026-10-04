@@ -13,7 +13,7 @@ export const MonthlyCalculationInfoCard = ({ calculation }: Props) => {
   const infoCards = getMonthlyCalculationInfoCards(calculation);
 
   return (
-    <FinancialSummary columns={5} slideInterval={4000}>
+    <FinancialSummary columns={5} slideInterval={2500}>
       {infoCards.map((card) => (
         <FinancialSummaryCell
           key={card.key}

@@ -60,7 +60,7 @@ export const FinancialSummary = ({
   children,
   columns,
   autoSlide = true,
-  slideInterval = 3500,
+  slideInterval = 3000,
 }: FinancialSummaryProps) => {
   const mounted = useMountAnimation();
 
