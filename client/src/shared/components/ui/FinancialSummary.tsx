@@ -78,7 +78,7 @@ export const FinancialSummary = ({
   const desktopColumns = columns ?? Math.min(cells.length, MAX_DESKTOP_COLUMNS);
 
   return (
-    <div className="overflow-hidden rounded-xl shadow-lg shadow-info/20">
+    <div className="overflow-hidden rounded-xl shadow-lg shadow-info/20 p-4 bg-info/5">
       {/* Small screens: horizontal slider, 2 cards per page. Large screens: grid. */}
       <div
         ref={ref}
