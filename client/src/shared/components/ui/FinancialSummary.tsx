@@ -1,6 +1,7 @@
 import { type CSSProperties } from "react";
 
 import { useMountAnimation } from "@/shared/hooks/useMountAnimation";
+import { toTitleCase } from "@/shared/utils/format.utils";
 import { AnimatedNumber } from "./AnimatedNumber";
 
 export interface FinancialSummaryItem {
@@ -53,9 +54,9 @@ export const FinancialSummary = ({ items }: Props) => {
             <span className="pointer-events-none absolute inset-0 bg-linear-to-br from-current/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
             {/* Title */}
-            <p className="relative flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-base-content/55 sm:text-xs">
+            <p className="relative flex items-center gap-1.5 text-[12px] font-medium tracking-wider text-base-content/55 sm:text-sm">
               <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-linear-to-br from-current to-current/40 transition-transform duration-300 group-hover:scale-150" />
-              <span className="truncate">{item.title}</span>
+              <span className="truncate">{toTitleCase(item.title)}</span>
             </p>
 
             {/* Value */}
