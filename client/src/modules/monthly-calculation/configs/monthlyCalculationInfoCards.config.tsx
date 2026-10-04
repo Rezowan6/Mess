@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { IMonthlyCalculation } from "../types/monthlyCalculation.types";
 
 export type MonthlyCalculationTone =
   "info" | "success" | "accent" | "secondary" | "error" | "warning";
@@ -14,20 +15,8 @@ export interface MonthlyCalculationInfoCardConfig {
   hint?: ReactNode;
 }
 
-export interface MonthlyCalculationData {
-  totalExpense: number;
-  totalPartyExpense: number;
-  totalEggCost: number;
-  totalRiceExpense: number;
-  totalMealCost: number;
-  totalSoldProductAmount: number;
-  totalDeposit: string | number;
-  grandTotalMeals: number;
-  mealRate: number;
-}
-
 export const getMonthlyCalculationInfoCards = (
-  calculation: MonthlyCalculationData,
+  calculation: IMonthlyCalculation,
 ): MonthlyCalculationInfoCardConfig[] => [
   // ============================================================
   // BASE EXPENSE

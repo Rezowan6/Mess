@@ -1,17 +1,13 @@
 import { SummaryStat } from "@/shared/components/ui/SummaryStat";
 
-import {
-  getMonthlyCalculationInfoCards,
-  type MonthlyCalculationData,
-} from "../configs/monthlyCalculationInfoCards.config";
+import { getMonthlyCalculationInfoCards } from "../configs/monthlyCalculationInfoCards.config";
+import type { IMonthlyCalculation } from "../types/monthlyCalculation.types";
 
 interface Props {
-  calculation: MonthlyCalculationData;
+  calculation: IMonthlyCalculation;
 }
 
-export const MonthlyCalculationInfoCard = ({
-  calculation,
-}: Props) => {
+export const MonthlyCalculationInfoCard = ({ calculation }: Props) => {
   const infoCards = getMonthlyCalculationInfoCards(calculation);
 
   return (

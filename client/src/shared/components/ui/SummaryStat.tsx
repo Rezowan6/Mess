@@ -4,7 +4,7 @@ import { cn } from "@/shared/utils/cn";
 import { toTitleCase } from "@/shared/utils/format.utils";
 import { AnimatedNumber } from "./AnimatedNumber";
 
-type SummaryStatTone = "info" | "success" | "accent" | "secondary" | "error" | "warning";
+export type SummaryStatTone = "info" | "success" | "accent" | "secondary" | "error" | "warning";
 
 // Full class names, so Tailwind can detect them (dynamic names would be purged)
 const toneStyles = {

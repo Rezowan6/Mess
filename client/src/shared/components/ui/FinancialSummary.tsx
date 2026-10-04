@@ -1,8 +1,9 @@
-import { type CSSProperties } from "react";
+import { type CSSProperties, type ReactNode } from "react";
 
 import { useMountAnimation } from "@/shared/hooks/useMountAnimation";
 import { toTitleCase } from "@/shared/utils/format.utils";
 import { AnimatedNumber } from "./AnimatedNumber";
+import type { SummaryStatTone } from "./SummaryStat";
 
 export interface FinancialSummaryItem {
   key: string;
@@ -14,6 +15,9 @@ export interface FinancialSummaryItem {
   prefix?: string;
   suffix?: string;
   decimals?: number;
+  tone?: SummaryStatTone;
+  duration?: number;
+  action?: ReactNode;
   /** Optional small text under the value */
   description?: string;
   /** Text color class, e.g. "text-success". Drives all gradients of the cell */
@@ -25,6 +29,15 @@ interface Props {
 }
 
 const MAX_DESKTOP_COLUMNS = 5;
+
+const toneStyles = {
+  info: "text-info",
+  success: "text-success",
+  accent: "text-accent",
+  secondary: "text-secondary",
+  error: "text-error",
+  warning: "text-warning",
+} as const satisfies Record<SummaryStatTone, string>;
 
 export const FinancialSummary = ({ items }: Props) => {
   const mounted = useMountAnimation();
@@ -44,7 +57,7 @@ export const FinancialSummary = ({ items }: Props) => {
             className={`group relative overflow-hidden border-r px-3 py-3 transition-all duration-500 ease-out hover:z-10 sm:px-4 ${
               mounted ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
             } max-lg:[&:last-child:nth-child(odd)]:col-span-2 ${
-              item.className ?? "text-primary"
+              item.className ?? toneStyles[item.tone ?? "info"]
             }`}
           >
             {/* Top gradient line */}
@@ -54,10 +67,14 @@ export const FinancialSummary = ({ items }: Props) => {
             <span className="pointer-events-none absolute inset-0 bg-linear-to-br from-current/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
             {/* Title */}
-            <p className="relative flex items-center gap-1.5 text-[12px] font-medium tracking-wider text-base-content/55 sm:text-sm">
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-linear-to-br from-current to-current/40 transition-transform duration-300 group-hover:scale-150" />
-              <span className="truncate">{toTitleCase(item.title)}</span>
-            </p>
+            <div className="relative flex items-center justify-between gap-2">
+              <p className="flex min-w-0 items-center gap-1.5 text-[12px] font-medium tracking-wider text-base-content/55 sm:text-sm">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-linear-to-br from-current to-current/40 transition-transform duration-300 group-hover:scale-150" />
+                <span className="truncate">{toTitleCase(item.title)}</span>
+              </p>
+
+              {item.action}
+            </div>
 
             {/* Value */}
             <p className="relative mt-1 truncate  text-lg font-bold tabular-nums tracking-tight  transition-transform duration-300 group-hover:translate-x-0.5 sm:text-xl">
@@ -67,6 +84,7 @@ export const FinancialSummary = ({ items }: Props) => {
                   prefix={item.prefix}
                   suffix={item.suffix}
                   decimals={item.decimals}
+                  duration={item.duration ?? 1200}
                 />
               ) : (
                 item.value

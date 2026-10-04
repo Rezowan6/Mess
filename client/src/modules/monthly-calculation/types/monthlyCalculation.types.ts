@@ -23,7 +23,7 @@ export interface IMonthlyCalculation {
   totalDeposit: string;
   grandTotalMeals: number;
   mealRate: number;
-  members: IMonthlyCalculationMember[];
+  members?: IMonthlyCalculationMember[];
   month: string;
   year: number;
 }
