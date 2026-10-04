@@ -1,14 +1,17 @@
 import type { ReactNode } from "react";
 
 import { cn } from "@/shared/utils/cn";
+import { toTitleCase } from "@/shared/utils/format.utils";
 import { AnimatedNumber } from "./AnimatedNumber";
 
-type SummaryStatTone = "info" | "success" | "error" | "warning";
+type SummaryStatTone = "info" | "success" | "accent" | "secondary" | "error" | "warning";
 
 // Full class names, so Tailwind can detect them (dynamic names would be purged)
 const toneStyles = {
   info: { box: "bg-info/10", value: "text-info" },
   success: { box: "bg-success/10", value: "text-success" },
+  accent: { box: "bg-accent/10", value: "text-accent" },
+  secondary: { box: "bg-secondary/10", value: "text-secondary" },
   error: { box: "bg-error/10", value: "text-error" },
   warning: { box: "bg-warning/10", value: "text-warning" },
 } as const satisfies Record<SummaryStatTone, { box: string; value: string }>;
@@ -61,8 +64,8 @@ export const SummaryStat = ({
           className,
         )}
       >
-        <span className="truncate text-[11px] font-medium uppercase tracking-wide text-base-content/60 sm:text-xs">
-          {label}
+        <span className="truncate text-[12px] font-medium tracking-wide text-base-content/60 sm:text-xs">
+          {toTitleCase(label)}
         </span>
 
         <span
@@ -90,8 +93,8 @@ export const SummaryStat = ({
       )}
     >
       <div className="flex w-full items-center justify-between gap-x-2 sm:w-auto sm:justify-start">
-        <span className="text-xs font-medium uppercase tracking-wide text-base-content/60">
-          {label}
+        <span className="text-xs font-medium tracking-wide text-base-content/60">
+          {toTitleCase(label)}
         </span>
 
         <span className={cn("text-lg font-bold tabular-nums", styles.value)}>

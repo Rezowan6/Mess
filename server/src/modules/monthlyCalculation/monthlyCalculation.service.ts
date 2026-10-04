@@ -7,6 +7,25 @@ import { riceRepository } from "../rice/rice.repository.js";
 import { soldProductRepository } from "../soldProduct/soldProduct.repository.js";
 import { monthlyCalculationRepository } from "./monthlyCalculation.repository.js";
 
+// Database sums can arrive as strings or null, so always convert before calculating
+const toNumber = (value: unknown): number => {
+  const parsed = Number(value);
+
+  return Number.isFinite(parsed) ? parsed : 0;
+};
+
+const round2 = (value: number): number => Number(value.toFixed(2));
+
+// Builds a Map<memberId, number> from rows like { memberId, totalX }
+const toAmountMap = (
+  rows: any[],
+  keyField: string,
+  valueField: string,
+): Map<number, number> =>
+  new Map(
+    rows.map((row) => [Number(row[keyField]), toNumber(row[valueField])]),
+  );
+
 class MonthlyCalculationService {
   async getCurrentMonthCalculation({
     tenantId,
@@ -17,134 +36,106 @@ class MonthlyCalculationService {
     mealSessionId: number;
     session: IMealSessionReq;
   }) {
-    const totalExpense =
-      (await monthlyCalculationRepository.getTotalExpense(
+    // ------------------------------------------------------------
+    // 1. Load all data (independent reads, so they run in parallel)
+    // ------------------------------------------------------------
+    const [
+      totalExpenseRaw,
+      totalPartyExpenseRaw,
+      totalEggQuantityRaw,
+      eggRateData,
+      soldProductData,
+      mealSummary,
+      totalRiceExpenseRaw,
+      memberPartyCosts,
+      memberEggs,
+      activeMembers,
+      memberMeals,
+      memberDeposits,
+    ] = await Promise.all([
+      monthlyCalculationRepository.getTotalExpense(tenantId, mealSessionId),
+      partyExpenseRepository.getTotalPartyExpense(tenantId, mealSessionId),
+      monthlyCalculationRepository.getTotalEggQuantity(tenantId, mealSessionId),
+      eggRateRepository.getEggRate(tenantId, mealSessionId),
+      soldProductRepository.getSoldProduct(tenantId, mealSessionId),
+      monthlyCalculationRepository.getTotalMeal(tenantId, mealSessionId),
+      riceRepository.getTotalRiceExpense(tenantId, mealSessionId),
+      partyExpenseMemberRepository.getMemberPartyExpenseTotals(
         tenantId,
         mealSessionId,
-      )) || 0;
+      ),
+      monthlyCalculationRepository.getMemberEggs(tenantId, mealSessionId),
+      monthlyCalculationRepository.getActiveMembers(tenantId),
+      monthlyCalculationRepository.getMemberMeals(tenantId, mealSessionId),
+      monthlyCalculationRepository.getMemberDeposits(tenantId, mealSessionId),
+    ]);
 
-    const totalPartyExpense =
-      (await partyExpenseRepository.getTotalPartyExpense(
-        tenantId,
-        mealSessionId,
-      )) || 0;
+    // ------------------------------------------------------------
+    // 2. Normalize raw values
+    // ------------------------------------------------------------
+    const totalExpense = toNumber(totalExpenseRaw);
+    const totalPartyExpense = toNumber(totalPartyExpenseRaw);
+    const totalEggQuantity = toNumber(totalEggQuantityRaw);
+    const totalRiceExpense = toNumber(totalRiceExpenseRaw);
+    const totalSoldProductAmount = toNumber(soldProductData?.totalAmount);
+    const grandTotalMeals = toNumber(mealSummary?.grandTotalMeals);
+    const eggRate = toNumber(eggRateData?.rate);
 
-    // egg related calculation
-    const totalEggQuantity =
-      await monthlyCalculationRepository.getTotalEggQuantity(
-        tenantId,
-        mealSessionId,
-      );
+    // ------------------------------------------------------------
+    // 3. Mess level calculation
+    // ------------------------------------------------------------
+    const totalEggCost = round2(totalEggQuantity * eggRate);
 
-    const eggRateData = await eggRateRepository.getEggRate(
-      tenantId,
-      mealSessionId,
-    );
-
-    const eggRate = Number(eggRateData?.rate ?? 0);
-
-    const totalEggCost = Number(
-      (Number(totalEggQuantity) * eggRate).toFixed(2),
-    );
-
-    const soldProductData = await soldProductRepository.getSoldProduct(
-      tenantId,
-      mealSessionId,
-    );
-
-    const totalSoldProductAmount = Number(soldProductData?.totalAmount ?? 0);
-
-    const mealSummary = await monthlyCalculationRepository.getTotalMeal(
-      tenantId,
-      mealSessionId,
-    );
-    const grandTotalMeals = Number(mealSummary?.grandTotalMeals ?? 0);
-
-    const totalRiceExpense = await riceRepository.getTotalRiceExpense(
-      tenantId,
-      mealSessionId,
-    );
-
+    // Rice is part of the meal cost
     const grandTotalMealCost = totalExpense + totalRiceExpense;
 
-    // Party expense + egg cost meal rate-এর মধ্যে যাবে না
+    // Party expense, egg cost and sold products are NOT part of the meal rate
     const normalExpense =
-      Number(grandTotalMealCost) -
-      Number(totalPartyExpense) -
-      Number(totalEggCost) -
-      Number(totalSoldProductAmount);
+      grandTotalMealCost -
+      totalPartyExpense -
+      totalEggCost -
+      totalSoldProductAmount;
 
     const mealRate =
-      grandTotalMeals > 0
-        ? Number((normalExpense / grandTotalMeals).toFixed(2))
-        : 0;
+      grandTotalMeals > 0 ? round2(normalExpense / grandTotalMeals) : 0;
 
-    // প্রতিটি member-এর মোট party expense
-    const memberPartyCosts =
-      await partyExpenseMemberRepository.getMemberPartyExpenseTotals(
-        tenantId,
-        mealSessionId,
-      );
+    // ------------------------------------------------------------
+    // 4. Lookup maps (key = userId)
+    // ------------------------------------------------------------
+    const partyCostMap = toAmountMap(
+      memberPartyCosts,
+      "memberId",
+      "totalPartyCost",
+    );
+    const eggMap = toAmountMap(memberEggs, "memberId", "totalEgg");
+    const depositMap = toAmountMap(memberDeposits, "memberId", "totalDeposit");
 
-    const partyCostMap = new Map<number, number>();
-
-    memberPartyCosts.forEach((item: any) => {
-      partyCostMap.set(Number(item.memberId), Number(item.totalPartyCost));
-    });
-
-    // প্রতিটি member-এর মোট egg cost
-    const memberEggs = await monthlyCalculationRepository.getMemberEggs(
-      tenantId,
-      mealSessionId,
+    const mealMap = new Map<number, number>(
+      memberMeals.map((item: any) => [
+        Number(item.userId),
+        toNumber(item.get("totalMeal")),
+      ]),
     );
 
-    const eggMap = new Map<number, number>();
-
-    memberEggs.forEach((item: any) => {
-      eggMap.set(Number(item.memberId), Number(item.totalEgg ?? 0));
-    });
-
-    // active members
-    const activeMembers =
-      await monthlyCalculationRepository.getActiveMembers(tenantId);
-
-    const memberMeals = await monthlyCalculationRepository.getMemberMeals(
-      tenantId,
-      mealSessionId,
-    );
-
-    const memberDeposits = await monthlyCalculationRepository.getMemberDeposits(
-      tenantId,
-      mealSessionId,
-    );
-
-    const depositMap = new Map();
-
-    memberDeposits.forEach((deposit: any) => {
-      depositMap.set(deposit.memberId, Number(deposit.totalDeposit));
-    });
-
+    // ------------------------------------------------------------
+    // 5. Member level calculation
+    // ------------------------------------------------------------
     const members = activeMembers.map((member: any) => {
-      const mealData = memberMeals.find(
-        (item: any) => item.userId === member.userId,
-      );
+      const userId = Number(member.userId);
 
-      const totalMeal = mealData ? Number(mealData.get("totalMeal")) : 0;
+      const totalMeal = mealMap.get(userId) ?? 0;
+      const partyCost = partyCostMap.get(userId) ?? 0;
+      const eggQuantity = eggMap.get(userId) ?? 0;
+      const deposit = depositMap.get(userId) ?? 0;
 
-      const partyCost = Number(partyCostMap.get(member.userId) ?? 0);
-
-      const eggQuantity = Number(eggMap.get(member.userId) ?? 0);
-
-      const deposit = Number(depositMap.get(member.userId) ?? 0);
-
-      // Normal meal cost + ওই member-এর party cost + egg cost
       const normalMealCost = totalMeal * mealRate;
+      const eggCost = round2(eggQuantity * eggRate);
 
-      const eggCost = Number((eggQuantity * eggRate).toFixed(2));
-
+      // Meal cost + this member's party cost + egg cost
       const memberCost = normalMealCost + partyCost + eggCost;
 
-      const balance = deposit - memberCost;
+      // Round first, so the status matches what the screen shows
+      const balance = round2(deposit - memberCost);
 
       return {
         userId: member.userId,
@@ -152,52 +143,53 @@ class MonthlyCalculationService {
         email: member.user?.email,
         avatar: member.user?.avatar,
 
-        totalMeal: Number(totalMeal.toFixed(2)),
-        deposit: Number(deposit.toFixed(2)),
+        totalMeal: round2(totalMeal),
+        deposit: round2(deposit),
 
-        normalMealCost: Number(normalMealCost.toFixed(2)),
-        partyCost: Number(partyCost.toFixed(2)),
+        normalMealCost: round2(normalMealCost),
+        partyCost: round2(partyCost),
 
-        eggQuantity: Number(eggQuantity.toFixed(2)),
-        eggCost: Number(eggCost.toFixed(2)),
+        eggQuantity: round2(eggQuantity),
+        eggCost,
 
-        memberCost: Number(memberCost.toFixed(2)),
-        balance: Number(balance.toFixed(2)),
+        memberCost: round2(memberCost),
+        balance,
 
-        status:
-          balance > 0 ? "Received" : balance === 0 ? "Settled" : "Payable",
+        status: balance > 0 ? "Received" : balance < 0 ? "Payable" : "Settled",
       };
     });
 
-    const monthName = getMonthName(session.month, session.year);
-
-    const totalMealCost = Number(normalExpense);
+    // ------------------------------------------------------------
+    // 6. Response
+    // ------------------------------------------------------------
+    const totalDeposit = [...depositMap.values()].reduce(
+      (sum, value) => sum + value,
+      0,
+    );
 
     return {
-      totalExpense:
-        Number(totalExpense.toFixed(2)) -
-        Number(totalSoldProductAmount.toFixed(2)),
-      totalPartyExpense: Number(totalPartyExpense.toFixed(2)),
-      totalEggCost: Number(totalEggCost.toFixed(2)),
-      totalSoldProductAmount: Number(totalSoldProductAmount.toFixed(2)),
-      totalMealCost,
+      // Note: sold products are removed here, but rice is not (see the notes)
+      totalExpense: round2(totalExpense - totalSoldProductAmount),
+      totalPartyExpense: round2(totalPartyExpense),
+      totalEggCost,
+      totalSoldProductAmount: round2(totalSoldProductAmount),
+      totalMealCost: round2(normalExpense),
+      totalRiceExpense: round2(totalRiceExpense),
 
       eggSummary: {
-        totalEgg: Number(totalEggQuantity.toFixed(2)),
-        eggRate: Number(eggRate.toFixed(2)),
-        totalEggCost: Number(totalEggCost.toFixed(2)),
+        totalEgg: round2(totalEggQuantity),
+        eggRate: round2(eggRate),
+        totalEggCost,
       },
 
-      totalDeposit: memberDeposits
-        .reduce((sum: number, item: any) => sum + Number(item.totalDeposit), 0)
-        .toFixed(2),
+      totalDeposit: round2(totalDeposit),
 
-      grandTotalMeals: Number(grandTotalMeals.toFixed(2)),
-      mealRate: Number(mealRate.toFixed(2)),
+      grandTotalMeals: round2(grandTotalMeals),
+      mealRate,
 
       members,
 
-      month: monthName,
+      month: getMonthName(session.month, session.year),
       year: session.year,
     };
   }

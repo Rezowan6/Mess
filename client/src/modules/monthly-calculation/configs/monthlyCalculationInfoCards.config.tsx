@@ -1,88 +1,117 @@
-import { Banknote, Calculator, Utensils, Wallet } from "lucide-react";
+import type { ReactNode } from "react";
 
-interface MonthlyCalculationInfoCardConfig {
+export type MonthlyCalculationTone =
+  "info" | "success" | "accent" | "secondary" | "error" | "warning";
+
+export interface MonthlyCalculationInfoCardConfig {
   key: string;
-  title: string;
-  value: string | number;
-  icon: React.ReactNode;
-  iconClassName?: string;
-  valueClassName?: string;
+  label: string;
+  amount: number;
+  tone: MonthlyCalculationTone;
+  icon?: ReactNode;
+  prefix?: string;
+  decimals?: number;
+  hint?: ReactNode;
 }
 
-export const getMonthlyCalculationInfoCards = (calculation: {
+export interface MonthlyCalculationData {
   totalExpense: number;
   totalPartyExpense: number;
   totalEggCost: number;
+  totalRiceExpense: number;
   totalMealCost: number;
   totalSoldProductAmount: number;
   totalDeposit: string | number;
   grandTotalMeals: number;
   mealRate: number;
-}): MonthlyCalculationInfoCardConfig[] => [
+}
+
+export const getMonthlyCalculationInfoCards = (
+  calculation: MonthlyCalculationData,
+): MonthlyCalculationInfoCardConfig[] => [
+  // ============================================================
+  // BASE EXPENSE
+  // ============================================================
   {
-    key: "totalDeposit",
-    title: "Total Deposit",
-    value: `৳ ${calculation.totalDeposit}`,
-    icon: <Banknote size={22} />,
-    iconClassName: "text-success",
-    valueClassName: "text-success",
+    key: "totalExpense",
+    label: "Base Expense",
+    amount: calculation.totalExpense,
+    tone: "error",
+    hint: "Starting expense",
   },
+
+  // ============================================================
+  // ADDITIONS / DEDUCTIONS
+  // ============================================================
+  {
+    key: "totalRiceExpense",
+    label: "Rice Expense",
+    amount: calculation.totalRiceExpense,
+    tone: "secondary",
+    hint: "+ Added to meal cost",
+  },
+
   {
     key: "totalPartyExpense",
-    title: "Total Party Cost",
-    value: `৳ ${calculation.totalPartyExpense}`,
-    icon: <Wallet size={22} />,
-    iconClassName: "text-warning",
-    valueClassName: "text-warning",
+    label: "Party Cost",
+    amount: calculation.totalPartyExpense,
+    tone: "warning",
+    hint: "− Excluded from meal rate",
   },
 
   {
     key: "totalEggCost",
-    title: "Total Egg Cost",
-    value: `৳ ${calculation.totalEggCost}`,
-    icon: <Wallet size={22} />,
-    iconClassName: "text-warning",
-    valueClassName: "text-warning",
-  },
-  {
-    key: "totalMealCost",
-    title: "Total Meal Cost",
-    value: `৳ ${calculation.totalMealCost}`,
-    icon: <Wallet size={22} />,
-    iconClassName: "text-warning",
-    valueClassName: "text-warning",
-  },
-  {
-    key: "totalsoldProduct",
-    title: "Sold Product",
-    value: `৳ ${calculation.totalSoldProductAmount}`,
-    icon: <Wallet size={22} />,
-    iconClassName: "text-warning",
-    valueClassName: "text-warning",
+    label: "Egg Cost",
+    amount: calculation.totalEggCost,
+    tone: "warning",
+    hint: "− Excluded from meal rate",
   },
 
   {
-    key: "totalExpense",
-    title: "Total Expense",
-    value: `৳ ${calculation.totalExpense}`,
-    icon: <Wallet size={22} />,
-    iconClassName: "text-error",
-    valueClassName: "text-error",
+    key: "totalSoldProductAmount",
+    label: "Sold Product",
+    amount: calculation.totalSoldProductAmount,
+    tone: "accent",
+    hint: "− Deducted from meal cost",
   },
+
+  // ============================================================
+  // FINAL MEAL CALCULATION
+  // ============================================================
+  {
+    key: "totalMealCost",
+    label: "Meal Cost",
+    amount: calculation.totalMealCost,
+    tone: "info",
+    hint: "Final cost used for meal rate",
+  },
+
   {
     key: "grandTotalMeals",
-    title: "Grand Total Meals",
-    value: calculation.grandTotalMeals,
-    icon: <Utensils size={22} />,
-    iconClassName: "text-info",
-    valueClassName: "text-info",
+    label: "Total Meals",
+    amount: calculation.grandTotalMeals,
+    tone: "info",
+    prefix: "",
+    decimals: 2,
+    hint: "Divisor for meal rate",
   },
+
   {
     key: "mealRate",
-    title: "Meal Rate",
-    value: `৳ ${calculation.mealRate}`,
-    icon: <Calculator size={22} />,
-    iconClassName: "text-primary",
-    valueClassName: "text-primary",
+    label: "Meal Rate",
+    amount: calculation.mealRate,
+    tone: "info",
+    hint: "Meal Cost ÷ Total Meals",
+  },
+
+  // ============================================================
+  // DEPOSIT
+  // ============================================================
+  {
+    key: "totalDeposit",
+    label: "Total Deposit",
+    amount: Number(calculation.totalDeposit),
+    tone: "success",
+    hint: "Total member deposits",
   },
 ];

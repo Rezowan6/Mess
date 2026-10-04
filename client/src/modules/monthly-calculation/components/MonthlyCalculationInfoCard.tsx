@@ -1,33 +1,31 @@
-import { InfoCard } from "@/shared/components/ui/InfoCard";
+import { SummaryStat } from "@/shared/components/ui/SummaryStat";
 
-import { getMonthlyCalculationInfoCards } from "../configs/monthlyCalculationInfoCards.config";
+import {
+  getMonthlyCalculationInfoCards,
+  type MonthlyCalculationData,
+} from "../configs/monthlyCalculationInfoCards.config";
 
 interface Props {
-  calculation: {
-    totalExpense: number;
-    totalPartyExpense: number;
-    totalEggCost: number;
-    totalMealCost: number;
-    totalSoldProductAmount: number;
-    totalDeposit: string | number;
-    grandTotalMeals: number;
-    mealRate: number;
-  };
+  calculation: MonthlyCalculationData;
 }
 
-export const MonthlyCalculationInfoCard = ({ calculation }: Props) => {
+export const MonthlyCalculationInfoCard = ({
+  calculation,
+}: Props) => {
   const infoCards = getMonthlyCalculationInfoCards(calculation);
 
   return (
-    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-5">
       {infoCards.map((card) => (
-        <InfoCard
+        <SummaryStat
           key={card.key}
-          icon={card.icon}
-          iconClassName={card.iconClassName}
-          title={card.title}
-          value={card.value}
-          valueClassName={card.valueClassName}
+          label={card.label}
+          amount={card.amount}
+          tone={card.tone}
+          prefix={card.prefix ?? "৳ "}
+          decimals={card.decimals ?? 2}
+          hint={card.hint}
+          layout="stacked"
         />
       ))}
     </div>
