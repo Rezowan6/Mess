@@ -1,7 +1,8 @@
-import { InfoCard } from "@/shared/components/ui/InfoCard";
+import { SummaryStat } from "@/shared/components/ui/SummaryStat";
 
 import { mealPlanningSummaryCards } from "../configs/mealPlanningSummary.config";
 import type { IMealPlanningSummary } from "../types/mealPlanning.types";
+import { getDecimals } from "@/shared/utils/number.utils";
 
 interface Props {
   summary?: IMealPlanningSummary;
@@ -21,15 +22,23 @@ export const MealPlanningSummaryCards = ({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-      {mealPlanningSummaryCards.map((card) => (
-        <InfoCard
-          key={card.key}
-          title={card.title}
-          value={loading ? "..." : values[card.key]}
-          icon={card.icon}
-        />
-      ))}
+    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      {mealPlanningSummaryCards.map((card) => {
+        // While loading the number starts at 0, then counts up when data arrives
+        const amount = loading ? 0 : Number(values[card.key]);
+
+        return (
+          <SummaryStat
+            key={card.key}
+            label={card.title}
+            amount={amount}
+            prefix=""
+            decimals={getDecimals(amount)}
+            tone={card.tone}
+            duration={800}
+          />
+        );
+      })}
     </div>
   );
 };
