@@ -3,26 +3,24 @@ import { useNavigate } from "react-router-dom";
 import { SummaryStat } from "@/shared/components/ui/SummaryStat";
 import type { DashboardStat } from "./stat.config";
 
-type Props = Omit<DashboardStat, "key" | "permission">;
+interface Props {
+  stat: DashboardStat;
+}
 
-export const DashboardStatCard = ({
-  title,
-  amount,
-  prefix,
-  decimals,
-  tone,
-  path,
-}: Props) => {
+export const DashboardStatCard = ({ stat }: Props) => {
   const navigate = useNavigate();
+
+  const { title, amount, prefix, decimals, tone, path } = stat;
 
   return (
     <button
       type="button"
       onClick={() => navigate(path)}
       aria-label={`View ${title}`}
-      className="w-full cursor-pointer rounded-xl text-left transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-info/50"
+      className="block h-full w-full min-w-0 cursor-pointer rounded-xl text-left transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-info/50"
     >
       <SummaryStat
+        layout="stacked"
         label={title}
         amount={amount}
         prefix={prefix}

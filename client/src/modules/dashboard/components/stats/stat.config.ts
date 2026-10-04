@@ -20,15 +20,13 @@ export interface DashboardStat {
   permission: Permission;
 }
 
-
-
 export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => {
   const totalMeals = Number(stats.totalMeals);
 
   return [
     {
       key: "totalMeals",
-      title: "Meals",
+      title: "Total Meals",
       amount: totalMeals,
       prefix: "",
       decimals: getDecimals(totalMeals),
@@ -38,7 +36,7 @@ export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => {
     },
     {
       key: "totalMembers",
-      title: "Members",
+      title: "Total Members",
       amount: Number(stats.totalMembers),
       prefix: "",
       decimals: 0,
@@ -48,7 +46,7 @@ export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => {
     },
     {
       key: "totalExpense",
-      title: "Expenses",
+      title: "Total Expense",
       amount: Number(stats.totalExpense),
       prefix: "৳ ",
       decimals: 2,
@@ -58,7 +56,7 @@ export const getDashboardStats = (stats: DashboardStats): DashboardStat[] => {
     },
     {
       key: "totalDeposit",
-      title: "Deposits",
+      title: "Total Deposit",
       amount: Number(stats.totalDeposit),
       prefix: "৳ ",
       decimals: 2,
