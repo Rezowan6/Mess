@@ -1,12 +1,13 @@
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
+import { useRBAC } from "@/shared/hooks/useRBAC";
 import { useDashboardStats } from "../../hooks/useDashboardStats";
+import { DASHBOARD_MESSAGES } from "./../../configs/dashboard.message";
 import { DashboardStatCard } from "./DashboardStatCard";
 import { DashboardStatsSkeleton } from "./DashboardStatsSkeleton";
 import { getDashboardStats } from "./stat.config";
 
-import { DASHBOARD_MESSAGES } from "./../../configs/dashboard.message";
-
 export const DashboardStats = () => {
+  const { can } = useRBAC();
   const { data, isPending } = useDashboardStats();
 
   if (isPending) {
@@ -18,17 +19,24 @@ export const DashboardStats = () => {
   if (!stats) {
     return (
       <EmptyState
-        title={DASHBOARD_MESSAGES?.empty.title}
-        description={DASHBOARD_MESSAGES?.empty.description}
+        title={DASHBOARD_MESSAGES.empty.title}
+        description={DASHBOARD_MESSAGES.empty.description}
       />
     );
   }
 
-  const dashboardStats = getDashboardStats(stats);
+  // Show only the cards the current user is allowed to see
+  const visibleStats = getDashboardStats(stats).filter(({ permission }) =>
+    can(permission),
+  );
+
+  if (visibleStats.length === 0) {
+    return null;
+  }
 
   return (
     <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
-      {dashboardStats.map(({ key, ...stat }) => (
+      {visibleStats.map(({ key, permission: _permission, ...stat }) => (
         <DashboardStatCard key={key} {...stat} />
       ))}
     </div>

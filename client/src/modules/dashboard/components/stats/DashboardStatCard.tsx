@@ -1,14 +1,16 @@
 import { useNavigate } from "react-router-dom";
 
-import { InfoCard } from "@/shared/components/ui/InfoCard";
+import { SummaryStat } from "@/shared/components/ui/SummaryStat";
 import type { DashboardStat } from "./stat.config";
 
-interface Props extends DashboardStat {}
+type Props = Omit<DashboardStat, "key" | "permission">;
 
 export const DashboardStatCard = ({
   title,
-  value,
-  icon: Icon,
+  amount,
+  prefix,
+  decimals,
+  tone,
   path,
 }: Props) => {
   const navigate = useNavigate();
@@ -17,14 +19,16 @@ export const DashboardStatCard = ({
     <button
       type="button"
       onClick={() => navigate(path)}
-      className="group w-full cursor-pointer text-left"
       aria-label={`View ${title}`}
+      className="w-full cursor-pointer rounded-xl text-left transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-info/50"
     >
-      <InfoCard
-        title={title}
-        value={value}
-        icon={<Icon size={22} strokeWidth={2} />}
-        
+      <SummaryStat
+        label={title}
+        amount={amount}
+        prefix={prefix}
+        decimals={decimals}
+        tone={tone}
+        className="h-full"
       />
     </button>
   );
