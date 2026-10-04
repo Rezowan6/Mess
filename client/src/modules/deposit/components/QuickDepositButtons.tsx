@@ -1,25 +1,30 @@
 import type { ITenantMember } from "@/modules/user-management/types/userManagement.types";
 import { Button } from "@/shared/components/ui/Button";
+import { HorizontalScroller } from "@/shared/components/ui/HorizontalScroller";
 
 interface Props {
   member: ITenantMember;
   onAddDeposit: (member: ITenantMember, amount: number) => void;
 }
 
+const QUICK_AMOUNTS = [
+  500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 2000,
+];
+
 export const QuickDepositButtons = ({ member, onAddDeposit }: Props) => {
   return (
-    <div className="flex gap-2">
-      {[500, 1000, 1500].map((amount) => (
+    // Fixed width keeps the table cell from growing; the buttons scroll inside it
+    <HorizontalScroller className="w-56 sm:w-72 lg:w-96">
+      {QUICK_AMOUNTS.map((amount) => (
         <Button
-        variant="primary"
           key={amount}
+          variant="primary"
           onClick={() => onAddDeposit(member, amount)}
-          className="
-            w-16 h-8"
+          className="h-8 w-16 shrink-0"
         >
           {amount}
         </Button>
       ))}
-    </div>
+    </HorizontalScroller>
   );
 };
