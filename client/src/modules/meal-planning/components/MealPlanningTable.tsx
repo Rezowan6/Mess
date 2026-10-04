@@ -1,5 +1,5 @@
 import { CalendarDays, Users, Utensils } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Badge } from "@/shared/components/ui/Badge";
 import { Pagination } from "@/shared/components/ui/Pagination";
@@ -61,22 +61,40 @@ export const MealPlanningTable = ({
     pendingUserId,
   );
 
-  const activeMembers = planning?.[activeMeal] ?? [];
-  const memberCount = activeMembers.length;
+  // Half meals are possible, so show decimals only when needed
+  const formatCount = (value: number) =>
+    Number.isInteger(value) ? String(value) : value.toFixed(1);
+
+  // Show how many meals each time has (same numbers as the summary cards)
+  const tabs = useMemo(
+    () =>
+      mealTabs.map((tab) => ({
+        ...tab,
+        label: loading
+          ? tab.label
+          : `${tab.label} (${formatCount(Number(planning?.summary?.[tab.key] ?? 0))})`,
+      })),
+    [loading, planning],
+  );
+
+  // Members who made a meal request, counted once even if they ordered several meals
+  const totalMembers = useMemo(() => {
+    const ids = new Set<number>();
+
+    for (const meal of ["breakfast", "lunch", "dinner"] as const) {
+      for (const member of planning?.[meal] ?? []) {
+        ids.add(member.userId);
+      }
+    }
+
+    return ids.size;
+  }, [planning]);
 
   // Today's date is the same for every meal, so any meal can provide it
   const planningDate =
     planning?.breakfast?.[0]?.date ??
     planning?.lunch?.[0]?.date ??
     planning?.dinner?.[0]?.date;
-
-  // Show how many members each meal has
-  const tabs = mealTabs.map((tab) => ({
-    ...tab,
-    label: loading
-      ? tab.label
-      : `${tab.label} (${planning?.[tab.key]?.length ?? 0})`,
-  }));
 
   return (
     <div className="space-y-4">
@@ -107,11 +125,11 @@ export const MealPlanningTable = ({
             variant="soft-secondary"
             size="sm"
             leftIcon={<Users />}
-            className="min-w-28 tabular-nums"
+            className="min-w-32 tabular-nums"
           >
             {loading
               ? "—"
-              : `${memberCount} ${memberCount === 1 ? "member" : "members"}`}
+              : `${totalMembers} ${totalMembers === 1 ? "member" : "members"}`}
           </Badge>
         </div>
       </div>
