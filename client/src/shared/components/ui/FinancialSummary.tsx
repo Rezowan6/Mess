@@ -10,6 +10,8 @@ import { toTitleCase } from "@/shared/utils/format.utils";
 import { AnimatedNumber } from "./AnimatedNumber";
 import type { SummaryStatTone } from "./SummaryStat";
 
+import { useAutoSlider } from "@/shared/hooks/useAutoSlider";
+
 // "| undefined" lets you pass optional values straight from a config object
 export interface FinancialSummaryCellProps {
   label: string;
@@ -37,6 +39,10 @@ interface FinancialSummaryProps {
   children: ReactNode;
   /** Columns on large screens. Defaults to the number of cells (max 5). */
   columns?: number;
+  /** Slide automatically on small screens. Defaults to true. */
+  autoSlide?: boolean;
+  /** Time between slides in ms. Defaults to 3500. */
+  slideInterval?: number;
 }
 
 const MAX_DESKTOP_COLUMNS = 5;
@@ -53,8 +59,15 @@ const toneStyles = {
 export const FinancialSummary = ({
   children,
   columns,
+  autoSlide = true,
+  slideInterval = 3500,
 }: FinancialSummaryProps) => {
   const mounted = useMountAnimation();
+
+  const { ref, pages, activePage, goToPage, handlers } = useAutoSlider({
+    enabled: autoSlide,
+    interval: slideInterval,
+  });
 
   const cells = Children.toArray(children);
 
@@ -66,16 +79,18 @@ export const FinancialSummary = ({
 
   return (
     <div className="overflow-hidden rounded-xl shadow-lg shadow-info/20">
-      {/* Negative margins hide the outer border of the last row and column */}
+      {/* Small screens: horizontal slider, 2 cards per page. Large screens: grid. */}
       <div
-        className="-mb-px -mr-px grid grid-cols-2 lg:grid-cols-[repeat(var(--cols),minmax(0,1fr))]"
+        ref={ref}
+        {...handlers}
         style={{ "--cols": desktopColumns } as CSSProperties}
+        className="-mb-px -mr-px flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain scrollbar-none lg:grid lg:grid-cols-[repeat(var(--cols),minmax(0,1fr))] lg:overflow-visible [&::-webkit-scrollbar]:hidden"
       >
         {cells.map((cell, index) => (
           <div
             key={isValidElement(cell) ? (cell.key ?? index) : index}
             style={{ transitionDelay: `${index * 60}ms` }}
-            className={`min-w-0 transition-all duration-500 ease-out max-lg:[&:last-child:nth-child(odd)]:col-span-2 ${
+            className={`w-1/2 min-w-0 shrink-0 snap-start transition-all duration-500 ease-out lg:w-auto ${
               mounted ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
             }`}
           >
@@ -83,6 +98,30 @@ export const FinancialSummary = ({
           </div>
         ))}
       </div>
+
+      {/* Page dots (small screens only) */}
+      {pages > 1 && (
+        <div className="flex justify-center lg:hidden">
+          {Array.from({ length: pages }, (_, page) => (
+            <button
+              key={page}
+              type="button"
+              aria-label={`Go to slide ${page + 1}`}
+              aria-current={page === activePage}
+              onClick={() => goToPage(page)}
+              className="cursor-pointer p-1.5"
+            >
+              <span
+                className={`block h-1.5 rounded-full transition-all duration-300 ${
+                  page === activePage
+                    ? "w-5 bg-info"
+                    : "w-1.5 bg-base-content/20"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
