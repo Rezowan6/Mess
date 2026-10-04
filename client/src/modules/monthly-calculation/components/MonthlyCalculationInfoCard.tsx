@@ -1,5 +1,7 @@
-import { SummaryStat } from "@/shared/components/ui/SummaryStat";
-
+import {
+  FinancialSummary,
+  FinancialSummaryCell,
+} from "@/shared/components/ui/FinancialSummary";
 import { getMonthlyCalculationInfoCards } from "../configs/monthlyCalculationInfoCards.config";
 import type { IMonthlyCalculation } from "../types/monthlyCalculation.types";
 
@@ -11,9 +13,9 @@ export const MonthlyCalculationInfoCard = ({ calculation }: Props) => {
   const infoCards = getMonthlyCalculationInfoCards(calculation);
 
   return (
-    <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-5">
+    <FinancialSummary columns={5}>
       {infoCards.map((card) => (
-        <SummaryStat
+        <FinancialSummaryCell
           key={card.key}
           label={card.label}
           amount={card.amount}
@@ -21,9 +23,8 @@ export const MonthlyCalculationInfoCard = ({ calculation }: Props) => {
           prefix={card.prefix ?? "৳ "}
           decimals={card.decimals ?? 2}
           hint={card.hint}
-          layout="stacked"
         />
       ))}
-    </div>
+    </FinancialSummary>
   );
 };

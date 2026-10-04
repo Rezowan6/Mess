@@ -1,31 +1,42 @@
-import { type CSSProperties, type ReactNode } from "react";
+import {
+  Children,
+  isValidElement,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 
 import { useMountAnimation } from "@/shared/hooks/useMountAnimation";
 import { toTitleCase } from "@/shared/utils/format.utils";
 import { AnimatedNumber } from "./AnimatedNumber";
 import type { SummaryStatTone } from "./SummaryStat";
 
-export interface FinancialSummaryItem {
-  key: string;
-  title: string;
+// "| undefined" lets you pass optional values straight from a config object
+export interface FinancialSummaryCellProps {
+  label: string;
   /** Static value. Used when `amount` is not provided. */
-  value?: string | number;
+  value?: string | number | undefined;
   /** Numeric value. When provided, it is animated with a count-up. */
-  amount?: number;
-  prefix?: string;
-  suffix?: string;
-  decimals?: number;
-  tone?: SummaryStatTone;
-  duration?: number;
+  amount?: number | undefined;
+  prefix?: string | undefined;
+  suffix?: string | undefined;
+  decimals?: number | undefined;
+  tone?: SummaryStatTone | undefined;
+  duration?: number | undefined;
   action?: ReactNode;
-  /** Optional small text under the value */
-  description?: string;
-  /** Text color class, e.g. "text-success". Drives all gradients of the cell */
-  className?: string;
+  /** Small text under the value */
+  hint?: ReactNode;
+  /** Text color class, e.g. "text-success". Overrides `tone` */
+  className?: string | undefined;
 }
 
-interface Props {
-  items: FinancialSummaryItem[];
+// Handy type for config files
+export type FinancialSummaryItem = FinancialSummaryCellProps & { key: string };
+
+interface FinancialSummaryProps {
+  /** FinancialSummaryCell elements. Map them outside, do not wrap them in a Fragment. */
+  children: ReactNode;
+  /** Columns on large screens. Defaults to the number of cells (max 5). */
+  columns?: number;
 }
 
 const MAX_DESKTOP_COLUMNS = 5;
@@ -39,67 +50,99 @@ const toneStyles = {
   warning: "text-warning",
 } as const satisfies Record<SummaryStatTone, string>;
 
-export const FinancialSummary = ({ items }: Props) => {
+export const FinancialSummary = ({
+  children,
+  columns,
+}: FinancialSummaryProps) => {
   const mounted = useMountAnimation();
 
-  const columns = Math.min(items.length, MAX_DESKTOP_COLUMNS);
+  const cells = Children.toArray(children);
+
+  if (cells.length === 0) {
+    return null;
+  }
+
+  const desktopColumns = columns ?? Math.min(cells.length, MAX_DESKTOP_COLUMNS);
 
   return (
     <div className="overflow-hidden rounded-xl shadow-lg shadow-info/20">
+      {/* Negative margins hide the outer border of the last row and column */}
       <div
         className="-mb-px -mr-px grid grid-cols-2 lg:grid-cols-[repeat(var(--cols),minmax(0,1fr))]"
-        style={{ "--cols": columns } as CSSProperties}
+        style={{ "--cols": desktopColumns } as CSSProperties}
       >
-        {items.map((item, index) => (
+        {cells.map((cell, index) => (
           <div
-            key={item.key}
+            key={isValidElement(cell) ? (cell.key ?? index) : index}
             style={{ transitionDelay: `${index * 60}ms` }}
-            className={`group relative overflow-hidden border-r px-3 py-3 transition-all duration-500 ease-out hover:z-10 sm:px-4 ${
+            className={`min-w-0 transition-all duration-500 ease-out max-lg:[&:last-child:nth-child(odd)]:col-span-2 ${
               mounted ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
-            } max-lg:[&:last-child:nth-child(odd)]:col-span-2 ${
-              item.className ?? toneStyles[item.tone ?? "info"]
             }`}
           >
-            {/* Top gradient line */}
-            <span className="absolute inset-x-0 top-0 h-0.5 bg-linear-to-r from-current via-current/40 to-transparent" />
-
-            {/* Hover gradient wash */}
-            <span className="pointer-events-none absolute inset-0 bg-linear-to-br from-current/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-            {/* Title */}
-            <div className="relative flex items-center justify-between gap-2">
-              <p className="flex min-w-0 items-center gap-1.5 text-[12px] font-medium tracking-wider text-base-content/55 sm:text-sm">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-linear-to-br from-current to-current/40 transition-transform duration-300 group-hover:scale-150" />
-                <span className="truncate">{toTitleCase(item.title)}</span>
-              </p>
-
-              {item.action}
-            </div>
-
-            {/* Value */}
-            <p className="relative mt-1 truncate  text-lg font-bold tabular-nums tracking-tight  transition-transform duration-300 group-hover:translate-x-0.5 sm:text-xl">
-              {item.amount !== undefined ? (
-                <AnimatedNumber
-                  value={item.amount}
-                  prefix={item.prefix}
-                  suffix={item.suffix}
-                  decimals={item.decimals}
-                  duration={item.duration ?? 1200}
-                />
-              ) : (
-                item.value
-              )}
-            </p>
-
-            {/* Description */}
-            {item.description && (
-              <p className="relative mt-0.5 truncate text-[11px] text-base-content/45">
-                {item.description}
-              </p>
-            )}
+            {cell}
           </div>
         ))}
       </div>
+    </div>
+  );
+};
+
+export const FinancialSummaryCell = ({
+  label,
+  value,
+  amount,
+  prefix,
+  suffix,
+  decimals,
+  tone,
+  duration = 1200,
+  action,
+  hint,
+  className,
+}: FinancialSummaryCellProps) => {
+  return (
+    <div
+      className={`group relative h-full overflow-hidden border-r px-3 py-3 hover:z-10 sm:px-4 ${
+        className ?? toneStyles[tone ?? "info"]
+      }`}
+    >
+      {/* Top gradient line */}
+      <span className="absolute inset-x-0 top-0 h-0.5 bg-linear-to-r from-current via-current/40 to-transparent" />
+
+      {/* Hover gradient wash */}
+      <span className="pointer-events-none absolute inset-0 bg-linear-to-br from-current/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+      {/* Title */}
+      <div className="relative flex items-center justify-between gap-2">
+        <p className="flex min-w-0 items-center gap-1.5 text-[12px] font-medium tracking-wider text-base-content/55 sm:text-sm">
+          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-linear-to-br from-current to-current/40 transition-transform duration-300 group-hover:scale-150" />
+          <span className="truncate">{toTitleCase(label)}</span>
+        </p>
+
+        {action}
+      </div>
+
+      {/* Value */}
+      <p className="relative mt-1 truncate text-lg font-bold tabular-nums tracking-tight transition-transform duration-300 group-hover:translate-x-0.5 sm:text-xl">
+        {amount !== undefined ? (
+          <AnimatedNumber
+            value={amount}
+            prefix={prefix}
+            suffix={suffix}
+            decimals={decimals}
+            duration={duration}
+          />
+        ) : (
+          value
+        )}
+      </p>
+
+      {/* Hint */}
+      {hint && (
+        <p className="relative mt-0.5 truncate text-[11px] text-base-content/45">
+          {hint}
+        </p>
+      )}
     </div>
   );
 };
