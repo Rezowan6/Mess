@@ -25,7 +25,7 @@ class NoticeService {
   }
 
   async findById(id: number, tenantId: number) {
-    const notice = await noticeRepository.findOne({tenantId, id,});
+    const notice = await noticeRepository.findOne({ tenantId, id });
 
     if (!notice) {
       throw new ApiError(404, "Notice not found");
@@ -34,13 +34,20 @@ class NoticeService {
     return notice;
   }
 
-  async update(id: number,tenantId: number, payload: any) {
-    const notice = await this.findById(id,tenantId);
+  async update(
+    id: number,
+    tenantId: number,
+    payload: {
+      title?: string;
+      description?: string;
+    },
+  ) {
+    await this.findById(id, tenantId);
 
     return await noticeRepository.update({ id, tenantId }, payload);
   }
 
-  async delete(id: number, tenantId: number,) {
+  async delete(id: number, tenantId: number) {
     const notice = await this.findById(id, tenantId);
 
     if (!notice) {

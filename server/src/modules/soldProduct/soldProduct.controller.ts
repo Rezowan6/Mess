@@ -9,10 +9,10 @@ class SoldProductController {
     const { tenantId, userId, mealSessionId } = getTenantContext(req);
 
     const soldProduct = await soldProductService.create({
+      ...req.body,
       tenantId,
       mealSessionId,
       createdBy: userId,
-      ...req.body,
     });
 
     return sendResponse(res, {
