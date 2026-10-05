@@ -149,7 +149,7 @@ class PartyExpenseService {
       }
 
       await partyExpenseRepository.update(
-        { id },
+        { id, tenantId, mealSessionId },
         {
           amount: data.amount,
           description: data.description ?? null,
@@ -231,7 +231,7 @@ class PartyExpenseService {
       );
     }
 
-    await partyExpenseRepository.delete({ id });
+    await partyExpenseRepository.delete({ id, tenantId, mealSessionId });
 
     socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.PARTY_EXPENSE,

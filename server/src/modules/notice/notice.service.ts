@@ -38,13 +38,17 @@ class NoticeService {
     id: number,
     tenantId: number,
     payload: {
-      title?: string;
-      description?: string;
+      title: string;
+      description: string;
     },
   ) {
+    const { title, description } = payload;
     await this.findById(id, tenantId);
 
-    return await noticeRepository.update({ id, tenantId }, payload);
+    return await noticeRepository.update(
+      { id, tenantId },
+      { title, description },
+    );
   }
 
   async delete(id: number, tenantId: number) {
