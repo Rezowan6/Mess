@@ -209,8 +209,8 @@ class AuthService {
       throw new ApiError(401, "Invalid refresh token");
     }
 
-    if (storedToken.expiresAt < new Date()) {
-      throw new ApiError(401, "Refresh token expired");
+    if (storedToken.revokedAt) {
+      throw new ApiError(401, "Refresh token has been revoked");
     }
 
     const accessToken = createAccessToken({
@@ -224,9 +224,6 @@ class AuthService {
   };
 
   logout = async (refreshToken: string) => {
-    if (!refreshToken) {
-      throw new ApiError(401, "Refresh token missing");
-    }
     if (!refreshToken) {
       throw new ApiError(401, "Refresh token missing");
     }
