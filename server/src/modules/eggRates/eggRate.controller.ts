@@ -9,10 +9,10 @@ class EggRateController {
     const { tenantId, userId, mealSessionId } = getTenantContext(req);
 
     const eggRate = await eggRateService.create({
+      ...req.body,
       tenantId,
       mealSessionId,
       createdBy: userId,
-      ...req.body,
     });
 
     return sendResponse(res, {

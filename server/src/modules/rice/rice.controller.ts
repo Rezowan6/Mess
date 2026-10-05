@@ -9,10 +9,10 @@ class RiceController {
     const { tenantId, userId, mealSessionId } = getTenantContext(req);
 
     const rice = await riceService.create({
+      ...req.body,
       tenantId,
       mealSessionId,
       createdBy: userId,
-      ...req.body,
     });
 
     return sendResponse(res, {

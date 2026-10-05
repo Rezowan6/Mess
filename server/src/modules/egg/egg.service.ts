@@ -135,7 +135,9 @@ class EggService {
       );
     }
 
-    await eggRepository.updateEgg(id, tenantId, mealSessionId, data);
+    await eggRepository.updateEgg(id, tenantId, mealSessionId, {
+      quantity: data.quantity,
+    });
 
     socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.EGG,

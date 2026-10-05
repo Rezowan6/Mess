@@ -71,7 +71,7 @@ class EggRateService {
       throw new ApiError(400, "Egg rate must be greater than zero.");
     }
 
-    await eggRateRepository.updateEggRate(tenantId, mealSessionId, data);
+    await eggRateRepository.updateEggRate(tenantId, mealSessionId, {rate: data.rate});
 
     await eggRateRepository.getEggRate(tenantId, mealSessionId);
 
