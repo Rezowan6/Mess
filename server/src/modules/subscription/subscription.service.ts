@@ -93,6 +93,7 @@ export class SubscriptionService {
 
     await subscriptionRepository.updateStatus(
       subscription.id,
+      tenantId,
       SubscriptionStatus.ACTIVE,
     );
 
@@ -104,6 +105,7 @@ export class SubscriptionService {
 
     await subscriptionRepository.updateStatus(
       subscription.id,
+      tenantId,
       SubscriptionStatus.EXPIRED,
     );
 
@@ -113,7 +115,7 @@ export class SubscriptionService {
   async cancel(subscriptionId: number, tenantId: number) {
     const subscription = await this.getById(subscriptionId, tenantId);
 
-    await subscriptionRepository.cancelSubscription(subscription.id);
+    await subscriptionRepository.cancelSubscription(subscription.id, tenantId);
 
     return this.getById(subscription.id, tenantId);
   }
