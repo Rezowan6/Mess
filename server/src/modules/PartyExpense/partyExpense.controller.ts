@@ -12,9 +12,9 @@ class PartyExpenseController {
 
     const partyExpense = await partyExpenseService.create(
       {
+        ...req.body,
         tenantId,
         mealSessionId,
-        ...req.body,
       },
       req.body.memberIds,
     );

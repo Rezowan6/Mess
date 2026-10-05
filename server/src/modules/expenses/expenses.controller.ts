@@ -13,11 +13,11 @@ class ExpensesController {
     const expenseDate = getAppDate();
 
     const expenses = await expenseService.create({
+      ...req.body,
       tenantId,
       mealSessionId,
       createdBy: userId,
       expenseDate,
-      ...req.body,
     });
 
     return sendResponse(res, {
