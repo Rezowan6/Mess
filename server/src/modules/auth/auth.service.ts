@@ -227,9 +227,6 @@ class AuthService {
     if (!refreshToken) {
       throw new ApiError(401, "Refresh token missing");
     }
-    if (!refreshToken) {
-      throw new ApiError(401, "Refresh token missing");
-    }
 
     // 1. revoke token (DB update)
     await revokeRefreshToken(refreshToken);
