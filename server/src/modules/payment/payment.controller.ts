@@ -43,13 +43,14 @@ export class PaymentController {
   });
 
   verify = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, } = getTenantContext(req);
     const paymentId = Number(req.params.id);
 
     if (!Number.isInteger(paymentId) || paymentId <= 0) {
       throw new ApiError(400, "Invalid payment ID.");
     }
 
-    const result = await service.verifyPayment(paymentId);
+    const result = await service.verifyPayment(paymentId, tenantId);
 
     sendResponse(res, {
       statusCode: 200,
@@ -71,7 +72,8 @@ export class PaymentController {
   });
 
   getById = asyncHandler(async (req: Request, res: Response) => {
-    const result = await service.getById(Number(req.params.id));
+    const { tenantId, } = getTenantContext(req);
+    const result = await service.getById(Number(req.params.id), tenantId);
 
     sendResponse(res, {
       statusCode: 200,

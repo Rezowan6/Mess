@@ -25,10 +25,11 @@ class SubscriptionRepository extends BaseRepository<Subscription> {
     });
   }
 
-  async findActiveSubscriptionId(id: number): Promise<Subscription | null> {
+  async findActiveSubscriptionId(id: number, tenantId: number): Promise<Subscription | null> {
     return this.findOneWithOptions({
       where: {
         id,
+        tenantId,
         status: SubscriptionStatus.ACTIVE,
       },
       include: [

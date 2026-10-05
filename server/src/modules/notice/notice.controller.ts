@@ -37,10 +37,11 @@ export class NoticeController {
   });
 
   getById = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantContext(req);
 
     const id = Number(req.params.id);
 
-    const result = await noticeService.findById(id,);
+    const result = await noticeService.findById(id, tenantId);
 
     sendResponse(res, {
       statusCode: 200,
@@ -50,13 +51,10 @@ export class NoticeController {
   });
 
   update = asyncHandler(async (req: Request, res: Response) => {
-
+    const { tenantId } = getTenantContext(req);
     const id = Number(req.params.id);
 
-    const result = await noticeService.update(
-      id,
-      req.body,
-    );
+    const result = await noticeService.update(id, tenantId, req.body);
 
     sendResponse(res, {
       statusCode: 200,
@@ -66,10 +64,10 @@ export class NoticeController {
   });
 
   delete = asyncHandler(async (req: Request, res: Response) => {
-
+    const { tenantId } = getTenantContext(req);
     const id = Number(req.params.id);
 
-    await noticeService.delete(id);
+    await noticeService.delete(id, tenantId);
 
     sendResponse(res, {
       statusCode: 200,
