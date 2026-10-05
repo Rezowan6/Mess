@@ -25,7 +25,10 @@ class SubscriptionRepository extends BaseRepository<Subscription> {
     });
   }
 
-  async findActiveSubscriptionId(id: number, tenantId: number): Promise<Subscription | null> {
+  async findActiveSubscriptionId(
+    id: number,
+    tenantId: number,
+  ): Promise<Subscription | null> {
     return this.findOneWithOptions({
       where: {
         id,
@@ -103,11 +106,13 @@ class SubscriptionRepository extends BaseRepository<Subscription> {
 
   async updateStatus(
     id: number,
+    tenantId: number,
     status: SubscriptionStatusType,
   ): Promise<[number]> {
     return this.update(
       {
         id,
+        tenantId,
       },
       {
         status,
@@ -135,10 +140,11 @@ class SubscriptionRepository extends BaseRepository<Subscription> {
     });
   }
 
-  async cancelSubscription(id: number): Promise<[number]> {
+  async cancelSubscription(id: number, tenantId: number): Promise<[number]> {
     return this.update(
       {
         id,
+        tenantId,
       },
       {
         status: SubscriptionStatus.CANCELLED,
