@@ -11,18 +11,42 @@ import { getAppDate, isWithinHours } from "@/utils/date.util.js";
 import { Transaction } from "sequelize";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { partyExpenseMemberRepository } from "../PartyExpenseMember/partyExpenseMember.repository.js";
+import { membershipRepository } from "../tenantMembership/tenantMembership.repository.js";
 import { ICreatePartyExpenseDto } from "./partyExpense.interface.js";
 import { partyExpenseRepository } from "./partyExpense.repository.js";
 
 class PartyExpenseService {
-  private async syncMembers(
-    partyExpenseId: number,
-    amount: number,
-    memberIds: number[],
-    transaction: Transaction,
-  ) {
+  private async syncMembers({
+    tenantId,
+    partyExpenseId,
+    amount,
+    memberIds,
+    transaction,
+  }: {
+    tenantId: number;
+    partyExpenseId: number;
+    amount: number;
+    memberIds: number[];
+    transaction: Transaction;
+  }) {
     if (!memberIds.length) {
       throw new ApiError(400, "At least one member is required.");
+    }
+
+    const members = await Promise.all(
+      memberIds.map((userId) =>
+        membershipRepository.findByActiveUser({
+          tenantId,
+          userId,
+        }),
+      ),
+    );
+
+    if (members.some((member) => !member)) {
+      throw new ApiError(
+        403,
+        "One or more members do not belong to this tenant.",
+      );
     }
 
     await partyExpenseMemberRepository.delete(
@@ -46,11 +70,12 @@ class PartyExpenseService {
     );
   }
   async create(data: ICreatePartyExpenseDto, memberIds: number[]) {
+    const { tenantId, mealSessionId, amount } = data;
     const transaction = await sequelize.transaction();
 
     await mealSessionRepository.ensureSessionOpen(
-      data?.tenantId,
-      data?.mealSessionId,
+      tenantId,
+      mealSessionId,
       transaction,
     );
 
@@ -60,20 +85,21 @@ class PartyExpenseService {
         { transaction },
       );
 
-      await this.syncMembers(
-        partyExpense.id,
-        data.amount,
+      await this.syncMembers({
+        tenantId,
+        partyExpenseId: partyExpense.id,
+        amount,
         memberIds,
         transaction,
-      );
+      });
 
       await transaction.commit();
 
-      socketService.emitToTenant(data.tenantId, SocketEvent.DATA_UPDATED, {
+      socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
         resource: RealtimeResource.PARTY_EXPENSE,
         action: RealtimeAction.CREATED,
-        tenantId: data.tenantId,
-        mealSessionId: data.mealSessionId,
+        tenantId: tenantId,
+        mealSessionId: mealSessionId,
       });
 
       return partyExpense;
@@ -131,7 +157,13 @@ class PartyExpenseService {
         { transaction },
       );
 
-      await this.syncMembers(id, data.amount, memberIds, transaction);
+      await this.syncMembers({
+        tenantId,
+        partyExpenseId: partyExpense.id,
+        amount: data.amount,
+        memberIds,
+        transaction,
+      });
 
       await transaction.commit();
 
