@@ -121,7 +121,7 @@ class ExpensesService {
         "This expense can only be updated within 24 hours of creation.",
       );
     }
-    await expensesRepository.update({ id }, data);
+    await expensesRepository.update({ id, tenantId, mealSessionId }, data);
 
     socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.EXPENSE,
@@ -160,7 +160,7 @@ class ExpensesService {
       );
     }
 
-    await expensesRepository.delete({ id });
+    await expensesRepository.delete({ id, tenantId, mealSessionId });
 
     socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.EXPENSE,
