@@ -13,6 +13,8 @@ const envSchema = z.object({
   DB_HOST: z.string(),
   DB_PORT: z.string(),
 
+  DB_CA: z.string(),
+
   PORT: z.string(),
 
   ACCESS_TOKEN_SECRET: z.string(),
