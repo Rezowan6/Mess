@@ -15,8 +15,8 @@ export class PaymentController {
     const { tenantId } = getTenantContext(req);
 
     const result = await service.create({
-      tenantId,
       ...req.body,
+      tenantId,
     });
 
     sendResponse(res, {
@@ -43,7 +43,7 @@ export class PaymentController {
   });
 
   verify = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, } = getTenantContext(req);
+    const { tenantId } = getTenantContext(req);
     const paymentId = Number(req.params.id);
 
     if (!Number.isInteger(paymentId) || paymentId <= 0) {
@@ -72,7 +72,7 @@ export class PaymentController {
   });
 
   getById = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, } = getTenantContext(req);
+    const { tenantId } = getTenantContext(req);
     const result = await service.getById(Number(req.params.id), tenantId);
 
     sendResponse(res, {
