@@ -59,16 +59,8 @@ class MealPreferenceService {
         userId,
       });
 
-      /**
-       * Validate meal cutoff.
-       *
-       * Apply cutoff validation for both:
-       * - first-time preference
-       * - existing preference
-       */
-      if (existingPreference) {
-        this.validateMealCutoff(existingPreference, payload, mealSetting);
-      }
+      // Runs for the first preference and for updates
+      this.validateMealCutoff(existingPreference, payload, mealSetting);
 
       /**
        * ============================================================
