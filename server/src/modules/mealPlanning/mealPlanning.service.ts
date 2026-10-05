@@ -149,7 +149,7 @@ class MealPlanningService {
 
       if (todayRequest) {
         await mealRequestRepository.update(
-          { id: todayRequest.id },
+          { id: todayRequest.id, tenantId,},
           {
             [meal]: 0,
           },
@@ -167,7 +167,7 @@ class MealPlanningService {
 
         if (entry) {
           await mealEntryRepository.update(
-            { mealRequestId: todayRequest.id },
+            { mealRequestId: todayRequest.id, tenantId, },
             {
               [meal]: 0,
             },
