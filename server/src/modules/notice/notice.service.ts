@@ -24,8 +24,8 @@ class NoticeService {
     return noticeRepository.getAll(tenantId, mealSessionId);
   }
 
-  async findById(id: number) {
-    const notice = await noticeRepository.findById(id);
+  async findById(id: number, tenantId: number) {
+    const notice = await noticeRepository.findOne({tenantId, id,});
 
     if (!notice) {
       throw new ApiError(404, "Notice not found");
@@ -34,14 +34,14 @@ class NoticeService {
     return notice;
   }
 
-  async update(id: number, payload: any) {
-    const notice = await this.findById(id);
+  async update(id: number,tenantId: number, payload: any) {
+    const notice = await this.findById(id,tenantId);
 
     return await noticeRepository.update({ id }, payload);
   }
 
-  async delete(id: number) {
-    const notice = await this.findById(id);
+  async delete(id: number, tenantId: number,) {
+    const notice = await this.findById(id, tenantId);
 
     if (!notice) {
       throw new ApiError(404, "Notice not foudn.");

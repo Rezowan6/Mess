@@ -7,27 +7,10 @@ import { planRepository } from "../plan/plan.repository.js";
 
 import { ICreateSubscriptionInput } from "./subscription.interface.js";
 
+import { getAppDate } from "@/utils/date.util.js";
 import { SubscriptionStatus } from "./subscription.interface.js";
 
 export class SubscriptionService {
-  /**
-     * 
-     * @param payload Production এ পরে এটা পরিবর্তন করবো:
-
-billingCycle: "MONTHLY" | "YEARLY"
-
-তারপর:
-
-amount =
-billingCycle === "MONTHLY"
-?
-plan.monthlyPrice
-:
-plan.yearlyPrice
-
-এটা Payment module করার সময় add করা ভালো হবে।
-     * @returns 
-     */
   async create(payload: ICreateSubscriptionInput): Promise<Subscription> {
     const plan = await planRepository.findById(payload.planId);
 
@@ -50,10 +33,9 @@ plan.yearlyPrice
       throw new ApiError(409, "Pending subscription already exists.");
     }
 
-    const startDate = new Date();
+    const startDate = getAppDate();
 
-    const endDate = new Date();
-
+    const endDate = getAppDate();
     endDate.setDate(endDate.getDate() + plan.durationDays);
 
     return subscriptionRepository.create({
@@ -72,8 +54,11 @@ plan.yearlyPrice
     });
   }
 
-  async getById(id: number): Promise<Subscription> {
-    const subscription = await subscriptionRepository.findActiveSubscriptionId(id);
+  async getById(id: number, tenantId: number): Promise<Subscription> {
+    const subscription = await subscriptionRepository.findActiveSubscriptionId(
+      id,
+      tenantId,
+    );
 
     if (!subscription) {
       throw new ApiError(404, "Subscription not found.");
@@ -103,33 +88,33 @@ plan.yearlyPrice
     return subscription;
   }
 
-  async activate(subscriptionId: number) {
-    const subscription = await this.getById(subscriptionId);
+  async activate(subscriptionId: number, tenantId: number) {
+    const subscription = await this.getById(subscriptionId, tenantId);
 
     await subscriptionRepository.updateStatus(
       subscription.id,
       SubscriptionStatus.ACTIVE,
     );
 
-    return this.getById(subscription.id);
+    return this.getById(subscription.id, tenantId);
   }
 
-  async expire(subscriptionId: number) {
-    const subscription = await this.getById(subscriptionId);
+  async expire(subscriptionId: number, tenantId: number) {
+    const subscription = await this.getById(subscriptionId, tenantId);
 
     await subscriptionRepository.updateStatus(
       subscription.id,
       SubscriptionStatus.EXPIRED,
     );
 
-    return this.getById(subscription.id);
+    return this.getById(subscription.id, tenantId);
   }
 
-  async cancel(subscriptionId: number) {
-    const subscription = await this.getById(subscriptionId);
+  async cancel(subscriptionId: number, tenantId: number) {
+    const subscription = await this.getById(subscriptionId, tenantId);
 
     await subscriptionRepository.cancelSubscription(subscription.id);
 
-    return this.getById(subscription.id);
+    return this.getById(subscription.id, tenantId);
   }
 }

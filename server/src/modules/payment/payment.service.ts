@@ -234,8 +234,8 @@ export class PaymentService {
     };
   }
 
-  async verifyPayment(paymentId: number) {
-    const payment = await paymentRepository.findById(paymentId);
+  async verifyPayment(paymentId: number,tenantId: number) {
+    const payment = await paymentRepository.findOne({id: paymentId, tenantId});
 
     if (!payment) {
       throw new ApiError(404, "Payment not found.");
@@ -318,8 +318,11 @@ export class PaymentService {
     return response;
   }
 
-  async getById(id: number) {
-    const payment = await paymentRepository.findById(id);
+  async getById(id: number, tenantId: number) {
+    const payment = await paymentRepository.findOne({
+      tenantId,
+      id,
+    });
 
     if (!payment) {
       throw new ApiError(404, "Payment not found.");

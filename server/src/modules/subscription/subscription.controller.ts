@@ -15,7 +15,7 @@ export class SubscriptionController {
    * Tenant buy plan
    */
   create = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, } = getTenantContext(req);
+    const { tenantId } = getTenantContext(req);
 
     const result = await service.create({
       tenantId,
@@ -36,7 +36,9 @@ export class SubscriptionController {
    * Get Single Subscription
    */
   getById = asyncHandler(async (req: Request, res: Response) => {
-    const result = await service.getById(Number(req.params.id));
+    const { tenantId } = getTenantContext(req);
+
+    const result = await service.getById(Number(req.params.id), tenantId);
 
     sendResponse(res, {
       statusCode: 200,
@@ -86,7 +88,8 @@ export class SubscriptionController {
    * Payment success callback will call this
    */
   activate = asyncHandler(async (req: Request, res: Response) => {
-    const result = await service.activate(Number(req.params.id));
+    const { tenantId } = getTenantContext(req);
+    const result = await service.activate(Number(req.params.id), tenantId);
 
     sendResponse(res, {
       statusCode: 200,
@@ -101,7 +104,8 @@ export class SubscriptionController {
    * Cancel Subscription
    */
   cancel = asyncHandler(async (req: Request, res: Response) => {
-    const result = await service.cancel(Number(req.params.id));
+    const { tenantId } = getTenantContext(req);
+    const result = await service.cancel(Number(req.params.id), tenantId);
 
     sendResponse(res, {
       statusCode: 200,
