@@ -6,5 +6,5 @@ export interface ICreateEggRateDto {
 }
 
 export interface IUpdateEggRateDto {
-  rate?: number;
+  rate: number;
 }

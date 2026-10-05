@@ -8,5 +8,5 @@ export interface ICreateEggDto {
 }
 
 export interface IUpdateEggDto {
-  quantity?: number;
+  quantity: number;
 }

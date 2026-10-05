@@ -10,11 +10,11 @@ class EggController {
     const { tenantId, userId, mealSessionId } = getTenantContext(req);
 
     const egg = await eggService.create({
+      ...req.body,
       tenantId,
       mealSessionId,
       createdBy: userId,
       eggDate: getAppDate(),
-      ...req.body,
     });
 
     return sendResponse(res, {
@@ -82,7 +82,6 @@ class EggController {
       eggDate: getAppDate(req.query.date as string),
       data: req.body,
     });
-
 
     return sendResponse(res, {
       statusCode: 200,
