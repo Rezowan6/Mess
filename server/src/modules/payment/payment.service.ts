@@ -295,7 +295,7 @@ export class PaymentService {
       }
 
       await paymentRepository.update(
-        { id: latestPayment.id },
+        { id: latestPayment.id, tenantId },
         {
           status: PaymentStatus.SUCCESS,
           transactionId: response.transactionId ?? null,
