@@ -146,6 +146,17 @@ class InviteService {
   async accept(payload: IAcceptInvitePayload) {
     const { name, password, token } = payload;
 
+    if (!password || password.length < 8) {
+      throw new ApiError(400, "Password must be at least 8 characters long");
+    }
+
+    if (!/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+      throw new ApiError(
+        400,
+        "Password must contain at least one uppercase letter and one number",
+      );
+    }
+
     return IDep.sequelize.transaction(async (transaction) => {
       const { invite } = await this.validate(token);
 
@@ -241,45 +252,12 @@ class InviteService {
       throw new ApiError(403, "You are not allowed to cancel this invite");
     }
 
-    invite.status = InviteStatus.CANCELLED;
-
+    await inviteRepository.update(
+      { id: invite.id },
+      { status: InviteStatus.CANCELLED },
+    );
     return null;
   }
 }
 
 export const inviteService = new InviteService();
-
-// export const resend = async (inviteId: number, tenantId: number) => {
-//   const invite = await Invite.findOne({ where: { id: inviteId, tenantId } });
-
-//   if (!invite) {
-//     throw new ApiError(404, "Invite not found");
-//   }
-
-//   if (invite.status === InviteStatus.ACCEPTED) {
-//     throw new ApiError(409, "Invite has already been accepted");
-//   }
-
-//   if (invite.status === InviteStatus.REVOKED) {
-//     throw new ApiError(409, "Cancelled invite cannot be resent");
-//   }
-//   const tenant = await Tenant.findOne({ where: { ownerId: tenantId } });
-
-//   const { rawToken, tokenHash } = generateInviteToken();
-
-//   const expiresAt = generateInviteExpiry();
-
-//   await invite.update({
-//     tokenHash,
-//     expiresAt,
-//     status: InviteStatus.PENDING,
-//   });
-//   await sendInviteEmail(
-//     invite.email,
-//     `${env.FRONTEND_URL}/accept-invite/${rawToken}`,
-//     tenant?.name ?? "",
-//   );
-//   return {
-//     message: "Invite resent successfully",
-//   };
-// };

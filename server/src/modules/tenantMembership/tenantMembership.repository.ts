@@ -25,26 +25,6 @@ export class TenantMembershipRepository extends BaseRepository<TenantMembership>
     });
   }
 
-  // async getMemberss(tenantId: number, query: IPaginationQuery) {
-  //   return await this.paginate(
-  //     {
-  //       where: {
-  //         tenantId,
-  //         ...buildSearchCondition(["name", "email"], query.search),
-  //       },
-  //       include: [
-  //         {
-  //           model: User,
-  //           as: "user",
-  //           attributes: ["id", "name", "email", "avatar"],
-  //         },
-  //       ],
-  //       order: [["createdAt", "ASC"]],
-  //     },
-  //     query,
-  //   );
-  // }
-
   async getMembers(tenantId: number, query: IPaginationQuery) {
     const userInclude = {
       model: User,
@@ -124,7 +104,7 @@ export class TenantMembershipRepository extends BaseRepository<TenantMembership>
   }
 
   async countByTenant(id: number) {
-    return this.count({ where: { id } });
+    return this.count({ where: { tenantId: id } });
   }
 }
 

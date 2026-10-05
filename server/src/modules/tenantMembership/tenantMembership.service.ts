@@ -35,6 +35,7 @@ export class TenantMembershipService {
 
     return members;
   }
+
   async updateRole(payload: IUpdateRolePayload) {
     const {
       tenantId,
@@ -44,6 +45,18 @@ export class TenantMembershipService {
       role,
       userId: adminId,
     } = payload;
+
+    const currentMember =
+      await membershipRepository.findById(currentMembershipId);
+
+    if (
+      !currentMember ||
+      ![MemberRole.ADMIN, MemberRole.MANAGER].includes(
+        currentMember.role as any,
+      )
+    ) {
+      throw new ApiError(403, "Only admin or manager can update member roles.");
+    }
 
     if (role === MemberRole.ADMIN) {
       throw new ApiError(400, "The admin role cannot be assigned.");
@@ -60,21 +73,17 @@ export class TenantMembershipService {
     }
 
     if (targetMember.role === MemberRole.ADMIN) {
-      throw new ApiError(403, "Admin role connot be update");
+      throw new ApiError(403, "Admin role cannot be updated");
     }
 
     if (currentMembershipId === id) {
       throw new ApiError(400, "You cannot change your own role");
     }
 
-    // Old role save
     const oldRole = targetMember.role;
 
     const result = await membershipRepository.update({ id }, { role });
 
-    /**
-     * Create Notification
-     */
     try {
       await notificationService.create({
         tenantId,
@@ -94,8 +103,21 @@ export class TenantMembershipService {
 
     return result;
   }
+
   async deleteMember(payload: IDeleteMemberPayload) {
     const { tenantId, currentMembershipId, targetMembershipId: id } = payload;
+
+    const currentMember =
+      await membershipRepository.findById(currentMembershipId);
+
+    if (
+      !currentMember ||
+      ![MemberRole.ADMIN, MemberRole.MANAGER].includes(
+        currentMember.role as any,
+      )
+    ) {
+      throw new ApiError(403, "Only admin or manager can remove members.");
+    }
 
     const targetMember = await membershipRepository.findById(id);
 
@@ -103,7 +125,7 @@ export class TenantMembershipService {
       throw new ApiError(404, "Member not found.");
     }
 
-    if (targetMember?.tenantId !== tenantId) {
+    if (targetMember.tenantId !== tenantId) {
       throw new ApiError(403, "Access denied");
     }
 
@@ -114,11 +136,13 @@ export class TenantMembershipService {
     if (targetMember.role === MemberRole.ADMIN) {
       throw new ApiError(403, "The admin cannot be removed.");
     }
+
     if (targetMember.role === MemberRole.MANAGER) {
       throw new ApiError(403, "The manager cannot be removed.");
     }
 
     const count = await membershipRepository.countByTenant(tenantId);
+
     if (count === 1) {
       throw new ApiError(
         400,

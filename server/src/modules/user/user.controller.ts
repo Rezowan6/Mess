@@ -9,7 +9,7 @@ import { userService } from "./user.service.js";
 
 class UserController {
   updateAvatar = asyncHandler(async (req: Request, res: Response) => {
-    const { userId, tenantId, } = getTenantContext(req);
+    const { userId, tenantId } = getTenantContext(req);
 
     if (!req.file) {
       throw new ApiError(400, "Avatar image is required");
@@ -19,6 +19,10 @@ class UserController {
 
     if (!user) {
       throw new ApiError(404, "User not found");
+    }
+
+    if (user.id !== userId) {
+      throw new ApiError(403, "You can only update your own avatar");
     }
 
     let newAvatarPublicId: string | null = null;
