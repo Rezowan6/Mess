@@ -317,25 +317,16 @@ class MealPreferenceService {
     payload: IUpsertPayload["payload"],
     mealSetting: any,
   ) {
-    if (Number(existingPreference.breakfast) !== Number(payload.breakfast)) {
-      checkMealCutoff({
-        mealSetting,
-        meal: "breakfast",
-      });
-    }
+    const meals = ["breakfast", "lunch", "dinner"] as const;
 
-    if (Number(existingPreference.lunch) !== Number(payload.lunch)) {
-      checkMealCutoff({
-        mealSetting,
-        meal: "lunch",
-      });
-    }
+    for (const meal of meals) {
+      // First time there is no previous value, so it starts from 0
+      const previous = Number(existingPreference?.[meal] ?? 0);
+      const next = Number(payload[meal] ?? 0);
 
-    if (Number(existingPreference.dinner) !== Number(payload.dinner)) {
-      checkMealCutoff({
-        mealSetting,
-        meal: "dinner",
-      });
+      if (previous !== next) {
+        checkMealCutoff({ mealSetting, meal });
+      }
     }
   }
 
