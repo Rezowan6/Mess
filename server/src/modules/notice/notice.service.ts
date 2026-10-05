@@ -37,7 +37,7 @@ class NoticeService {
   async update(id: number,tenantId: number, payload: any) {
     const notice = await this.findById(id,tenantId);
 
-    return await noticeRepository.update({ id }, payload);
+    return await noticeRepository.update({ id, tenantId }, payload);
   }
 
   async delete(id: number, tenantId: number,) {
@@ -47,7 +47,7 @@ class NoticeService {
       throw new ApiError(404, "Notice not foudn.");
     }
 
-    await noticeRepository.delete({ id });
+    await noticeRepository.delete({ id, tenantId });
 
     return null;
   }
