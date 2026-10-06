@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { queryKeys } from "@/shared/constants/queryKeys";
-
 import { depositApi } from "../api/deposit.api";
 
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
+import { invalidateDepositQueries } from "../query/invalidation/deposit.invalidation";
 import type { IUpdateDepositDto } from "../types/deposit.types";
 
 export const useUpdateDeposit = () => {
@@ -17,15 +16,9 @@ export const useUpdateDeposit = () => {
       depositApi.update(id, payload),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.deposits.list(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(
-          tenantId,
-          mealSessionId,
-        ),
+      invalidateDepositQueries(queryClient, {
+        tenantId,
+        mealSessionId,
       });
     },
   });
