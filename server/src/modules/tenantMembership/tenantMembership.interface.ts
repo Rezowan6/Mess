@@ -1,3 +1,5 @@
+import { MemberRole } from "@/constans/index.js";
+
 export const MEMBER_SHIP_ROLE = [
   "systemOwner",
   "admin",
@@ -51,4 +53,34 @@ export interface IDeleteMemberPayload {
 export interface updateRoleDTO {
   targetMembershipId: number;
   newRole: MemberShipRole;
+}
+
+export const MEMBER_MANAGER_ROLES: readonly MemberShipRole[] = [
+  MemberRole.ADMIN,
+  MemberRole.MANAGER,
+];
+
+export type MemberManagementAction = "UPDATE_ROLE" | "REMOVE";
+export const MAX_MANAGERS_PER_TENANT = 4;
+export const MEMBER_MANAGEMENT_MESSAGES: Record<
+  MemberManagementAction,
+  { forbidden: string; self: string; admin: string }
+> = {
+  UPDATE_ROLE: {
+    forbidden: "Only admin or manager can update member roles.",
+    self: "You cannot change your own role.",
+    admin: "Admin role cannot be updated.",
+  },
+  REMOVE: {
+    forbidden: "Only admin or manager can remove members.",
+    self: "You cannot remove yourself.",
+    admin: "The admin cannot be removed.",
+  },
+};
+
+export interface IManageableTargetParams {
+  tenantId: number; // use the same type as your existing payloads
+  currentMembershipId: number;
+  targetMembershipId: number;
+  action: MemberManagementAction;
 }
