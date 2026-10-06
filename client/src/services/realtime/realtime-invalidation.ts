@@ -3,6 +3,7 @@ import type { QueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/shared/constants/queryKeys";
 
 import { invalidateDepositQueries } from "@/modules/deposit/query/deposit.invalidation";
+import { invalidateEggQueries } from "@/modules/egg/query/egg.invalidation";
 import { invalidateExpenseQueries } from "@/modules/expense/query/expense.invalidation";
 import type { IDataUpdatedPayload } from "./realtime.types";
 
@@ -241,31 +242,7 @@ export const invalidateRealtimeQueries = (
     }
 
     case "egg": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.eggs.list(tenantId, mealSessionId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.eggs.all(tenantId, mealSessionId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.eggs.summary(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(
-          tenantId,
-          mealSessionId,
-        ),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.myProfile.current(tenantId, mealSessionId),
-      });
-
+      invalidateEggQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
 

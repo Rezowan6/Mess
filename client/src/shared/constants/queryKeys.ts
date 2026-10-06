@@ -1,4 +1,5 @@
 import { deposits } from "@/modules/deposit/query/deposit.querykey";
+import { eggs } from "@/modules/egg/query/egg.querykey";
 import { expenses } from "@/modules/expense/query/expense.querykey";
 
 export const queryKeys = {
@@ -226,16 +227,7 @@ export const queryKeys = {
   // Tenant + Meal Session based
   // ============================================================
 
-  eggs: {
-    all: (tenantId?: number, mealSessionId?: number) =>
-      ["eggs", tenantId, mealSessionId] as const,
-
-    list: (tenantId?: number, mealSessionId?: number) =>
-      ["eggs", tenantId, mealSessionId, "list"] as const,
-
-    summary: (tenantId?: number, mealSessionId?: number) =>
-      ["eggs", tenantId, mealSessionId, "summary"] as const,
-  },
+  eggs,
   // ============================================================
   // EGG RATES
   // Tenant + meal-session based
