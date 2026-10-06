@@ -1,3 +1,5 @@
+import { deposits } from "@/modules/deposit/query/key/deposit.querykey";
+
 export const queryKeys = {
   // ============================================================
   // AUTH
@@ -217,14 +219,7 @@ export const queryKeys = {
   // DEPOSITS
   // Tenant + Meal Session based
   // ============================================================
-
-  deposits: {
-    all: (tenantId?: number, mealSessionId?: number) =>
-      ["deposits", tenantId, mealSessionId] as const,
-
-    list: (tenantId?: number, mealSessionId?: number) =>
-      ["deposits", tenantId, mealSessionId, "list"] as const,
-  },
+  deposits,
   // ============================================================
   // EGGS
   // Tenant + Meal Session based

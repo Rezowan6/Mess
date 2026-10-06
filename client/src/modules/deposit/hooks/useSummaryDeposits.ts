@@ -14,7 +14,7 @@ export const useSummaryDeposits = (params?: IDepositQuery) => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery<IDepositListResponse>({
-    queryKey: [...queryKeys.deposits.list(tenantId, mealSessionId), params],
+    queryKey: [...queryKeys.deposits.memberSummary(tenantId, mealSessionId), params],
 
     queryFn: async () => await depositApi.summary(params),
 

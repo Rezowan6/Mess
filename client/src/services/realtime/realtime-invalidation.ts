@@ -2,6 +2,7 @@ import type { QueryClient } from "@tanstack/react-query";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
 
+import { invalidateDepositQueries } from "@/modules/deposit/query/invalidation/deposit.invalidation";
 import type { IDataUpdatedPayload } from "./realtime.types";
 
 export const invalidateRealtimeQueries = (
@@ -244,23 +245,9 @@ export const invalidateRealtimeQueries = (
     }
 
     case "deposit": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.deposits.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(
-          tenantId,
-          mealSessionId,
-        ),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.myProfile.current(tenantId, mealSessionId),
+      invalidateDepositQueries(queryClient, {
+        tenantId,
+        mealSessionId,
       });
 
       break;
