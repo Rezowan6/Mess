@@ -11,7 +11,7 @@ export const useNotifications = (params?: {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery({
-    queryKey: queryKeys.notifications.list(tenantId, mealSessionId),
+    queryKey: queryKeys.notifications.list({tenantId, mealSessionId}),
 
     queryFn: () => notificationApi.getAll(params),
 

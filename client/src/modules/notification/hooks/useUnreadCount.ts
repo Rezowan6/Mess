@@ -8,7 +8,7 @@ export const useUnreadCount = () => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery({
-    queryKey: queryKeys.notifications.count(tenantId, mealSessionId),
+    queryKey: queryKeys.notifications.count({tenantId, mealSessionId}),
 
     queryFn: notificationApi.unreadCount,
 
