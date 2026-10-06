@@ -9,7 +9,7 @@ export const useRiceSummary = () => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery({
-    queryKey: queryKeys.rice.summary(tenantId, mealSessionId),
+    queryKey: queryKeys.rice.summary({ tenantId, mealSessionId }),
     queryFn: riceApi.getSummary,
     enabled: Boolean(tenantId && mealSessionId),
     staleTime: 1000 * 60 * 5,

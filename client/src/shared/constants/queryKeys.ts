@@ -9,6 +9,7 @@ import { mealSessions } from "@/modules/meal-session/query/mealSession.querykey"
 import { mealSettings } from "@/modules/meal-setting/query/mealSetting.query";
 import { notifications } from "@/modules/notification/query/notifications.query";
 import { partyExpenses } from "@/modules/party-expense/query/partyExpense.querykey";
+import { rice } from "@/modules/rice/query/rice.querykey";
 
 export const queryKeys = {
   // ============================================================
@@ -246,22 +247,7 @@ export const queryKeys = {
   // Tenant + Meal Session based
   // ============================================================
 
-  rice: {
-    all: (tenantId?: number, mealSessionId?: number) =>
-      ["rice", tenantId, mealSessionId] as const,
-
-    get: (tenantId?: number, mealSessionId?: number) =>
-      ["rice", "list", tenantId, mealSessionId] as const,
-
-    summary: (tenantId?: number, mealSessionId?: number) =>
-      ["rice", "summary", tenantId, mealSessionId] as const,
-
-    byId: (tenantId?: number, mealSessionId?: number, id?: number) =>
-      ["rice", "byId", tenantId, mealSessionId, id] as const,
-
-    due: (tenantId?: number, mealSessionId?: number, id?: number) =>
-      ["rice", "due", tenantId, mealSessionId, id] as const,
-  },
+  rice,
 
   // ============================================================
   // RICE PAYMENT

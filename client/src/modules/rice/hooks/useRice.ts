@@ -9,7 +9,7 @@ import type { IPaginationParams } from "@/shared/types/pagination.types";
 export const useRice = (params?: IPaginationParams) => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
-  const baseKey = queryKeys.rice.all(tenantId, mealSessionId);
+  const baseKey = queryKeys.rice.all({ tenantId, mealSessionId });
 
   return useQuery({
     queryKey: [...baseKey, params],
