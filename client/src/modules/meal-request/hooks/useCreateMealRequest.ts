@@ -2,13 +2,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { mealRequestApi } from "../api/mealRequest.api";
 
-import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import {
   showApiErrorToast,
   showSuccessToast,
   showWarningToast,
 } from "@/shared/utils/toast";
+import { invalidateMealRequestQueries } from "../query/mealRequest.invalidation";
 
 export interface MealRequestResult {
   createdCount: number;
@@ -79,21 +79,7 @@ export const useCreateMealRequest = (
       }
 
       // Invalidate queries
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealRequests.list(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealRequests.myRequests(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.stats(tenantId, mealSessionId),
-      });
+      invalidateMealRequestQueries(queryClient, { tenantId, mealSessionId });
     },
 
     onError: (error) => {

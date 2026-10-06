@@ -9,7 +9,7 @@ export const useMyPendingMealReq = () => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery<IMyPendingMealReqResponse>({
-    queryKey: queryKeys.mealRequests.myRequests(tenantId, mealSessionId),
+    queryKey: queryKeys.mealRequests.myRequests({tenantId, mealSessionId}),
 
     queryFn: () => mealRequestApi.getMyPendingMealReq(),
 
