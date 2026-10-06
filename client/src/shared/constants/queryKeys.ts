@@ -1,4 +1,4 @@
-import { deposits } from "@/modules/deposit/query/key/deposit.querykey";
+import { deposits } from "@/modules/deposit/query/deposit.querykey";
 
 export const queryKeys = {
   // ============================================================
