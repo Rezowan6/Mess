@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { mealSettingApi } from "../api/mealSetting.api";
 
-import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
+import { invalidateMealSettingQueries } from "../query/mealSetting.invalidation";
 
 export const useCreateMealSetting = () => {
   const queryClient = useQueryClient();
@@ -14,9 +14,7 @@ export const useCreateMealSetting = () => {
     mutationFn: mealSettingApi.create,
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealSettings.all(tenantId, mealSessionId),
-      });
+      invalidateMealSettingQueries(queryClient, { tenantId, mealSessionId });
     },
   });
 };

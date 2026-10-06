@@ -10,6 +10,7 @@ import { invalidateMealPlannigQueries } from "@/modules/meal-planning/query/meal
 import { invalidateMealPreferenceQueries } from "@/modules/meal-preference/query/mealPreference.invalidation";
 import { invalidateMealRequestQueries } from "@/modules/meal-request/query/mealRequest.invalidation";
 import { invalidateMealSessionQueries } from "@/modules/meal-session/query/mealSession.invalidation";
+import { invalidateMealSettingQueries } from "@/modules/meal-setting/query/mealSetting.invalidation";
 import type { IDataUpdatedPayload } from "./realtime.types";
 
 export const invalidateRealtimeQueries = (
@@ -76,21 +77,16 @@ export const invalidateRealtimeQueries = (
 
       break;
     }
-
+// 
     case "meal-session": {
       invalidateMealSessionQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
 
     case "meal-setting": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealSettings.all(tenantId, mealSessionId),
-      });
-
+      invalidateMealSettingQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
-
-    // uporere gula pore implement korbo
 
     case "meal-entry": {
       queryClient.invalidateQueries({
