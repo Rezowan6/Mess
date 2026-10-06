@@ -7,6 +7,7 @@ import { invalidateEggRateQueries } from "@/modules/egg-rate/query/eggRate.inval
 import { invalidateEggQueries } from "@/modules/egg/query/egg.invalidation";
 import { invalidateExpenseQueries } from "@/modules/expense/query/expense.invalidation";
 import { invalidateMealPlannigQueries } from "@/modules/meal-planning/query/mealPlanning.invalidation";
+import { invalidateMealPreferenceQueries } from "@/modules/meal-preference/query/mealPreference.invalidation";
 import type { IDataUpdatedPayload } from "./realtime.types";
 
 export const invalidateRealtimeQueries = (
@@ -42,7 +43,12 @@ export const invalidateRealtimeQueries = (
       invalidateEggRateQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
-    
+
+    case "meal-preference": {
+      invalidateMealPreferenceQueries(queryClient, { tenantId, mealSessionId });
+      break;
+    }
+
     case "tenant": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.tenants.all,
@@ -76,27 +82,6 @@ export const invalidateRealtimeQueries = (
     case "meal-setting": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealSettings.all(tenantId, mealSessionId),
-      });
-
-      break;
-    }
-
-    case "meal-preference": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPreference.myPreference(
-          tenantId,
-          mealSessionId,
-        ),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealRequests.myRequests(tenantId, mealSessionId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealRequests.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPlannings.daily(tenantId, mealSessionId),
       });
 
       break;

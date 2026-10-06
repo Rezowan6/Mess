@@ -10,7 +10,7 @@ export const useMealPreference = () => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery({
-    queryKey: queryKeys.mealPreference.myPreference(tenantId, mealSessionId),
+    queryKey: queryKeys.mealPreferences.myPreference({tenantId, mealSessionId}),
 
     queryFn: mealPreferenceApi.getMyPreference,
   });
