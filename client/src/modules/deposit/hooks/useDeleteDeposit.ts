@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import { depositApi } from "../api/deposit.api";
-import { invalidateDepositQueries } from "../query/invalidation/deposit.invalidation";
+import { invalidateDepositQueries } from "../query/deposit.invalidation";
 
 export const useDeleteDeposit = () => {
   const queryClient = useQueryClient();

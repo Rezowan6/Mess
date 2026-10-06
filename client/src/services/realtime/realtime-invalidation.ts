@@ -2,7 +2,7 @@ import type { QueryClient } from "@tanstack/react-query";
 
 import { queryKeys } from "@/shared/constants/queryKeys";
 
-import { invalidateDepositQueries } from "@/modules/deposit/query/invalidation/deposit.invalidation";
+import { invalidateDepositQueries } from "@/modules/deposit/query/deposit.invalidation";
 import type { IDataUpdatedPayload } from "./realtime.types";
 
 export const invalidateRealtimeQueries = (
