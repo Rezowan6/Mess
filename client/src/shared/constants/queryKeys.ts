@@ -3,6 +3,8 @@ import { eggRates } from "@/modules/egg-rate/query/eggRate.querykey";
 import { eggs } from "@/modules/egg/query/egg.querykey";
 import { expenses } from "@/modules/expense/query/expense.querykey";
 import { mealPlannings } from "@/modules/meal-planning/query/mealPlanning.querykey";
+import { mealPreferences } from "@/modules/meal-preference/query/mealPrefeerence.querykey";
+import type { InvalidationContext } from "../types/invalidation.types";
 
 export const queryKeys = {
   // ============================================================
@@ -166,19 +168,19 @@ export const queryKeys = {
   // Tenant + Meal Session based
   // ============================================================
   mealRequests: {
-    all: (tenantId?: number, mealSessionId?: number) =>
+    all: ({ tenantId, mealSessionId }: InvalidationContext) =>
       ["meal-requests", tenantId, mealSessionId] as const,
 
-    list: (tenantId?: number, mealSessionId?: number) =>
+    list: ({ tenantId, mealSessionId }: InvalidationContext) =>
       ["meal-requests", tenantId, mealSessionId] as const,
 
-    myRequests: (tenantId?: number, mealSessionId?: number) =>
+    myRequests: ({ tenantId, mealSessionId }: InvalidationContext) =>
       ["meal-requests", tenantId, mealSessionId, "my"] as const,
 
-    allRequests: (tenantId?: number, mealSessionId?: number) =>
+    allRequests: ({ tenantId, mealSessionId }: InvalidationContext) =>
       ["meal-requests", tenantId, mealSessionId, "all"] as const,
 
-    pending: (tenantId?: number, mealSessionId?: number) =>
+    pending: ({ tenantId, mealSessionId }: InvalidationContext) =>
       ["meal-requests", tenantId, mealSessionId, "pending"] as const,
   },
 
@@ -186,13 +188,7 @@ export const queryKeys = {
   // MEAL PREFERENCE
   // Tenant + Meal Session based
   // ============================================================
-  mealPreference: {
-    all: (tenantId?: number, mealSessionId?: number) =>
-      ["meal-preference", tenantId, mealSessionId] as const,
-
-    myPreference: (tenantId?: number, mealSessionId?: number) =>
-      ["meal-preference", tenantId, mealSessionId, "my"] as const,
-  },
+  mealPreferences,
 
   // ============================================================
   // MEAL PLANNING

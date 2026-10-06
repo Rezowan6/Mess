@@ -1,7 +1,9 @@
+import type { InvalidationContext } from "@/shared/types/invalidation.types";
+
 export const mealPlannings = {
-  all: (tenantId?: number, mealSessionId?: number) =>
+  all: ({ tenantId, mealSessionId }: InvalidationContext) =>
     ["meal-planning", tenantId, mealSessionId] as const,
 
-  daily: (tenantId?: number, mealSessionId?: number) =>
+  daily: ({ tenantId, mealSessionId }: InvalidationContext) =>
     ["meal-planning", tenantId, mealSessionId, "daily"] as const,
 };
