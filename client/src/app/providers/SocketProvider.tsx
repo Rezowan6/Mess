@@ -24,7 +24,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     socket.on("connect", () => {
       socket.emit(SocketEvent.JOIN, {
-        userId: user?.id,
         tenantId: tenantId,
         mealSessionId,
       });
