@@ -3,6 +3,7 @@ import type { QueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/shared/constants/queryKeys";
 
 import { invalidateDepositQueries } from "@/modules/deposit/query/deposit.invalidation";
+import { invalidateExpenseQueries } from "@/modules/expense/query/expense.invalidation";
 import type { IDataUpdatedPayload } from "./realtime.types";
 
 export const invalidateRealtimeQueries = (
@@ -171,25 +172,6 @@ export const invalidateRealtimeQueries = (
       break;
     }
 
-    case "expense": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.expenses.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(
-          tenantId,
-          mealSessionId,
-        ),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
-      });
-
-      break;
-    }
-
     case "rice": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.rice.all(tenantId, mealSessionId),
@@ -250,6 +232,11 @@ export const invalidateRealtimeQueries = (
         mealSessionId,
       });
 
+      break;
+    }
+
+    case "expense": {
+      invalidateExpenseQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
 
