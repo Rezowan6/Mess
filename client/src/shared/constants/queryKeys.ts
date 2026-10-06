@@ -6,6 +6,7 @@ import { mealPlannings } from "@/modules/meal-planning/query/mealPlanning.queryk
 import { mealPreferences } from "@/modules/meal-preference/query/mealPrefeerence.querykey";
 import { mealRequests } from "@/modules/meal-request/query/mealRequest.querykey";
 import { mealSessions } from "@/modules/meal-session/query/mealSession.querykey";
+import { mealSettings } from "@/modules/meal-setting/query/mealSetting.query";
 
 export const queryKeys = {
   // ============================================================
@@ -182,13 +183,7 @@ export const queryKeys = {
   // Tenant + Meal Session based
   // ============================================================
 
-  mealSettings: {
-    all: (tenantId?: number, mealSessionId?: number) =>
-      ["meal-settings", tenantId, mealSessionId] as const,
-
-    detail: (tenantId?: number, mealSessionId?: number) =>
-      ["meal-settings", tenantId, mealSessionId, "detail"] as const,
-  },
+  mealSettings,
 
   // ============================================================
   // DEPOSITS
