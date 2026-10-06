@@ -9,7 +9,7 @@ export const useSoldProduct = () => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery({
-    queryKey: queryKeys.soldProducts.get(tenantId, mealSessionId),
+    queryKey: queryKeys.soldProducts.get({ tenantId, mealSessionId }),
     queryFn: soldProductApi.get,
     enabled: Boolean(tenantId && mealSessionId),
 

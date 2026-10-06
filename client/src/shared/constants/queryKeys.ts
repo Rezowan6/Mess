@@ -11,6 +11,7 @@ import { notifications } from "@/modules/notification/query/notifications.query"
 import { partyExpenses } from "@/modules/party-expense/query/partyExpense.querykey";
 import { ricePayments } from "@/modules/rice-payment/query/ricePayment.querykey";
 import { rice } from "@/modules/rice/query/rice.querykey";
+import { soldProducts } from "@/modules/sold-product/query/soldProduct.querykey";
 
 export const queryKeys = {
   // ============================================================
@@ -212,13 +213,7 @@ export const queryKeys = {
   // Tenant + meal-session based
   // ============================================================
 
-  soldProducts: {
-    all: (tenantId?: number, mealSessionId?: number) =>
-      ["soldProducts", tenantId, mealSessionId] as const,
-
-    get: (tenantId?: number, mealSessionId?: number) =>
-      ["soldProducts", tenantId, mealSessionId, "get"] as const,
-  },
+  soldProducts,
 
   // ============================================================
   // DASHBOARD

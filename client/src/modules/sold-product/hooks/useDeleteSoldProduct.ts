@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { soldProductApi } from "../api/soldProduct.api";
 
-import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
+import { invalidateSoldProductQueries } from "../query/soldProduct.invalidation";
 
 export const useDeleteSoldProduct = () => {
   const queryClient = useQueryClient();
@@ -14,20 +14,7 @@ export const useDeleteSoldProduct = () => {
     mutationFn: soldProductApi.delete,
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.soldProducts.get(tenantId, mealSessionId),
-        refetchType: "active",
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.soldProducts.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(
-          tenantId,
-          mealSessionId,
-        ),
-      });
+      invalidateSoldProductQueries(queryClient, { tenantId, mealSessionId });
     },
   });
 };
