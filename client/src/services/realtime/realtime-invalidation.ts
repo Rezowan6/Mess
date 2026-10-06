@@ -11,6 +11,7 @@ import { invalidateMealPreferenceQueries } from "@/modules/meal-preference/query
 import { invalidateMealRequestQueries } from "@/modules/meal-request/query/mealRequest.invalidation";
 import { invalidateMealSessionQueries } from "@/modules/meal-session/query/mealSession.invalidation";
 import { invalidateMealSettingQueries } from "@/modules/meal-setting/query/mealSetting.invalidation";
+import { invalidatePartyExpenseQueries } from "@/modules/party-expense/query/partyExpense.invalidation";
 import type { IDataUpdatedPayload } from "./realtime.types";
 
 export const invalidateRealtimeQueries = (
@@ -56,6 +57,12 @@ export const invalidateRealtimeQueries = (
       break;
     }
 
+    case "party-expense": {
+      invalidatePartyExpenseQueries(queryClient, { tenantId, mealSessionId });
+      break;
+    }
+    
+// 
     case "tenant": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.tenants.all,
@@ -77,7 +84,7 @@ export const invalidateRealtimeQueries = (
 
       break;
     }
-// 
+    //
     case "meal-session": {
       invalidateMealSessionQueries(queryClient, { tenantId, mealSessionId });
       break;
@@ -149,25 +156,6 @@ export const invalidateRealtimeQueries = (
 
       queryClient.invalidateQueries({
         queryKey: queryKeys.rice.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(
-          tenantId,
-          mealSessionId,
-        ),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
-      });
-
-      break;
-    }
-
-    case "party-expense": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.partyExpenses.all(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
