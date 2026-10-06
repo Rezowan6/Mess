@@ -40,19 +40,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       invalidateRealtimeQueries(queryClient, payload);
     };
 
-    // meal planning
-    const handleMealPlanningUpdated = () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPlannings.daily({tenantId, mealSessionId}),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPreferences.myPreference(
-        {  tenantId,
-          mealSessionId,}
-        ),
-      });
-    };
-
     // notification
     const handleNotification = (notification: any) => {
       addNotificationToCache(
@@ -74,7 +61,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     socket.on(SocketEvent.DATA_UPDATED, handleDataUpdated);
-    socket.on(SocketEvent.MEAL_PLANNING_UPDATED, handleMealPlanningUpdated);
     socket.on(SocketEvent.NOTIFICATION, handleNotification);
 
     socket.on("disconnect", () => {
@@ -84,8 +70,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     // cleanup...
     return () => {
       socket.off(SocketEvent.DATA_UPDATED, handleDataUpdated);
-      socket.off(SocketEvent.MEAL_PLANNING_UPDATED, handleMealPlanningUpdated);
-      socket.off(SocketEvent.NOTIFICATION);
+      socket.off(SocketEvent.NOTIFICATION, handleNotification);
       socket.off("connect");
       socket.off("disconnect");
       socket.disconnect();

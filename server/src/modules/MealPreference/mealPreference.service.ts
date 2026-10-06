@@ -1,5 +1,9 @@
 import sequelize from "@/configs/db.js";
 import { checkMealCutoff } from "@/helpers/checkMealCutoff.helper.js";
+import {
+  RealtimeAction,
+  RealtimeResource,
+} from "@/socket/realtime.constant.js";
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
@@ -24,8 +28,6 @@ class MealPreferenceService {
   async upsert({ tenantId, userId, mealSessionId, payload }: IUpsertPayload) {
     await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
 
-    const { breakfast, lunch, dinner, guestMeal } = payload;
-
     /**
      * Meal date is based on Maghrib.
      *
@@ -33,17 +35,6 @@ class MealPreferenceService {
      * After Maghrib  → Tomorrow
      */
     const date = getCurrentMealDate();
-
-    const socketPayload = {
-      tenantId,
-      mealSessionId,
-      userId,
-      date,
-      breakfast: breakfast ?? 0,
-      lunch: lunch ?? 0,
-      dinner: dinner ?? 0,
-      guestMeal: guestMeal ?? 0,
-    };
 
     const result = await sequelize.transaction(async (transaction) => {
       /**
@@ -105,7 +96,7 @@ class MealPreferenceService {
     /**
      * Transaction successfully committed.
      */
-    this.emitMealPlanningUpdated(socketPayload);
+    this.emitMealPlanningUpdated({ tenantId, mealSessionId });
 
     return result;
   }
@@ -211,12 +202,6 @@ class MealPreferenceService {
             this.emitMealPlanningUpdated({
               tenantId: tenant.id,
               mealSessionId: mealSession.id,
-              userId: preference.userId,
-              date: today,
-              breakfast: request.breakfast,
-              lunch: request.lunch,
-              dinner: request.dinner,
-              guestMeal: request.guestMeal,
             });
           } catch (error) {
             failedCount++;
@@ -439,21 +424,16 @@ class MealPreferenceService {
    * SOCKET EVENT
    * ============================================================
    */
-  private emitMealPlanningUpdated(socketPayload: {
+  private emitMealPlanningUpdated(payload: {
     tenantId: number;
     mealSessionId: number;
-    userId: number;
-    date: Date;
-    breakfast: number;
-    lunch: number;
-    dinner: number;
-    guestMeal: number;
   }) {
-    socketService.emitToTenant(
-      socketPayload.tenantId,
-      SocketEvent.MEAL_PLANNING_UPDATED,
-      socketPayload,
-    );
+    socketService.emitToTenant(payload.tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.MEAL_PLANNING,
+      action: RealtimeAction.UPDATED,
+      tenantId: payload.tenantId,
+      mealSessionId: payload.mealSessionId,
+    });
   }
 
   // baki ace pore korbo ingsa-allah

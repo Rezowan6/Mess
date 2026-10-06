@@ -4,6 +4,10 @@ import { MealRequestStatus } from "../mealRequest/mealRequest.interface.js";
 import { mealRequestRepository } from "../mealRequest/mealRequest.repository.js";
 
 import sequelize from "@/configs/db.js";
+import {
+  RealtimeAction,
+  RealtimeResource,
+} from "@/socket/realtime.constant.js";
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
@@ -149,7 +153,7 @@ class MealPlanningService {
 
       if (todayRequest) {
         await mealRequestRepository.update(
-          { id: todayRequest.id, tenantId,},
+          { id: todayRequest.id, tenantId },
           {
             [meal]: 0,
           },
@@ -167,7 +171,7 @@ class MealPlanningService {
 
         if (entry) {
           await mealEntryRepository.update(
-            { mealRequestId: todayRequest.id, tenantId, },
+            { mealRequestId: todayRequest.id, tenantId },
             {
               [meal]: 0,
             },
@@ -201,11 +205,18 @@ class MealPlanningService {
     });
 
     // Transaction successfully committed
-    // realtime event
-    socketService.emitToTenant(tenantId, SocketEvent.MEAL_PLANNING_UPDATED, {
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.MEAL_PLANNING,
+      action: RealtimeAction.UPDATED,
       tenantId,
-      userId,
-      meal,
+      mealSessionId,
+    });
+
+    socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.MEAL_ENTRY,
+      action: RealtimeAction.UPDATED,
+      tenantId,
+      mealSessionId,
     });
 
     return result;

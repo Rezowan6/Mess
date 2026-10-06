@@ -5,7 +5,5 @@ export const SocketEvent = {
 
   DATA_UPDATED: "data-updated",
 
-  MEAL_PLANNING_UPDATED: "meal-planning-updated",
-
   ERROR: "error",
 } as const;

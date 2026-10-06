@@ -1,16 +1,19 @@
 import type { QueryClient } from "@tanstack/react-query";
 
-import { invalidateMealPlanningQueries } from "@/modules/meal-planning/query/mealPlanning.invalidation";
+import { invalidateDerived } from "@/services/query/common.invalidation";
 import { queryKeys } from "@/shared/constants/queryKeys";
 import type { InvalidationContext } from "@/shared/types/invalidation.types";
 
-export const invalidateMealRequestQueries = (
+export const invalidateMyProfileQueries = (
   queryClient: QueryClient,
   { tenantId, mealSessionId }: InvalidationContext,
 ) => {
-  invalidateMealPlanningQueries(queryClient, { tenantId, mealSessionId });
-  
   queryClient.invalidateQueries({
-    queryKey: queryKeys.mealRequests.all({ tenantId, mealSessionId }),
+    queryKey: queryKeys.myProfile.all(tenantId, mealSessionId),
+  });
+
+  invalidateDerived(queryClient, {
+    tenantId,
+    mealSessionId,
   });
 };

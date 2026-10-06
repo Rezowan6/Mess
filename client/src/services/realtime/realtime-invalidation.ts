@@ -1,20 +1,24 @@
 import type { QueryClient } from "@tanstack/react-query";
 
-import { queryKeys } from "@/shared/constants/queryKeys";
-
 import { invalidateDepositQueries } from "@/modules/deposit/query/deposit.invalidation";
 import { invalidateEggRateQueries } from "@/modules/egg-rate/query/eggRate.invalidation";
 import { invalidateEggQueries } from "@/modules/egg/query/egg.invalidation";
 import { invalidateExpenseQueries } from "@/modules/expense/query/expense.invalidation";
-import { invalidateMealPlannigQueries } from "@/modules/meal-planning/query/mealPlanning.invalidation";
+import { invalidateMealEntriesQueries } from "@/modules/meal-entry/query/mealEntry.invalidation";
+import { invalidateMealPlanningQueries } from "@/modules/meal-planning/query/mealPlanning.invalidation";
 import { invalidateMealPreferenceQueries } from "@/modules/meal-preference/query/mealPreference.invalidation";
 import { invalidateMealRequestQueries } from "@/modules/meal-request/query/mealRequest.invalidation";
 import { invalidateMealSessionQueries } from "@/modules/meal-session/query/mealSession.invalidation";
 import { invalidateMealSettingQueries } from "@/modules/meal-setting/query/mealSetting.invalidation";
+import { invalidateMyProfileQueries } from "@/modules/my-profile/query/myProfile.invalidation";
 import { invalidatePartyExpenseQueries } from "@/modules/party-expense/query/partyExpense.invalidation";
 import { invalidateRicePaymentQueries } from "@/modules/rice-payment/query/ricePayment.invalidation";
 import { invalidateRiceQueries } from "@/modules/rice/query/rice.invalidation";
 import { invalidateSoldProductQueries } from "@/modules/sold-product/query/soldProduct.invalidation";
+import {
+  invalidateMembershipQueries,
+  invalidateTenantQueries,
+} from "@/modules/tenant/query/tenant.invalidation";
 import type { IDataUpdatedPayload } from "./realtime.types";
 
 export const invalidateRealtimeQueries = (
@@ -56,7 +60,7 @@ export const invalidateRealtimeQueries = (
       break;
     }
     case "meal-planning": {
-      invalidateMealPlannigQueries(queryClient, { tenantId, mealSessionId });
+      invalidateMealPlanningQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
 
@@ -74,29 +78,16 @@ export const invalidateRealtimeQueries = (
       break;
     }
 
-    //
     case "tenant": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.tenants.all,
-      });
-
+      invalidateTenantQueries(queryClient);
       break;
     }
 
     case "membership": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.myProfile.all(tenantId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.tenants.allMembers(tenantId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.tenants.members(tenantId),
-      });
-
+      invalidateMembershipQueries(queryClient, tenantId);
       break;
     }
-    //
+
     case "meal-session": {
       invalidateMealSessionQueries(queryClient, { tenantId, mealSessionId });
       break;
@@ -108,25 +99,7 @@ export const invalidateRealtimeQueries = (
     }
 
     case "meal-entry": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealEntries.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(
-          tenantId,
-          mealSessionId,
-        ),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.myProfile.current(tenantId, mealSessionId),
-      });
-
+      invalidateMealEntriesQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
 
@@ -136,10 +109,7 @@ export const invalidateRealtimeQueries = (
     }
 
     case "my-profile": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.myProfile.current(tenantId, mealSessionId),
-      });
-
+      invalidateMyProfileQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
 
