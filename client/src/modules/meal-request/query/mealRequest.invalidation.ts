@@ -10,8 +10,4 @@ export const invalidateMealRequestQueries = (
   queryClient.invalidateQueries({
     queryKey: queryKeys.mealRequests.all({ tenantId, mealSessionId }),
   });
-
-  queryClient.invalidateQueries({
-    queryKey: queryKeys.mealPlannings.daily({ tenantId, mealSessionId }),
-  });
 };

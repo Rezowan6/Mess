@@ -24,10 +24,6 @@ export const invalidateRealtimeQueries = (
   const { tenantId, mealSessionId, resource } = payload;
 
   switch (resource) {
-    case "meal-planning": {
-      invalidateMealPlannigQueries(queryClient, { tenantId, mealSessionId });
-      break;
-    }
     case "deposit": {
       invalidateDepositQueries(queryClient, {
         tenantId,
@@ -57,6 +53,10 @@ export const invalidateRealtimeQueries = (
     }
     case "meal-request": {
       invalidateMealRequestQueries(queryClient, { tenantId, mealSessionId });
+      break;
+    }
+    case "meal-planning": {
+      invalidateMealPlannigQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
 

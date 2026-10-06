@@ -8,14 +8,9 @@ export const invalidateMealPlannigQueries = (
   { tenantId, mealSessionId }: InvalidationContext,
 ) => {
   queryClient.invalidateQueries({
-    queryKey: queryKeys.mealPlannings.all({tenantId, mealSessionId}),
-  });
-
-  queryClient.invalidateQueries({
-    queryKey: queryKeys.mealPreferences.myPreference({tenantId, mealSessionId}),
-  });
-
-  queryClient.invalidateQueries({
-    queryKey: queryKeys.mealRequests.all({tenantId, mealSessionId}),
+    queryKey: queryKeys.mealPreferences.myPreference({
+      tenantId,
+      mealSessionId,
+    }),
   });
 };
