@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 import { notificationApi } from "../api/notification.api";
+import { invalidateNotificationQueries } from "../query/notification.invalidation";
 
 export const useMarkAsRead = () => {
   const queryClient = useQueryClient();
@@ -13,13 +13,7 @@ export const useMarkAsRead = () => {
     mutationFn: notificationApi.markAsRead,
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.notifications.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.notifications.count(tenantId, mealSessionId),
-      });
+      invalidateNotificationQueries(queryClient, { tenantId, mealSessionId });
     },
   });
 };

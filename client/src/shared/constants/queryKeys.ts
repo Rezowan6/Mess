@@ -7,6 +7,7 @@ import { mealPreferences } from "@/modules/meal-preference/query/mealPrefeerence
 import { mealRequests } from "@/modules/meal-request/query/mealRequest.querykey";
 import { mealSessions } from "@/modules/meal-session/query/mealSession.querykey";
 import { mealSettings } from "@/modules/meal-setting/query/mealSetting.query";
+import { notifications } from "@/modules/notification/query/notifications.query";
 
 export const queryKeys = {
   // ============================================================
@@ -302,17 +303,5 @@ export const queryKeys = {
   // NOTIFICATIONS
   // Tenant + Meal Session based
   // ============================================================
-  notifications: {
-    all: (tenantId?: number, mealSessionId?: number) =>
-      ["notifications", tenantId, mealSessionId] as const,
-
-    list: (
-      tenantId?: number,
-      mealSessionId?: number,
-      params?: { page?: number; limit?: number },
-    ) => ["notifications", tenantId, mealSessionId, "list", params] as const,
-
-    count: (tenantId?: number, mealSessionId?: number) =>
-      ["notifications", tenantId, mealSessionId, "count"] as const,
-  },
+  notifications,
 };

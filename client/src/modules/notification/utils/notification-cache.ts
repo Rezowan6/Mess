@@ -15,7 +15,7 @@ export const addNotificationToCache = (
   mealSessionId: number,
 ) => {
   queryClient.setQueryData(
-    queryKeys.notifications.list(tenantId, mealSessionId),
+    queryKeys.notifications.list({tenantId, mealSessionId}),
     (old: INotificationResponse | undefined) => {
       if (!old) return old;
       const total = old.meta?.total ?? 0;
@@ -32,7 +32,7 @@ export const addNotificationToCache = (
   );
 
   queryClient.setQueryData(
-    queryKeys.notifications.count(tenantId, mealSessionId),
+    queryKeys.notifications.count({tenantId, mealSessionId}),
     (old: ApiResponse<{ count: number }> | undefined) => {
       if (!old) return old;
 

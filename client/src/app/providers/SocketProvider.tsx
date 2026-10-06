@@ -43,12 +43,12 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     // meal planning
     const handleMealPlanningUpdated = () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
+        queryKey: queryKeys.mealPlannings.daily({tenantId, mealSessionId}),
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPreference.myPreference(
-          tenantId,
-          mealSessionId,
+        queryKey: queryKeys.mealPreferences.myPreference(
+        {  tenantId,
+          mealSessionId,}
         ),
       });
     };
