@@ -11,7 +11,7 @@ export const usePartyExpenses = (params: IPartyExpenseParams) => {
 
   return useQuery({
     queryKey: [
-      ...queryKeys.partyExpenses.list(tenantId, mealSessionId),
+      ...queryKeys.partyExpenses.list({ tenantId, mealSessionId }),
       params,
     ],
 

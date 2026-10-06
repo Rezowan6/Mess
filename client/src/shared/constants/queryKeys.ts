@@ -8,6 +8,7 @@ import { mealRequests } from "@/modules/meal-request/query/mealRequest.querykey"
 import { mealSessions } from "@/modules/meal-session/query/mealSession.querykey";
 import { mealSettings } from "@/modules/meal-setting/query/mealSetting.query";
 import { notifications } from "@/modules/notification/query/notifications.query";
+import { partyExpenses } from "@/modules/party-expense/query/partyExpense.querykey";
 
 export const queryKeys = {
   // ============================================================
@@ -291,13 +292,7 @@ export const queryKeys = {
   // PARTY EXPENSES
   // Tenant + Meal Session based
   // ============================================================
-  partyExpenses: {
-    all: (tenantId?: number, mealSessionId?: number) =>
-      ["partyExpenses", tenantId, mealSessionId] as const,
-
-    list: (tenantId?: number, mealSessionId?: number) =>
-      ["partyExpenses", tenantId, mealSessionId, "list"] as const,
-  },
+  partyExpenses,
 
   // ============================================================
   // NOTIFICATIONS
