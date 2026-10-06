@@ -4,17 +4,22 @@ import { invalidateDepositQueries } from "@/modules/deposit/query/deposit.invali
 import { invalidateEggRateQueries } from "@/modules/egg-rate/query/eggRate.invalidation";
 import { invalidateEggQueries } from "@/modules/egg/query/egg.invalidation";
 import { invalidateExpenseQueries } from "@/modules/expense/query/expense.invalidation";
+
 import { invalidateMealEntriesQueries } from "@/modules/meal-entry/query/mealEntry.invalidation";
 import { invalidateMealPlanningQueries } from "@/modules/meal-planning/query/mealPlanning.invalidation";
+
 import { invalidateMealPreferenceQueries } from "@/modules/meal-preference/query/mealPreference.invalidation";
 import { invalidateMealRequestQueries } from "@/modules/meal-request/query/mealRequest.invalidation";
 import { invalidateMealSessionQueries } from "@/modules/meal-session/query/mealSession.invalidation";
 import { invalidateMealSettingQueries } from "@/modules/meal-setting/query/mealSetting.invalidation";
+
 import { invalidateMyProfileQueries } from "@/modules/my-profile/query/myProfile.invalidation";
+
 import { invalidatePartyExpenseQueries } from "@/modules/party-expense/query/partyExpense.invalidation";
 import { invalidateRicePaymentQueries } from "@/modules/rice-payment/query/ricePayment.invalidation";
 import { invalidateRiceQueries } from "@/modules/rice/query/rice.invalidation";
 import { invalidateSoldProductQueries } from "@/modules/sold-product/query/soldProduct.invalidation";
+
 import {
   invalidateMembershipQueries,
   invalidateTenantQueries,
@@ -33,7 +38,6 @@ export const invalidateRealtimeQueries = (
         tenantId,
         mealSessionId,
       });
-
       break;
     }
 
@@ -107,12 +111,10 @@ export const invalidateRealtimeQueries = (
       invalidateSoldProductQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
-
     case "my-profile": {
       invalidateMyProfileQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
-
     default:
       break;
   }

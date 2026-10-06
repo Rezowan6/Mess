@@ -39,7 +39,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
       invalidateRealtimeQueries(queryClient, payload);
     };
-
     // notification
     const handleNotification = (notification: any) => {
       addNotificationToCache(

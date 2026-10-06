@@ -13,6 +13,7 @@ export const invalidateMealPlanningQueries = (
       mealSessionId,
     }),
   });
+
   queryClient.invalidateQueries({
     queryKey: queryKeys.mealPlannings.all({
       tenantId,
