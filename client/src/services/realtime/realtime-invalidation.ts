@@ -9,6 +9,7 @@ import { invalidateExpenseQueries } from "@/modules/expense/query/expense.invali
 import { invalidateMealPlannigQueries } from "@/modules/meal-planning/query/mealPlanning.invalidation";
 import { invalidateMealPreferenceQueries } from "@/modules/meal-preference/query/mealPreference.invalidation";
 import { invalidateMealRequestQueries } from "@/modules/meal-request/query/mealRequest.invalidation";
+import { invalidateMealSessionQueries } from "@/modules/meal-session/query/mealSession.invalidation";
 import type { IDataUpdatedPayload } from "./realtime.types";
 
 export const invalidateRealtimeQueries = (
@@ -77,10 +78,7 @@ export const invalidateRealtimeQueries = (
     }
 
     case "meal-session": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealSessions.all(tenantId),
-      });
-
+      invalidateMealSessionQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
 

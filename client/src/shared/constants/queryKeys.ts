@@ -5,6 +5,7 @@ import { expenses } from "@/modules/expense/query/expense.querykey";
 import { mealPlannings } from "@/modules/meal-planning/query/mealPlanning.querykey";
 import { mealPreferences } from "@/modules/meal-preference/query/mealPrefeerence.querykey";
 import { mealRequests } from "@/modules/meal-request/query/mealRequest.querykey";
+import { mealSessions } from "@/modules/meal-session/query/mealSession.querykey";
 
 export const queryKeys = {
   // ============================================================
@@ -126,12 +127,7 @@ export const queryKeys = {
   // MEAL SESSIONS
   // Session list itself does not need another session ID.
   // ============================================================
-  mealSessions: {
-    all: (tenantId?: number, mealSessionId?: number) =>
-      ["meal-sessions", tenantId, mealSessionId] as const,
-    completed: (tenantId?: number) =>
-      ["meal-sessions", tenantId, "completed"] as const,
-  },
+  mealSessions,
 
   // ============================================================
   // MEAL ENTRIES

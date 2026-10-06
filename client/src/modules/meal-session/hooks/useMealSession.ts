@@ -8,7 +8,7 @@ export const useMealSession = () => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery({
-    queryKey: queryKeys.mealSessions.all(tenantId, mealSessionId),
+    queryKey: queryKeys.mealSessions.all({tenantId, mealSessionId}),
 
     queryFn: mealSessionApi.getCurrent,
 
