@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { eggApi } from "../api/egg.api";
 
-import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
+import { invalidateEggQueries } from "../query/egg.invalidation";
 
 export const useDeleteEgg = () => {
   const queryClient = useQueryClient();
@@ -17,15 +17,7 @@ export const useDeleteEgg = () => {
       }),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.eggs.list(tenantId, mealSessionId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.eggs.summary(tenantId, mealSessionId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.eggs.all(tenantId, mealSessionId),
-      });
+      invalidateEggQueries(queryClient, { tenantId, mealSessionId });
     },
   });
 };

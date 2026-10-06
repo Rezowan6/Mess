@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { eggApi } from "../api/egg.api";
 
-import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
+import { invalidateEggQueries } from "../query/egg.invalidation";
 import type { IUpdateEggDto } from "../types/egg.types";
 
 export const useUpdateEgg = () => {
@@ -12,24 +12,11 @@ export const useUpdateEgg = () => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useMutation({
-    mutationFn: ({
-      id,
-      payload,
-    }: {
-      id: number;
-      payload: IUpdateEggDto;
-    }) => eggApi.update(id, payload),
+    mutationFn: ({ id, payload }: { id: number; payload: IUpdateEggDto }) =>
+      eggApi.update(id, payload),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.eggs.list(tenantId, mealSessionId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.eggs.summary(tenantId, mealSessionId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.eggs.all(tenantId, mealSessionId),
-      });
+      invalidateEggQueries(queryClient, { tenantId, mealSessionId });
     },
   });
 };
