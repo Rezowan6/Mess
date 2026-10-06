@@ -8,6 +8,7 @@ import { invalidateEggQueries } from "@/modules/egg/query/egg.invalidation";
 import { invalidateExpenseQueries } from "@/modules/expense/query/expense.invalidation";
 import { invalidateMealPlannigQueries } from "@/modules/meal-planning/query/mealPlanning.invalidation";
 import { invalidateMealPreferenceQueries } from "@/modules/meal-preference/query/mealPreference.invalidation";
+import { invalidateMealRequestQueries } from "@/modules/meal-request/query/mealRequest.invalidation";
 import type { IDataUpdatedPayload } from "./realtime.types";
 
 export const invalidateRealtimeQueries = (
@@ -46,6 +47,10 @@ export const invalidateRealtimeQueries = (
 
     case "meal-preference": {
       invalidateMealPreferenceQueries(queryClient, { tenantId, mealSessionId });
+      break;
+    }
+    case "meal-request": {
+      invalidateMealRequestQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
 
@@ -87,52 +92,11 @@ export const invalidateRealtimeQueries = (
       break;
     }
 
-    case "meal-request": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealRequests.all(tenantId, mealSessionId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPreference.myPreference(
-          tenantId,
-          mealSessionId,
-        ),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPreference.all(tenantId, mealSessionId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealRequests.myRequests(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPlannings.daily(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealEntries.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(
-          tenantId,
-          mealSessionId,
-        ),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
-      });
-
-      break;
-    }
+    // uporere gula pore implement korbo
 
     case "meal-entry": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealEntries.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPlannings.daily(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({

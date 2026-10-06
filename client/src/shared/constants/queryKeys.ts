@@ -4,7 +4,7 @@ import { eggs } from "@/modules/egg/query/egg.querykey";
 import { expenses } from "@/modules/expense/query/expense.querykey";
 import { mealPlannings } from "@/modules/meal-planning/query/mealPlanning.querykey";
 import { mealPreferences } from "@/modules/meal-preference/query/mealPrefeerence.querykey";
-import type { InvalidationContext } from "../types/invalidation.types";
+import { mealRequests } from "@/modules/meal-request/query/mealRequest.querykey";
 
 export const queryKeys = {
   // ============================================================
@@ -167,22 +167,7 @@ export const queryKeys = {
   // MEAL REQUESTS
   // Tenant + Meal Session based
   // ============================================================
-  mealRequests: {
-    all: ({ tenantId, mealSessionId }: InvalidationContext) =>
-      ["meal-requests", tenantId, mealSessionId] as const,
-
-    list: ({ tenantId, mealSessionId }: InvalidationContext) =>
-      ["meal-requests", tenantId, mealSessionId] as const,
-
-    myRequests: ({ tenantId, mealSessionId }: InvalidationContext) =>
-      ["meal-requests", tenantId, mealSessionId, "my"] as const,
-
-    allRequests: ({ tenantId, mealSessionId }: InvalidationContext) =>
-      ["meal-requests", tenantId, mealSessionId, "all"] as const,
-
-    pending: ({ tenantId, mealSessionId }: InvalidationContext) =>
-      ["meal-requests", tenantId, mealSessionId, "pending"] as const,
-  },
+  mealRequests,
 
   // ============================================================
   // MEAL PREFERENCE
