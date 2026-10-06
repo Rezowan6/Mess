@@ -4,8 +4,8 @@ import { ApiError } from "@/utils/ApiError.js";
 import { mealEntryRepository } from "./mealEntry.repository.js";
 
 class MealEntryService {
-  async my({ userId, tenantId }: { userId: number; tenantId: number }) {
-    return await mealEntryRepository.getMyMeal({ tenantId, userId });
+  async my({ userId, tenantId, mealSessionId }: { userId: number; tenantId: number, mealSessionId:number }) {
+    return await mealEntryRepository.getMyMeal({ tenantId, userId, mealSessionId });
   }
 
   async getAllMembersMeal({

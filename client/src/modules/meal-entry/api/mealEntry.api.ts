@@ -4,21 +4,21 @@ import type {
   IMealEntryListResponse,
   IMealEntryQuery,
   IMealEntrySummaryResponse,
+  IMyMealApiResponse,
 } from "../types/mealEntry.types";
 
 export const mealEntryApi = {
-  my: async (params?: IMealEntryQuery): Promise<IMealEntryListResponse> => {
-    const { data } = await API.get<IMealEntryListResponse>(
+  my: async (): Promise<IMyMealApiResponse> => {
+    const { data } = await API.get<IMyMealApiResponse>(
       API_ENDPOINTS.MEAL_ENTRY.MY,
-      {
-        params,
-      },
     );
 
     return data;
   },
 
-  getAllMembersMeal: async (params?: IMealEntryQuery): Promise<IMealEntryListResponse> => {
+  getAllMembersMeal: async (
+    params?: IMealEntryQuery,
+  ): Promise<IMealEntryListResponse> => {
     const { data } = await API.get<IMealEntryListResponse>(
       API_ENDPOINTS.MEAL_ENTRY.LIST,
       {
@@ -42,7 +42,9 @@ export const mealEntryApi = {
     return data;
   },
 
-  todayMealEntries: async (params?: IMealEntryQuery): Promise<IMealEntryListResponse> => {
+  todayMealEntries: async (
+    params?: IMealEntryQuery,
+  ): Promise<IMealEntryListResponse> => {
     const { data } = await API.get<IMealEntryListResponse>(
       API_ENDPOINTS.MEAL_ENTRY.TODAY_MEALS,
       {

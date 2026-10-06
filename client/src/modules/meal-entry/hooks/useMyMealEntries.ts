@@ -5,18 +5,15 @@ import { mealEntryApi } from "../api/mealEntry.api";
 import { queryKeys } from "@/shared/constants/queryKeys";
 
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
-import type {
-  IMealEntryListResponse,
-  IMealEntryQuery,
-} from "../types/mealEntry.types";
+import type { IMyMealApiResponse } from "../types/mealEntry.types";
 
-export const useMyMealEntries = (params?: IMealEntryQuery) => {
+export const useMyMealEntries = () => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
-  return useQuery<IMealEntryListResponse>({
-    queryKey: [...queryKeys.mealEntries.list(tenantId, mealSessionId), params],
+  return useQuery<IMyMealApiResponse>({
+    queryKey: [...queryKeys.mealEntries.list(tenantId, mealSessionId)],
 
-    queryFn: async () => await mealEntryApi.my(params),
+    queryFn: async () => await mealEntryApi.my(),
 
     enabled: Boolean(tenantId && mealSessionId),
 

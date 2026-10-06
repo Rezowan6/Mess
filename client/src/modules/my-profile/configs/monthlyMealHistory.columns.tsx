@@ -3,10 +3,10 @@ import { formatDate } from "@/shared/utils/date.utils";
 
 interface IMonthlyMealHistory {
   date: string;
-  breakfast: string;
-  lunch: string;
-  dinner: string;
-  guestMeal: string;
+  breakfast: number;
+  lunch: number;
+  dinner: number;
+  guestMeal: number;
 }
 
 export const useMonthlyMealHistoryColumns =

@@ -9,6 +9,18 @@ export interface IMealEntryQuery {
   date?: string;
 }
 
+export interface IMyMealResponse {
+  meals: IMealEntry[];
+  totalMeal: number;
+}
+
+export interface IMyMealApiResponse {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  data: IMyMealResponse;
+}
+
 export interface IMealEntry {
   id: number;
 

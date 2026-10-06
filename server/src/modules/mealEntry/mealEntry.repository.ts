@@ -67,12 +67,21 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
   async getMyMeal({
     tenantId,
     userId,
+    mealSessionId,
   }: {
     tenantId: number;
     userId: number;
-  }): Promise<MealEntry[]> {
-    return await this.findAll({
-      where: { userId, tenantId },
+    mealSessionId: number;
+  }): Promise<{
+    meals: MealEntry[];
+    totalMeal: number;
+  }> {
+    const meals = await this.findAll({
+      where: {
+        userId,
+        mealSessionId,
+        tenantId,
+      },
       attributes: [
         "id",
         "date",
@@ -90,6 +99,20 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
       ],
       order: [["date", "DESC"]],
     });
+
+    const totalMeal = meals.reduce((total, meal) => {
+      return (
+        total +
+        Number(meal.breakfast || 0) +
+        Number(meal.lunch || 0) +
+        Number(meal.dinner || 0)
+      );
+    }, 0);
+
+    return {
+      meals,
+      totalMeal,
+    };
   }
 
   async getMemberMealSummary({

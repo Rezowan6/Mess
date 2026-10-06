@@ -1,99 +1,78 @@
-import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useMemo } from "react";
 
-import { Pagination } from "@/shared/components/ui/Pagination";
-import { SearchInput } from "@/shared/components/ui/SearchInput";
-import { Table } from "@/shared/components/ui/Table";
+import { DataTableSection } from "@/shared/components/ui/DataTableSection";
+import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
 
+import type { IMealEntry } from "@/modules/meal-entry/types/mealEntry.types";
 import { useMonthlyMealHistoryColumns } from "../configs/monthlyMealHistory.columns";
 import { MONTHLY_MEAL_HISTORY_MESSAGES } from "../configs/monthlyMealHistory.messages";
 
-interface IMealHistory {
-  date: string;
-  breakfast: string;
-  lunch: string;
-  dinner: string;
-  guestMeal: string;
-}
-
 interface Props {
-  meals: IMealHistory[];
+  meals: IMealEntry[];
+  totalMeal: number;
 }
 
-export const MonthlyMealHistoryTable = ({ meals }: Props) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+const PAGE_LIMIT = 10;
 
-  const page = Number(searchParams.get("page")) || 1;
-
-  const search = searchParams.get("search") || "";
+export const MonthlyMealHistoryTable = ({
+  meals,
+  totalMeal,
+}: Props) => {
+  const { page, search, handleSearch, handlePage } =
+    useTableSearchParams();
 
   const columns = useMonthlyMealHistoryColumns();
 
-  const filteredMeals = meals.filter((meal) =>
-    meal.date.toLowerCase().includes(search.toLowerCase()),
-  );
+  const filteredMeals = useMemo(() => {
+    if (!search) return meals;
 
-  const limit = 10;
+    const normalizedSearch = search.toLowerCase();
 
-  const totalPages = Math.ceil(filteredMeals.length / limit);
-
-  const paginatedMeals = filteredMeals.slice((page - 1) * limit, page * limit);
-
-  const handleSearch = (value: string) => {
-    setSearchParams(
-      {
-        page: "1",
-        ...(value && {
-          search: value,
-        }),
-      },
-      {
-        replace: true,
-      },
+    return meals.filter((meal) =>
+      meal.date.toLowerCase().includes(normalizedSearch),
     );
-  };
+  }, [meals, search]);
 
-  const handlePage = (page: number) => {
-    setSearchParams({
-      page: String(page),
-      ...(search && {
-        search,
-      }),
-    });
-  };
+  const totalPages = Math.ceil(filteredMeals.length / PAGE_LIMIT);
 
-  useEffect(() => {
-    if (page !== 1) {
-      setSearchParams(
-        {
-          page: "1",
-          ...(search && {
-            search,
-          }),
-        },
-        {
-          replace: true,
-        },
-      );
-    }
-  }, []);
+  const paginatedMeals = useMemo(() => {
+    const startIndex = (page - 1) * PAGE_LIMIT;
+
+    return filteredMeals.slice(
+      startIndex,
+      startIndex + PAGE_LIMIT,
+    );
+  }, [filteredMeals, page]);
+
+  const meta =
+    filteredMeals.length > 0
+      ? {
+          page,
+          limit: PAGE_LIMIT,
+          total: filteredMeals.length,
+          totalPages,
+        }
+      : undefined;
 
   return (
-    <div className="space-y-4">
-      <SearchInput value={search} onChange={handleSearch} />
-
-      <Table
-        columns={columns}
-        data={paginatedMeals}
-        loading={false}
-        error={false}
-        message={MONTHLY_MEAL_HISTORY_MESSAGES}
-        refetch={() => {}}
-      />
-
-      {totalPages > 0 && (
-        <Pagination page={page} totalPages={totalPages} onChange={handlePage} />
-      )}
-    </div>
+    <DataTableSection
+      columns={columns}
+      data={paginatedMeals}
+      meta={meta}
+      isPending={false}
+      isError={false}
+      refetch={() => {}}
+      message={MONTHLY_MEAL_HISTORY_MESSAGES}
+      skeleton={null}
+      search={search}
+      onSearch={handleSearch}
+      onPageChange={handlePage}
+      summary={{
+        label: "Total Meal",
+        amount: totalMeal,
+        prefix: "",
+        className: "text-success",
+      }}
+    />
   );
 };

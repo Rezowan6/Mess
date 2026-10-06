@@ -7,9 +7,9 @@ import { mealEntryService } from "./mealEntry.service.js";
 
 class MealEntriesController {
   my = asyncHandler(async (req: Request, res: Response) => {
-    const { userId, tenantId } = getTenantContext(req);
+    const { userId, tenantId, mealSessionId } = getTenantContext(req);
 
-    const data = await mealEntryService.my({ tenantId, userId });
+    const data = await mealEntryService.my({ tenantId, userId, mealSessionId});
 
     return sendResponse(res, {
       statusCode: 200,
