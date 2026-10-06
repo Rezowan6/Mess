@@ -2,7 +2,10 @@ import { BaseRepository } from "@/common/repo/base.repository.js";
 import { MemberStatus } from "@/constans/index.js";
 import { TenantMembership, User } from "@/models/index.js";
 import { Op, Transaction } from "sequelize";
-import { FindByTenantAndUserPayload } from "./tenantMembership.interface.js";
+import {
+  FindByTenantAndUserPayload,
+  MemberShipRole,
+} from "./tenantMembership.interface.js";
 
 import type { IPaginationQuery } from "@/types/pagination.interface.js";
 
@@ -105,6 +108,17 @@ export class TenantMembershipRepository extends BaseRepository<TenantMembership>
 
   async countByTenant(id: number) {
     return this.count({ where: { tenantId: id } });
+  }
+
+  async countByTenantAndRole(
+    tenantId: number,
+    role: MemberShipRole,
+    transaction: Transaction,
+  ): Promise<number> {
+    return this.count({
+      where: { tenantId, role },
+      transaction,
+    });
   }
 }
 
