@@ -9,7 +9,7 @@ export const useRiceById = (id: number) => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery({
-    queryKey: queryKeys.rice.byId(tenantId, mealSessionId, id),
+    queryKey: queryKeys.rice.byId({tenantId, mealSessionId}, id),
     queryFn: () => riceApi.getById(id),
     enabled: Boolean(tenantId && mealSessionId && id),
     staleTime: 1000 * 60 * 5,
