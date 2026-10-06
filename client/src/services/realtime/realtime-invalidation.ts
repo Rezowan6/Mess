@@ -14,6 +14,7 @@ import { invalidateMealSettingQueries } from "@/modules/meal-setting/query/mealS
 import { invalidatePartyExpenseQueries } from "@/modules/party-expense/query/partyExpense.invalidation";
 import { invalidateRicePaymentQueries } from "@/modules/rice-payment/query/ricePayment.invalidation";
 import { invalidateRiceQueries } from "@/modules/rice/query/rice.invalidation";
+import { invalidateSoldProductQueries } from "@/modules/sold-product/query/soldProduct.invalidation";
 import type { IDataUpdatedPayload } from "./realtime.types";
 
 export const invalidateRealtimeQueries = (
@@ -130,21 +131,7 @@ export const invalidateRealtimeQueries = (
     }
 
     case "sold-product": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.soldProducts.get(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(
-          tenantId,
-          mealSessionId,
-        ),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
-      });
-
+      invalidateSoldProductQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
 
