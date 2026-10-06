@@ -12,6 +12,7 @@ import { partyExpenses } from "@/modules/party-expense/query/partyExpense.queryk
 import { ricePayments } from "@/modules/rice-payment/query/ricePayment.querykey";
 import { rice } from "@/modules/rice/query/rice.querykey";
 import { soldProducts } from "@/modules/sold-product/query/soldProduct.querykey";
+import { tenants } from "@/modules/user-management/query/user.querykey";
 
 export const queryKeys = {
   // ============================================================
@@ -25,13 +26,7 @@ export const queryKeys = {
   // ============================================================
   // TENANTS
   // ============================================================
-  tenants: {
-    all: ["tenants"] as const,
-    allMembers: (tenantId?: number, search?: string) =>
-      ["tenants", tenantId, "members", "all", { search }] as const,
-    members: (tenantId?: number) => ["tenants", tenantId, "members"] as const,
-    invites: (tenantId?: number) => ["tenants", tenantId, "invites"] as const,
-  },
+  tenants,
 
   // ============================================================
   // PLANS
