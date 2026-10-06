@@ -10,8 +10,7 @@ export const useRicePaymentTotalPaid = (riceId: number) => {
 
   return useQuery({
     queryKey: queryKeys.ricePayments.totalPaid(
-      tenantId,
-      mealSessionId,
+      { tenantId, mealSessionId },
       riceId,
     ),
     queryFn: () => ricePaymentApi.getTotalPaid(riceId),

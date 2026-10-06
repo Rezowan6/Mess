@@ -16,35 +16,36 @@ export const useCreateRicePayment = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.ricePayments.get(
-          tenantId,
-          mealSessionId,
+          { tenantId, mealSessionId },
           variables.riceId,
         ),
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.ricePayments.all(tenantId, mealSessionId),
+        queryKey: queryKeys.ricePayments.all({ tenantId, mealSessionId }),
       });
 
       queryClient.invalidateQueries({
         queryKey: queryKeys.rice.byId(
-          tenantId,
-          mealSessionId,
+          { tenantId, mealSessionId },
           variables.riceId,
         ),
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.rice.due(tenantId, mealSessionId, variables.riceId),
+        queryKey: queryKeys.rice.due(
+          { tenantId, mealSessionId },
+          variables.riceId,
+        ),
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.rice.get(tenantId, mealSessionId),
+        queryKey: queryKeys.rice.get({ tenantId, mealSessionId }),
         refetchType: "active",
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.rice.all(tenantId, mealSessionId),
+        queryKey: queryKeys.rice.all({ tenantId, mealSessionId }),
       });
     },
   });

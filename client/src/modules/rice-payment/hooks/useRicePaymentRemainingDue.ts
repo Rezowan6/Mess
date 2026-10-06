@@ -9,7 +9,7 @@ export const useRicePaymentRemainingDue = (riceId: number) => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery({
-    queryKey: queryKeys.ricePayments.due(tenantId, mealSessionId, riceId),
+    queryKey: queryKeys.ricePayments.due({tenantId, mealSessionId}, riceId),
     queryFn: () => ricePaymentApi.getRemainingDue(riceId),
     enabled: Boolean(tenantId && mealSessionId && riceId),
     staleTime: 1000 * 60 * 5,
