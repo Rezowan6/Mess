@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { eggRateApi } from "../api/egg-rate.api";
 
-import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
+import { invalidateEggRateQueries } from "../query/eggRate.invalidation";
 
 export const useCreateEggRate = () => {
   const queryClient = useQueryClient();
@@ -14,9 +14,7 @@ export const useCreateEggRate = () => {
     mutationFn: eggRateApi.create,
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.eggRates.get(tenantId, mealSessionId),
-      });
+      invalidateEggRateQueries(queryClient, { tenantId, mealSessionId });
     },
   });
 };
