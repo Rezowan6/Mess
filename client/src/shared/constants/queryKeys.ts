@@ -9,6 +9,7 @@ import { mealSessions } from "@/modules/meal-session/query/mealSession.querykey"
 import { mealSettings } from "@/modules/meal-setting/query/mealSetting.query";
 import { notifications } from "@/modules/notification/query/notifications.query";
 import { partyExpenses } from "@/modules/party-expense/query/partyExpense.querykey";
+import { ricePayments } from "@/modules/rice-payment/query/ricePayment.querykey";
 import { rice } from "@/modules/rice/query/rice.querykey";
 
 export const queryKeys = {
@@ -254,26 +255,7 @@ export const queryKeys = {
   // Tenant + Meal Session + Rice based
   // ============================================================
 
-  ricePayments: {
-    all: (tenantId?: number, mealSessionId?: number) =>
-      ["ricePayments", tenantId, mealSessionId] as const,
-
-    get: (tenantId?: number, mealSessionId?: number, riceId?: number) =>
-      ["ricePayments", "list", tenantId, mealSessionId, riceId] as const,
-
-    byId: (
-      tenantId?: number,
-      mealSessionId?: number,
-      riceId?: number,
-      id?: number,
-    ) => ["ricePayments", "byId", tenantId, mealSessionId, riceId, id] as const,
-
-    totalPaid: (tenantId?: number, mealSessionId?: number, riceId?: number) =>
-      ["ricePayments", "totalPaid", tenantId, mealSessionId, riceId] as const,
-
-    due: (tenantId?: number, mealSessionId?: number, riceId?: number) =>
-      ["ricePayments", "due", tenantId, mealSessionId, riceId] as const,
-  },
+  ricePayments,
   // ============================================================
   // PARTY EXPENSES
   // Tenant + Meal Session based

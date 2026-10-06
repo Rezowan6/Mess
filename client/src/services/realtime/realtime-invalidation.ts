@@ -12,6 +12,7 @@ import { invalidateMealRequestQueries } from "@/modules/meal-request/query/mealR
 import { invalidateMealSessionQueries } from "@/modules/meal-session/query/mealSession.invalidation";
 import { invalidateMealSettingQueries } from "@/modules/meal-setting/query/mealSetting.invalidation";
 import { invalidatePartyExpenseQueries } from "@/modules/party-expense/query/partyExpense.invalidation";
+import { invalidateRicePaymentQueries } from "@/modules/rice-payment/query/ricePayment.invalidation";
 import { invalidateRiceQueries } from "@/modules/rice/query/rice.invalidation";
 import type { IDataUpdatedPayload } from "./realtime.types";
 
@@ -60,6 +61,15 @@ export const invalidateRealtimeQueries = (
 
     case "party-expense": {
       invalidatePartyExpenseQueries(queryClient, { tenantId, mealSessionId });
+      break;
+    }
+    case "rice": {
+      invalidateRiceQueries(queryClient, { tenantId, mealSessionId });
+      break;
+    }
+
+    case "rice-payment": {
+      invalidateRicePaymentQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
 
@@ -114,38 +124,6 @@ export const invalidateRealtimeQueries = (
 
       queryClient.invalidateQueries({
         queryKey: queryKeys.myProfile.current(tenantId, mealSessionId),
-      });
-
-      break;
-    }
-
-    case "rice": {
-      invalidateRiceQueries(queryClient, { tenantId, mealSessionId });
-      break;
-    }
-
-    case "rice-payment": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.ricePayments.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.rice.get(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.rice.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(
-          tenantId,
-          mealSessionId,
-        ),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
       });
 
       break;

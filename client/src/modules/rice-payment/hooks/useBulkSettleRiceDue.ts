@@ -2,9 +2,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { ricePaymentApi } from "../api/ricePayment.api";
 
-import { queryKeys } from "@/shared/constants/queryKeys";
 import { useCurrentTenantContext } from "@/shared/hooks/useCurrentTenantContext";
 
+import { invalidateRicePaymentQueries } from "../query/ricePayment.invalidation";
 import type { RicePaymentMethodValue } from "../types/ricePayment.types";
 
 interface BulkSettleRiceDuePayload {
@@ -23,21 +23,7 @@ export const useBulkSettleRiceDue = () => {
       ricePaymentApi.bulkSettleDue(payload),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.rice.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.ricePayments.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.ricePayments.due(tenantId, mealSessionId, 0),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.rice.get(tenantId, mealSessionId),
-      });
+      invalidateRicePaymentQueries(queryClient, { tenantId, mealSessionId });
     },
   });
 };

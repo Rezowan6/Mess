@@ -9,7 +9,7 @@ export const useRicePayments = (riceId: number) => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery({
-    queryKey: queryKeys.ricePayments.get(tenantId, mealSessionId, riceId),
+    queryKey: queryKeys.ricePayments.get({tenantId, mealSessionId}, riceId),
     queryFn: () => ricePaymentApi.getAll(riceId),
     enabled: Boolean(tenantId && mealSessionId && riceId),
     staleTime: 1000 * 60 * 5,
