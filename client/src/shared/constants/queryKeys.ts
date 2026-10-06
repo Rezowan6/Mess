@@ -1,4 +1,5 @@
 import { deposits } from "@/modules/deposit/query/deposit.querykey";
+import { expenses } from "@/modules/expense/query/expense.querykey";
 
 export const queryKeys = {
   // ============================================================
@@ -282,16 +283,7 @@ export const queryKeys = {
   // Tenant + Meal Session based
   // ============================================================
 
-  expenses: {
-    all: (tenantId?: number, mealSessionId?: number) =>
-      ["expenses", tenantId, mealSessionId] as const,
-
-    list: (tenantId?: number, mealSessionId?: number) =>
-      ["expenses", tenantId, mealSessionId, "list"] as const,
-
-    summary: (tenantId?: number, mealSessionId?: number) =>
-      ["expenses", tenantId, mealSessionId, "summary"] as const,
-  },
+  expenses,
 
   // ============================================================
   // RICE
