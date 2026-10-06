@@ -6,6 +6,7 @@ import { invalidateDepositQueries } from "@/modules/deposit/query/deposit.invali
 import { invalidateEggRateQueries } from "@/modules/egg-rate/query/eggRate.invalidation";
 import { invalidateEggQueries } from "@/modules/egg/query/egg.invalidation";
 import { invalidateExpenseQueries } from "@/modules/expense/query/expense.invalidation";
+import { invalidateMealPlannigQueries } from "@/modules/meal-planning/query/mealPlanning.invalidation";
 import type { IDataUpdatedPayload } from "./realtime.types";
 
 export const invalidateRealtimeQueries = (
@@ -15,6 +16,33 @@ export const invalidateRealtimeQueries = (
   const { tenantId, mealSessionId, resource } = payload;
 
   switch (resource) {
+    case "meal-planning": {
+      invalidateMealPlannigQueries(queryClient, { tenantId, mealSessionId });
+      break;
+    }
+    case "deposit": {
+      invalidateDepositQueries(queryClient, {
+        tenantId,
+        mealSessionId,
+      });
+
+      break;
+    }
+
+    case "expense": {
+      invalidateExpenseQueries(queryClient, { tenantId, mealSessionId });
+      break;
+    }
+
+    case "egg": {
+      invalidateEggQueries(queryClient, { tenantId, mealSessionId });
+      break;
+    }
+    case "egg-rate": {
+      invalidateEggRateQueries(queryClient, { tenantId, mealSessionId });
+      break;
+    }
+    
     case "tenant": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.tenants.all,
@@ -53,40 +81,6 @@ export const invalidateRealtimeQueries = (
       break;
     }
 
-    case "meal-planning": {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPreference.myPreference(
-          tenantId,
-          mealSessionId,
-        ),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealRequests.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.mealEntries.all(tenantId, mealSessionId),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.monthlyCalculations.current(
-          tenantId,
-          mealSessionId,
-        ),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
-      });
-
-      break;
-    }
-
     case "meal-preference": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.mealPreference.myPreference(
@@ -102,7 +96,7 @@ export const invalidateRealtimeQueries = (
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
+        queryKey: queryKeys.mealPlannings.daily(tenantId, mealSessionId),
       });
 
       break;
@@ -126,7 +120,7 @@ export const invalidateRealtimeQueries = (
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
+        queryKey: queryKeys.mealPlannings.daily(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
@@ -153,7 +147,7 @@ export const invalidateRealtimeQueries = (
       });
 
       queryClient.invalidateQueries({
-        queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
+        queryKey: queryKeys.mealPlannings.daily(tenantId, mealSessionId),
       });
 
       queryClient.invalidateQueries({
@@ -228,25 +222,6 @@ export const invalidateRealtimeQueries = (
       break;
     }
 
-    case "deposit": {
-      invalidateDepositQueries(queryClient, {
-        tenantId,
-        mealSessionId,
-      });
-
-      break;
-    }
-
-    case "expense": {
-      invalidateExpenseQueries(queryClient, { tenantId, mealSessionId });
-      break;
-    }
-
-    case "egg": {
-      invalidateEggQueries(queryClient, { tenantId, mealSessionId });
-      break;
-    }
-
     case "party-expense": {
       queryClient.invalidateQueries({
         queryKey: queryKeys.partyExpenses.all(tenantId, mealSessionId),
@@ -263,11 +238,6 @@ export const invalidateRealtimeQueries = (
         queryKey: queryKeys.dashboard.all(tenantId, mealSessionId),
       });
 
-      break;
-    }
-
-    case "egg-rate": {
-      invalidateEggRateQueries(queryClient, { tenantId, mealSessionId });
       break;
     }
 

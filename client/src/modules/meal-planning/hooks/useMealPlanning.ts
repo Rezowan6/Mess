@@ -11,7 +11,7 @@ export const useMealPlanning = () => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
 
   return useQuery<IMealPlanningResponse>({
-    queryKey: queryKeys.mealPlanning.daily(tenantId, mealSessionId),
+    queryKey: queryKeys.mealPlannings.daily(tenantId, mealSessionId),
 
     queryFn: () => mealPlanningApi.getDailyMealPlanning(),
 
