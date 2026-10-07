@@ -1,72 +1,87 @@
-import { useLocation } from "react-router-dom";
+import { useCallback, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import { Table } from "@/shared/components/ui/Table";
-
+import { AnimatedNumber } from "@/shared/components/ui/AnimatedNumber";
 import { MemberHeader } from "@/shared/components/ui/MemberHeader";
-import { useState } from "react";
+import { Table } from "@/shared/components/ui/Table";
 import { AddEggModal } from "../components/AddEggModal";
+import { EggHistorykeleton } from "../components/skeleton/EggHistorySkeleton";
 import { eggHistoryColumns } from "../configs/egg.history.columns";
 import { useEggs } from "../hooks/useEggs";
 import type { IEgg } from "../types/egg.types";
 
 export const EggHistoryPage = () => {
-  const [selectedEgg, setSelectedEgg] = useState<IEgg | null>(null);
-  const [isEditOpen, setIsEditOpen] = useState(false);
+  const { memberId: memberIdParam } = useParams<{ memberId: string }>();
+  const parsedId = Number(memberIdParam);
+  const memberId = Number.isInteger(parsedId) ? parsedId : undefined;
 
-  const location = useLocation();
+  const [selectedEgg, setSelectedEgg] = useState<IEgg | null>(null);
 
   const { data, isPending, isError, refetch } = useEggs();
 
-  const memberId = location.state?.memberId ?? 0;
+  const handleEdit = useCallback((egg: IEgg) => setSelectedEgg(egg), []);
+  const handleCloseEdit = useCallback(() => setSelectedEgg(null), []);
 
-  const eggs: IEgg[] = data?.data ?? [];
-
-  const memberEggs: IEgg[] = eggs?.filter((egg) => egg.memberId === memberId);
-
-  const handleEdit = (egg: IEgg) => {
-    setSelectedEgg(egg);
-    setIsEditOpen(true);
-  };
-
+  // Called directly (not inside useMemo) because it may use hooks internally
   const columns = eggHistoryColumns(handleEdit);
 
-  const name = memberEggs[0]?.member?.name;
-  const avatar = memberEggs[0]?.member?.avatar;
+  const memberEggs = useMemo<IEgg[]>(() => {
+    if (memberId === undefined) return [];
 
-  const totalEggs = memberEggs.reduce(
-    (sum, item) => sum + Number(item.quantity),
-    0,
+    return (data?.data ?? []).filter((egg: any) => egg.memberId === memberId);
+  }, [data, memberId]);
+
+  const totalEggs = useMemo(
+    () =>
+      memberEggs.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0),
+    [memberEggs],
   );
+
+  if (isPending) {
+    return <EggHistorykeleton />;
+  }
+
+  if (memberId === undefined) {
+    return (
+      <p className="py-10 text-center text-sm text-theme-text-muted">
+        Member not found. Please open this page from the egg list.
+      </p>
+    );
+  }
+
+  const name = memberEggs[0]?.member?.name ?? "Unknown member";
+  const avatar = memberEggs[0]?.member?.avatar;
 
   return (
     <>
       <div className="space-y-4">
-        <MemberHeader
-          name={name}
-          avatar={avatar}
-          subtitle="Egg History"
-          rightContent={
-            <div className="text-right">
-              <p className="text-xs text-base-content/60">Total Eggs</p>
-              <p className="font-bold">{totalEggs}</p>
-            </div>
-          }
-        />
+        {!isError && (
+          <MemberHeader
+            name={name}
+            avatar={avatar}
+            subtitle="Egg History"
+            rightContent={
+              <div className="text-right">
+                <p className="text-xs text-theme-text-muted">Total Eggs</p>
+                <p className="font-bold tabular-nums text-theme-success">
+                  <AnimatedNumber value={totalEggs} duration={1000} />
+                </p>
+              </div>
+            }
+          />
+        )}
+
         <Table
           columns={columns}
           data={memberEggs}
-          loading={isPending}
           error={isError}
           refetch={refetch}
         />
       </div>
 
       <AddEggModal
-        isOpen={isEditOpen}
-        onClose={() => {
-          setIsEditOpen(false);
-          setSelectedEgg(null);
-        }}
+        isOpen={selectedEgg !== null}
+        onClose={handleCloseEdit}
         egg={selectedEgg ?? undefined}
       />
     </>

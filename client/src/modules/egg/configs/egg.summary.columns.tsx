@@ -2,14 +2,12 @@ import type { TableColumn } from "@/shared/components/ui/Table";
 
 import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
-import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
-import { useRBAC } from "@/shared/hooks/useRBAC";
 import type { IEgg } from "../types/egg.types";
+import { useEggTablePermissions } from "./egg.columns.permission";
 
 export const useEggSummaryColumns = (): TableColumn<IEgg>[] => {
-  const { can } = useRBAC();
-
+  const { canViewDetails } = useEggTablePermissions();
   const columns: TableColumn<IEgg>[] = [
     {
       key: "member",
@@ -25,12 +23,12 @@ export const useEggSummaryColumns = (): TableColumn<IEgg>[] => {
     },
   ];
 
-  if (can(PERMISSIONS.EXPENSE_CREATE)) {
+  if (canViewDetails) {
     columns.push({
       key: "details",
       title: "Details",
       render: (egg) => (
-        <ActionLink state={egg} to={`${ROUTES.EXPENSE}/egg/history`}>
+        <ActionLink to={`${ROUTES.EXPENSE}/egg/history/${egg.memberId}`}>
           Details
         </ActionLink>
       ),

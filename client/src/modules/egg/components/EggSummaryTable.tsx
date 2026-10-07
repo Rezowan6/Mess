@@ -4,7 +4,7 @@ import { EGG_MESSAGES } from "../configs/egg.message";
 import { useEggSummaryColumns } from "../configs/egg.summary.columns";
 import { useEggSummaryTable } from "../hooks/useEggSummaryTable";
 import { AddEggModal } from "./AddEggModal";
-import { EggTableSkeleton } from "./EggTableSkeleton";
+import { EggTableSkeleton } from "./skeleton/EggTableSkeleton";
 
 export const EggSummaryTable = () => {
   const {

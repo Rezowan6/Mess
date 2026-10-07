@@ -13,7 +13,7 @@ export const eggRoutes = {
       element: <EggManagementPage />,
     },
     {
-      path: "history",
+      path: "history/:memberId",
       element: <EggHistoryPage />,
     },
   ],

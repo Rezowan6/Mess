@@ -66,7 +66,9 @@ export const getExpensePageConfig = ({
   };
   const configKey = matchPath(`${ROUTES.EXPENSE}/rice/:riceId`, pathname)
     ? `${ROUTES.EXPENSE}/rice/history`
-    : pathname;
+    : matchPath(`${ROUTES.EXPENSE}/egg/history/:memberId`, pathname)
+      ? `${ROUTES.EXPENSE}/egg/history`
+      : pathname;
   return (
     pageConfig[configKey as keyof typeof pageConfig] ??
     pageConfig[ROUTES.EXPENSE]

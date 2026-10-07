@@ -74,8 +74,8 @@ export const DepositHistoryPage = () => {
         subtitle="Deposit History"
         rightContent={
           <div className="text-right">
-            <p className="text-xs text-base-content/60">Total Deposit</p>
-            <p className="font-bold text-success tabular-nums">
+            <p className="text-xs text-theme-text-muted">Total Deposit</p>
+            <p className="font-bold text-theme-success tabular-nums">
               <AnimatedNumber
                 value={totalDeposit}
                 prefix="৳ "
