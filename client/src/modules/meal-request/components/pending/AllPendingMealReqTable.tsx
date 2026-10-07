@@ -1,18 +1,25 @@
-import React, { useMemo } from "react";
 import { formatDate, getLocalDate } from "@/shared/utils/date.utils";
 import { groupBy } from "@/shared/utils/group.utils";
 import { sortBy } from "@/shared/utils/sort.utils";
+import React, { useMemo } from "react";
 import type { IMyPendingMealReq } from "../../types/mealRequest.types";
+import { AllPendingMealReqPageSkeleton } from "./AllPendingMealReqPageSkeleton";
 import { PendingMealReqGroup } from "./PendingMealReqGroup";
 
 interface AllPendingMealReqTableProps {
   requests: IMyPendingMealReq[];
+  isPending: boolean;
 }
 
-export const AllPendingMealReqTable: React.FC<
-  AllPendingMealReqTableProps
-> = ({ requests }) => {
+export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
+  requests,
+  isPending,
+}) => {
   const currentDate = formatDate(getLocalDate());
+
+  if (!isPending) {
+    return <AllPendingMealReqPageSkeleton />;
+  }
 
   const groups = useMemo(
     () =>
@@ -27,7 +34,7 @@ export const AllPendingMealReqTable: React.FC<
   );
 
   return (
-    <div className="max-h-[70vh] overflow-y-auto rounded-md bg-info/5">
+    <div className="max-h-[70vh] overflow-y-auto">
       {groups.map(({ date, items }) => (
         <PendingMealReqGroup
           key={date}

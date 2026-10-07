@@ -24,7 +24,7 @@ export const PendingMealReqRow = React.memo(
       request.status === "pending" && isCurrentMealReqDate;
 
     return (
-      <div className="flex items-center gap-3 px-2 py-3 transition-colors hover:bg-background">
+      <div className="flex items-center gap-3 px-2 py-3 transition-colors hover:bg-theme-background">
         <Avatar
           src={request.requester.avatar}
           alt={request.requester.name}
@@ -34,7 +34,7 @@ export const PendingMealReqRow = React.memo(
 
         <div className="min-w-0 flex-1">
           <div className="mb-2 flex items-center justify-between gap-3">
-            <h3 className="min-w-0 truncate text-[15px] font-semibold text-base-content">
+            <h3 className="min-w-0 truncate text-[15px] font-semibold text-theme-text-secondary">
               {request.requester.name}
             </h3>
 
@@ -46,7 +46,7 @@ export const PendingMealReqRow = React.memo(
           <MealBadges meals={request} />
 
           <div className="flex items-center justify-between">
-            <div className="my-2 flex flex-col items-center gap-1.5 text-[11px] text-base-content/50 sm:flex-row">
+            <div className="my-2 flex flex-col items-center gap-1.5 text-[11px] text-theme-text-muted sm:flex-row">
               <span>Created: {formatDateTime(request.createdAt)}</span>
               <span>Updated: {formatDateTime(request.updatedAt)}</span>
             </div>

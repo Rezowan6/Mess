@@ -19,10 +19,10 @@ export const PendingMealReqGroup: React.FC<PendingMealReqGroupProps> = ({
   const totalMembers = items.length;
 
   return (
-    <div>
-      <div className="sticky top-0 z-10 flex items-center gap-6 border-b border-info bg-background px-3 py-2">
+    <>
+      <div className="sticky top-0 z-10 flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-theme-border bg-theme-background/90 py-2 backdrop-blur-md">
         <Badge
-          variant="soft-success"
+          variant="warning"
           size="sm"
           leftIcon={<CalendarDays />}
           className="min-w-28 tabular-nums"
@@ -31,7 +31,7 @@ export const PendingMealReqGroup: React.FC<PendingMealReqGroupProps> = ({
         </Badge>
 
         <Badge
-          variant="soft-secondary"
+          variant="info"
           size="sm"
           leftIcon={<Users />}
           className="min-w-28 tabular-nums"
@@ -40,7 +40,7 @@ export const PendingMealReqGroup: React.FC<PendingMealReqGroupProps> = ({
         </Badge>
       </div>
 
-      <div className="divide-y divide-success/40">
+      <div className="divide-y divide-theme-border">
         {items.map((request) => (
           <PendingMealReqRow
             key={request.id}
@@ -49,6 +49,6 @@ export const PendingMealReqGroup: React.FC<PendingMealReqGroupProps> = ({
           />
         ))}
       </div>
-    </div>
+    </>
   );
 };

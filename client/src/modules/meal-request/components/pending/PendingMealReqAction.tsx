@@ -34,9 +34,9 @@ export const PendingMealReqAction = ({
       message: (
         <>
           Are you sure you want to approve{" "}
-          <strong className="text-success">{request.requester.name}</strong>
+          <strong className="text-theme-success">{request.requester.name}</strong>
           's meal request for{" "}
-          <strong className="text-success">{formatDate(request.date)}</strong>?
+          <strong className="text-theme-success">{formatDate(request.date)}</strong>?
         </>
       ),
       onConfirm: async () => {
@@ -56,8 +56,8 @@ export const PendingMealReqAction = ({
       message: (
         <>
           Are you sure you want to reject the meal request of{" "}
-          <strong className="text-error">{request.requester.name}</strong> for{" "}
-          <strong className="text-error">{formatDate(request.date)}</strong>?
+          <strong className="text-theme-danger">{request.requester.name}</strong> for{" "}
+          <strong className="text-theme-danger">{formatDate(request.date)}</strong>?
         </>
       ),
       onConfirm: async () => {
@@ -77,8 +77,8 @@ export const PendingMealReqAction = ({
       message: (
         <>
           Are you sure you want to permanently delete the meal request of{" "}
-          <strong className="text-error">{request.requester.name}</strong> for{" "}
-          <strong className="text-error">{formatDate(request.date)}</strong>?
+          <strong className="text-theme-danger">{request.requester.name}</strong> for{" "}
+          <strong className="text-theme-danger">{formatDate(request.date)}</strong>?
         </>
       ),
       onConfirm: async () => {
@@ -108,7 +108,7 @@ export const PendingMealReqAction = ({
       disabledReason: "Future date requests cannot be approved yet",
       disabled: isApprovedDisabled,
       icon: <Check size={15} />,
-      style: "text-success",
+      style: "text-theme-success",
       onClick: () => handleApprove(request),
     },
     {
@@ -116,7 +116,7 @@ export const PendingMealReqAction = ({
       tooltip: "Reject Request",
       disabledReason: "Today's requests cannot be rejected",
       disabled: isRejectDisabled,
-      style: "text-warning",
+      style: "text-theme-warning",
       icon: <X size={15} />,
       onClick: () => handleReject(request),
     },
@@ -125,7 +125,7 @@ export const PendingMealReqAction = ({
       tooltip: "Delete Request",
       disabledReason: "Today's pending requests cannot be deleted",
       disabled: isDeleteDisabled,
-      style: "text-error",
+      style: "text-theme-danger",
       icon: <Trash2 size={17} />,
       onClick: () => handleDelete(request),
     },
