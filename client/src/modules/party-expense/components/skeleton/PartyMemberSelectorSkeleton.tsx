@@ -7,13 +7,13 @@ export const PartyMemberSelectorSkeleton = () => {
 
       <Skeleton className="h-5 w-28" />
 
-      <div className="max-h-60 space-y-2 overflow-y-auto rounded-md border border-info p-3">
+      <div className="max-h-60 space-y-2 overflow-y-auto rounded-theme-md border border-theme-info p-3">
         {[1, 2, 3, 4, 5].map((item) => (
           <div
             key={item}
-            className="flex items-center gap-3 rounded-lg bg-info/10 p-2"
+            className="flex items-center gap-3 rounded-theme-lg bg-theme-info-soft p-2"
           >
-            <Skeleton className="h-5 w-5 rounded" />
+            <Skeleton className="h-5 w-5 rounded-theme-sm" />
 
             <div className="space-y-1">
               <Skeleton className="h-4 w-28" />

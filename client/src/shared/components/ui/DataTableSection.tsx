@@ -97,7 +97,7 @@ export const DataTableSection = <T,>({
         )}
       </div>
 
-      {!isPending ? (
+      {isPending ? (
         skeleton
       ) : (
         <>

@@ -1,42 +1,24 @@
-// File: PartyExpenseTableSkeleton.tsx
-
-import { Skeleton } from "@/shared/components/feedback/Skeleton";
+import { DataTableSkeleton } from "@/shared/components/feedback/DataTableSkeleton";
+import type { TableSkeletonColumn } from "@/shared/components/feedback/TableSkeleton";
+import { usePartyExpenseTablePermissions } from "../../configs/partyExpense.columns.permission";
 
 export const PartyExpenseTableSkeleton = () => {
-  return (
-    <div className="overflow-hidden rounded-xl border border-base-300">
-      <table className="table">
-        <thead className="bg-base-200">
-          <tr>
-            <th>Date</th>
-            <th>Amount</th>
-            <th>Description</th>
-            <th>Members</th>
-          </tr>
-        </thead>
+  const { canViewActions } = usePartyExpenseTablePermissions();
 
-        <tbody>
-          {[1, 2, 3, 4, 5].map((item) => (
-            <tr key={item} className="odd:bg-base-100 even:bg-base-200/30">
-              <td>
-                <Skeleton className="h-4 w-28" />
-              </td>
+  const columns: TableSkeletonColumn[] = [
+    { key: "date", title: "Date", skeleton: "h-4 w-28" },
+    { key: "amount", title: "Total Amount", skeleton: "h-4 w-20" },
+    { key: "description", title: "Description", skeleton: "h-4 w-40" },
+    { key: "members", title: "Members", skeleton: "h-9 w-24" },
+  ];
 
-              <td>
-                <Skeleton className="h-4 w-20" />
-              </td>
+  if (canViewActions) {
+    columns.push({
+      key: "actions",
+      title: "Actions",
+      skeleton: ["h-9 w-20 rounded-theme-lg", "h-9 w-20 rounded-theme-lg"],
+    });
+  }
 
-              <td>
-                <Skeleton className="h-4 w-40" />
-              </td>
-
-              <td>
-                <Skeleton className="h-4 w-16" />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+  return <DataTableSkeleton columns={columns} rows={5} />;
 };

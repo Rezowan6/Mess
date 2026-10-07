@@ -2,17 +2,16 @@
 
 import { ActionLink } from "@/shared/components/ui/ActionLink";
 import type { TableColumn } from "@/shared/components/ui/Table";
-import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
-import { useRBAC } from "@/shared/hooks/useRBAC";
 import { formatDate } from "@/shared/utils/date.utils";
-import type { IPartyExpense } from "../types/partyExpense.types";
 import { PartyExpenseActions } from "../components/action/PartyExpenseActions";
+import type { IPartyExpense } from "../types/partyExpense.types";
+import { usePartyExpenseTablePermissions } from "./partyExpense.columns.permission";
 
 export const usePartyExpenseColumns = (
   onEdit: (expense: IPartyExpense) => void,
 ): TableColumn<IPartyExpense>[] => {
-  const { can } = useRBAC();
+  const { canViewActions } = usePartyExpenseTablePermissions();
   const columns: TableColumn<IPartyExpense>[] = [
     {
       key: "date",
@@ -40,7 +39,7 @@ export const usePartyExpenseColumns = (
     },
   ];
 
-  if (can(PERMISSIONS.EXPENSE_UPDATE) || can(PERMISSIONS.EXPENSE_DELETE)) {
+  if (canViewActions) {
     columns.push({
       key: "actions",
       title: "Actions",
