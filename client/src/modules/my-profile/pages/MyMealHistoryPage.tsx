@@ -3,9 +3,7 @@ import { sortByDateDesc } from "@/shared/utils/sort.utils";
 import { MonthlyMealHistoryTable } from "../components/MonthlyMealHistoryTable";
 
 export const MyMealHistoryPage = () => {
-  const { data } = useMyMealEntries();
-
-  console.log(data)
+  const { data, isPending } = useMyMealEntries();
 
   const meals = data?.data?.meals ?? [];
 
@@ -14,6 +12,7 @@ export const MyMealHistoryPage = () => {
   return (
     <MonthlyMealHistoryTable
       meals={sortedMeals}
+      isPending={isPending}
       totalMeal={data?.data?.totalMeal ?? 0}
     />
   );

@@ -2,8 +2,8 @@ import { useLocation } from "react-router-dom";
 
 import { Skeleton } from "@/shared/components/feedback/Skeleton";
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
-import { MyProfileOverviewSkeleton } from "./MyProfileOverviewSkeleton";
 import { getMyProfilePageConfig } from "../../configs/myProfile.page.config";
+import { MyProfileOverviewSkeleton } from "./MyProfileOverviewSkeleton";
 
 const TAB_COUNT = 4;
 
@@ -16,7 +16,7 @@ export const MyProfilePageSkeleton = () => {
     <>
       <div className="space-y-4">
         {/* Header */}
-        <div className="rounded-2xl border border-info/30 p-5 shadow-lg shadow-info/20">
+        <div className="rounded-theme-xl border border-theme-border bg-theme-card p-5 shadow-theme-lg">
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center">
             <Skeleton className="h-20 w-20 shrink-0 rounded-full" />
 
@@ -34,7 +34,7 @@ export const MyProfilePageSkeleton = () => {
         </div>
 
         {/* Route tabs */}
-        <div className="mb-3 flex w-fit max-w-full gap-1 overflow-hidden rounded-full bg-success/10 p-1">
+        <div className="mb-3 flex w-fit max-w-full gap-1 overflow-hidden rounded-full bg-theme-success-soft p-1">
           {Array.from({ length: TAB_COUNT }, (_, index) => (
             <Skeleton
               key={index}

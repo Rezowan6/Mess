@@ -6,10 +6,12 @@ import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
 import type { IMealEntry } from "@/modules/meal-entry/types/mealEntry.types";
 import { useMonthlyMealHistoryColumns } from "../configs/monthlyMealHistory.columns";
 import { MONTHLY_MEAL_HISTORY_MESSAGES } from "../configs/monthlyMealHistory.messages";
+import { MyMealHistorySkeleton } from "./skeleton/MyMealHistorySkeleton";
 
 interface Props {
   meals: IMealEntry[];
   totalMeal: number;
+  isPending: boolean;
 }
 
 const PAGE_LIMIT = 10;
@@ -17,6 +19,7 @@ const PAGE_LIMIT = 10;
 export const MonthlyMealHistoryTable = ({
   meals,
   totalMeal,
+  isPending,
 }: Props) => {
   const { page, search, handleSearch, handlePage } =
     useTableSearchParams();
@@ -59,11 +62,11 @@ export const MonthlyMealHistoryTable = ({
       columns={columns}
       data={paginatedMeals}
       meta={meta}
-      isPending={false}
+      isPending={isPending}
       isError={false}
       refetch={() => {}}
       message={MONTHLY_MEAL_HISTORY_MESSAGES}
-      skeleton={null}
+      skeleton={<MyMealHistorySkeleton />}
       search={search}
       onSearch={handleSearch}
       onPageChange={handlePage}

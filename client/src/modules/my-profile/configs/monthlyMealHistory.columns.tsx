@@ -42,8 +42,7 @@ export const useMonthlyMealHistoryColumns =
         render: (row) =>
           Number(row.breakfast) +
           Number(row.lunch) +
-          Number(row.dinner) +
-          Number(row.guestMeal),
+          Number(row.dinner)
       },
     ];
 
