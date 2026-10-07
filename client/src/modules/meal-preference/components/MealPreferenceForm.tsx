@@ -71,13 +71,13 @@ export const MealPreferenceForm = () => {
           <p className="text-text-muted">
             You haven't set your meal preference yet.
           </p>
-          <p className="text-xs text-success">
+          <p className="text-xs text-theme-success">
             Save your preference to enable automatic meal requests.
           </p>
         </div>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="my-4 bg-info/5 p-4 rounded-md">
+        <div className="my-4">
           {mealFields.map((meal) => (
             <MealCounterField
               key={meal.name}

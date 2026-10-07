@@ -14,7 +14,7 @@ export const MealRequestSection = () => {
   return (
     <section className="mt-6 rounded-theme-xl shadow-theme-sm">
       <div className="space-y-4">
-        <div className="p-4 flex  justify-between">
+        <div className="flex  justify-between">
           <div>
             <h2 className="text-lg font-semibold text-theme-text">
               My Meal Requests
