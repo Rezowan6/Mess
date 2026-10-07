@@ -12,7 +12,7 @@ export const NotificationSkeleton = ({
       {Array.from({ length: count }, (_, index) => (
         <div
           key={index}
-          className="flex items-start gap-3 border-b border-info/30 p-4 last:border-0"
+          className="flex items-start gap-3 border-b border-theme-border p-4 last:border-0"
         >
           {/* Status indicator */}
           <Skeleton className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full" />
@@ -28,7 +28,7 @@ export const NotificationSkeleton = ({
               </div>
 
               {/* Delete button */}
-              <Skeleton className="h-8 w-8 shrink-0 rounded-md" />
+              <Skeleton className="h-8 w-8 shrink-0 rounded-theme-md" />
             </div>
 
             {/* New badge */}

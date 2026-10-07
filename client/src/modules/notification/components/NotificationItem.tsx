@@ -24,16 +24,16 @@ export const NotificationItem = ({ notification }: Props) => {
     <div
       onClick={handleMarkAsRead}
       className={clsx(
-        "group flex items-start gap-3 border-b border-info/30 p-4 last:border-0",
+        "group flex items-start gap-3 border-b border-theme-border p-4 last:border-0",
         "transition-colors duration-200",
         isUnread
-          ? "cursor-pointer bg-success/5 hover:bg-success/10"
-          : "bg-transparent hover:bg-info/10",
+          ? "cursor-pointer bg-theme-success-soft hover:bg-theme-card-hover"
+          : "bg-transparent hover:bg-theme-info-soft",
       )}
     >
       <StatusIndicator
         active={isUnread}
-        activeClassName="bg-success"
+        activeClassName="bg-theme-success"
         inactiveClassName="bg-transparent"
       />
 
@@ -44,14 +44,14 @@ export const NotificationItem = ({ notification }: Props) => {
               className={clsx(
                 "wrap-break-word text-sm",
                 isUnread
-                  ? "font-semibold text-base-content"
-                  : "font-medium text-base-content/70",
+                  ? "font-semibold text-theme-text"
+                  : "font-medium text-theme-text-secondary",
               )}
             >
               {notification.title}
             </h4>
 
-            <p className="mt-1 wrap-break-word text-sm leading-5 text-base-content/60">
+            <p className="mt-1 wrap-break-word text-sm leading-5 text-theme-text-muted">
               {notification.message}
             </p>
           </div>
@@ -63,7 +63,7 @@ export const NotificationItem = ({ notification }: Props) => {
             onClick={handleDelete}
             disabled={isDeleting}
             className={clsx(
-              "shrink-0 text-error",
+              "shrink-0 text-theme-danger",
               // Always visible on touch screens, revealed on hover for desktop
               "sm:opacity-0 sm:group-hover:opacity-100 focus-visible:opacity-100",
             )}
