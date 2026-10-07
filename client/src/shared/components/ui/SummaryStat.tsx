@@ -87,7 +87,7 @@ export const SummaryStat = ({
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-xl px-4 py-2 sm:py-1",
+        "flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-xl px-4 py-2",
         styles.box,
         className,
       )}

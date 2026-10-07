@@ -9,6 +9,20 @@ export const sortByDateDesc = <T>(
   );
 };
 
-export const sortByIdAsc = <T extends { id: number }>(items: T[]): T[] => {
-  return [...items].sort((a, b) => a.id - b.id);
+export const sortBy = <T>(
+  items: readonly T[],
+  getValue: (item: T) => number | string,
+  order: "asc" | "desc" = "asc",
+): T[] => {
+  const direction = order === "asc" ? 1 : -1;
+
+  return [...items].sort((a, b) => {
+    const x = getValue(a);
+    const y = getValue(b);
+
+    if (typeof x === "number" && typeof y === "number") {
+      return (x - y) * direction;
+    }
+    return String(x).localeCompare(String(y)) * direction;
+  });
 };

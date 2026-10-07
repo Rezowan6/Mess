@@ -89,29 +89,47 @@ export const PendingMealReqAction = ({
     });
   };
 
+  const actions = [
+    {
+      key: "approve",
+      tooltip: "Approve Request",
+      disabledReason: "Future date requests cannot be approved yet",
+      disabled: isApprovedDisabled,
+      icon: <Check size={15} />,
+      onClick: () => handleApprove(request),
+    },
+    {
+      key: "reject",
+      tooltip: "Reject Request",
+      disabledReason: "Today's requests cannot be rejected",
+      disabled: isRejectDisabled,
+      icon: <X size={15} />,
+      onClick: () => handleReject(request),
+    },
+    {
+      key: "delete",
+      tooltip: "Delete Request",
+      disabledReason: "Today's pending requests cannot be deleted",
+      disabled: isDeleteDisabled,
+      icon: <Trash2 size={17} />,
+      onClick: () => handleDelete(request),
+    },
+  ];
+
   return (
-    <div className="flex justify-end items-center gap-2">
-      <Button
-        unstyled
-        disabled={isApprovedDisabled}
-        onClick={() => handleApprove(request)}
-        leftIcon={<Check size={15} />}
-      />
-
-      <Button
-        unstyled
-        disabled={isRejectDisabled}
-        leftIcon={<X size={15} />}
-        onClick={() => handleReject(request)}
-      />
-
-      <Button
-        unstyled
-        disabled={isDeleteDisabled}
-        className="flex items-center justify-center"
-        leftIcon={<Trash2 size={17} />}
-        onClick={() => handleDelete(request)}
-      />
+    <div className="flex items-center gap-4">
+      {actions.map(
+        ({ key, tooltip, disabledReason, disabled, icon, onClick }) => (
+          <Button
+            key={key}
+            unstyled
+            disabled={disabled}
+            tooltip={disabled ? disabledReason : tooltip}
+            leftIcon={icon}
+            onClick={onClick}
+          />
+        ),
+      )}
     </div>
   );
 };

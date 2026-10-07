@@ -29,7 +29,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
       tooltip,
 
-      tooltipPlacement = "top",
+      tooltipPlacement = "left",
 
       permission,
 
