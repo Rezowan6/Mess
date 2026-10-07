@@ -3,7 +3,7 @@ import { MealRequestHistorySkeleton } from "../components/history/MealRequestHis
 import { useMyPendingMealReq } from "../hooks/useMyPendingMealRequests";
 
 export const MealRequestSection = () => {
-  const { data, isPending, } = useMyPendingMealReq();
+  const { data, isPending } = useMyPendingMealReq();
 
   if (isPending) {
     return <MealRequestHistorySkeleton />;
@@ -12,14 +12,14 @@ export const MealRequestSection = () => {
   const requests = data?.data ?? [];
 
   return (
-    <section className="mt-6 rounded-xl shadow-sm">
+    <section className="mt-6 rounded-theme-xl shadow-theme-sm">
       <div className="space-y-4">
         <div className="p-4 flex  justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-base-content">
+            <h2 className="text-lg font-semibold text-theme-text">
               My Meal Requests
             </h2>
-            <p className="mt-1 text-sm text-base-content/60">
+            <p className="mt-1 text-sm text-theme-text-muted">
               Your pending meal requests
             </p>
           </div>

@@ -31,8 +31,8 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
       message: (
         <>
           Are you sure you want to permanently delete the meal request of{" "}
-          <strong className="text-error">{request.requester.name}</strong> for{" "}
-          <strong className="text-error">{formatDate(request.date)}</strong>?
+          <strong className="text-theme-danger">{request.requester.name}</strong> for{" "}
+          <strong className="text-theme-danger">{formatDate(request.date)}</strong>?
         </>
       ),
       onConfirm: async () => {
@@ -51,9 +51,9 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
     return <EmptyState title={title} description={description} />;
   }
   return (
-    <div className="max-h-92 rounded-md bg-info/5 overflow-y-auto">
+    <div className="max-h-92 rounded-theme-md bg-theme-brand-soft overflow-y-auto">
       <div className="flex-1 overflow-y-auto">
-        <div className="divide-y divide-success/40">
+        <div className="divide-y divide-theme-border">
           {requests.map((request) => {
             const isCurrentMealReqDate =
               formatDate(request.date) === formatDate(getLocalDate());
@@ -64,11 +64,11 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
             return (
               <div
                 key={request.id}
-                className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-background"
+                className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-theme-background"
               >
                 <div className="min-w-0 flex-1">
                   <div className="mb-1 flex items-center justify-between  gap-3">
-                    <h3 className=" flex items-center gap-1.5 truncate text-[15px] font-semibold text-base-content">
+                    <h3 className=" flex items-center gap-1.5 truncate text-[15px] font-semibold text-theme-text">
                       <CalendarDays size={13} />
                       <span>{formatDate(request.date)}</span>
                     </h3>
@@ -87,7 +87,7 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                             ? undefined
                             : "Delete Request"
                       }
-                      className="text-error"
+                      className="text-theme-danger"
                       leftIcon={<Trash2 />}
                       onClick={() => handleDelete(request)}
                     />
@@ -95,8 +95,8 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                   {/* meal Badge */}
                   <MealBadges meals={request} />
 
-                  <div className="mb-2 mt-2 flex gap-1 text-xs text-base-content/60 sm:flex-row sm:items-center sm:gap-2">
-                    <div className="flex  items-center gap-1.5 text-[11px] text-base-content/50">
+                  <div className="mb-2 mt-2 flex gap-1 text-xs text-theme-text-muted sm:flex-row sm:items-center sm:gap-2">
+                    <div className="flex  items-center gap-1.5 text-[11px]">
                       <span>Created: {formatDateTime(request.createdAt)}</span>/
                       <span>Updated: {formatDateTime(request.updatedAt)}</span>
                     </div>

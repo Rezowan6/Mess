@@ -121,7 +121,7 @@ export const AddRicePaymentModal = ({
       title={isEdit ? "Edit Rice Payment" : "Add Rice Payment"}
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        <div className="rounded-lg bg-info/10 p-3 text-sm">
+        <div className="rounded-theme-md bg-theme-info-soft p-3 text-sm">
           <div className="flex justify-between">
             <span>Supplier</span>
 
@@ -131,7 +131,7 @@ export const AddRicePaymentModal = ({
           <div className="mt-2 flex justify-between">
             <span>{isEdit ? "Maximum allowed" : "Remaining due"}</span>
 
-            <span className="font-semibold text-error">
+            <span className="font-semibold text-theme-danger">
               {formatTaka(maxAmount)}
             </span>
           </div>

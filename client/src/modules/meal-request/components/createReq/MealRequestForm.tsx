@@ -58,40 +58,40 @@ export const MealRequestForm = ({ onClose }: { onClose: () => void }) => {
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Date Range */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 bg-info/5 px-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 px-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-base-content">
+            <label className="mb-1 block text-sm font-medium text-theme-text-muted">
               From Date{" "}
-              <span className="text-base-content/50">(Month / Day / Year)</span>
+              <span >(Month / Day / Year)</span>
             </label>
 
             <Input
               type="date"
               placeholder="mm / dd / yyyy"
               {...register("fromDate")}
-              className="w-full"
+              className="w-full text-theme-text-muted"
               error={errors?.fromDate?.message}
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-base-content">
+            <label className="mb-1 block text-sm font-medium text-theme-text-muted">
               To Date{" "}
-              <span className="text-base-content/50">(Month / Day / Year)</span>
+              <span className="">(Month / Day / Year)</span>
             </label>
 
             <Input
               type="date"
               placeholder="mm / dd / yyyy"
               {...register("toDate")}
-              className=" w-full"
+              className=" w-full text-theme-text-muted"
               error={errors?.toDate?.message}
             />
           </div>
         </div>
 
         {/* Meal Selection */}
-        <div className="rounded-md bg-info/5 p-4">
+       
           {mealFields.map((meal) => (
             <MealCounterField
               key={meal.name}
@@ -102,7 +102,6 @@ export const MealRequestForm = ({ onClose }: { onClose: () => void }) => {
               error={errors[meal.name]?.message}
             />
           ))}
-        </div>
 
         {/* Submit */}
         <div className="flex justify-end gap-2 pt-4">

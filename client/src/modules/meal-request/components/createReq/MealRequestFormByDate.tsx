@@ -46,36 +46,34 @@ export const MealRequestFormByDate = ({ onClose }: { onClose: () => void }) => {
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Date Range */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 bg-info/5 px-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 px-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-base-content">
-              Date{" "}
-              <span className="text-base-content/50">(Month / Day / Year)</span>
+            <label className="mb-1 block text-sm font-medium text-theme-text-muted">
+              Date <span>(Month / Day / Year)</span>
             </label>
 
             <Input
               type="date"
               placeholder="mm / dd / yyyy"
               {...register("date")}
-              className="w-full"
+              className="w-full text-theme-text-muted"
               error={errors?.date?.message}
             />
           </div>
         </div>
 
         {/* Meal Selection */}
-        <div className="rounded-md bg-info/5 p-4">
-          {mealFields.map((meal) => (
-            <MealCounterField
-              key={meal.name}
-              name={meal.name}
-              label={meal.label}
-              control={control}
-              max={mealSetting?.maxMealPerRequest}
-              error={errors[meal.name]?.message}
-            />
-          ))}
-        </div>
+
+        {mealFields.map((meal) => (
+          <MealCounterField
+            key={meal.name}
+            name={meal.name}
+            label={meal.label}
+            control={control}
+            max={mealSetting?.maxMealPerRequest}
+            error={errors[meal.name]?.message}
+          />
+        ))}
 
         {/* Submit */}
         <div className="flex justify-end gap-2 pt-4">

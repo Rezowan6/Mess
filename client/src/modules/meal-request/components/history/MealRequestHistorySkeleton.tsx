@@ -8,13 +8,14 @@ export const MealRequestHistorySkeleton = () => {
         <Skeleton className="h-5 w-48" />
         <Skeleton className="h-3 w-64" />
       </div>
+
       {/* Request list */}
-      <div className="h-125 overflow-hidden bg-info/5 px-4">
-        <div className="divide-y divide-success/40">
+      <div className="h-125 overflow-hidden px-4">
+        <div className="divide-y divide-theme-border">
           {[1, 2, 3, 4].map((item) => (
             <div key={item} className="flex items-center gap-3 px-4 py-4">
               {/* Avatar */}
-              <Skeleton className="h-12 w-12 shrink-0 rounded-full" />
+              <Skeleton className="h-12 w-12 shrink-0 rounded-theme-xl" />
 
               <div className="min-w-0 flex-1 space-y-2">
                 {/* Name + status */}
@@ -25,9 +26,9 @@ export const MealRequestHistorySkeleton = () => {
 
                 {/* Meal badges */}
                 <div className="flex gap-2">
-                  <Skeleton className="h-6 w-24 rounded-md" />
-                  <Skeleton className="h-6 w-20 rounded-md" />
-                  <Skeleton className="h-6 w-20 rounded-md" />
+                  <Skeleton className="h-6 w-24 rounded-theme-sm" />
+                  <Skeleton className="h-6 w-20 rounded-theme-sm" />
+                  <Skeleton className="h-6 w-20 rounded-theme-sm" />
                 </div>
 
                 {/* Date */}

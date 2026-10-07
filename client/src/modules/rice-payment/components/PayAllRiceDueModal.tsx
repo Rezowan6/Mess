@@ -110,23 +110,23 @@ export const PayAllRiceDueModal = ({
       title="Pay All Rice Due"
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        <div className="rounded-lg bg-info/10 p-3 text-sm">
-          <div className="flex justify-between">
+        <div className="rounded-theme-md bg-theme-info-soft p-3 text-sm">
+          <div className="flex justify-between text-theme-text-muted">
             <span>Total outstanding due</span>
 
-            <span className="font-semibold text-error">
+            <span className="font-semibold text-theme-danger">
               {formatTaka(totalDue)}
             </span>
           </div>
 
-          <div className="mt-2 flex justify-between">
+          <div className="mt-2 flex justify-between text-theme-text-muted">
             <span>Purchases with due</span>
 
-            <span className="font-medium">{dueCount}</span>
+            <span className="font-medium text-theme-text">{dueCount}</span>
           </div>
         </div>
 
-        <div className="rounded-lg bg-warning/10 p-3 text-sm text-warning">
+        <div className="rounded-theme-md bg-theme-danger-soft p-3 text-sm text-theme-danger">
           This will settle <strong>all outstanding rice dues</strong> for the
           current meal session. A separate payment will be recorded for each
           purchase.
