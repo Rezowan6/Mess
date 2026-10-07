@@ -2,6 +2,7 @@ import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { Badge } from "@/shared/components/ui/Badge";
 import { Button } from "@/shared/components/ui/Button";
 import { MealBadges } from "@/shared/components/ui/MealBadges";
+import { useIsMobile } from "@/shared/hooks/useIsMobile";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { formatDate, getLocalDate } from "@/shared/utils/date.utils";
 import { formatDateTime } from "@/shared/utils/time";
@@ -18,6 +19,7 @@ interface MealRequestHistoryProps {
 export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
   requests,
 }) => {
+  const isMobile = useIsMobile();
   const openConfirm = useConfirmStore((state) => state.openConfirm);
 
   const setLoading = useConfirmStore((state) => state.setLoading);
@@ -81,7 +83,9 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                       tooltip={
                         isDeleteDisabled
                           ? "Today's pending requests cannot be deleted"
-                          : "Delete Request"
+                          : isMobile
+                            ? undefined
+                            : "Delete Request"
                       }
                       className="text-error"
                       leftIcon={<Trash2 />}

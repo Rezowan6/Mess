@@ -1,4 +1,5 @@
 import { Button } from "@/shared/components/ui/Button";
+import { useIsMobile } from "@/shared/hooks/useIsMobile";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { formatDate } from "@/shared/utils/date.utils";
 import { Check, Trash2, X } from "lucide-react";
@@ -24,6 +25,8 @@ export const PendingMealReqAction = ({
   const approvedMealRequest = useApprovedMealReq();
   const rejectMealRequest = useRejectMealReq();
   const deleteMealRequest = useParmanetDeleteMealReq();
+
+  const isMobile = useIsMobile();
 
   const handleApprove = (request: IMyPendingMealReq) => {
     openConfirm({
@@ -89,6 +92,15 @@ export const PendingMealReqAction = ({
     });
   };
 
+  const getTooltip = (
+    disabled: boolean,
+    tooltip: string,
+    disabledReason: string,
+  ): string | undefined => {
+    if (disabled) return disabledReason; // mobile ও desktop দুই জায়গাতেই
+    return isMobile ? undefined : tooltip; // enabled হলে শুধু desktop এ
+  };
+
   const actions = [
     {
       key: "approve",
@@ -127,7 +139,7 @@ export const PendingMealReqAction = ({
             key={key}
             unstyled
             disabled={disabled}
-            tooltip={disabled ? disabledReason : tooltip}
+            tooltip={getTooltip(disabled, tooltip, disabledReason)}
             leftIcon={icon}
             onClick={onClick}
             className={style}
