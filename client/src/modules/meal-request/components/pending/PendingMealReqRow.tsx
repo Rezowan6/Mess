@@ -1,18 +1,17 @@
 import { Avatar } from "@/shared/components/ui/Avatar";
 import { Badge } from "@/shared/components/ui/Badge";
+import { MealBadges } from "@/shared/components/ui/MealBadges";
 import { formatDate } from "@/shared/utils/date.utils";
 import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
 import { formatDateTime } from "@/shared/utils/time";
 import React from "react";
 import type { IMyPendingMealReq } from "../../types/mealRequest.types";
 import { PendingMealReqAction } from "./PendingMealReqAction";
-import { MEAL_BADGES } from "./AllPendingMealReq.config";
 
 interface PendingMealReqRowProps {
   request: IMyPendingMealReq;
   currentDate: string;
 }
-
 
 export const PendingMealReqRow = React.memo(
   ({ request, currentDate }: PendingMealReqRowProps) => {
@@ -44,13 +43,7 @@ export const PendingMealReqRow = React.memo(
             </Badge>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            {MEAL_BADGES.map(({ key, label, variant }) => (
-              <Badge key={key} variant={variant} size="sm">
-                {label}: {request[key]}
-              </Badge>
-            ))}
-          </div>
+          <MealBadges meals={request} />
 
           <div className="flex items-center justify-between">
             <div className="my-2 flex flex-col items-center gap-1.5 text-[11px] text-base-content/50 sm:flex-row">

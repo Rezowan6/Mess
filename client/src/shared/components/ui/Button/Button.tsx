@@ -63,7 +63,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           "disabled:opacity-50 disabled:pointer-events-none disabled:shadow-none",
 
           unstyled
-            ? "inline-flex items-center justify-center gap-2 rounded-md bg-info/20 p-2  hover:bg-info/40"
+            ? "inline-flex items-center justify-center"
             : [
                 variantClasses[variant],
                 "flex items-center justify-center gap-2 rounded-full py-2 px-6 text-sm ",

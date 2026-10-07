@@ -1,14 +1,15 @@
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { Badge } from "@/shared/components/ui/Badge";
 import { Button } from "@/shared/components/ui/Button";
+import { MealBadges } from "@/shared/components/ui/MealBadges";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { formatDate, getLocalDate } from "@/shared/utils/date.utils";
 import { formatDateTime } from "@/shared/utils/time";
 import { CalendarDays, Trash2 } from "lucide-react";
 import React from "react";
+import { MEAL_REQUEST_HISTORY_MESSAGES } from "../../configs/mealRequestHistory.message";
 import { useParmanetDeleteMealReq } from "../../hooks/useParmanetDeleteMealReq";
 import type { IMyPendingMealReq } from "../../types/mealRequest.types";
-import { MEAL_REQUEST_HISTORY_MESSAGES } from "../../configs/mealRequestHistory.message";
 
 interface MealRequestHistoryProps {
   requests: IMyPendingMealReq[];
@@ -77,23 +78,19 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                     <Button
                       unstyled
                       disabled={isDeleteDisabled}
-                      className="flex items-center justify-center"
+                      tooltip={
+                        isDeleteDisabled
+                          ? "Today's pending requests cannot be deleted"
+                          : "Delete Request"
+                      }
+                      className="text-error"
                       leftIcon={<Trash2 />}
                       onClick={() => handleDelete(request)}
                     />
                   </div>
+                  {/* meal Badge */}
+                  <MealBadges meals={request} />
 
-                  <div className="flex items-center gap-2">
-                    <Badge variant="soft-success" size="sm">
-                      Breakfast: {request.breakfast}
-                    </Badge>
-                    <Badge variant="soft-info" size="sm">
-                      Lunch: {request.lunch}
-                    </Badge>
-                    <Badge variant="soft-secondary" size="sm">
-                      Dinner: {request.dinner}
-                    </Badge>
-                  </div>
                   <div className="mb-2 mt-2 flex gap-1 text-xs text-base-content/60 sm:flex-row sm:items-center sm:gap-2">
                     <div className="flex  items-center gap-1.5 text-[11px] text-base-content/50">
                       <span>Created: {formatDateTime(request.createdAt)}</span>/

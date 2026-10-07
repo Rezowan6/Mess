@@ -96,6 +96,7 @@ export const PendingMealReqAction = ({
       disabledReason: "Future date requests cannot be approved yet",
       disabled: isApprovedDisabled,
       icon: <Check size={15} />,
+      style: "text-success",
       onClick: () => handleApprove(request),
     },
     {
@@ -103,6 +104,7 @@ export const PendingMealReqAction = ({
       tooltip: "Reject Request",
       disabledReason: "Today's requests cannot be rejected",
       disabled: isRejectDisabled,
+      style: "text-warning",
       icon: <X size={15} />,
       onClick: () => handleReject(request),
     },
@@ -111,15 +113,16 @@ export const PendingMealReqAction = ({
       tooltip: "Delete Request",
       disabledReason: "Today's pending requests cannot be deleted",
       disabled: isDeleteDisabled,
+      style: "text-error",
       icon: <Trash2 size={17} />,
       onClick: () => handleDelete(request),
     },
   ];
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-6">
       {actions.map(
-        ({ key, tooltip, disabledReason, disabled, icon, onClick }) => (
+        ({ key, tooltip, disabledReason, disabled, icon, style, onClick }) => (
           <Button
             key={key}
             unstyled
@@ -127,6 +130,7 @@ export const PendingMealReqAction = ({
             tooltip={disabled ? disabledReason : tooltip}
             leftIcon={icon}
             onClick={onClick}
+            className={style}
           />
         ),
       )}
