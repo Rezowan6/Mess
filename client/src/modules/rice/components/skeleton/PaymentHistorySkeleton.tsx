@@ -4,48 +4,27 @@ interface Props {
   rows?: number;
 }
 
-export const PaymentHistorySkeleton = ({ rows = 5 }: Props) => {
+export const PaymentHistorySkeleton = ({ rows = 4 }: Props) => {
   return (
-    <div className="overflow-hidden rounded-xl border border-base-300">
-      <table className="table">
-        <thead className="bg-base-200">
-          <tr>
-            <th>Supplier</th>
-            <th>Quantity</th>
-            <th>Total</th>
-            <th>Total Paid</th>
-          </tr>
-        </thead>
+    <ul aria-busy="true" className="divide-y divide-theme-border">
+      {Array.from({ length: rows }, (_, index) => (
+        <li key={index} className="flex items-center gap-3 p-3">
+          {/* Icon */}
+          <Skeleton className="size-10 shrink-0 rounded-full" />
 
-        <tbody>
-          {Array.from({ length: rows }).map((_, index) => (
-            <tr
-              key={index}
-              className="odd:bg-base-100 even:bg-base-200/30"
-            >
-              {/* Supplier */}
-              <td>
-                <Skeleton className="h-4 w-32" />
-              </td>
+          {/* Amount, date · method, note */}
+          <div className="min-w-0 flex-1 space-y-1.5">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-3 w-40" />
+          </div>
 
-              {/* Quantity */}
-              <td>
-                <Skeleton className="h-4 w-20" />
-              </td>
-
-              {/* Total */}
-              <td>
-                <Skeleton className="h-4 w-20" />
-              </td>
-
-              {/* Total Paid */}
-              <td>
-                <Skeleton className="h-4 w-20" />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          {/* Edit / Delete */}
+          <div className="flex items-center gap-1">
+            <Skeleton className="size-8 rounded-theme-md" />
+            <Skeleton className="size-8 rounded-theme-md" />
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 };

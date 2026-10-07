@@ -13,6 +13,7 @@ import { RicePaymentProgress } from "../components/history/RicePaymentProgress";
 import { RicePaymentSummary } from "../components/history/RicePaymentSummary";
 import { RicePurchaseInfo } from "../components/history/RicePurchaseInfo";
 import { useRiceHistory } from "../hooks/useRiceHistory";
+import { RiceHistoryPageSkeleton } from "../components/skeleton/RiceHistoryPageSkeleton";
 
 export const RiceHistoryPage = () => {
   const { riceId } = useParams<{ riceId: string }>();
@@ -45,9 +46,9 @@ export const RiceHistoryPage = () => {
     return <p className="text-error">Invalid rice purchase.</p>;
   }
 
-  if (isRicePending) {
-    return <p className="text-sm opacity-60">Loading rice purchase...</p>;
-  }
+if (isRicePending) {
+  return <RiceHistoryPageSkeleton />;
+}
 
   if (isRiceError || !rice) {
     return (

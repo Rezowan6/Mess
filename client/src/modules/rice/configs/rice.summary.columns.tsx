@@ -1,7 +1,5 @@
 import { Badge } from "@/shared/components/ui/Badge";
 import type { TableColumn } from "@/shared/components/ui/Table";
-import { PERMISSIONS } from "@/shared/constants/permissions";
-import { useRBAC } from "@/shared/hooks/useRBAC";
 
 import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { Button } from "@/shared/components/ui/Button";
@@ -14,6 +12,7 @@ import {
   RICE_PAYMENT_STATUS_VARIANT,
   RICE_PURCHASE_TYPE_VARIANT,
 } from "./rice.badge";
+import { useRiceTablePermissions } from "./rice.columns.permission";
 
 interface UseRiceSummaryColumnsProps {
   onPay: (rice: IRice) => void;
@@ -26,8 +25,7 @@ export const useRiceSummaryColumns = ({
   onEdit,
   onDelete,
 }: UseRiceSummaryColumnsProps): TableColumn<IRice>[] => {
-  const { can } = useRBAC();
-  const canManage = can(PERMISSIONS.EXPENSE_CREATE);
+  const { canManage } = useRiceTablePermissions();
 
   const columns: TableColumn<IRice>[] = [
     {
