@@ -15,7 +15,7 @@ export const PlanManagementPage = () => {
         description="Manage subscription plans, pricing, member limits, and plan status. "
         action={
           <Button
-            variant="moduleBtn"
+            variant="success"
             onClick={() => setIsOpen(true)}
             permission={PERMISSIONS.PLANS_CREATE}
           >

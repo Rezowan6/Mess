@@ -29,7 +29,7 @@ export const PlanFeaturePage = () => {
         description={currentPage.description}
         action={
           <Button
-            variant="moduleBtn"
+            variant="success"
             permission={PERMISSIONS.PLAN_FEATURE_CREATE}
             onClick={() => setIsOpen(true)}
           >

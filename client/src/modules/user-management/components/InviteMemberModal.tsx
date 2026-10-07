@@ -57,7 +57,7 @@ export const InviteMemberModal = () => {
   return (
     <>
       <Button
-        variant="moduleBtn"
+        variant="success"
         permission={PERMISSIONS.USER_INVITE}
         onClick={() => setIsOpen(true)}
       >

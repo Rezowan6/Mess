@@ -29,7 +29,7 @@ export const FeaturePage = () => {
         description={currentPage.description}
         action={
           <Button
-            variant="moduleBtn"
+            variant="success"
             permission={PERMISSIONS.FEATURE_CREATE}
             onClick={() => setIsOpen(true)}
           >

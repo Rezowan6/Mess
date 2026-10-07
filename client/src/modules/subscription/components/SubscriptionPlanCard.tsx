@@ -57,7 +57,7 @@ export const SubscriptionPlanCard = ({
 
       <Button
         type="button"
-        variant={selected ? "success" : "moduleBtn"}
+        variant={selected ? "success" : "success"}
         className="mt-6 w-full"
         onClick={() => onSelect(plan)}
       >
