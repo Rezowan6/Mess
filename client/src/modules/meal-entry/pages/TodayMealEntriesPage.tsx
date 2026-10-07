@@ -1,8 +1,8 @@
 import { Table } from "@/shared/components/ui/Table";
 
 import { getLocalDate } from "@/shared/utils/date.utils";
+import { TodayMealEntryPageSkeleton } from "../components/skeleton/TodayMealEntryPageSkeleton";
 import { TodayMealEntryInfoCard } from "../components/TodayMealEntryInfoCard";
-import { TodayMealEntrySummarySkeleton } from "../components/TodayMealEntrySummarySkeleton";
 import { MEAL_ENTRY_MESSAGES } from "../configs/meal.entries.message";
 import { useTodayMealEntryColumns } from "../configs/todayMealEntry.columns";
 import { useTodayMealEntries } from "../hooks";
@@ -40,14 +40,14 @@ export const TodayMealEntriesPage = () => {
   );
 
   if (isPending) {
-    return <TodayMealEntrySummarySkeleton />;
+    return <TodayMealEntryPageSkeleton />;
   }
 
   return (
     <>
       {createdAt && (
         <p className="text-xs sm:text-sm ">
-           Created At:{" "}
+          Created At:{" "}
           <span className="text-info">{createdAt.split("T")[0]}</span>
         </p>
       )}

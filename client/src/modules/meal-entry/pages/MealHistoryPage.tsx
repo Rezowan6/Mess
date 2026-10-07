@@ -4,7 +4,7 @@ import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { Table } from "@/shared/components/ui/Table";
 
 import { MemberHeader } from "@/shared/components/ui/MemberHeader";
-import { MealEntryTableSkeleton } from "../components/MealEntryTableSkeleton";
+import { MealEntryHistorySkeleton } from "../components/skeleton/MealEntryHistorySkeleton";
 import { MEAL_ENTRY_MESSAGES } from "../configs/meal.entries.message";
 import { useMealHistoryColumns } from "../configs/meal.history.columns";
 import { useAllMembersMeal } from "../hooks/useAllMembersMeal";
@@ -19,7 +19,7 @@ export const MealHistoryPage = () => {
   const userId = location.state?.userId;
 
   if (isPending) {
-    return <MealEntryTableSkeleton />;
+    return <MealEntryHistorySkeleton />;
   }
 
   if (!data) {

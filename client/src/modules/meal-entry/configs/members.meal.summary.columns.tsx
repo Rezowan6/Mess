@@ -2,13 +2,12 @@ import type { TableColumn } from "@/shared/components/ui/Table";
 
 import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
-import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
-import { useRBAC } from "@/shared/hooks/useRBAC";
 import type { IMealEntry } from "../types/mealEntry.types";
+import { useMealEntryTablePermissions } from "./mealEntry.columns.permission";
 
 export const useMembersMealSummaryColumns = (): TableColumn<IMealEntry>[] => {
-  const { can } = useRBAC();
+  const { canViewDetails } = useMealEntryTablePermissions();
 
   const columns: TableColumn<IMealEntry>[] = [
     {
@@ -40,7 +39,7 @@ export const useMembersMealSummaryColumns = (): TableColumn<IMealEntry>[] => {
     },
   ];
 
-  if (can(PERMISSIONS.MEAL_ENTRY_CREATE)) {
+  if (canViewDetails) {
     columns.push({
       key: "details",
       title: "Details",

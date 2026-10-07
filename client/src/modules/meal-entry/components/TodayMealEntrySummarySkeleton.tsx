@@ -1,19 +1,26 @@
 import { Skeleton } from "@/shared/components/feedback/Skeleton";
 
+const SUMMARY_CARDS = [1, 2, 3, 4, 5, 6];
+
 export const TodayMealEntrySummarySkeleton = () => {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-      {[1, 2, 3, 4, 5, 6].map((item) => (
+    <div aria-busy="true" className="grid grid-cols-2 gap-4 md:grid-cols-6">
+      {SUMMARY_CARDS.map((item) => (
         <div
           key={item}
-          className="card bg-base-100 shadow border border-primary rounded-md"
+          className="relative overflow-hidden rounded-theme-xl border border-theme-border bg-theme-card p-2 shadow-theme-md"
         >
-          <div className="card-body items-center text-center p-4 gap-2">
-            <Skeleton className="h-5 w-5 rounded-full" />
+          <div className="relative flex items-center gap-4">
+            {/* Icon box */}
+            <Skeleton className="h-12 w-12 shrink-0 rounded-theme-lg" />
 
-            <Skeleton className="h-4 w-10" />
+            <div className="min-w-0 flex-1">
+              {/* Title */}
+              <Skeleton className="h-3 w-16" />
 
-            <Skeleton className="h-3 w-16" />
+              {/* Value */}
+              <Skeleton className="mt-2 h-6 w-12" />
+            </div>
           </div>
         </div>
       ))}

@@ -17,7 +17,7 @@ export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
 }) => {
   const currentDate = formatDate(getLocalDate());
 
-  if (!isPending) {
+  if (isPending) {
     return <AllPendingMealReqPageSkeleton />;
   }
 
