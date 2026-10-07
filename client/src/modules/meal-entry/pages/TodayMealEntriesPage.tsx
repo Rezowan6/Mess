@@ -1,6 +1,7 @@
 import { Table } from "@/shared/components/ui/Table";
 
-import { getLocalDate } from "@/shared/utils/date.utils";
+import { Badge } from "@/shared/components/ui/Badge";
+import { formatDate, getLocalDate } from "@/shared/utils/date.utils";
 import { TodayMealEntryPageSkeleton } from "../components/skeleton/TodayMealEntryPageSkeleton";
 import { TodayMealEntryInfoCard } from "../components/TodayMealEntryInfoCard";
 import { MEAL_ENTRY_MESSAGES } from "../configs/meal.entries.message";
@@ -46,10 +47,9 @@ export const TodayMealEntriesPage = () => {
   return (
     <>
       {createdAt && (
-        <p className="text-xs sm:text-sm ">
-          Created At:{" "}
-          <span className="text-info">{createdAt.split("T")[0]}</span>
-        </p>
+        <Badge variant="soft-secondary" size="sm">
+          {formatDate(createdAt)}
+        </Badge>
       )}
       {/* Summary card */}
       <TodayMealEntryInfoCard summary={summary} memberCount={entries.length} />

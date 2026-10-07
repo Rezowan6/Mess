@@ -1,62 +1,31 @@
-import { Skeleton } from "@/shared/components/feedback/Skeleton";
+import {
+  TableSkeleton,
+  type TableSkeletonColumn,
+} from "@/shared/components/feedback/TableSkeleton";
+import { useMemberTablePermissions } from "../configs/member.columns.permission";
 
 export const MembersTableSkeleton = () => {
-  return (
-    <div className="overflow-hidden rounded-xl border border-base-300">
-      <table className="table">
-        <thead className="bg-base-200">
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+  const { canViewActions } = useMemberTablePermissions();
 
-        <tbody>
-          {[1, 2, 3, 4, 5].map((item) => (
-            <tr key={item} className="odd:bg-base-100 even:bg-base-200/30">
-              {/* Avatar + Name */}
-              <td>
-                <div className="flex items-center gap-3">
-                  <Skeleton className="h-10 w-10 rounded-full" />
+  const columns: TableSkeletonColumn[] = [
+    { key: "name", title: "Name", skeleton: "h-4 w-32" },
+    {
+      key: "email",
+      title: "Email",
+      skeleton: "h-4 w-48",
+      hideOnMobile: true,
+    },
+    { key: "role", title: "Role", skeleton: "h-7 w-20 rounded-full" },
+    { key: "status", title: "Status", skeleton: "h-7 w-24 rounded-full" },
+  ];
 
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-32" />
+  if (canViewActions) {
+    columns.push({
+      key: "actions",
+      title: "Actions",
+      skeleton: ["h-9 w-20 rounded-theme-lg", "h-9 w-24 rounded-theme-lg"],
+    });
+  }
 
-                    <Skeleton className="h-3 w-20" />
-                  </div>
-                </div>
-              </td>
-
-              {/* Email */}
-              <td>
-                <Skeleton className="h-4 w-48" />
-              </td>
-
-              {/* Badge */}
-              <td>
-                <Skeleton className="h-7 w-20 rounded-full" />
-              </td>
-
-              {/* Status */}
-              <td>
-                <Skeleton className="h-7 w-24 rounded-full" />
-              </td>
-
-              {/* Buttons */}
-              <td>
-                <div className="flex gap-2">
-                  <Skeleton className="h-9 w-20 rounded-lg" />
-
-                  <Skeleton className="h-9 w-24 rounded-lg" />
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+  return <TableSkeleton columns={columns} rows={5} />;
 };

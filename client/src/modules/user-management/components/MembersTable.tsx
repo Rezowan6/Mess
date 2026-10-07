@@ -24,24 +24,24 @@ export const MembersTable = () => {
 
   const columns = useMemberColumns();
 
-  if (isPending) {
-    return <MembersTableSkeleton />;
-  }
-
   return (
     <div className="space-y-4">
       <SearchInput value={search} onChange={handleSearch} />
 
       {/* Table */}
 
-      <Table
-        columns={columns}
-        data={members}
-        loading={isPending}
-        error={isError}
-        message={MEMBER_MESSAGES}
-        refetch={refetch}
-      />
+      {isPending ? (
+        <MembersTableSkeleton />
+      ) : (
+        <Table
+          columns={columns}
+          data={members}
+          loading={isPending}
+          error={isError}
+          message={MEMBER_MESSAGES}
+          refetch={refetch}
+        />
+      )}
 
       {/* Pagination */}
 

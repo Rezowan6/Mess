@@ -85,7 +85,7 @@ export const MemberActions = ({ member }: Props) => {
               message: (
                 <>
                   Are you sure you want to remove{" "}
-                  <span className="font-bold text-success">{memberName}</span>{" "}
+                  <span className="font-bold text-theme-success">{memberName}</span>{" "}
                   from this mess?
                 </>
               ),

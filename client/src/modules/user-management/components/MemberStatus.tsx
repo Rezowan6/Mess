@@ -1,4 +1,5 @@
 import { Badge } from "@/shared/components/ui/Badge";
+import { toTitleCase } from "@/shared/utils/format.utils";
 
 interface Props {
   status: "active" | "inactive" | "pending";
@@ -13,7 +14,7 @@ export const MemberStatus = ({ status }: Props) => {
 
   return (
     <Badge variant={map[status]} size="sm">
-      {status}
+      {toTitleCase(status)}
     </Badge>
   );
 };

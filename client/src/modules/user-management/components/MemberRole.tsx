@@ -1,5 +1,6 @@
 import { Badge } from "@/shared/components/ui/Badge";
 import type { Role } from "@/shared/constants/roles";
+import { toTitleCase } from "@/shared/utils/format.utils";
 
 interface Props {
   role: Role;
@@ -16,7 +17,7 @@ export const MemberRole = ({ role }: Props) => {
 
   return (
     <Badge variant={roleVariant[role]} size="sm">
-      {role.replaceAll("_", " ").replace(/\b\w/g, (char) => char.toUpperCase())}
+      {toTitleCase(role)}
     </Badge>
   );
 };
