@@ -1,15 +1,8 @@
 @import "tailwindcss";
-
 @import "./theme.css";
 
-@plugin "daisyui" {
-  themes:
-    light --default,
-    dark --prefersdark;
-}
-
 /* =====================================================
-   App Root / Viewport
+   Global App Styles
 ===================================================== */
 
 html {
@@ -42,7 +35,7 @@ body,
 }
 
 /* =====================================================
-   Shimmer
+   Shimmer Animation
 ===================================================== */
 
 @keyframes shimmer {
@@ -51,8 +44,10 @@ body,
   }
 }
 
+/* =====================================================
+   Gradient Animation
+===================================================== */
 
-/* animation for tenantName  */
 @theme {
   --animate-gradient: gradient 4s ease infinite;
 
