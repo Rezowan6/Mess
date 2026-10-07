@@ -8,7 +8,7 @@ import { EXPENSE_MESSAGES } from "../configs/expense.messages";
 import { useExpenses } from "../hooks/useExpenses";
 import type { IExpense } from "../types/expense.types";
 import { AddExpenseModal } from "./AddExpenseModal";
-import { ExpenseTableSkeleton } from "./ExpenseTableSkeleton";
+import { ExpenseTableSkeleton } from "./skeleton/ExpenseTableSkeleton";
 
 const PAGE_LIMIT = 10;
 

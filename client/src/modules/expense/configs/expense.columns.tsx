@@ -4,14 +4,13 @@ import type { IExpense } from "../types/expense.types";
 
 import { ExpenseActions } from "../components/ExpenseActions";
 
-import { PERMISSIONS } from "@/shared/constants/permissions";
-import { useRBAC } from "@/shared/hooks/useRBAC";
 import { formatDate } from "@/shared/utils/date.utils";
+import { useExpenseTablePermissions } from "./expense.columns.permission";
 
 export const useExpenseColumns = (
   onEdit: (expense: IExpense) => void,
 ): TableColumn<IExpense>[] => {
-  const { can } = useRBAC();
+  const { canViewDetails } = useExpenseTablePermissions();
 
   const columns: TableColumn<IExpense>[] = [
     {
@@ -37,7 +36,7 @@ export const useExpenseColumns = (
     },
   ];
 
-  if (can(PERMISSIONS.EXPENSE_UPDATE) || can(PERMISSIONS.EXPENSE_DELETE)) {
+  if (canViewDetails) {
     columns.push({
       key: "actions",
       title: "Actions",
