@@ -7,8 +7,8 @@ export const variantClasses = {
   warning: `bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 hover:shadow-orange-500/30`,
   secondary: `bg-gradient-to-r from-slate-500 to-slate-700 hover:from-slate-600 hover:to-slate-800 hover:shadow-slate-500/30`,
   accent: `bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 hover:shadow-purple-500/30`,
-  ghost: `bg-transparent text-text hover:bg-surface-hover`,
-  outline: `border border-border text-text hover:bg-surface-hover`,
+  ghost: `bg-transparent text-theme-text hover:bg-surface-hover`,
+  outline: `border border-theme-border text-theme-text hover:bg-surface-hover`,
   pay: `bg-gradient-to-b from-blue-500 to-blue-700 ring-1 ring-inset ring-white/20 shadow-md shadow-blue-900/30 hover:from-blue-400 hover:to-blue-600 hover:shadow-blue-500/40`,
 } satisfies Record<ButtonVariant, string>;
 /** Gradient variants: white text, shadow and lift effect. */

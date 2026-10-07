@@ -15,6 +15,7 @@ import type {
   IMealPlanningResponse,
   IMealType,
 } from "../types/mealPlanning.types";
+import { MealPlanningTableSkeleton } from "./MealPlanningTableSkeleton.tsx";
 
 interface Props {
   planning?: IMealPlanningResponse["data"];
@@ -142,14 +143,17 @@ export const MealPlanningTable = ({
       />
 
       {/* Fixed minimum height stops the page from jumping between tabs */}
-      <div className="min-h-[30em]">
-        <Table
-          columns={columns}
-          data={paginatedMembers}
-          loading={loading}
-          error={error}
-          refetch={refetch}
-        />
+     <div className="min-h-[30em]">
+        {loading ? (
+          <MealPlanningTableSkeleton />
+        ) : (
+          <Table
+            columns={columns}
+            data={paginatedMembers}
+            error={error}
+            refetch={refetch}
+          />
+        )}
       </div>
 
       {!loading && !error && totalPages > 1 && (
