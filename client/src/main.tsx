@@ -8,8 +8,6 @@ import { AuthProvider } from "./app/providers/auth.provider.tsx";
 import App from "./App.tsx";
 import "./index.css";
 
-import "@/styles/globals.css";
-import "@/styles/theme.css";
 import { SocketProvider } from "./app/providers/SocketProvider.tsx";
 import { ThemeProvider } from "./app/providers/ThemeProvider.tsx";
 import { OfflineMessage } from "./shared/components/pwa/OfflineMessage.tsx";

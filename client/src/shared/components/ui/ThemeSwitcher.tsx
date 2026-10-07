@@ -4,6 +4,10 @@ import { Select, type SelectOption } from "./Select";
 
 const THEME_OPTIONS: SelectOption[] = [
   {
+    label: "Default",
+    value: "default",
+  },
+  {
     label: "Light",
     value: "light",
   },

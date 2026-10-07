@@ -19,14 +19,14 @@ export const PricingCardHeader = ({ plan }: Props) => {
 
       <h3 className="text-2xl font-bold">{plan.name}</h3>
 
-      <p className="text-base-content/70">{plan.description}</p>
+      <p className="text-theme-text-muted">{plan.description}</p>
 
       <div>
         <span className="text-2xl font-bold">৳{plan.monthlyPrice}</span>
-        <span className="text-base-content/60"> /month</span>
+        <span className="text-theme-text-muted"> /month</span>
       </div>
 
-      <p className="text-sm text-base-content/60">
+      <p className="text-sm text-theme-text-muted">
         {plan.maxMembers === -1
           ? "Unlimited Members"
           : `Up to ${plan.maxMembers} Members`}

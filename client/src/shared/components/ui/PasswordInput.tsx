@@ -35,9 +35,9 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             onClick={() => setShowPassword((prev) => !prev)}
             className="
               cursor-pointer
-              text-text-muted
+              text-theme-text-muted
               transition-colors
-              hover:text-text
+              hover:text-theme-text
               disabled:cursor-not-allowed
               disabled:opacity-50
             "

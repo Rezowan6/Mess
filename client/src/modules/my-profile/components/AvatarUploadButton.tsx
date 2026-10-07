@@ -68,7 +68,7 @@ export const AvatarUploadButton = ({
           type="button"
           disabled={isPending}
           onClick={() => fileInputRef.current?.click()}
-          className="absolute bottom-0 right-0 z-10 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-gradient-info text-white shadow-md transition hover:bg-primary/80 disabled:cursor-not-allowed disabled:opacity-50"
+          className="absolute bottom-0 right-0 z-10 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-theme-info text-theme-on-brand shadow-theme-sm transition hover:bg-theme-info/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Camera size={14} />
         </button>

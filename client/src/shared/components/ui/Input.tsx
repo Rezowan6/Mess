@@ -76,34 +76,36 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const input = (
       <div
         className={clsx(
-          "flex items-center gap-2 rounded-lg border bg-surface px-3",
+          "flex items-center gap-2 rounded-theme-md border bg-theme-input px-3",
           "transition-all duration-200",
           error
-            ? "border-error"
-            : "border-border focus-within:border-accent",
+            ? "border-theme-danger"
+            : "border-theme-input-border focus-within:border-theme-input-focus",
           (disabled || isLoading) && "cursor-not-allowed opacity-60",
           sizeClasses[size],
         )}
       >
         {startAdornment}
 
-        {leftIcon && <span className="text-text-muted">{leftIcon}</span>}
+        {leftIcon && <span className="text-theme-text-muted">{leftIcon}</span>}
 
         <input
           ref={ref}
           disabled={disabled || isLoading}
           className={clsx(
             "w-full bg-transparent outline-none",
-            "text-text placeholder:text-text-muted",
+            "text-theme-text placeholder:text-theme-placeholder",
             className,
           )}
           {...props}
         />
 
         {isLoading ? (
-          <Loader2 size={18} className="animate-spin text-text-muted" />
+          <Loader2 size={18} className="animate-spin text-theme-text-muted" />
         ) : (
-          rightIcon && <span className="text-text-muted">{rightIcon}</span>
+          rightIcon && (
+            <span className="text-theme-text-muted">{rightIcon}</span>
+          )
         )}
 
         {endAdornment}
@@ -113,31 +115,40 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={clsx("space-y-1", fullWidth && "w-full")}>
         {label && (
-          <label className="label">
-            <span className="label-text font-medium text-text">
+          <label className="block px-1">
+            <span className="text-sm font-medium text-theme-text">
               {label}
 
-              {required && <span className="ml-1 text-error">*</span>}
+              {required && <span className="ml-1 text-theme-danger">*</span>}
             </span>
           </label>
         )}
 
         {tooltip ? (
-          <div className="tooltip w-full" data-tip={tooltip}>
+          <div className="group relative w-full">
             {input}
+
+            <span
+              role="tooltip"
+              className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap rounded-theme-sm bg-theme-tooltip px-2 py-1 text-xs text-theme-tooltip-text opacity-0 shadow-theme-md transition-opacity duration-150 group-focus-within:opacity-100 group-hover:opacity-100"
+            >
+              {tooltip}
+            </span>
           </div>
         ) : (
           input
         )}
 
         {isLoading && loadingText && (
-          <p className="text-xs text-text-muted">{loadingText}</p>
+          <p className="text-xs text-theme-text-muted">{loadingText}</p>
         )}
 
         {error ? (
-          <p className="text-sm text-error">{error}</p>
+          <p className="text-sm text-theme-danger">{error}</p>
         ) : (
-          helperText && <p className="text-sm text-text-muted">{helperText}</p>
+          helperText && (
+            <p className="text-sm text-theme-text-muted">{helperText}</p>
+          )
         )}
       </div>
     );

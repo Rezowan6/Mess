@@ -24,8 +24,10 @@ export const TOOLTIP_PLACEMENT = {
 
 // Readable tooltip: wraps long text, rounded, with a soft shadow
 export const TOOLTIP_STYLE = [
+  "[--tt-bg:var(--theme-tooltip)]",
   "before:z-50 after:z-50",
   "before:max-w-52 before:whitespace-normal before:break-words",
-  "before:px-3 before:py-2 before:rounded-lg before:shadow-lg",
+  "before:px-3 before:py-2 before:rounded-theme-lg before:shadow-theme-lg",
   "before:text-center before:text-xs before:font-medium before:leading-snug",
+  "before:text-theme-tooltip-text",
 ].join(" ");

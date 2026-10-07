@@ -13,16 +13,16 @@ interface Props {
 }
 
 const sizeClasses = {
-  sm: "h-10 w-10 rounded-xl",
-  md: "h-14 w-14 rounded-2xl",
-  lg: "h-16 w-16 rounded-2xl",
+  sm: "h-10 w-10 rounded-full",
+  md: "h-12 w-12 rounded-full",
+  lg: "h-16 w-16 rounded-full",
 };
 
 export const IconBox = ({
   icon,
-  size = "sm",
-  bgClassName = "bg-info/10",
-  textClassName = "text-info",
+  size = "md",
+  bgClassName = "bg-theme-info/10",
+  textClassName = "text-theme-info",
   className,
 }: Props) => {
   return (

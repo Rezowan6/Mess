@@ -59,7 +59,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           // Shared base
           "cursor-pointer select-none whitespace-nowrap font-medium",
           "transition-all duration-300 ease-out",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-info/60 focus-visible:ring-offset-2 focus-visible:ring-offset-base-100",
+          "focus-visible:outline-none focus-visible:shadow-theme-focus",
           "disabled:opacity-50 disabled:pointer-events-none disabled:shadow-none",
 
           unstyled
@@ -69,8 +69,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 "flex items-center justify-center gap-2 rounded-full py-2 px-6 text-sm ",
                 hasContent ? "px-4" : "px-3",
                 isSolid && [
-                  "text-white shadow-sm",
-                  "hover:-translate-y-px hover:shadow-lg",
+                  "text-theme-on-brand shadow-theme-sm",
+                  "hover:-translate-y-px hover:shadow-theme-lg",
                   "active:translate-y-0 active:scale-[0.98]",
                 ],
               ],

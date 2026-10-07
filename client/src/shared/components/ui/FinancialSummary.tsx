@@ -48,12 +48,12 @@ interface FinancialSummaryProps {
 const MAX_DESKTOP_COLUMNS = 5;
 
 const toneStyles = {
-  info: "text-info",
-  success: "text-success",
-  accent: "text-accent",
-  secondary: "text-secondary",
-  error: "text-error",
-  warning: "text-warning",
+  info: "text-theme-info",
+  success: "text-theme-success",
+  accent: "text-theme-accent",
+  secondary: "text-theme-brand",
+  error: "text-theme-danger",
+  warning: "text-theme-warning",
 } as const satisfies Record<SummaryStatTone, string>;
 
 export const FinancialSummary = ({
@@ -78,7 +78,7 @@ export const FinancialSummary = ({
   const desktopColumns = columns ?? Math.min(cells.length, MAX_DESKTOP_COLUMNS);
 
   return (
-    <div className="overflow-hidden rounded-xl shadow-lg shadow-info/20 bg-info/5">
+    <div className="overflow-hidden rounded-theme-md shadow-theme-sm">
       {/* Small screens: horizontal slider, 2 cards per page. Large screens: grid. */}
       <div
         ref={ref}
@@ -114,8 +114,8 @@ export const FinancialSummary = ({
               <span
                 className={`block h-1.5 rounded-full transition-all duration-300 ${
                   page === activePage
-                    ? "w-5 bg-info"
-                    : "w-1.5 bg-base-content/20"
+                    ? "w-5 bg-theme-info"
+                    : "w-1.5 bg-theme-border"
                 }`}
               />
             </button>
@@ -153,7 +153,7 @@ export const FinancialSummaryCell = ({
 
       {/* Title */}
       <div className="relative flex items-center justify-between gap-2">
-        <p className="flex min-w-0 items-center gap-1.5 text-[12px] font-medium tracking-wider text-base-content/55 sm:text-sm">
+        <p className="flex min-w-0 items-center gap-1.5 text-[12px] font-medium tracking-wider text-theme-text-muted sm:text-sm">
           <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-linear-to-br from-current to-current/40 transition-transform duration-300 group-hover:scale-150" />
           <span className="truncate">{toTitleCase(label)}</span>
         </p>
@@ -178,7 +178,7 @@ export const FinancialSummaryCell = ({
 
       {/* Hint */}
       {hint && (
-        <p className="relative mt-0.5 truncate text-[11px] text-base-content/45">
+        <p className="relative mt-0.5 truncate text-[11px] text-theme-text-muted">
           {hint}
         </p>
       )}

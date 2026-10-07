@@ -1,7 +1,6 @@
 import { MoreHorizontal } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
-import useScrolled from "@/shared/hooks/useScrolled";
 import type { ISidebarItem } from "../layout/sidebar/sidebar.config";
 
 interface Props {
@@ -19,7 +18,12 @@ export const MobileBottomNavBar = ({
   isMoreOpen,
   onMoreClick,
 }: Props) => {
-  const scrolled = useScrolled();
+  // const scrolled = useScrolled();
+  // ${
+  //     scrolled
+  //       ? "border-t border-theme-border bg-theme-header shadow-theme-lg backdrop-blur-xl"
+  //       : "border-t border-theme-border bg-theme-header shadow-theme-md backdrop-blur-xl"
+  //   }
 
   const primaryMenus = menus.slice(0, 4);
 
@@ -27,12 +31,8 @@ export const MobileBottomNavBar = ({
 
   return (
     <nav
-      className={`fixed bottom-0 left-0 right-0 z-40 lg:hidden transition-all duration-300
-    ${
-      scrolled
-        ? "border-t border-info/20 bg-background shadow-2xl shadow-info backdrop-blur-xl"
-        : "border-t border-info/20 bg-background shadow-2xl backdrop-blur-xl"
-    }
+      className={`fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-theme-header border-t border-theme-border transition-all duration-300
+    
   `}
     >
       <div className="flex h-16 w-full">
@@ -42,7 +42,9 @@ export const MobileBottomNavBar = ({
             to={path}
             className={({ isActive }) =>
               `flex min-w-0 flex-1 flex-col items-center justify-center gap-1 text-xs transition-all duration-200 ${
-                isActive ? "font-semibold text-accent" : "text-text hover:text-info"
+                isActive
+                  ? "font-semibold text-theme-accent"
+                  : "text-theme-text hover:text-theme-info"
               }`
             }
           >
@@ -62,8 +64,8 @@ export const MobileBottomNavBar = ({
             onClick={onMoreClick}
             className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-1 text-xs transition-all duration-200 ${
               isMoreActive || isMoreOpen
-                ? "font-semibold text-accent"
-                : "text-text hover:text-info"
+                ? "font-semibold text-theme-accent"
+                : "text-theme-text hover:text-theme-info"
             }`}
             aria-label="More"
             aria-expanded={isMoreOpen}

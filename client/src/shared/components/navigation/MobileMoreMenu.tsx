@@ -34,7 +34,7 @@ export const MobileMoreMenu = ({ menus, isOpen, onClose }: Props) => {
           fixed
           inset-0
           z-40
-          bg-black/20
+          bg-theme-overlay
           transition-opacity
           duration-300
           lg:hidden
@@ -56,11 +56,11 @@ export const MobileMoreMenu = ({ menus, isOpen, onClose }: Props) => {
           z-50
           w-64
           overflow-hidden
-          rounded-xl
+          rounded-theme-xl
           border
-          border-success
-          bg-background
-          shadow-xl
+          border-theme-border
+          bg-theme-surface-raised
+          shadow-theme-lg
           transition-all
           duration-300
           ease-in-out
@@ -74,19 +74,21 @@ export const MobileMoreMenu = ({ menus, isOpen, onClose }: Props) => {
       >
         {/* Header */}
 
-        <div className="flex items-center justify-between border-b border-success mx-4 py-3">
-          <h3 className="font-semibold">More</h3>
+        <div className="flex items-center justify-between border-b border-theme-border mx-4 py-3">
+          <h3 className="font-semibold text-theme-text">More</h3>
 
           <button
             type="button"
             onClick={onClose}
             className="
               cursor-pointer
-              rounded-lg
+              rounded-theme-lg
               p-1.5
+              text-theme-text-muted
               transition-colors
               duration-200
-              hover:bg-info/10
+              hover:bg-theme-info-soft
+              hover:text-theme-text
             "
             aria-label="Close more menu"
           >
@@ -103,10 +105,10 @@ export const MobileMoreMenu = ({ menus, isOpen, onClose }: Props) => {
               to={path}
               onClick={onClose}
               className={({ isActive }) =>
-                `mb-1 flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-colors ${
+                `mb-1 flex items-center gap-3 rounded-theme-lg px-3 py-3 text-sm transition-colors ${
                   isActive
-                    ? "bg-info/10 font-semibold text-accent"
-                    : "text-text hover:bg-info/10"
+                    ? "bg-theme-brand-soft font-semibold text-theme-accent"
+                    : "text-theme-text hover:bg-theme-info-soft"
                 }`
               }
             >

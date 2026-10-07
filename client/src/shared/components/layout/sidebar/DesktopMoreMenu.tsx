@@ -48,8 +48,10 @@ export const DesktopMoreMenu = () => {
         type="button"
         onClick={toggleMenu}
         aria-expanded={isOpen}
-        className={`flex w-full items-center gap-3 rounded-md px-4 py-2 transition-all duration-200 ${
-          isMoreActive || isOpen ? "bg-info/20" : "hover:bg-info/10"
+        className={`flex w-full items-center gap-3 rounded-theme-md px-4 py-2 transition-all duration-200 ${
+          isMoreActive || isOpen
+            ? "bg-theme-info-soft"
+            : "hover:bg-theme-info-soft"
         }`}
       >
         <MoreHorizontal size={18} />
@@ -81,8 +83,10 @@ export const DesktopMoreMenu = () => {
                     closeMenu();
                     closeSidebar();
                   }}
-                  className={`flex items-center gap-3 rounded-md px-4 py-2 transition-all duration-200 ${
-                    isActive ? "bg-info/20" : "hover:bg-info/10"
+                  className={`flex items-center gap-3 rounded-theme-md px-4 py-2 transition-all duration-200 ${
+                    isActive
+                      ? "bg-theme-brand-subtle"
+                      : "hover:bg-theme-info-soft"
                   }`}
                 >
                   <Icon size={18} />

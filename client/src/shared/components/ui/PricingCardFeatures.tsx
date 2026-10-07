@@ -15,7 +15,7 @@ export const PricingCardFeatures = ({ features }: Props) => {
     <ul className="space-y-3">
       {activeFeatures.map((feature) => (
         <li key={feature.id} className="flex items-center gap-3 text-sm">
-          <Check size={18} className="text-success" />
+          <Check size={18} className="text-theme-success" />
           <span>{feature.name}</span>
         </li>
       ))}

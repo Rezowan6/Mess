@@ -39,7 +39,7 @@ export const Section = ({
             )}
 
             {description && (
-              <p className="mt-4 text-base-content/70">{description}</p>
+              <p className="mt-4 text-theme-text-muted">{description}</p>
             )}
           </div>
         )}

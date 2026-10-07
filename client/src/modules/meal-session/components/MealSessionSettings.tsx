@@ -33,14 +33,16 @@ export const MealSessionSettings = () => {
             <div className="space-y-3 flex justify-between">
               <div>
                 <div>
-                  <h3 className="font-medium text-success">Current Session</h3>
+                  <h3 className="font-medium text-theme-success">
+                    Current Session
+                  </h3>
 
-                  <p className="text-sm">
+                  <p className="text-sm text-theme-text-muted">
                     {session.month}/{session.year}
                   </p>
                 </div>
 
-                <div>
+                <div className="text-theme-text-muted text-sm">
                   Status:
                   <Badge variant="soft-success" size="sm">
                     {session.status}
@@ -48,7 +50,7 @@ export const MealSessionSettings = () => {
                 </div>
 
                 <div>
-                  <div className="text-sm">
+                  <div className="text-sm text-theme-text-muted">
                     Opened At:
                     <span className="ml-2">{formatDate(session.openedAt)}</span>
                   </div>

@@ -9,9 +9,9 @@ import { PasswordInput } from "@/shared/components/ui/PasswordInput";
 
 import { registerSchema, type IRegisterFormData } from "../schemas/auth.schema";
 
-import { registerFields } from "../configs/registerFields";
 import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { ROUTES } from "@/shared/constants/routes";
+import { registerFields } from "../configs/registerFields";
 
 export const RegisterForm = () => {
   const { mutate, isPending } = useRegister();
@@ -45,8 +45,10 @@ export const RegisterForm = () => {
         if (field.type === "password") {
           return (
             <div key={field.name}>
-              <label className="label">
-                <span className="label-text">{field.label}</span>
+              <label className="block px-1">
+                <span className="text-sm font-medium text-theme-text">
+                  {field.label}
+                </span>
               </label>
 
               <PasswordInput

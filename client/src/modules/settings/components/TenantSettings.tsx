@@ -26,9 +26,9 @@ export const TenantSettings = () => {
         {/* Left */}
 
         <div>
-          <h3 className="font-medium text-success">Current Mess</h3>
+          <h3 className="font-medium text-theme-success">Current Mess</h3>
 
-          <p className="mt-1 text-sm text-text">
+          <p className="mt-1 text-sm text-theme-text-muted">
             Select the mess you want to manage.
           </p>
         </div>

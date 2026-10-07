@@ -2,11 +2,11 @@ import { Skeleton } from "@/shared/components/feedback/Skeleton";
 
 export const MealTrendChartSkeleton = () => {
   return (
-    <div className="rounded-md border border-base-300 bg-background p-5 shadow-sm">
+    <div className="rounded-theme-md border border-theme-border bg-theme-card p-5 shadow-theme-sm">
       {/* Header */}
       <div className="mb-6 flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
-          <Skeleton className="h-10 w-10 rounded-xl" />
+          <Skeleton className="h-10 w-10 rounded-theme-xl" />
 
           <div className="space-y-1.5">
             <Skeleton className="h-4 w-24" />
@@ -14,7 +14,7 @@ export const MealTrendChartSkeleton = () => {
           </div>
         </div>
 
-        <Skeleton className="h-8 w-24 rounded-lg" />
+        <Skeleton className="h-8 w-24 rounded-theme-lg" />
       </div>
 
       {/* Chart */}
@@ -30,13 +30,16 @@ export const MealTrendChartSkeleton = () => {
             "h-[70%]",
             "h-[78%]",
           ].map((height, index) => (
-            <Skeleton key={index} className={`flex-1 rounded-t-md ${height}`} />
+            <Skeleton
+              key={index}
+              className={`flex-1 rounded-t-theme-md ${height}`}
+            />
           ))}
         </div>
       </div>
 
       {/* Summary */}
-      <div className="mt-4 flex items-center justify-between border-t border-base-200 pt-4">
+      <div className="mt-4 flex items-center justify-between border-t border-theme-border pt-4">
         <div className="space-y-2">
           <Skeleton className="h-3 w-20" />
           <Skeleton className="h-6 w-16" />

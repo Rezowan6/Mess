@@ -10,7 +10,6 @@ import {
 import type { Permission } from "@/shared/constants/permissions";
 import { useClickOutside } from "@/shared/hooks/useClickOutside";
 import { useRBAC } from "@/shared/hooks/useRBAC";
-import "@/styles/modules/select.module.css";
 
 export interface SelectOption {
   label: string;
@@ -117,17 +116,17 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       <div ref={containerRef} className="relative w-full overflow-visible">
         <div
           className={clsx(
-            "flex w-full min-w-0 items-center rounded-md border border-success/40 bg-background transition-all duration-200",
+            "flex w-full min-w-0 items-center rounded-theme-md border bg-theme-input transition-all duration-200",
             error
-              ? "border-error"
+              ? "border-theme-danger"
               : isOpen
-                ? "border-primary"
-                : "border-border",
+                ? "border-theme-input-focus"
+                : "border-theme-input-border",
             disabled && "cursor-not-allowed opacity-60",
           )}
         >
           {leftIcon && (
-            <span className="shrink-0 text-text-muted">{leftIcon}</span>
+            <span className="shrink-0 text-theme-text-muted">{leftIcon}</span>
           )}
 
           <button
@@ -143,7 +142,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             )}
           >
             <span
-              className={clsx(selectedOption ? "text-text" : "text-text-muted")}
+              className={clsx(
+                selectedOption ? "text-theme-text" : "text-theme-text-mutedt",
+              )}
             >
               {isLoading
                 ? loadingText
@@ -153,7 +154,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             <ChevronDown
               size={16}
               className={clsx(
-                "shrink-0 text-text-muted transition-transform duration-200",
+                "shrink-0 text-theme-text-muted transition-transform duration-200",
                 isOpen && "rotate-180",
               )}
             />
@@ -162,7 +163,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 
         <div
           className={clsx(
-            "absolute left-0 right-0 top-full z-999 mt-0.5 origin-top overflow-hidden rounded-lg border border-success/40 bg-background p-1 shadow-lg",
+            "absolute left-0 right-0 top-full z-999 mt-0.5 origin-top overflow-hidden rounded-theme-lg border border-theme-border bg-theme-surface-raised",
             isOpen
               ? "visible translate-y-0 scale-100 opacity-100"
               : "invisible -translate-y-2 scale-95 opacity-0",
@@ -170,7 +171,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           role="listbox"
         >
           {isLoading ? (
-            <div className="px-3 py-2 text-sm text-text-muted">
+            <div className="px-3 py-2 text-sm text-theme-text-muted">
               {loadingText}
             </div>
           ) : options.length ? (
@@ -186,12 +187,12 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                   disabled={option.disabled}
                   onClick={() => handleSelect(option)}
                   className={clsx(
-                    "w-full rounded-md py-1.5 text-left pl-3 mt-1 text-sm transition-colors duration-150",
+                    "w-full rounded-theme-md py-1.5 text-left pl-3 mt-1 text-sm transition-colors duration-150",
                     option.disabled
                       ? "cursor-not-allowed opacity-50"
                       : isSelected
-                        ? "bg-info/10 font-semibold text-accent"
-                        : "text-text hover:bg-info/10",
+                        ? "bg-theme-brand-soft font-semibold text-theme-accent"
+                        : "text-theme-text hover:bg-theme-surface-hover",
                   )}
                 >
                   {option.label}
@@ -199,7 +200,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
               );
             })
           ) : (
-            <div className="px-3 py-2 text-sm text-text-muted">
+            <div className="px-3 py-2 text-sm text-theme-text-muted">
               No options available
             </div>
           )}
@@ -238,26 +239,35 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className={clsx("space-y-1", fullWidth && "w-full")}>
         {label && (
-          <label className="label">
-            <span className="label-text font-medium">
+          <label className="block px-1">
+            <span className="text-sm font-medium text-theme-text">
               {label}
-              {required && <span className="ml-1 text-error">*</span>}
+              {required && <span className="ml-1 text-theme-danger">*</span>}
             </span>
           </label>
         )}
 
         {tooltip ? (
-          <div className="tooltip w-full" data-tip={tooltip}>
+          <div className="group relative w-full">
             {selectElement}
+
+            <span
+              role="tooltip"
+              className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap rounded-theme-sm bg-theme-tooltip px-2 py-1 text-xs text-theme-tooltip-text opacity-0 shadow-theme-md transition-opacity duration-150 group-focus-within:opacity-100 group-hover:opacity-100"
+            >
+              {tooltip}
+            </span>
           </div>
         ) : (
           selectElement
         )}
 
         {error ? (
-          <p className="text-sm text-error">{error}</p>
+          <p className="text-sm text-theme-danger">{error}</p>
         ) : (
-          helperText && <p className="text-sm text-text-muted">{helperText}</p>
+          helperText && (
+            <p className="text-sm text-theme-text-muted">{helperText}</p>
+          )
         )}
       </div>
     );

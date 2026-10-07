@@ -17,7 +17,7 @@ export const ErrorState = ({
 
       <h3 className="text-lg font-semibold">{title}</h3>
 
-      <p className="my-2 max-w-md text-sm text-base-content/70">
+      <p className="my-2 max-w-md text-sm text-theme-text-muted">
         {description}
       </p>
 

@@ -48,7 +48,7 @@ export const ManagementPage = ({
             <DescriptionText
               text={description}
               maxWords={6}
-              className="text-sm opacity-70"
+              className="text-sm text-theme-text-muted"
             />
 
             {footer}

@@ -20,19 +20,19 @@ export const SkippedDatesCard = ({
 }: SkippedDatesCardProps) => {
   const [visible, setVisible] = useState(true);
 
-    if (!visible || !items.length) return null;
+  if (!visible || !items.length) return null;
 
   return (
-    <div className="mt-4 rounded-lg border border-warning/30 bg-warning/10 p-4">
+    <div className="mt-4 rounded-theme-lg border border-theme-warning bg-theme-warning-soft p-4">
       <div className="flex items-center justify-between">
-        <h4 className="font-semibold text-warning">{title}</h4>
+        <h4 className="font-semibold text-theme-warning">{title}</h4>
 
         <Badge variant="soft-warning">{items.length}</Badge>
 
         <Button
           unstyled
           type="button"
-          className="bg-transparent"
+          className="bg-transparent text-theme-text-muted hover:text-theme-text"
           onClick={() => setVisible(false)}
           aria-label={`Close ${title}`}
         >
@@ -44,11 +44,13 @@ export const SkippedDatesCard = ({
         {items.map((item) => (
           <div
             key={`${item.date}-${item.reason}`}
-            className="rounded-md bg-base-100 p-3"
+            className="rounded-theme-md bg-theme-surface p-3"
           >
-            <p className="font-medium">{formatDate(item.date)}</p>
+            <p className="font-medium text-theme-text">
+              {formatDate(item.date)}
+            </p>
 
-            <p className="mt-1 text-sm text-base-content/60">{item.reason}</p>
+            <p className="mt-1 text-sm text-theme-text-muted">{item.reason}</p>
           </div>
         ))}
       </div>

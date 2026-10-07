@@ -28,9 +28,11 @@ export const SidebarMenu = () => {
                 onClick={close}
                 to={item.path}
                 className={({ isActive }) => `flex items-center gap-3
-                  rounded-md px-4 py-2
+                  rounded-theme-md px-4 py-2
                   transition-all duration-200 ${
-                    isActive ? `bg-info/20` : "hover:bg-info/10"
+                    isActive
+                      ? "bg-theme-sidebar-active text-theme-sidebar-text-active"
+                      : "text-theme-sidebar-text hover:bg-theme-sidebar-hover"
                   }`}
               >
                 <Icon size={18} />

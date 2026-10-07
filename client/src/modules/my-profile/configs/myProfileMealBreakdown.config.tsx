@@ -13,7 +13,7 @@ export const myProfileMealBreakdownConfig = (summary: mealSummary) => [
     prefix: "+",
     decimals: getMealDecimals(summary.breakfast),
     icon: Coffee,
-    iconClassName: "text-info",
+    iconClassName: "text-theme-info",
   },
   {
     id: "lunch",
@@ -22,7 +22,7 @@ export const myProfileMealBreakdownConfig = (summary: mealSummary) => [
     prefix: "+",
     decimals: getMealDecimals(summary.lunch),
     icon: Sun,
-    iconClassName: "text-info",
+    iconClassName: "text-theme-info",
   },
   {
     id: "dinner",
@@ -31,6 +31,6 @@ export const myProfileMealBreakdownConfig = (summary: mealSummary) => [
     prefix: "+",
     decimals: getMealDecimals(summary.dinner),
     icon: Moon,
-    iconClassName: "text-info",
+    iconClassName: "text-theme-info",
   },
 ];

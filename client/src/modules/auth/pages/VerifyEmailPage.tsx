@@ -48,7 +48,9 @@ export const VerifyEmailPage = () => {
         subtitle="Your email has been verified successfully"
       >
         <div className="space-y-4 text-center">
-          <p className="text-success">You can now log in to your account.</p>
+          <p className="text-theme-success">
+            You can now log in to your account.
+          </p>
           <Button onClick={goToLogin}>Go to Login</Button>
         </div>
       </AuthCard>
@@ -59,7 +61,10 @@ export const VerifyEmailPage = () => {
     <AuthCard title="Verifying Your Email" subtitle="Please wait a moment">
       {isError || isInvalidLink ? (
         <div className="space-y-4">
-          <div role="alert" className="alert alert-error alert-soft">
+          <div
+            role="alert"
+            className="rounded-theme-md border border-theme-danger bg-theme-danger-soft px-4 py-3 text-sm text-theme-danger"
+          >
             <span>
               {isInvalidLink
                 ? "This verification link is invalid."
@@ -78,7 +83,11 @@ export const VerifyEmailPage = () => {
         </div>
       ) : (
         <div className="flex justify-center py-4">
-          <span className="loading loading-spinner loading-lg text-info" />
+          <span
+            role="status"
+            aria-label="Loading"
+            className="h-10 w-10 animate-spin rounded-full border-4 border-theme-info-soft border-t-theme-info"
+          />
         </div>
       )}
     </AuthCard>

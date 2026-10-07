@@ -2,9 +2,9 @@ import { Skeleton } from "@/shared/components/feedback/Skeleton";
 
 export const DepositTableSkeleton = () => {
   return (
-    <div className="overflow-hidden rounded-xl border border-base-300">
+    <div className="overflow-hidden rounded-theme-md border border-theme-border">
       <table className="table">
-        <thead className="bg-base-200">
+        <thead className="bg-theme-surface-sunken">
           <tr>
             <th>Date</th>
             <th>Amount</th>
@@ -16,7 +16,10 @@ export const DepositTableSkeleton = () => {
 
         <tbody>
           {[1, 2, 3, 4, 5].map((item) => (
-            <tr key={item} className="odd:bg-base-100 even:bg-base-200/30">
+            <tr
+              key={item}
+              className="odd:bg-theme-table-row even:bg-theme-table-row-alt"
+            >
               {/* Date */}
               <td>
                 <Skeleton className="h-4 w-32" />

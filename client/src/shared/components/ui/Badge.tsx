@@ -44,33 +44,39 @@ const iconSizes = {
 } as const;
 
 const variantStyles: Record<IBadgeVariant, string> = {
-  success: "bg-gradient-success",
+  success: "bg-theme-success text-theme-on-brand",
 
-  accent: "bg-gradient-accent",
+  accent: "bg-theme-accent text-theme-on-brand",
 
-  warning: "bg-gradient-warning",
+  warning: "bg-theme-warning text-theme-on-brand",
 
-  error: "bg-gradient-error",
+  error: "bg-theme-danger text-theme-on-brand",
 
-  info: "bg-gradient-info",
+  info: "bg-theme-info text-theme-on-brand",
 
-  primary: "bg-gradient-primary",
+  primary: "bg-theme-brand text-theme-on-brand",
 
-  secondary: "bg-gradient-secondary",
+  secondary: "bg-theme-accent text-theme-on-brand",
 
-  neutral: "bg-surface-hover text-text",
+  neutral: "bg-theme-surface-hover text-theme-text",
 
-  "soft-info": "bg-info/10 text-info",
-  "soft-success": "bg-success/10 text-success",
-  "soft-secondary": "bg-secondary/10 text-secondary",
-  "soft-warning": "bg-warning/10 text-warning",
-  "soft-error": "bg-error/10 text-error",
+  "soft-info": "bg-theme-info-soft text-theme-info",
+  "soft-success": "bg-theme-success-soft text-theme-success",
+  "soft-secondary": "bg-theme-accent-soft text-theme-accent",
+  "soft-warning": "bg-theme-warning-soft text-theme-warning",
+  "soft-error": "bg-theme-danger-soft text-theme-danger",
 };
 
 const sizeStyles = {
   sm: "h-6 p-3 text-xs",
   md: "h-7 px-4 text-sm",
   lg: "h-8 px-5 text-base",
+};
+
+const roundedStyles = {
+  full: "rounded-full",
+  md: "rounded-theme-md",
+  sm: "rounded-theme-sm",
 };
 
 export const Badge = ({
@@ -98,7 +104,7 @@ export const Badge = ({
 
         sizeStyles[size],
 
-        rounded === "full" ? "rounded-full" : "rounded-sm",
+        roundedStyles[rounded],
 
         className,
       )}

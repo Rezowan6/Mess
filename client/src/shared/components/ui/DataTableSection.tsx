@@ -75,14 +75,14 @@ export const DataTableSection = <T,>({
         </div>
 
         {summary && !isPending && (
-          <div className="flex items-center justify-between gap-3 rounded-xl bg-success/10 px-4 py-2 sm:justify-end">
-            <span className="text-xs font-medium uppercase tracking-wide text-base-content/60">
+          <div className="flex items-center justify-between gap-3 rounded-xl bg-theme-success/10 px-4 py-2 sm:justify-end">
+            <span className="text-xs font-medium uppercase tracking-wide text-theme-text-muted">
               {summary.label}
             </span>
 
             <span
               className={`text-lg font-bold tabular-nums ${
-                summary.className ?? "text-success"
+                summary.className ?? "text-theme-success"
               }`}
             >
               <AnimatedNumber

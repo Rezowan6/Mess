@@ -29,8 +29,8 @@ export function ToggleCounter({
   };
 
   return (
-    <div className="relative flex items-center justify-between border-b border-info py-2">
-      <span className="text-sm font-medium">{label}</span>
+    <div className="relative flex items-center justify-between border-b border-theme-border py-2">
+      <span className="text-sm font-medium text-theme-text">{label}</span>
 
       <div className="flex items-center gap-2">
         <ToggleSwitch
@@ -54,7 +54,7 @@ export function ToggleCounter({
             −
           </CounterButton>
 
-          <span className="flex h-7 min-w-8 items-center justify-center  px-2 text-sm font-medium">
+          <span className="flex h-7 min-w-8 items-center justify-center px-2 text-sm font-medium text-theme-text">
             {value}
           </span>
 
@@ -68,7 +68,7 @@ export function ToggleCounter({
         </div>
       </div>
 
-      {error && <p className="text-error text-sm">{error}</p>}
+      {error && <p className="text-sm text-theme-danger">{error}</p>}
     </div>
   );
 }

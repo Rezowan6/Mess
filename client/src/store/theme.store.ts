@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type ThemeMode = "light" | "dark" | "system";
+export type ThemeMode = "default" | "light" | "dark" | "system";
 
 interface ThemeState {
   theme: ThemeMode;
@@ -13,11 +13,16 @@ const STORAGE_KEY = "theme";
 const getInitialTheme = (): ThemeMode => {
   const saved = localStorage.getItem(STORAGE_KEY);
 
-  if (saved === "light" || saved === "dark" || saved === "system") {
+  if (
+    saved === "default" ||
+    saved === "light" ||
+    saved === "dark" ||
+    saved === "system"
+  ) {
     return saved;
   }
 
-  return "system";
+  return "default";
 };
 
 export const useThemeStore = create<ThemeState>((set) => ({

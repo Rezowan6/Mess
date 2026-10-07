@@ -18,14 +18,14 @@ export const SettingsCard = ({
   children,
 }: SettingsCardProps) => {
   return (
-    <section className="rounded-2xl border border-border bg-background shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <section className="rounded-theme-md border border-theme-border bg-theme-background shadow-theme-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-theme-md">
       {/* Header */}
-      <div className="flex items-center justify-center p-6">
+      <div className="flex items-center justify-center p-4">
         <div className="flex gap-4">
           {icon && (
             <IconBox
               icon={icon}
-              className="bg-gradient-success text-white"
+              className="bg-theme-success-gradient text-theme-text"
             />
           )}
 
@@ -39,10 +39,10 @@ export const SettingsCard = ({
           </div>
         </div>
 
-        <ChevronRight size={18} className="text-text-muted" />
+        <ChevronRight size={18} className="text-theme-text-muted" />
       </div>
 
-      <div className="border-t border-border">
+      <div className="border-t border-theme-border">
         {/* Content */}
         <div>{children}</div>
       </div>

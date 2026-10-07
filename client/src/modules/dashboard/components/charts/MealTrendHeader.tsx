@@ -5,21 +5,19 @@ export const MealTrendHeader = () => {
     <>
       <div className="mb-6 flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center animate-pulse rounded-xl bg-info/10 text-info">
+          <div className="flex h-10 w-10 items-center justify-center animate-pulse rounded-theme-xl bg-theme-info-soft text-theme-info">
             <Activity size={20} />
           </div>
 
           <div>
-            <h3 className="text-accent font-semibold">
-              Meal Trend
-            </h3>
-            <p className="mt-0.5 text-xs text-base-content/60">
+            <h3 className="font-semibold text-theme-accent">Meal Trend</h3>
+            <p className="mt-0.5 text-xs text-theme-text-muted">
               Daily meal consumption overview
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 rounded-lg bg-info/10 px-3 py-1.5 text-xs font-medium text-info">
+        <div className="flex items-center gap-2 rounded-theme-lg bg-theme-info-soft px-3 py-1.5 text-xs font-medium text-theme-info">
           <BarChart3 size={15} />
           This Month
         </div>

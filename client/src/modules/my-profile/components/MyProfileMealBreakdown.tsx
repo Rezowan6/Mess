@@ -20,6 +20,7 @@ export const MyProfileMealBreakdown = ({ summary }: Props) => {
       totalLabel="Total Meals"
       totalAmount={summary.total}
       totalDecimals={getMealDecimals(summary.total)}
+      totalClassName="text-theme-success"
     />
   );
 };

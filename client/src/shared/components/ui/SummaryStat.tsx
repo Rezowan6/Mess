@@ -4,18 +4,18 @@ import { cn } from "@/shared/utils/cn";
 import { toTitleCase } from "@/shared/utils/format.utils";
 import { AnimatedNumber } from "./AnimatedNumber";
 
-export type SummaryStatTone = "info" | "success" | "accent" | "secondary" | "error" | "warning";
+export type SummaryStatTone =
+  "info" | "success" | "accent" | "secondary" | "error" | "warning";
 
 // Full class names, so Tailwind can detect them (dynamic names would be purged)
 const toneStyles = {
-  info: { box: "bg-info/10", value: "text-info" },
-  success: { box: "bg-success/10", value: "text-success" },
-  accent: { box: "bg-accent/10", value: "text-accent" },
-  secondary: { box: "bg-secondary/10", value: "text-secondary" },
-  error: { box: "bg-error/10", value: "text-error" },
-  warning: { box: "bg-warning/10", value: "text-warning" },
+  info: { box: "bg-theme-info-soft", value: "text-theme-info" },
+  success: { box: "bg-theme-success-soft", value: "text-theme-success" },
+  accent: { box: "bg-theme-accent-soft", value: "text-theme-accent" },
+  secondary: { box: "bg-theme-brand-soft", value: "text-theme-brand" },
+  error: { box: "bg-theme-danger-soft", value: "text-theme-danger" },
+  warning: { box: "bg-theme-warning-soft", value: "text-theme-warning" },
 } as const satisfies Record<SummaryStatTone, { box: string; value: string }>;
-
 interface SummaryStatProps {
   label: string;
   amount: number;
@@ -87,13 +87,13 @@ export const SummaryStat = ({
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-xl px-4 py-2",
+        "flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-theme-xl px-4 py-2",
         styles.box,
         className,
       )}
     >
       <div className="flex w-full items-center justify-between gap-x-2 sm:w-auto sm:justify-start">
-        <span className="text-xs font-medium tracking-wide text-base-content/60">
+        <span className="text-xs font-medium tracking-wide text-theme-text-muted">
           {toTitleCase(label)}
         </span>
 
@@ -101,7 +101,7 @@ export const SummaryStat = ({
           {value}
         </span>
 
-        {hint && <span className="text-xs opacity-60">{hint}</span>}
+        {hint && <span className="text-xs text-theme-text-muted">{hint}</span>}
       </div>
 
       {action}

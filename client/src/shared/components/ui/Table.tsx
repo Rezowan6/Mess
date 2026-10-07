@@ -99,18 +99,18 @@ export function Table<T>({
   return (
     <div
       className={clsx(
-        "overflow-x-auto rounded-md bg-background",
+        "overflow-x-auto rounded-theme-md border border-theme-border bg-theme-card",
         className,
       )}
     >
-      <table className="table table-sm">
+      <table className="w-full border-collapse text-left text-sm">
         <thead>
           <tr>
             {columns.map((column) => (
               <th
                 key={String(column.key)}
                 className={clsx(
-                  "bg-accent/10",
+                  "bg-theme-table-header px-3 py-2 text-xs font-semibold uppercase tracking-wide text-theme-text-secondary",
                   column.className,
                   column.hideOnMobile && "hidden md:table-cell",
                 )}
@@ -129,12 +129,15 @@ export function Table<T>({
                 : (row[rowKey] as React.Key);
 
             return (
-              <tr key={key} className="hover hover:bg-success/5">
+              <tr
+                key={key}
+                className="bg-theme-table-row transition-colors hover:bg-theme-table-row-hover"
+              >
                 {columns.map((column) => (
                   <td
                     key={String(column.key)}
                     className={clsx(
-                      "border-b border-success",
+                      "border-b border-theme-border px-3 py-2 text-theme-text",
                       column.className,
                       column.hideOnMobile && "hidden md:table-cell",
                     )}

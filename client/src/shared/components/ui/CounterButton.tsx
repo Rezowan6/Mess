@@ -19,12 +19,12 @@ export function CounterButton({
         "flex h-7 w-7 items-center justify-center border transition",
         "disabled:cursor-not-allowed disabled:opacity-40",
         position === "left" && [
-          "rounded-l-md border-error/40 bg-error/10 text-error",
-          "hover:bg-error hover:text-error-content",
+          "rounded-l-theme-sm border-theme-danger bg-theme-danger-soft text-theme-danger",
+          "hover:bg-theme-danger hover:text-theme-on-brand",
         ],
         position === "right" && [
-          "rounded-r-md border-accent/40 bg-accent/10 text-accent",
-          "hover:bg-accent hover:text-accent-content",
+          "rounded-r-theme-sm border-theme-success bg-theme-info-soft text-theme-accent",
+          "hover:bg-theme-info hover:text-theme-on-brand",
         ],
         className,
       )}

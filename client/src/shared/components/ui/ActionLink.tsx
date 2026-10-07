@@ -27,10 +27,10 @@ export const ActionLink = ({
       to={to}
       state={state}
       className={`
-        text-info
+        text-theme-info
         inline-flex items-center gap-1
         border-b border-transparent
-        hover:border-info
+        hover:border-theme-info
         transition-all duration-300 ease-in-out
         w-fit
         text-sm sm:text-md

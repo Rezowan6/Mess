@@ -52,10 +52,10 @@ export const PageActionMenu = ({
         aria-expanded={isOpen}
         className="
           flex items-center justify-center
-          rounded-lg p-2
-          text-base-content
+          rounded-theme-lg p-2
+          text-theme-text
           transition-all duration-200
-          hover:bg-info/10
+          hover:bg-theme-info-soft
           active:scale-95
         "
       >
@@ -69,11 +69,10 @@ export const PageActionMenu = ({
           absolute z-50
           w-60
           overflow-hidden
-          rounded-xl
-          border border-success
-          bg-background
+          rounded-theme-xl
+          border border-theme-border
           backdrop-blur-xl
-          shadow-xl
+          shadow-theme-xl
 
           transition-all duration-200 ease-out
 
@@ -104,15 +103,15 @@ export const PageActionMenu = ({
                 }}
                 className={`
                   flex w-full items-center gap-3
-                  rounded-lg px-3 py-2.5
+                  rounded-theme-lg px-3 py-2.5
                   text-left text-sm
                   transition-colors
 
-                  ${
-                    item.danger
-                      ? "text-error hover:bg-error/10"
-                      : "text-base-content hover:bg-info/10"
-                  }
+              ${
+                item.danger
+                  ? "text-theme-danger hover:bg-theme-danger-soft"
+                  : "text-theme-text hover:bg-theme-info-soft"
+              }
 
                   disabled:cursor-not-allowed
                   disabled:opacity-50

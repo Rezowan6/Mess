@@ -20,9 +20,9 @@ export const MyProfileRecentDeposits = ({ deposits }: Props) => {
     amount: Number(deposit.amount),
     prefix: "+৳ ",
     icon: Banknote,
-    iconClassName: "text-success",
-    iconBgClassName: "bg-success/10",
-    valueClassName: "text-success",
+    iconClassName: "text-theme-success",
+    iconBgClassName: "bg-theme-success/10",
+    valueClassName: "text-theme-success",
     description: formatDate(deposit.createdAt),
   }));
 
@@ -39,7 +39,7 @@ export const MyProfileRecentDeposits = ({ deposits }: Props) => {
       totalLabel="Total Deposit"
       totalAmount={totalDeposit}
       totalPrefix="৳ "
-      totalClassName="text-success"
+      totalClassName="text-theme-success"
       emptyMessage="No deposits found"
     />
   );

@@ -21,7 +21,7 @@ export const MealSessionStatus = () => {
       >
         <span
           className={`h-2 w-2 rounded-full ${
-            isOpen ? "animate-pulse bg-success" : "bg-error"
+            isOpen ? "animate-pulse bg-theme-success" : "bg-theme-danger"
           }`}
         />
 

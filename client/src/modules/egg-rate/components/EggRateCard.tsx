@@ -71,11 +71,11 @@ export const EggRateCard = () => {
     <>
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-sm opacity-60">Current Egg Rate</p>
+          <p className="text-sm text-theme-text">Current Egg Rate</p>
 
           <p className="mt-1 text-2xl font-bold">
             ৳ {Number(eggRate.rate).toFixed(2)}
-            <span className="ml-1 text-sm font-normal opacity-60">/ egg</span>
+            <span className="ml-1 text-sm font-normal text-theme-text-muted">/ egg</span>
           </p>
         </div>
 

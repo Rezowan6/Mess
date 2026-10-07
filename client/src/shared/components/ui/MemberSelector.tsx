@@ -99,7 +99,7 @@ export const MemberSelector = <T extends FieldValues>({
             return (
               <>
                 {multiple && showSelectAll && members.length > 0 && (
-                  <label className="mb-2 flex w-fit cursor-pointer items-center gap-2 text-sm font-medium text-info hover:text-info/80">
+                  <label className="mb-2 flex w-fit cursor-pointer items-center gap-2 text-sm font-medium text-theme-info hover:opacity-80">
                     <Checkbox
                       checked={allSelected}
                       onChange={handleToggleAll}
@@ -108,9 +108,11 @@ export const MemberSelector = <T extends FieldValues>({
                   </label>
                 )}
 
-                <div className="max-h-60 space-y-2 overflow-y-auto rounded-md border border-info p-3">
+                <div className="max-h-60 space-y-2 overflow-y-auto rounded-theme-md border border-theme-border p-3">
                   {members.length === 0 && (
-                    <p className="text-sm opacity-60">No members found</p>
+                    <p className="text-sm text-theme-text-muted">
+                      No members found
+                    </p>
                   )}
 
                   {members.map((member) => {
@@ -120,10 +122,10 @@ export const MemberSelector = <T extends FieldValues>({
                     return (
                       <label
                         key={userId}
-                        className={`flex cursor-pointer items-center gap-3 rounded-lg p-3 transition ${
+                        className={`flex cursor-pointer items-center gap-3 rounded-theme-lg p-3 transition ${
                           selected
-                            ? "bg-success/10 ring-1 ring-success"
-                            : "bg-info/10 hover:bg-success/10"
+                            ? "bg-theme-success-soft ring-1 ring-theme-success"
+                            : "bg-theme-info-soft hover:bg-theme-success-soft"
                         }`}
                       >
                         <Avatar
@@ -140,12 +142,14 @@ export const MemberSelector = <T extends FieldValues>({
                         <div>
                           <p
                             className={`font-medium ${
-                              selected ? "text-success" : "text-info"
+                              selected
+                                ? "text-theme-success"
+                                : "text-theme-info"
                             }`}
                           >
                             {member.user.name}
                           </p>
-                          <p className="text-sm opacity-60">
+                          <p className="text-sm text-theme-text-muted">
                             {member.user.email}
                           </p>
                         </div>
@@ -155,7 +159,7 @@ export const MemberSelector = <T extends FieldValues>({
                 </div>
 
                 {fieldState.error?.message && (
-                  <p className="text-sm text-error">
+                  <p className="text-sm text-theme-danger">
                     {fieldState.error.message}
                   </p>
                 )}

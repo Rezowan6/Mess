@@ -145,14 +145,14 @@ export const HorizontalScroller = ({
       <span
         aria-hidden="true"
         className={cn(
-          "pointer-events-none absolute inset-y-0 left-0 w-8 bg-linear-to-r from-base-100 to-transparent transition-opacity duration-200",
+          "pointer-events-none absolute inset-y-0 left-0 w-8 bg-linear-to-r from-theme-background to-transparent transition-opacity duration-200",
           canScrollLeft ? "opacity-100" : "opacity-0",
         )}
       />
       <span
         aria-hidden="true"
         className={cn(
-          "pointer-events-none absolute inset-y-0 right-0 w-8 bg-linear-to-l from-base-100 to-transparent transition-opacity duration-200",
+          "pointer-events-none absolute inset-y-0 right-0 w-8 bg-linear-to-l from-theme-background to-transparent transition-opacity duration-200",
           canScrollRight ? "opacity-100" : "opacity-0",
         )}
       />
@@ -163,7 +163,7 @@ export const HorizontalScroller = ({
           type="button"
           aria-label="Scroll left"
           onClick={() => scrollByPage(-1)}
-          className="absolute left-0 top-1/2 flex h-6 w-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-base-100 text-base-content shadow-md ring-1 ring-base-content/10 opacity-0 transition-all duration-200 hover:scale-110 hover:bg-base-200 group-hover:opacity-100"
+          className="absolute left-0 top-1/2 flex h-6 w-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-theme-surface-raised text-theme-text shadow-theme-md ring-1 ring-theme-border opacity-0 transition-all duration-200 hover:scale-110 hover:bg-theme-surface-hover group-hover:opacity-100"
         >
           <ChevronLeft size={14} />
         </button>
@@ -174,7 +174,7 @@ export const HorizontalScroller = ({
           type="button"
           aria-label="Scroll right"
           onClick={() => scrollByPage(1)}
-          className="absolute right-0 top-1/2 flex h-6 w-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-base-100 text-base-content shadow-md ring-1 ring-base-content/10 opacity-0 transition-all duration-200 hover:scale-110 hover:bg-base-200 group-hover:opacity-100"
+          className="absolute right-0 top-1/2 flex h-6 w-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-theme-surface-raised text-theme-text shadow-theme-md ring-1 ring-theme-border opacity-0 transition-all duration-200 hover:scale-110 hover:bg-theme-surface-hover group-hover:opacity-100"
         >
           <ChevronRight size={14} />
         </button>

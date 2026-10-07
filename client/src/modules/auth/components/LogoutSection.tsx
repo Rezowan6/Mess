@@ -33,9 +33,9 @@ const LogoutSection = () => {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between p-2">
         {/* Left */}
         <div>
-          <h3 className="font-medium text-error">Sign out</h3>
+          <h3 className="font-medium text-theme-danger">Sign out</h3>
 
-          <p className="mt-1 text-sm text-text">
+          <p className="mt-1 text-sm text-theme-text-muted">
             You will need to log in again to access your account.
           </p>
         </div>

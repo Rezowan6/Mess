@@ -49,20 +49,22 @@ export const OverviewListCard = ({
   totalPrefix,
   totalSuffix,
   totalDecimals,
-  totalClassName = "text-info",
+  totalClassName = "text-theme-info",
   emptyMessage = "No data found",
   duration = 1500,
 }: Props) => {
   const mounted = useMountAnimation();
   return (
-    <div className="overflow-hidden rounded-xl p-4 shadow-lg shadow-info/20">
+    <div className="overflow-hidden rounded-theme-xl p-4 shadow-theme-lg">
       <div className="mb-5">
-        <h3 className="font-semibold">{title}</h3>
-        <p className="text-sm opacity-60">{description}</p>
+        <h3 className="font-semibold text-theme-text">{title}</h3>
+        <p className="text-sm text-theme-text-muted">{description}</p>
       </div>
 
       {items.length === 0 ? (
-        <p className="py-6 text-center text-sm opacity-60">{emptyMessage}</p>
+        <p className="py-6 text-center text-sm text-theme-text-muted">
+          {emptyMessage}
+        </p>
       ) : (
         <div className="space-y-3">
           {items.map((item, index) => {
@@ -74,7 +76,7 @@ export const OverviewListCard = ({
                 style={{
                   transitionDelay: `${Math.min(index, MAX_STAGGER_STEPS) * 60}ms`,
                 }}
-                className={`flex items-center justify-between rounded-xl bg-info/10 p-3 transition-all duration-500 ease-out ${
+                className={`flex items-center justify-between rounded-theme-xl bg-theme-info-soft p-3 transition-all duration-500 ease-out ${
                   mounted
                     ? "translate-y-0 opacity-100"
                     : "translate-y-2 opacity-0"
@@ -82,25 +84,29 @@ export const OverviewListCard = ({
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`rounded-lg p-2 ${
-                      item.iconBgClassName ?? "bg-primary/10"
-                    } ${item.iconClassName ?? "text-info"}`}
+                    className={`rounded-theme-md p-2 ${
+                      item.iconBgClassName ?? "bg-theme-brand-soft"
+                    } ${item.iconClassName ?? "text-theme-info"}`}
                   >
                     <Icon size={18} />
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">{item.label}</p>
+                    <p className="text-sm font-medium text-theme-text">
+                      {item.label}
+                    </p>
 
                     {item.description && (
-                      <p className="text-xs opacity-50">{item.description}</p>
+                      <p className="text-xs text-theme-text-muted">
+                        {item.description}
+                      </p>
                     )}
                   </div>
                 </div>
 
                 <span
                   className={`font-semibold tabular-nums ${
-                    item.valueClassName ?? "text-info"
+                    item.valueClassName ?? "text-theme-info"
                   }`}
                 >
                   {item.amount !== undefined ? (
@@ -121,8 +127,8 @@ export const OverviewListCard = ({
         </div>
       )}
 
-      <div className="mt-4 flex items-center justify-between border-t border-info/30 pt-4">
-        <span className="font-medium">{totalLabel}</span>
+      <div className="mt-4 flex items-center justify-between border-t border-theme-border pt-4">
+        <span className="font-medium text-theme-text-muted">{totalLabel}</span>
 
         <span className={`text-lg font-bold tabular-nums ${totalClassName}`}>
           {totalAmount !== undefined ? (

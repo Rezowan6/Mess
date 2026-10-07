@@ -1,924 +1,637 @@
 /* =========================================================
-   REZOWAN MESS APP
-   Custom Theme Design System
+   SMART MESS — CUSTOM THEME SYSTEM
+   Themes: default (signature gradient) | light | dark
 
-   Themes:
-   1. default  → Signature professional theme
-   2. light    → Clean professional light theme
-   3. dark     → Premium dark theme
+   Rules:
+   - Components NEVER use raw colors or DaisyUI colors.
+   - Components only use `theme-*` utilities (bg-theme-card, text-theme-muted ...)
+   - Switch theme with: document.documentElement.dataset.theme = "dark"
 ========================================================= */
-
 
 /* =========================================================
-   TAILWIND THEME TOKENS
+   1. TAILWIND TOKEN MAP
+   `inline` is IMPORTANT: utilities read the --theme-* variable
+   at runtime, so theme switching works on any element.
 ========================================================= */
 
-@theme {
-
-  /* -------------------------------------------------------
-     Brand Gradients
-  ------------------------------------------------------- */
-
-  --background-image-theme-brand-gradient:
-    var(--theme-brand-gradient);
-
-  --background-image-theme-success-gradient:
-    var(--theme-success-gradient);
-
-  --background-image-theme-danger-gradient:
-    var(--theme-danger-gradient);
-
-  --background-image-theme-warning-gradient:
-    var(--theme-warning-gradient);
-
-  --background-image-theme-info-gradient:
-    var(--theme-info-gradient);
-
-  --background-image-theme-accent-gradient:
-    var(--theme-accent-gradient);
-
-
-  /* -------------------------------------------------------
-     Brand
-  ------------------------------------------------------- */
-
-  --color-theme-brand:
-    var(--theme-brand);
-
-  --color-theme-brand-hover:
-    var(--theme-brand-hover);
-
-  --color-theme-brand-active:
-    var(--theme-brand-active);
-
-  --color-theme-brand-soft:
-    var(--theme-brand-soft);
-
-  --color-theme-brand-subtle:
-    var(--theme-brand-subtle);
-
-  --color-theme-on-brand:
-    var(--theme-on-brand);
-
-
-  /* -------------------------------------------------------
-     Accent
-  ------------------------------------------------------- */
-
-  --color-theme-accent:
-    var(--theme-accent);
-
-  --color-theme-accent-hover:
-    var(--theme-accent-hover);
-
-  --color-theme-accent-soft:
-    var(--theme-accent-soft);
-
-
-  /* -------------------------------------------------------
-     Status
-  ------------------------------------------------------- */
-
-  --color-theme-success:
-    var(--theme-success);
-
-  --color-theme-success-soft:
-    var(--theme-success-soft);
-
-  --color-theme-warning:
-    var(--theme-warning);
-
-  --color-theme-warning-soft:
-    var(--theme-warning-soft);
-
-  --color-theme-danger:
-    var(--theme-danger);
-
-  --color-theme-danger-soft:
-    var(--theme-danger-soft);
-
-  --color-theme-info:
-    var(--theme-info);
-
-  --color-theme-info-soft:
-    var(--theme-info-soft);
-
-
-  /* -------------------------------------------------------
-     Application Surfaces
-  ------------------------------------------------------- */
-
-  --color-theme-background:
-    var(--theme-background);
-
-  --color-theme-surface:
-    var(--theme-surface);
-
-  --color-theme-surface-raised:
-    var(--theme-surface-raised);
-
-  --color-theme-surface-hover:
-    var(--theme-surface-hover);
-
-  --color-theme-card:
-    var(--theme-card);
-
-  --color-theme-card-hover:
-    var(--theme-card-hover);
-
-
-  /* -------------------------------------------------------
-     Navigation
-  ------------------------------------------------------- */
-
-  --color-theme-sidebar:
-    var(--theme-sidebar);
-
-  --color-theme-sidebar-hover:
-    var(--theme-sidebar-hover);
-
-  --color-theme-sidebar-active:
-    var(--theme-sidebar-active);
-
-  --color-theme-header:
-    var(--theme-header);
-
-
-  /* -------------------------------------------------------
-     Text
-  ------------------------------------------------------- */
-
-  --color-theme-text:
-    var(--theme-text);
-
-  --color-theme-text-secondary:
-    var(--theme-text-secondary);
-
-  --color-theme-text-muted:
-    var(--theme-text-muted);
-
-  --color-theme-text-disabled:
-    var(--theme-text-disabled);
-
-  --color-theme-on-dark:
-    var(--theme-on-dark);
-
-
-  /* -------------------------------------------------------
-     Border
-  ------------------------------------------------------- */
-
-  --color-theme-border:
-    var(--theme-border);
-
-  --color-theme-border-hover:
-    var(--theme-border-hover);
-
-  --color-theme-border-focus:
-    var(--theme-border-focus);
-
-
-  /* -------------------------------------------------------
-     Form Controls
-  ------------------------------------------------------- */
-
-  --color-theme-input:
-    var(--theme-input);
-
-  --color-theme-input-hover:
-    var(--theme-input-hover);
-
-  --color-theme-input-border:
-    var(--theme-input-border);
-
-  --color-theme-input-focus:
-    var(--theme-input-focus);
-
-
-  /* -------------------------------------------------------
-     Tables
-  ------------------------------------------------------- */
-
-  --color-theme-table-header:
-    var(--theme-table-header);
-
-  --color-theme-table-row:
-    var(--theme-table-row);
-
-  --color-theme-table-row-hover:
-    var(--theme-table-row-hover);
-
-
-  /* -------------------------------------------------------
-     Modal / Overlay
-  ------------------------------------------------------- */
-
-  --color-theme-modal:
-    var(--theme-modal);
-
-  --color-theme-overlay:
-    var(--theme-overlay);
-
-
-  /* -------------------------------------------------------
-     Badges
-  ------------------------------------------------------- */
-
-  --color-theme-badge-success:
-    var(--theme-badge-success);
-
-  --color-theme-badge-success-text:
-    var(--theme-badge-success-text);
-
-  --color-theme-badge-warning:
-    var(--theme-badge-warning);
-
-  --color-theme-badge-warning-text:
-    var(--theme-badge-warning-text);
-
-  --color-theme-badge-danger:
-    var(--theme-badge-danger);
-
-  --color-theme-badge-danger-text:
-    var(--theme-badge-danger-text);
-
-  --color-theme-badge-info:
-    var(--theme-badge-info);
-
-  --color-theme-badge-info-text:
-    var(--theme-badge-info-text);
-
-
-  /* -------------------------------------------------------
-     Radius
-  ------------------------------------------------------- */
-
-  --radius-theme-sm:
-    var(--theme-radius-sm);
-
-  --radius-theme-md:
-    var(--theme-radius-md);
-
-  --radius-theme-lg:
-    var(--theme-radius-lg);
-
-  --radius-theme-xl:
-    var(--theme-radius-xl);
-
-
-  /* -------------------------------------------------------
-     Shadows
-  ------------------------------------------------------- */
-
-  --shadow-theme-sm:
-    var(--theme-shadow-sm);
-
-  --shadow-theme-md:
-    var(--theme-shadow-md);
-
-  --shadow-theme-lg:
-    var(--theme-shadow-lg);
+@theme inline {
+  /* Gradients  → bg-theme-brand-gradient ... */
+  --background-image-theme-brand-gradient: var(--theme-brand-gradient);
+  --background-image-theme-brand-gradient-hover: var(
+    --theme-brand-gradient-hover
+  );
+  --background-image-theme-success-gradient: var(--theme-success-gradient);
+  --background-image-theme-danger-gradient: var(--theme-danger-gradient);
+  --background-image-theme-warning-gradient: var(--theme-warning-gradient);
+  --background-image-theme-info-gradient: var(--theme-info-gradient);
+  --background-image-theme-accent-gradient: var(--theme-accent-gradient);
+  --background-image-theme-sidebar-gradient: var(--theme-sidebar-gradient);
+  --background-image-theme-page-glow: var(--theme-page-glow);
+
+  /* Brand */
+  --color-theme-brand: var(--theme-brand);
+  --color-theme-brand-hover: var(--theme-brand-hover);
+  --color-theme-brand-active: var(--theme-brand-active);
+  --color-theme-brand-soft: var(--theme-brand-soft);
+  --color-theme-brand-subtle: var(--theme-brand-subtle);
+  --color-theme-on-brand: var(--theme-on-brand);
+
+  /* Accent */
+  --color-theme-accent: var(--theme-accent);
+  --color-theme-accent-hover: var(--theme-accent-hover);
+  --color-theme-accent-soft: var(--theme-accent-soft);
+
+  /* Status */
+  --color-theme-success: var(--theme-success);
+  --color-theme-success-soft: var(--theme-success-soft);
+  --color-theme-warning: var(--theme-warning);
+  --color-theme-warning-soft: var(--theme-warning-soft);
+  --color-theme-danger: var(--theme-danger);
+  --color-theme-danger-soft: var(--theme-danger-soft);
+  --color-theme-info: var(--theme-info);
+  --color-theme-info-soft: var(--theme-info-soft);
+
+  /* Surfaces */
+  --color-theme-background: var(--theme-background);
+  --color-theme-surface: var(--theme-surface);
+  --color-theme-surface-raised: var(--theme-surface-raised);
+  --color-theme-surface-sunken: var(--theme-surface-sunken);
+  --color-theme-surface-hover: var(--theme-surface-hover);
+  --color-theme-card: var(--theme-card);
+  --color-theme-card-hover: var(--theme-card-hover);
+
+  /* Navigation */
+  --color-theme-sidebar: var(--theme-sidebar);
+  --color-theme-sidebar-hover: var(--theme-sidebar-hover);
+  --color-theme-sidebar-active: var(--theme-sidebar-active);
+  --color-theme-sidebar-text: var(--theme-sidebar-text);
+  --color-theme-sidebar-text-active: var(--theme-sidebar-text-active);
+  --color-theme-header: var(--theme-header);
+
+  /* Text */
+  --color-theme-text: var(--theme-text);
+  --color-theme-text-secondary: var(--theme-text-secondary);
+  --color-theme-text-muted: var(--theme-text-muted);
+  --color-theme-text-disabled: var(--theme-text-disabled);
+  --color-theme-link: var(--theme-link);
+  --color-theme-link-hover: var(--theme-link-hover);
+  --color-theme-on-dark: var(--theme-on-dark);
+
+  /* Border */
+  --color-theme-border: var(--theme-border);
+  --color-theme-border-subtle: var(--theme-border-subtle);
+  --color-theme-border-hover: var(--theme-border-hover);
+  --color-theme-border-focus: var(--theme-border-focus);
+
+  /* Form controls */
+  --color-theme-input: var(--theme-input);
+  --color-theme-input-hover: var(--theme-input-hover);
+  --color-theme-input-border: var(--theme-input-border);
+  --color-theme-input-focus: var(--theme-input-focus);
+  --color-theme-input-disabled: var(--theme-input-disabled);
+  --color-theme-placeholder: var(--theme-placeholder);
+
+  /* Table */
+  --color-theme-table-header: var(--theme-table-header);
+  --color-theme-table-row: var(--theme-table-row);
+  --color-theme-table-row-alt: var(--theme-table-row-alt);
+  --color-theme-table-row-hover: var(--theme-table-row-hover);
+
+  /* Modal / overlay / tooltip / skeleton */
+  --color-theme-modal: var(--theme-modal);
+  --color-theme-overlay: var(--theme-overlay);
+  --color-theme-tooltip: var(--theme-tooltip);
+  --color-theme-tooltip-text: var(--theme-tooltip-text);
+  --color-theme-skeleton: var(--theme-skeleton);
+
+  /* Badges */
+  --color-theme-badge-success: var(--theme-badge-success);
+  --color-theme-badge-success-text: var(--theme-badge-success-text);
+  --color-theme-badge-warning: var(--theme-badge-warning);
+  --color-theme-badge-warning-text: var(--theme-badge-warning-text);
+  --color-theme-badge-danger: var(--theme-badge-danger);
+  --color-theme-badge-danger-text: var(--theme-badge-danger-text);
+  --color-theme-badge-info: var(--theme-badge-info);
+  --color-theme-badge-info-text: var(--theme-badge-info-text);
+  --color-theme-badge-neutral: var(--theme-badge-neutral);
+  --color-theme-badge-neutral-text: var(--theme-badge-neutral-text);
+
+  /* Charts */
+  --color-theme-chart-1: var(--theme-chart-1);
+  --color-theme-chart-2: var(--theme-chart-2);
+  --color-theme-chart-3: var(--theme-chart-3);
+  --color-theme-chart-4: var(--theme-chart-4);
+  --color-theme-chart-5: var(--theme-chart-5);
+
+  /* Radius → rounded-theme-md */
+  --radius-theme-sm: var(--theme-radius-sm);
+  --radius-theme-md: var(--theme-radius-md);
+  --radius-theme-lg: var(--theme-radius-lg);
+  --radius-theme-xl: var(--theme-radius-xl);
+
+  /* Shadow → shadow-theme-md */
+  --shadow-theme-sm: var(--theme-shadow-sm);
+  --shadow-theme-md: var(--theme-shadow-md);
+  --shadow-theme-lg: var(--theme-shadow-lg);
+  --shadow-theme-brand: var(--theme-shadow-brand);
+  --shadow-theme-focus: var(--theme-shadow-focus);
 }
 
-
 /* =========================================================
-   DEFAULT THEME
-   Signature Rezowan Mess Theme
-
-   Indigo + Violet + Cyan
-   Premium SaaS appearance
+   2. DEFAULT THEME — "Signature"
+   Indigo → Violet → Cyan gradient, soft tinted surfaces,
+   gradient sidebar, indigo-tinted shadows.
 ========================================================= */
 
 :root,
 [data-theme="default"] {
-
   color-scheme: light;
 
-
-  /* -------------------------------------------------------
-     Brand
-  ------------------------------------------------------- */
-
+  /* Brand */
   --theme-brand: #4f46e5;
   --theme-brand-hover: #4338ca;
   --theme-brand-active: #3730a3;
-
-  --theme-brand-soft: #eef2ff;
-  --theme-brand-subtle: #e0e7ff;
-
+  --theme-brand-soft: #eef0ff;
+  --theme-brand-subtle: #dfe3ff;
   --theme-on-brand: #ffffff;
 
-
-  /* -------------------------------------------------------
-     Accent
-  ------------------------------------------------------- */
-
+  /* Accent */
   --theme-accent: #8b5cf6;
   --theme-accent-hover: #7c3aed;
-  --theme-accent-soft: #f3e8ff;
+  --theme-accent-soft: #f3ebff;
 
-
-  /* -------------------------------------------------------
-     Signature Gradients
-  ------------------------------------------------------- */
-
-  --theme-brand-gradient:
-    linear-gradient(
-      135deg,
-      #4f46e5 0%,
-      #7c3aed 50%,
-      #06b6d4 100%
+  /* Gradients */
+  --theme-brand-gradient: linear-gradient(
+    135deg,
+    #4f46e5 0%,
+    #7c3aed 55%,
+    #06b6d4 100%
+  );
+  --theme-brand-gradient-hover: linear-gradient(
+    135deg,
+    #4338ca 0%,
+    #6d28d9 55%,
+    #0891b2 100%
+  );
+  --theme-success-gradient: linear-gradient(135deg, #059669 0%, #16a34a 100%);
+  --theme-danger-gradient: linear-gradient(135deg, #dc2626 0%, #e11d48 100%);
+  --theme-warning-gradient: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+  --theme-info-gradient: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+  --theme-accent-gradient: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+  --theme-sidebar-gradient: linear-gradient(
+    180deg,
+    #1e1b4b 0%,
+    #2e1065 55%,
+    #164e63 100%
+  );
+  --theme-page-glow:
+    radial-gradient(
+      60rem 30rem at 10% -10%,
+      rgb(99 102 241 / 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      50rem 28rem at 100% 0%,
+      rgb(6 182 212 / 0.08),
+      transparent 55%
     );
 
-  --theme-success-gradient:
-    linear-gradient(
-      135deg,
-      #059669 0%,
-      #16a34a 100%
-    );
-
-  --theme-danger-gradient:
-    linear-gradient(
-      135deg,
-      #dc2626 0%,
-      #e11d48 100%
-    );
-
-  --theme-warning-gradient:
-    linear-gradient(
-      135deg,
-      #d97706 0%,
-      #ea580c 100%
-    );
-
-  --theme-info-gradient:
-    linear-gradient(
-      135deg,
-      #0284c7 0%,
-      #2563eb 100%
-    );
-
-  --theme-accent-gradient:
-    linear-gradient(
-      135deg,
-      #7c3aed 0%,
-      #db2777 100%
-    );
-
-
-  /* -------------------------------------------------------
-     Status
-  ------------------------------------------------------- */
-
+  /* Status */
   --theme-success: #16a34a;
   --theme-success-soft: #dcfce7;
-
   --theme-warning: #d97706;
   --theme-warning-soft: #fef3c7;
-
   --theme-danger: #dc2626;
   --theme-danger-soft: #fee2e2;
-
   --theme-info: #0284c7;
   --theme-info-soft: #e0f2fe;
 
-
-  /* -------------------------------------------------------
-     Main Application Background
-  ------------------------------------------------------- */
-
-  --theme-background: #f6f7fb;
-
+  /* Surfaces */
+  --theme-background: #f4f5fb;
   --theme-surface: #ffffff;
-
   --theme-surface-raised: #ffffff;
-
-  --theme-surface-hover: #f8fafc;
-
-
-  /* -------------------------------------------------------
-     Cards
-  ------------------------------------------------------- */
-
+  --theme-surface-sunken: #eef0f8;
+  --theme-surface-hover: #f7f8fd;
   --theme-card: #ffffff;
-  --theme-card-hover: #f8fafc;
+  --theme-card-hover: #fafaff;
 
+  /* Navigation (sidebar is dark gradient in default theme) */
+  --theme-sidebar: #1e1b4b;
+  --theme-sidebar-hover: rgb(255 255 255 / 0.08);
+  --theme-sidebar-active: rgb(255 255 255 / 0.16);
+  --theme-sidebar-text: #c7d2fe;
+  --theme-sidebar-text-active: #ffffff;
+  --theme-header: rgb(255 255 255 / 0.85);
 
-  /* -------------------------------------------------------
-     Navigation
-  ------------------------------------------------------- */
-
-  --theme-sidebar: #ffffff;
-
-  --theme-sidebar-hover: #f5f3ff;
-
-  --theme-sidebar-active: #4f46e5;
-
-  --theme-header: #ffffff;
-
-
-  /* -------------------------------------------------------
-     Text
-  ------------------------------------------------------- */
-
+  /* Text */
   --theme-text: #111827;
-
   --theme-text-secondary: #374151;
-
   --theme-text-muted: #6b7280;
-
   --theme-text-disabled: #9ca3af;
-
+  --theme-link: #4f46e5;
+  --theme-link-hover: #3730a3;
   --theme-on-dark: #ffffff;
 
-
-  /* -------------------------------------------------------
-     Border
-  ------------------------------------------------------- */
-
-  --theme-border: #e5e7eb;
-
+  /* Border */
+  --theme-border: #e3e6f2;
+  --theme-border-subtle: #eef0f8;
   --theme-border-hover: #c7d2fe;
-
   --theme-border-focus: #6366f1;
 
-
-  /* -------------------------------------------------------
-     Inputs
-  ------------------------------------------------------- */
-
+  /* Inputs */
   --theme-input: #ffffff;
-
-  --theme-input-hover: #fafafa;
-
-  --theme-input-border: #d1d5db;
-
+  --theme-input-hover: #fafaff;
+  --theme-input-border: #d3d8ea;
   --theme-input-focus: #6366f1;
+  --theme-input-disabled: #f1f2f8;
+  --theme-placeholder: #9ca3af;
 
-
-  /* -------------------------------------------------------
-     Tables
-  ------------------------------------------------------- */
-
-  --theme-table-header: #f8fafc;
-
+  /* Table */
+  --theme-table-header: #f6f7fd;
   --theme-table-row: #ffffff;
+  --theme-table-row-alt: #fbfbfe;
+  --theme-table-row-hover: #f1f0ff;
 
-  --theme-table-row-hover: #f5f3ff;
-
-
-  /* -------------------------------------------------------
-     Modal
-  ------------------------------------------------------- */
-
+  /* Modal / overlay / tooltip / skeleton */
   --theme-modal: #ffffff;
-
   --theme-overlay: rgb(15 23 42 / 0.5);
+  --theme-tooltip: #1e1b4b;
+  --theme-tooltip-text: #ffffff;
+  --theme-skeleton: #e6e8f4;
 
-
-  /* -------------------------------------------------------
-     Badges
-  ------------------------------------------------------- */
-
+  /* Badges */
   --theme-badge-success: #dcfce7;
   --theme-badge-success-text: #166534;
-
   --theme-badge-warning: #fef3c7;
   --theme-badge-warning-text: #92400e;
-
   --theme-badge-danger: #fee2e2;
   --theme-badge-danger-text: #991b1b;
-
   --theme-badge-info: #e0f2fe;
   --theme-badge-info-text: #075985;
+  --theme-badge-neutral: #eef0f8;
+  --theme-badge-neutral-text: #374151;
 
+  /* Charts */
+  --theme-chart-1: #4f46e5;
+  --theme-chart-2: #06b6d4;
+  --theme-chart-3: #8b5cf6;
+  --theme-chart-4: #f59e0b;
+  --theme-chart-5: #10b981;
 
-  /* -------------------------------------------------------
-     Radius
-  ------------------------------------------------------- */
-
+  /* Radius */
   --theme-radius-sm: 6px;
   --theme-radius-md: 10px;
   --theme-radius-lg: 14px;
   --theme-radius-xl: 18px;
 
-
-  /* -------------------------------------------------------
-     Shadows
-  ------------------------------------------------------- */
-
+  /* Shadow (indigo tinted) */
   --theme-shadow-sm:
-    0 1px 3px rgb(15 23 42 / 0.06);
-
-  --theme-shadow-md:
-    0 4px 12px rgb(15 23 42 / 0.08);
-
-  --theme-shadow-lg:
-    0 12px 30px rgb(15 23 42 / 0.12);
+    0 1px 2px rgb(49 46 129 / 0.06), 0 1px 3px rgb(49 46 129 / 0.05);
+  --theme-shadow-md: 0 4px 14px rgb(49 46 129 / 0.09);
+  --theme-shadow-lg: 0 14px 34px rgb(49 46 129 / 0.16);
+  --theme-shadow-brand: 0 8px 22px rgb(79 70 229 / 0.35);
+  --theme-shadow-focus: 0 0 0 3px rgb(99 102 241 / 0.28);
 }
 
-
 /* =========================================================
-   LIGHT THEME
-   Clean Professional Theme
+   3. LIGHT THEME — Clean professional blue
 ========================================================= */
 
 [data-theme="light"] {
-
   color-scheme: light;
-
-
-  /* Brand */
 
   --theme-brand: #2563eb;
   --theme-brand-hover: #1d4ed8;
   --theme-brand-active: #1e40af;
-
   --theme-brand-soft: #eff6ff;
   --theme-brand-subtle: #dbeafe;
-
   --theme-on-brand: #ffffff;
-
-
-  /* Accent */
 
   --theme-accent: #7c3aed;
   --theme-accent-hover: #6d28d9;
   --theme-accent-soft: #f5f3ff;
 
-
-  /* Gradients */
-
-  --theme-brand-gradient:
-    linear-gradient(
-      135deg,
-      #2563eb 0%,
-      #4f46e5 100%
-    );
-
-  --theme-success-gradient:
-    linear-gradient(
-      135deg,
-      #059669 0%,
-      #16a34a 100%
-    );
-
-  --theme-danger-gradient:
-    linear-gradient(
-      135deg,
-      #ef4444 0%,
-      #e11d48 100%
-    );
-
-  --theme-warning-gradient:
-    linear-gradient(
-      135deg,
-      #d97706 0%,
-      #f97316 100%
-    );
-
-  --theme-info-gradient:
-    linear-gradient(
-      135deg,
-      #0284c7 0%,
-      #2563eb 100%
-    );
-
-  --theme-accent-gradient:
-    linear-gradient(
-      135deg,
-      #7c3aed 0%,
-      #ec4899 100%
-    );
-
-
-  /* Status */
+  --theme-brand-gradient: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+  --theme-brand-gradient-hover: linear-gradient(
+    135deg,
+    #1d4ed8 0%,
+    #4338ca 100%
+  );
+  --theme-success-gradient: linear-gradient(135deg, #059669 0%, #16a34a 100%);
+  --theme-danger-gradient: linear-gradient(135deg, #ef4444 0%, #e11d48 100%);
+  --theme-warning-gradient: linear-gradient(135deg, #d97706 0%, #f97316 100%);
+  --theme-info-gradient: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+  --theme-accent-gradient: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+  --theme-sidebar-gradient: linear-gradient(180deg, #ffffff 0%, #ffffff 100%);
+  --theme-page-glow: none;
 
   --theme-success: #16a34a;
   --theme-success-soft: #dcfce7;
-
   --theme-warning: #d97706;
   --theme-warning-soft: #fef3c7;
-
   --theme-danger: #dc2626;
   --theme-danger-soft: #fee2e2;
-
   --theme-info: #0284c7;
   --theme-info-soft: #e0f2fe;
 
-
-  /* Surface */
-
   --theme-background: #f8fafc;
-
   --theme-surface: #ffffff;
-
   --theme-surface-raised: #ffffff;
-
+  --theme-surface-sunken: #f1f5f9;
   --theme-surface-hover: #f1f5f9;
-
-
-  /* Card */
-
   --theme-card: #ffffff;
   --theme-card-hover: #f8fafc;
 
-
-  /* Navigation */
-
   --theme-sidebar: #ffffff;
-
   --theme-sidebar-hover: #eff6ff;
-
-  --theme-sidebar-active: #2563eb;
-
-  --theme-header: #ffffff;
-
-
-  /* Text */
+  --theme-sidebar-active: #dbeafe;
+  --theme-sidebar-text: #475569;
+  --theme-sidebar-text-active: #1d4ed8;
+  --theme-header: rgb(255 255 255 / 0.9);
 
   --theme-text: #0f172a;
-
   --theme-text-secondary: #334155;
-
   --theme-text-muted: #64748b;
-
   --theme-text-disabled: #94a3b8;
-
+  --theme-link: #2563eb;
+  --theme-link-hover: #1e40af;
   --theme-on-dark: #ffffff;
 
-
-  /* Border */
-
   --theme-border: #e2e8f0;
-
+  --theme-border-subtle: #f1f5f9;
   --theme-border-hover: #bfdbfe;
-
   --theme-border-focus: #3b82f6;
 
-
-  /* Input */
-
   --theme-input: #ffffff;
-
   --theme-input-hover: #f8fafc;
-
   --theme-input-border: #cbd5e1;
-
   --theme-input-focus: #2563eb;
-
-
-  /* Table */
+  --theme-input-disabled: #f1f5f9;
+  --theme-placeholder: #94a3b8;
 
   --theme-table-header: #f8fafc;
-
   --theme-table-row: #ffffff;
-
+  --theme-table-row-alt: #fbfcfe;
   --theme-table-row-hover: #f1f5f9;
 
-
-  /* Modal */
-
   --theme-modal: #ffffff;
-
   --theme-overlay: rgb(15 23 42 / 0.45);
-
-
-  /* Badge */
+  --theme-tooltip: #0f172a;
+  --theme-tooltip-text: #ffffff;
+  --theme-skeleton: #e2e8f0;
 
   --theme-badge-success: #dcfce7;
   --theme-badge-success-text: #166534;
-
   --theme-badge-warning: #fef3c7;
   --theme-badge-warning-text: #92400e;
-
   --theme-badge-danger: #fee2e2;
   --theme-badge-danger-text: #991b1b;
-
   --theme-badge-info: #e0f2fe;
   --theme-badge-info-text: #075985;
+  --theme-badge-neutral: #f1f5f9;
+  --theme-badge-neutral-text: #334155;
 
-
-  /* Radius */
+  --theme-chart-1: #2563eb;
+  --theme-chart-2: #0ea5e9;
+  --theme-chart-3: #7c3aed;
+  --theme-chart-4: #f59e0b;
+  --theme-chart-5: #10b981;
 
   --theme-radius-sm: 6px;
   --theme-radius-md: 10px;
   --theme-radius-lg: 14px;
   --theme-radius-xl: 18px;
 
-
-  /* Shadow */
-
   --theme-shadow-sm:
-    0 1px 3px rgb(15 23 42 / 0.07);
-
-  --theme-shadow-md:
-    0 4px 12px rgb(15 23 42 / 0.09);
-
-  --theme-shadow-lg:
-    0 12px 30px rgb(15 23 42 / 0.14);
+    0 1px 2px rgb(15 23 42 / 0.06), 0 1px 3px rgb(15 23 42 / 0.05);
+  --theme-shadow-md: 0 4px 12px rgb(15 23 42 / 0.09);
+  --theme-shadow-lg: 0 12px 30px rgb(15 23 42 / 0.14);
+  --theme-shadow-brand: 0 8px 20px rgb(37 99 235 / 0.3);
+  --theme-shadow-focus: 0 0 0 3px rgb(59 130 246 / 0.28);
 }
 
-
 /* =========================================================
-   DARK THEME
-   Premium Dark SaaS Theme
+   4. DARK THEME — Premium deep navy
 ========================================================= */
 
 [data-theme="dark"] {
-
   color-scheme: dark;
-
-
-  /* Brand */
 
   --theme-brand: #6366f1;
   --theme-brand-hover: #818cf8;
   --theme-brand-active: #4f46e5;
-
   --theme-brand-soft: #1e1b4b;
   --theme-brand-subtle: #312e81;
-
   --theme-on-brand: #ffffff;
-
-
-  /* Accent */
 
   --theme-accent: #a78bfa;
   --theme-accent-hover: #c4b5fd;
   --theme-accent-soft: #2e1065;
 
-
-  /* Gradients */
-
-  --theme-brand-gradient:
-    linear-gradient(
-      135deg,
-      #4f46e5 0%,
-      #7c3aed 50%,
-      #0891b2 100%
+  --theme-brand-gradient: linear-gradient(
+    135deg,
+    #4f46e5 0%,
+    #7c3aed 55%,
+    #0891b2 100%
+  );
+  --theme-brand-gradient-hover: linear-gradient(
+    135deg,
+    #6366f1 0%,
+    #8b5cf6 55%,
+    #06b6d4 100%
+  );
+  --theme-success-gradient: linear-gradient(135deg, #059669 0%, #22c55e 100%);
+  --theme-danger-gradient: linear-gradient(135deg, #dc2626 0%, #e11d48 100%);
+  --theme-warning-gradient: linear-gradient(135deg, #d97706 0%, #f97316 100%);
+  --theme-info-gradient: linear-gradient(135deg, #0369a1 0%, #2563eb 100%);
+  --theme-accent-gradient: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+  --theme-sidebar-gradient: linear-gradient(180deg, #0f172a 0%, #111033 100%);
+  --theme-page-glow:
+    radial-gradient(
+      60rem 30rem at 10% -10%,
+      rgb(99 102 241 / 0.16),
+      transparent 60%
+    ),
+    radial-gradient(
+      50rem 28rem at 100% 0%,
+      rgb(8 145 178 / 0.12),
+      transparent 55%
     );
-
-  --theme-success-gradient:
-    linear-gradient(
-      135deg,
-      #059669 0%,
-      #22c55e 100%
-    );
-
-  --theme-danger-gradient:
-    linear-gradient(
-      135deg,
-      #dc2626 0%,
-      #e11d48 100%
-    );
-
-  --theme-warning-gradient:
-    linear-gradient(
-      135deg,
-      #d97706 0%,
-      #f97316 100%
-    );
-
-  --theme-info-gradient:
-    linear-gradient(
-      135deg,
-      #0369a1 0%,
-      #2563eb 100%
-    );
-
-  --theme-accent-gradient:
-    linear-gradient(
-      135deg,
-      #7c3aed 0%,
-      #db2777 100%
-    );
-
-
-  /* Status */
 
   --theme-success: #4ade80;
   --theme-success-soft: #052e16;
-
   --theme-warning: #fbbf24;
   --theme-warning-soft: #451a03;
-
   --theme-danger: #f87171;
   --theme-danger-soft: #450a0a;
-
   --theme-info: #38bdf8;
   --theme-info-soft: #082f49;
 
-
-  /* Surface */
-
   --theme-background: #090d1a;
-
   --theme-surface: #111827;
-
   --theme-surface-raised: #172033;
-
+  --theme-surface-sunken: #0c1220;
   --theme-surface-hover: #1e293b;
-
-
-  /* Card */
-
   --theme-card: #111827;
-
   --theme-card-hover: #1a2438;
 
-
-  /* Navigation */
-
   --theme-sidebar: #0f172a;
-
-  --theme-sidebar-hover: #1e1b4b;
-
-  --theme-sidebar-active: #6366f1;
-
-  --theme-header: #111827;
-
-
-  /* Text */
+  --theme-sidebar-hover: rgb(255 255 255 / 0.06);
+  --theme-sidebar-active: rgb(99 102 241 / 0.25);
+  --theme-sidebar-text: #94a3b8;
+  --theme-sidebar-text-active: #ffffff;
+  --theme-header: rgb(17 24 39 / 0.85);
 
   --theme-text: #f8fafc;
-
   --theme-text-secondary: #cbd5e1;
-
   --theme-text-muted: #94a3b8;
-
   --theme-text-disabled: #64748b;
-
+  --theme-link: #a5b4fc;
+  --theme-link-hover: #c7d2fe;
   --theme-on-dark: #ffffff;
 
-
-  /* Border */
-
   --theme-border: #263247;
-
+  --theme-border-subtle: #1c2539;
   --theme-border-hover: #4338ca;
-
   --theme-border-focus: #6366f1;
 
-
-  /* Input */
-
-  --theme-input: #111827;
-
+  --theme-input: #0f172a;
   --theme-input-hover: #172033;
-
   --theme-input-border: #334155;
-
   --theme-input-focus: #6366f1;
-
-
-  /* Table */
+  --theme-input-disabled: #1a2233;
+  --theme-placeholder: #64748b;
 
   --theme-table-header: #172033;
-
   --theme-table-row: #111827;
-
+  --theme-table-row-alt: #131c2e;
   --theme-table-row-hover: #1e293b;
 
-
-  /* Modal */
-
   --theme-modal: #111827;
-
   --theme-overlay: rgb(0 0 0 / 0.65);
-
-
-  /* Badge */
+  --theme-tooltip: #e2e8f0;
+  --theme-tooltip-text: #0f172a;
+  --theme-skeleton: #1e293b;
 
   --theme-badge-success: #052e16;
   --theme-badge-success-text: #86efac;
-
   --theme-badge-warning: #451a03;
   --theme-badge-warning-text: #fcd34d;
-
   --theme-badge-danger: #450a0a;
   --theme-badge-danger-text: #fca5a5;
-
   --theme-badge-info: #082f49;
   --theme-badge-info-text: #7dd3fc;
+  --theme-badge-neutral: #1e293b;
+  --theme-badge-neutral-text: #cbd5e1;
 
-
-  /* Radius */
+  --theme-chart-1: #818cf8;
+  --theme-chart-2: #22d3ee;
+  --theme-chart-3: #a78bfa;
+  --theme-chart-4: #fbbf24;
+  --theme-chart-5: #34d399;
 
   --theme-radius-sm: 6px;
   --theme-radius-md: 10px;
   --theme-radius-lg: 14px;
   --theme-radius-xl: 18px;
 
+  --theme-shadow-sm: 0 1px 3px rgb(0 0 0 / 0.3);
+  --theme-shadow-md: 0 4px 14px rgb(0 0 0 / 0.35);
+  --theme-shadow-lg: 0 14px 35px rgb(0 0 0 / 0.45);
+  --theme-shadow-brand: 0 8px 24px rgb(99 102 241 / 0.35);
+  --theme-shadow-focus: 0 0 0 3px rgb(129 140 248 / 0.35);
+}
 
-  /* Shadow */
+/* =========================================================
+   5. BASE LAYER — global defaults using only theme tokens
+========================================================= */
 
-  --theme-shadow-sm:
-    0 1px 3px rgb(0 0 0 / 0.25);
+@layer base {
+  html {
+    background-color: var(--theme-background);
+    color: var(--theme-text);
+  }
 
-  --theme-shadow-md:
-    0 4px 14px rgb(0 0 0 / 0.30);
+  body {
+    background-color: var(--theme-background);
+    background-image: var(--theme-page-glow);
+    background-attachment: fixed;
+    color: var(--theme-text);
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
 
-  --theme-shadow-lg:
-    0 14px 35px rgb(0 0 0 / 0.40);
+  ::selection {
+    background: var(--theme-brand-subtle);
+    color: var(--theme-text);
+  }
+
+  ::placeholder {
+    color: var(--theme-placeholder);
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--theme-shadow-focus);
+  }
+
+  /* Scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--theme-border) transparent;
+  }
+}
+
+/* =========================================================
+   6. SMALL UTILITIES
+========================================================= */
+
+@utility text-theme-gradient {
+  background-image: var(--theme-brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility theme-skeleton {
+  background-color: var(--theme-skeleton);
+  animation: theme-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes theme-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* =========================================================
+   7. OPTIONAL — TEMPORARY DaisyUI SAFETY BRIDGE
+   Migration চলাকালীন কোনো component এ DaisyUI class থেকে গেলে
+   সেটাও যেন তোমার theme color পায়। সব component migrate হলে
+   এই পুরো section টা delete করে দেবে।
+========================================================= */
+
+:root,
+[data-theme] {
+  --color-primary: var(--theme-brand);
+  --color-primary-content: var(--theme-on-brand);
+  --color-secondary: var(--theme-accent);
+  --color-secondary-content: var(--theme-on-brand);
+  --color-accent: var(--theme-accent);
+  --color-accent-content: var(--theme-on-brand);
+  --color-neutral: var(--theme-surface-sunken);
+  --color-neutral-content: var(--theme-text);
+  --color-base-100: var(--theme-surface);
+  --color-base-200: var(--theme-background);
+  --color-base-300: var(--theme-border);
+  --color-base-content: var(--theme-text);
+  --color-info: var(--theme-info);
+  --color-success: var(--theme-success);
+  --color-warning: var(--theme-warning);
+  --color-error: var(--theme-danger);
 }

@@ -7,9 +7,9 @@ export const TenantName = () => {
     <>
       <h2
       className="bg-linear-to-r
-      from-success
-      via-accent
-      to-primary
+      from-theme-success
+      via-theme-accent
+      to-theme-brand
       bg-clip-text
       text-xl font-bold
       text-transparent

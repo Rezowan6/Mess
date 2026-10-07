@@ -8,7 +8,7 @@ export const Skeleton = ({ className }: SkeletonProps) => {
   return (
     <div
       className={clsx(
-        "relative overflow-hidden rounded-md bg-base-300",
+        "relative overflow-hidden rounded-theme-md bg-theme-skeleton",
         className,
       )}
     >
@@ -19,7 +19,7 @@ export const Skeleton = ({ className }: SkeletonProps) => {
           animate-[shimmer_1.6s_infinite]
           bg-linear-to-r
           from-transparent
-          via-teal-300/30
+          via-theme-brand-soft
           to-transparent
         "
       />

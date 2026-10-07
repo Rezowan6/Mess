@@ -33,7 +33,7 @@ export const MealTrendChart = () => {
     );
   }
   return (
-    <div className="rounded-md border border-success/40 bg-background p-5 shadow-sm">
+    <div className="rounded-theme-md border border-theme-border bg-theme-card p-5 shadow-theme-sm">
       {/* Header */}
       <MealTrendHeader />
 

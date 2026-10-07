@@ -28,7 +28,7 @@ export const MemberHeader = ({
           <p className="font-semibold">{name}</p>
 
           {subtitle && (
-            <p className="text-sm text-base-content/60">{subtitle}</p>
+            <p className="text-sm text-theme-text-muted">{subtitle}</p>
           )}
         </div>
       </div>

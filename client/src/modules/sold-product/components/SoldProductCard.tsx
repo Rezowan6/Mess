@@ -74,7 +74,7 @@ export const SoldProductCard = () => {
     <>
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-sm opacity-60">Total Sold Product Amount</p>
+          <p className="text-sm text-theme-text">Total Sold Product Amount</p>
 
           <p className="mt-1 text-2xl font-bold">
             ৳ {Number(soldProduct.totalAmount).toFixed(2)}

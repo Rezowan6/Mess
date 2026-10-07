@@ -30,7 +30,7 @@ export const CopyBadge = ({
       type="button"
       onClick={() => copy(value)}
       aria-label={label ?? `Copy ${value}`}
-      className="group cursor-pointer rounded-full transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-info/50"
+      className="group cursor-pointer rounded-full transition-transform duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2"
     >
       <Badge
         variant={variant}
@@ -38,7 +38,7 @@ export const CopyBadge = ({
         leftIcon={leftIcon}
         rightIcon={
           copied ? (
-            <Check className="text-success" />
+            <Check className="text-theme-success" />
           ) : (
             <Copy className="opacity-0 transition-opacity group-hover:opacity-100" />
           )

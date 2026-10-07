@@ -27,7 +27,7 @@ export const Tabs = <T extends string>({
     <div
       ref={containerRef}
       role="tablist"
-      className="relative mb-3 flex w-fit max-w-full flex-nowrap gap-1 overflow-x-auto rounded-full bg-success/10 p-1 scrollbar-none [&::-webkit-scrollbar]:hidden"
+      className="relative mb-3 flex w-fit max-w-full flex-nowrap gap-1 overflow-x-auto rounded-full bg-theme-success/10 p-1 scrollbar-none [&::-webkit-scrollbar]:hidden"
     >
       {/* Sliding pill (same look as the primary Button variant) */}
       <span

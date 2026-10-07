@@ -33,16 +33,16 @@ export const MealSettingManagePage = () => {
             />
           </div>
 
-          <div className="rounded-xl border border-accent p-6">
+          <div className="rounded-xl border border-theme-border p-6">
             <MealSettingCard setting={setting} />
           </div>
 
           {/* Egg Rate */}
-          <div className="rounded-xl border border-accent p-6">
+          <div className="rounded-xl border border-theme-border p-6">
             <EggRateCard />
           </div>
           {/* Egg Rate */}
-          <div className="rounded-xl border border-accent p-6">
+          <div className="rounded-xl border border-theme-border p-6">
             <SoldProductCard />
           </div>
         </div>

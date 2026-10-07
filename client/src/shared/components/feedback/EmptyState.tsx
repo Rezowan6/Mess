@@ -16,7 +16,7 @@ export const EmptyState = ({
 
         <h3 className="text-lg font-semibold">{title}</h3>
 
-        <p className="mt-2 max-w-md text-sm text-base-content/70">
+        <p className="mt-2 max-w-md text-sm text-theme-text-muted">
           {description}
         </p>
       </div>

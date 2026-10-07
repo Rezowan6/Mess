@@ -6,7 +6,7 @@ export const DashboardStatsSkeleton = () => {
       {[1, 2, 3, 4].map((item) => (
         <div
           key={item}
-          className="rounded-md border border-base-300 bg-background p-4 shadow-sm"
+          className="rounded-theme-md border border-theme-border bg-theme-background p-4 shadow-theme-sm"
         >
           <Skeleton className="mb-3 h-4 w-28" />
           <Skeleton className="h-8 w-24" />

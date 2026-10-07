@@ -19,14 +19,14 @@ export const ContactInfoCard = ({
 }: Props) => {
   return (
     <div className={clsx("flex items-center gap-4", className)}>
-      <div className="rounded-xl bg-info/10 p-3 text-primary">
+      <div className="rounded-xl bg-theme-info/10 p-3 text-theme-brand">
         <Icon size={22} className={`text-info ${iconClassName}`} />
       </div>
 
       <div>
-        <h4 className="font-semibold text-success">{title}</h4>
+        <h4 className="font-semibold text-theme-success">{title}</h4>
 
-        <p className="text-sm text-base-content/70">{value}</p>
+        <p className="text-sm text-theme-text-muted">{value}</p>
       </div>
     </div>
   );

@@ -15,9 +15,9 @@ export const ThemeSettings = () => {
         {/* Left */}
 
         <div>
-          <h3 className="font-medium text-success">Theme</h3>
+          <h3 className="font-medium text-theme-success">Theme</h3>
 
-          <p className="mt-1 text-sm text-text">
+          <p className="mt-1 text-sm text-theme-text-muted">
             Choose between light, dark and system mode.
           </p>
         </div>

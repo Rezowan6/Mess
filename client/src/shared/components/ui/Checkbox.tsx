@@ -17,14 +17,13 @@ export const Checkbox = ({
       disabled={disabled}
       onClick={() => onChange(!checked)}
       className={`
-        flex h-5 w-5 shrink-0 items-center justify-center rounded-md
+        flex h-5 w-5 shrink-0 items-center justify-center rounded-theme-sm
         border transition-all duration-200
-        focus:outline-none focus:ring-2 focus:ring-primary/30
         disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer
         ${
           checked
-            ? "border-accent bg-gradient-success text-white"
-            : "border-info bg-info/30 hover:border-primary/60"
+            ? "border-theme-accent bg-theme-success-gradient text-theme-on-dark"
+            : "border-theme-input-border bg-theme-input hover:border-theme-border-hover"
         }
       `}
     >

@@ -8,14 +8,14 @@ interface Props {
 
 export const AuthCard = ({ title, subtitle, children }: Props) => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="card w-full max-w-md bg-background shadow-xl shadow-info/20">
-        <div className="card-body">
-          <h1 className="text-center text-3xl font-bold">
+    <div className="flex min-h-screen items-center justify-center bg-theme-background px-4">
+      <div className="w-full max-w-md rounded-theme-md border border-theme-border bg-theme-card shadow-theme-lg">
+        <div className="flex flex-col gap-2 p-8">
+          <h1 className="text-center text-3xl font-bold text-theme-text">
             {title ? title : "Mess Management System"}
           </h1>
 
-          <p className="text-center text-base-content/70">{subtitle}</p>
+          <p className="text-center text-theme-text-secondary">{subtitle}</p>
 
           <div className="mt-6">{children}</div>
         </div>

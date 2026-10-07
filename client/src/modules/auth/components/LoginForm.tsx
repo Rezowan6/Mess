@@ -3,12 +3,12 @@ import { useForm } from "react-hook-form";
 
 import { useLogin } from "../hooks/useLogin";
 
+import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
 import { PasswordInput } from "@/shared/components/ui/PasswordInput";
-import { loginSchema, type ILoginFormData } from "../schemas/auth.schema";
-import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { ROUTES } from "@/shared/constants/routes";
+import { loginSchema, type ILoginFormData } from "../schemas/auth.schema";
 
 export const LoginForm = () => {
   const { mutate, isPending } = useLogin();
@@ -49,7 +49,9 @@ export const LoginForm = () => {
       {/* Password */}
       <div>
         <label className="label">
-          <span className="label-text">Password</span>
+          <span className="text-sm font-medium text-theme-text">
+            Password
+          </span>
         </label>
 
         <PasswordInput

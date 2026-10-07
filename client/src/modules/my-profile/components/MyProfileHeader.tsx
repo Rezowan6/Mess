@@ -29,7 +29,7 @@ export const MyProfileHeader = ({ member }: Props) => {
     normalizedRole === ROLES.SYSTEM_OWNER.toLowerCase();
 
   return (
-    <div className="rounded-2xl border border-info/30 p-5 shadow-lg shadow-info/20">
+    <div className="rounded-theme-xl border border-theme-border bg-theme-card p-5 shadow-theme-lg">
       <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center">
         <div className="shrink-0">
           <AvatarUploadButton
@@ -41,13 +41,13 @@ export const MyProfileHeader = ({ member }: Props) => {
         </div>
 
         <div className="min-w-0 flex-1 text-center sm:text-left">
-          <h2 className="truncate text-xl font-bold sm:text-2xl">
+          <h2 className="truncate text-xl font-bold text-theme-text sm:text-2xl">
             {member.name}
           </h2>
 
           {/* Email + verification status */}
           <div className="mt-1 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 sm:justify-start">
-            <span className="flex min-w-0 items-center gap-1.5 text-sm text-base-content/60">
+            <span className="flex min-w-0 items-center gap-1.5 text-sm text-theme-text-muted">
               <Mail size={14} className="shrink-0" />
               <span className="truncate">{member.email}</span>
             </span>
