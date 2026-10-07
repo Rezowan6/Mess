@@ -16,7 +16,7 @@ export const PendingMealReqGroup: React.FC<PendingMealReqGroupProps> = ({
   items,
   currentDate,
 }) => {
-  const totalMembers = items.length + 1;
+  const totalMembers = items.length;
 
   return (
     <div>
