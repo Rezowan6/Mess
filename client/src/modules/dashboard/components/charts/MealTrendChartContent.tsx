@@ -16,7 +16,7 @@ interface Props {
 
 export const MealTrendChartContent = ({ data }: Props) => {
   return (
-    <div className="h-75 w-full  outline-none **:outline-none">
+    <div className="h-75 w-full text-theme-text-muted outline-none **:outline-none">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
@@ -29,15 +29,23 @@ export const MealTrendChartContent = ({ data }: Props) => {
         >
           <defs>
             <linearGradient id="mealTrendFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="currentColor" stopOpacity={0.2} />
-              <stop offset="100%" stopColor="currentColor" stopOpacity={0} />
+              <stop
+                offset="0%"
+                stopColor="var(--theme-chart-1)"
+                stopOpacity={0.25}
+              />
+              <stop
+                offset="100%"
+                stopColor="var(--theme-chart-1)"
+                stopOpacity={0}
+              />
             </linearGradient>
           </defs>
 
           <CartesianGrid
             vertical={false}
-            stroke="currentColor"
-            strokeOpacity={0.08}
+            stroke="var(--theme-border)"
+            strokeOpacity={0.8}
           />
 
           <XAxis
@@ -46,8 +54,7 @@ export const MealTrendChartContent = ({ data }: Props) => {
             tickLine={false}
             tick={{
               fontSize: 11,
-              fill: "currentColor",
-              opacity: 0.5,
+              fill: "var(--theme-text-muted)",
             }}
             dy={10}
           />
@@ -58,25 +65,29 @@ export const MealTrendChartContent = ({ data }: Props) => {
             allowDecimals={false}
             tick={{
               fontSize: 11,
-              fill: "currentColor",
-              opacity: 0.5,
+              fill: "var(--theme-text-muted)",
             }}
           />
 
           <Tooltip
             cursor={{
-              stroke: "currentColor",
-              strokeOpacity: 0.12,
+              stroke: "var(--theme-border-hover)",
+              strokeOpacity: 0.6,
             }}
             contentStyle={{
-              borderRadius: "12px",
-              border: "1px solid hsl(var(--b3))",
-              backgroundColor: "hsl(var(--b1))",
-              boxShadow: "0 8px 30px rgba(0, 0, 0, 0.08)",
+              borderRadius: "var(--theme-radius-lg)",
+              border: "1px solid var(--theme-border)",
+              backgroundColor: "var(--theme-card)",
+              color: "var(--theme-text)",
+              boxShadow: "var(--theme-shadow-sm)",
             }}
             labelStyle={{
               fontWeight: 600,
               marginBottom: 4,
+              color: "var(--theme-text)",
+            }}
+            itemStyle={{
+              color: "var(--theme-text-secondary)",
             }}
             formatter={(value) => [`${value} meals`, "Meals"]}
           />
@@ -84,14 +95,15 @@ export const MealTrendChartContent = ({ data }: Props) => {
           <Area
             type="monotone"
             dataKey="meals"
-            stroke="currentColor"
-            strokeWidth={1}
+            stroke="var(--theme-chart-1)"
+            strokeWidth={2}
             fill="url(#mealTrendFill)"
             fillOpacity={1}
-            className="text-info"
             activeDot={{
               r: 5,
               strokeWidth: 2,
+              stroke: "var(--theme-card)",
+              fill: "var(--theme-chart-1)",
             }}
           />
         </AreaChart>

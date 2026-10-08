@@ -8,6 +8,26 @@
     <meta name="theme-color" content="#6366f1" />
 
     <title>Smart Mess Management System</title>
+
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("theme");
+          var theme =
+            saved === "light" || saved === "dark" || saved === "system"
+              ? saved
+              : "default";
+
+          if (theme === "system") {
+            theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+          }
+
+          document.documentElement.dataset.theme = theme;
+        } catch (e) {}
+      })();
+    </script>
   </head>
 
   <body>
