@@ -21,6 +21,7 @@ export interface IEgg {
   mealSessionId: number;
   memberId: number;
   quantity: string;
+  createdAt: string;
   member: IEggMember;
   eggDate: string | null | Date;
 }

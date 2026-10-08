@@ -1,4 +1,4 @@
-import { Edit, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 
 import type { IDeposit } from "../types/deposit.types";
 
@@ -10,6 +10,7 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 
 import { useConfirmStore } from "@/shared/store/confirm.store";
 
+import { TOOLTIP_TEXT } from "@/shared/constants/tooltip.config";
 import { isRecordLocked } from "@/shared/utils/date.utils";
 import { useDeleteDeposit } from "../hooks/useDeleteDeposit";
 
@@ -35,9 +36,9 @@ export const DepositActions = ({ deposit, onEdit }: Props) => {
         <Button
           unstyled
           disabled={locked}
-          leftIcon={<Edit />}
+          tooltip={locked ? TOOLTIP_TEXT.LOCKED_AFTER_24H : undefined}
+          leftIcon={<Pencil />}
           onClick={() => onEdit(deposit)}
-          tooltip={locked ? "Locked after 24h" : undefined}
         />
       )}
 
@@ -45,8 +46,9 @@ export const DepositActions = ({ deposit, onEdit }: Props) => {
         <Button
           unstyled
           disabled={locked}
-          tooltip={locked ? "Locked after 24h" : undefined}
+          tooltip={locked ? TOOLTIP_TEXT.LOCKED_AFTER_24H : undefined}
           leftIcon={<Trash2 />}
+          className="text-theme-danger"
           onClick={() =>
             openConfirm({
               title: "Delete Deposit",

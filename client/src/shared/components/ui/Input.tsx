@@ -12,36 +12,24 @@ interface InputProps extends Omit<
   "size"
 > {
   label?: string;
-
   error?: string;
-
   helperText?: string;
-
   leftIcon?: ReactNode;
-
   rightIcon?: ReactNode;
-
   startAdornment?: ReactNode;
-
   endAdornment?: ReactNode;
-
   fullWidth?: boolean;
-
   tooltip?: string;
-
   permission?: Permission;
-
   isLoading?: boolean;
-
   loadingText?: string;
-
   size?: InputSize;
 }
 
 const sizeClasses = {
   sm: "h-9 text-sm",
-  md: "h-11",
-  lg: "h-12 text-lg",
+  md: "h-11 text-sm",
+  lg: "h-12 text-base",
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -63,6 +51,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       required,
       className,
       disabled,
+      id,
       ...props
     },
     ref,
@@ -73,38 +62,56 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       return null;
     }
 
+    const isDisabled = disabled || isLoading;
+
     const input = (
       <div
         className={clsx(
           "flex items-center gap-2 rounded-theme-md border bg-theme-input px-3",
-          "transition-all duration-200",
+          "transition-colors duration-200",
           error
             ? "border-theme-danger"
-            : "border-theme-input-border focus-within:border-theme-input-focus",
-          (disabled || isLoading) && "cursor-not-allowed opacity-60",
+            : "border-theme-input-border hover:border-theme-border-hover focus-within:border-theme-input-focus",
+          isDisabled &&
+            "cursor-not-allowed bg-theme-input-disabled opacity-60 hover:border-theme-input-border",
           sizeClasses[size],
         )}
       >
         {startAdornment}
 
-        {leftIcon && <span className="text-theme-text-muted">{leftIcon}</span>}
+        {leftIcon && (
+          <span className="shrink-0 text-theme-text-muted [&>svg]:size-4.5">
+            {leftIcon}
+          </span>
+        )}
 
         <input
           ref={ref}
-          disabled={disabled || isLoading}
+          id={id}
+          disabled={isDisabled}
+          required={required}
+          aria-invalid={error ? true : undefined}
           className={clsx(
-            "w-full bg-transparent outline-none",
+            "h-full w-full min-w-0 bg-transparent outline-none",
+            // Global :focus-visible adds a ring; the wrapper border already shows focus
+            "focus:outline-none focus-visible:shadow-none",
             "text-theme-text placeholder:text-theme-placeholder",
+            "disabled:cursor-not-allowed",
             className,
           )}
           {...props}
         />
 
         {isLoading ? (
-          <Loader2 size={18} className="animate-spin text-theme-text-muted" />
+          <Loader2
+            size={18}
+            className="shrink-0 animate-spin text-theme-text-muted"
+          />
         ) : (
           rightIcon && (
-            <span className="text-theme-text-muted">{rightIcon}</span>
+            <span className="shrink-0 text-theme-text-muted [&>svg]:size-4.5]">
+              {rightIcon}
+            </span>
           )
         )}
 
@@ -113,13 +120,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     );
 
     return (
-      <div className={clsx("space-y-1", fullWidth && "w-full")}>
+      <div className={clsx("space-y-1.5", fullWidth && "w-full")}>
         {label && (
-          <label className="block px-1">
+          <label htmlFor={id} className="block px-1">
             <span className="text-sm font-medium text-theme-text">
               {label}
 
-              {required && <span className="ml-1 text-theme-danger">*</span>}
+              {required && (
+                <span className="ml-1 text-theme-danger" aria-hidden="true">
+                  *
+                </span>
+              )}
             </span>
           </label>
         )}
@@ -140,14 +151,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
 
         {isLoading && loadingText && (
-          <p className="text-xs text-theme-text-muted">{loadingText}</p>
+          <p className="px-1 text-xs text-theme-text-muted">{loadingText}</p>
         )}
 
         {error ? (
-          <p className="text-sm text-theme-danger">{error}</p>
+          <p role="alert" className="px-1 text-xs text-theme-danger">
+            {error}
+          </p>
         ) : (
           helperText && (
-            <p className="text-sm text-theme-text-muted">{helperText}</p>
+            <p className="px-1 text-xs text-theme-text-muted">{helperText}</p>
           )
         )}
       </div>

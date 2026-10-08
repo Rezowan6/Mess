@@ -45,8 +45,8 @@ export const DepositAddPage = () => {
       message: (
         <>
           Are you sure you want to add{" "}
-          <strong className="text-success">{amount}</strong> to{" "}
-          <strong className="text-success">{member.user.name}</strong>
+          <strong className="text-theme-success">{amount}</strong> to{" "}
+          <strong className="text-theme-success">{member.user.name}</strong>
           's deposit?
         </>
       ),

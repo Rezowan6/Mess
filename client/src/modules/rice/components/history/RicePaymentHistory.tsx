@@ -120,12 +120,11 @@ export const RicePaymentHistory = ({
                 </div>
 
                 {canEdit && (
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-4">
                     <Button
                       unstyled
                       type="button"
                       aria-label="Edit payment"
-                      className="rounded-theme-md p-1.5 text-theme-text-muted hover:bg-theme-surface-hover hover:text-theme-text"
                       leftIcon={<Pencil size={16} />}
                       onClick={() => onEdit(payment)}
                     />
@@ -134,7 +133,7 @@ export const RicePaymentHistory = ({
                       unstyled
                       type="button"
                       aria-label="Delete payment"
-                      className="rounded-theme-md p-1.5 text-theme-danger hover:bg-theme-danger-soft"
+                      className="text-theme-danger"
                       leftIcon={<Trash2 size={16} />}
                       onClick={() => onDelete(payment)}
                     />

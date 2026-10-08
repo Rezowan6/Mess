@@ -29,7 +29,7 @@ export const MyProfileHeader = ({ member }: Props) => {
     normalizedRole === ROLES.SYSTEM_OWNER.toLowerCase();
 
   return (
-    <div className="rounded-theme-xl border border-theme-border bg-theme-card p-5 shadow-theme-lg">
+    <div className="rounded-theme-xl border border-theme-border bg-theme-card p-5 shadow-theme-sm">
       <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center">
         <div className="shrink-0">
           <AvatarUploadButton

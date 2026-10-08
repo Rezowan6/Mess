@@ -119,7 +119,7 @@ export const useRiceSummaryColumns = ({
 
               <Button
                 unstyled
-                leftIcon={<Trash2 size={16} className="text-error" />}
+                leftIcon={<Trash2 size={16} className="text-theme-danger" />}
                 onClick={() => onDelete(rice)}
               />
             </>

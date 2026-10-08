@@ -16,7 +16,7 @@ interface AvatarProps extends Omit<
 }
 
 const sizeClasses: Record<AvatarSize, string> = {
-  xs: "w-6 h-6",
+  xs: "w-8 h-8 text-sm",
   sm: "w-12 h-12",
   md: "w-12 h-12",
   lg: "w-12 h-12",
@@ -53,7 +53,7 @@ export const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
         aria-label={alt}
         className={[
           "flex shrink-0 items-center justify-center cursor-pointer",
-          "rounded-full bg-theme-success-gradient text-theme-on-dark font-bold text-xl",
+          "rounded-full bg-theme-info-gradient text-theme-on-dark font-bold text-xl",
           sizeClasses[size],
           className,
         ]

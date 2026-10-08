@@ -1,8 +1,10 @@
-import { Edit, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 
 import { Button } from "@/shared/components/ui/Button";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 
+import { TOOLTIP_TEXT } from "@/shared/constants/tooltip.config";
+import { isRecordLocked } from "@/shared/utils/date.utils";
 import { useDeleteEgg } from "../hooks/useDeleteEgg";
 import type { IEgg } from "../types/egg.types";
 
@@ -40,11 +42,26 @@ export const EggHistoryAction = ({ egg, onEdit }: Props) => {
       },
     });
 
+  const locked = isRecordLocked(egg.createdAt);
+
   return (
     <div className="flex items-center gap-2">
-      <Button unstyled leftIcon={<Edit />} onClick={() => onEdit(egg)} />
+      <Button
+        unstyled
+        disabled={locked}
+        tooltip={locked ? TOOLTIP_TEXT.LOCKED_AFTER_24H : undefined}
+        leftIcon={<Pencil />}
+        onClick={() => onEdit(egg)}
+      />
 
-      <Button unstyled leftIcon={<Trash2 />} onClick={handleDelete} />
+      <Button
+        unstyled
+        disabled={locked}
+        tooltip={locked ? TOOLTIP_TEXT.LOCKED_AFTER_24H : undefined}
+        leftIcon={<Trash2 />}
+        onClick={handleDelete}
+        className="text-theme-danger"
+      />
     </div>
   );
 };

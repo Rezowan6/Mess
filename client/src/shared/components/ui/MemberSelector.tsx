@@ -122,13 +122,14 @@ export const MemberSelector = <T extends FieldValues>({
                     return (
                       <label
                         key={userId}
-                        className={`flex cursor-pointer items-center gap-3 rounded-theme-lg p-3 transition ${
+                        className={`flex cursor-pointer items-center gap-3 rounded-theme-lg px-2 py-1 transition ${
                           selected
-                            ? "bg-theme-success-soft ring-1 ring-theme-success"
+                            ? "bg-theme-success-soft"
                             : "bg-theme-info-soft hover:bg-theme-success-soft"
                         }`}
                       >
                         <Avatar
+                          size="xs"
                           src={member.user.avatar}
                           fallback={getAvatarInitial(member.user.name)}
                         />

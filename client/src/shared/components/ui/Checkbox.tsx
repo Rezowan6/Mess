@@ -22,8 +22,8 @@ export const Checkbox = ({
         disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer
         ${
           checked
-            ? "border-theme-accent bg-theme-success-gradient text-theme-on-dark"
-            : "border-theme-input-border bg-theme-input hover:border-theme-border-hover"
+            ? "border-theme-success-soft bg-theme-success-gradient text-theme-on-dark"
+            : "border-theme-input-border bg-theme-input"
         }
       `}
     >

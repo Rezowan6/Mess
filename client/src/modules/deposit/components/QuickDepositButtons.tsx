@@ -18,7 +18,7 @@ export const QuickDepositButtons = ({ member, onAddDeposit }: Props) => {
       {QUICK_AMOUNTS.map((amount) => (
         <Button
           key={amount}
-          variant="primary"
+          variant="success"
           onClick={() => onAddDeposit(member, amount)}
           className="h-8 w-16 shrink-0"
         >

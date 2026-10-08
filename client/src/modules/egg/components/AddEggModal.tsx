@@ -91,11 +91,11 @@ export const AddEggModal = ({ isOpen, onClose, egg }: Props) => {
             label="Select Member"
           />
 
-          <div className="flex items-center justify-between rounded-xl border border-base-300 px-4 py-4">
+          <div className="flex items-center justify-between rounded-theme-md border border-theme-border px-4 py-4">
             <div>
               <p className="text-sm font-medium">Egg Quantity</p>
 
-              <p className="mt-1 text-xs text-base-content/60">
+              <p className="mt-1 text-xs text-theme-text-muted">
                 Select how many eggs this member consumed.
               </p>
             </div>

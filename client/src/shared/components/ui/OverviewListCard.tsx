@@ -55,7 +55,7 @@ export const OverviewListCard = ({
 }: Props) => {
   const mounted = useMountAnimation();
   return (
-    <div className="overflow-hidden rounded-theme-xl p-4 shadow-theme-lg">
+    <div className="overflow-hidden rounded-theme-xl p-4 shadow-theme-sm">
       <div className="mb-5">
         <h3 className="font-semibold text-theme-text">{title}</h3>
         <p className="text-sm text-theme-text-muted">{description}</p>
