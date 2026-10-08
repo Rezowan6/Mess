@@ -1,11 +1,11 @@
 export const CARD_STYLES = {
   base: [
-    "group relative rounded-theme-xl",
+    "group relative rounded-theme-sm",
     "border border-theme-border bg-theme-card backdrop-blur-xl",
-    "shadow-theme-md",
+    "shadow-theme-sm",
     "transition-all duration-500 ease-out",
     "hover:-translate-y-1 hover:border-theme-border-hover",
-    "hover:bg-theme-card-hover hover:shadow-theme-lg",
+    "hover:bg-theme-card-hover hover:shadow-theme-md",
   ].join(" "),
 
   glow: [

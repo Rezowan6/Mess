@@ -72,7 +72,7 @@ export const sidebarItems: ISidebarItem[] = [
   },
 
   {
-    title: "Meal Request",
+    title: "Request",
     path: ROUTES.PREFERENCE,
     icon: Utensils,
     permission: PERMISSIONS.MEAL_PREFERENCE_VIEW,
@@ -90,7 +90,7 @@ export const sidebarItems: ISidebarItem[] = [
   },
 
   {
-    title: "Meal Planning",
+    title: "Planning",
     path: ROUTES.MEAL_PLANNING,
     icon: ClipboardList,
     permission: PERMISSIONS.MEAL_PLANNING_VIEW,

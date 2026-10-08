@@ -1,5 +1,6 @@
 import { Button } from "@/shared/components/ui/Button";
 import { useSlidingIndicator } from "@/shared/hooks/useSlidingIndicator";
+import { SlidingTabIndicator } from "./SlidingTabIndicator";
 
 export interface TabItem<T extends string> {
   key: T;
@@ -27,20 +28,13 @@ export const Tabs = <T extends string>({
     <div
       ref={containerRef}
       role="tablist"
-      className="relative mb-3 flex w-fit max-w-full flex-nowrap gap-1 overflow-x-auto rounded-full bg-theme-success/10 p-1 scrollbar-none [&::-webkit-scrollbar]:hidden"
+      className="relative mb-3 flex w-fit max-w-full flex-nowrap gap-1 overflow-x-auto rounded-full border border-theme-border p-1 scrollbar-none [&::-webkit-scrollbar]:hidden"
     >
-      {/* Sliding pill (same look as the primary Button variant) */}
-      <span
-        aria-hidden="true"
-        style={{
-          width: indicator.width,
-          transform: `translateX(${indicator.left}px)`,
-        }}
-        className={`pointer-events-none absolute bottom-1 left-0 top-1 rounded-full bg-linear-to-r from-blue-600 to-blue-900 shadow-md shadow-blue-900/30 ${
-          indicator.ready
-            ? "transition-[transform,width] duration-300 ease-[cubic-bezier(0.34,1.4,0.64,1)]"
-            : "transition-none"
-        }`}
+      {/* Glass Sliding Indicator */}
+      <SlidingTabIndicator
+        width={indicator.width}
+        left={indicator.left}
+        ready={indicator.ready}
       />
 
       {tabs.map((tab) => {
