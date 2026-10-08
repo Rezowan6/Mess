@@ -1,6 +1,6 @@
 import { Section } from "@/shared/components/layout/sections/Section";
-
 import { PricingCards } from "./PricingCards";
+
 
 export const PricingSection = () => {
   return (

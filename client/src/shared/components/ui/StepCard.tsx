@@ -1,32 +1,56 @@
+import clsx from "clsx";
 import type { ReactNode } from "react";
+import { CARD_STYLES } from "../configs/card.styles";
 import { Badge } from "./Badge";
 
-interface Props {
+interface StepCardProps {
   stepNumber?: number;
   icon: ReactNode;
   title: ReactNode;
   description: ReactNode;
 }
 
-export const StepCard = ({ stepNumber, icon, title, description }: Props) => {
+export const StepCard = ({
+  stepNumber,
+  icon,
+  title,
+  description,
+}: StepCardProps) => {
   return (
-    <div className="relative rounded-2xl bg-info/10 p-6 text-center shadow-xl shadow-success/30">
-      {stepNumber && (
+    <div className={clsx(CARD_STYLES.base, "p-6 text-center")}>
+      {/* Glow and overlay (clipped inside the card) */}
+      <div className="pointer-events-none absolute inset-0 rounded-theme-xl">
+        <div className={CARD_STYLES.glow} />
+        <div className={CARD_STYLES.overlay} />
+        <div className={CARD_STYLES.bottomGradient} />
+      </div>
+
+      {stepNumber !== undefined && (
         <Badge
           variant="success"
-          className="absolute -top-4 left-1/2 -translate-x-1/2"
+          className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full"
         >
           {stepNumber}
         </Badge>
       )}
 
-      <div className="mx-auto mb-5 mt-4 flex h-14 w-14 items-center justify-center rounded-xl bg-success/10 text-info">
-        {icon}
+      <div className="relative">
+        <div className={clsx(CARD_STYLES.icon, "mx-auto mb-5 mt-4 size-14")}>
+          {icon}
+        </div>
+
+        <h3
+          className={clsx(
+            "mb-3 text-lg font-semibold text-theme-text",
+            "transition-colors duration-300",
+            "group-hover:text-theme-info",
+          )}
+        >
+          {title}
+        </h3>
+
+        <p className="text-sm leading-6 text-theme-text-muted">{description}</p>
       </div>
-
-      <h3 className="mb-3 text-lg font-semibold">{title}</h3>
-
-      <p className="text-sm leading-6 text-base-content/70">{description}</p>
     </div>
   );
 };

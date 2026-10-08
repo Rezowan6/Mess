@@ -3,7 +3,7 @@ import { ContactInfo } from "./ContactInfo";
 
 export const ContactSection = () => {
   return (
-    <section id="contact" className="bg-success/5 px-6 py-20">
+    <section id="contact" className="px-6 py-20">
       <div className="container mx-auto">
         <div className="grid gap-10 lg:grid-cols-2">
           {/* Contact Info */}

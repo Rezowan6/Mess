@@ -13,8 +13,8 @@ export const PricingCard = ({ plan }: Props) => {
 
   return (
     <div
-      className={`relative rounded-2xl border bg-background p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl ${
-        isPopular ? "border-info shadow-lg" : "border-accent"
+      className={`relative rounded-2xl border p-8 shadow-theme-sm transition hover:-translate-y-1 hover:shadow-md ${
+        isPopular ? "border-theme-brand shadow-lg" : "border-theme-border"
       }`}
     >
       <div className="space-y-4">

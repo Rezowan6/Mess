@@ -1,5 +1,5 @@
 import { StepCard } from "@/shared/components/ui/StepCard";
-import { howItWorksSteps } from "../configs/how-it-works.config";
+import { howItWorksSteps } from "../../configs/how-it-works.config";
 
 export const HowItWorksCards = () => {
   return (

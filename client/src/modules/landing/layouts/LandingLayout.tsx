@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
-import { Footer } from "../components/Footer";
-import { LandingNavbar } from "../components/LandingNavbar";
+import { LandingNavbar } from "../components/navbar/LandingNavbar";
+import { Footer } from "../components/footer/Footer";
 
 export const LandingLayout = () => {
   return (

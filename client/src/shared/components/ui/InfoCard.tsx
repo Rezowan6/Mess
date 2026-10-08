@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import type { ReactNode } from "react";
+import { CARD_STYLES } from "../configs/card.styles";
 
 interface Props {
   title?: ReactNode;
@@ -21,42 +22,15 @@ export const InfoCard = ({
   valueClassName,
 }: Props) => {
   return (
-    <div
-      className={clsx(
-        "group relative overflow-hidden rounded-theme-xl p-2",
-        "border border-theme-border bg-theme-card backdrop-blur-xl",
-        "shadow-theme-md",
-        "transition-all duration-500 ease-out",
-        "hover:-translate-y-1 hover:border-theme-border-hover",
-        "hover:bg-theme-card-hover hover:shadow-theme-lg",
-        className,
-      )}
-    >
-      {/* Glass Glow */}
-      <div
-        className={clsx(
-          "pointer-events-none absolute -right-12 -top-12 h-32 w-32",
-          "rounded-full bg-theme-info-soft blur-3xl",
-          "transition-all duration-700",
-          "group-hover:scale-150 group-hover:bg-theme-success-soft",
-        )}
-      />
-
-      {/* Soft Gradient Overlay */}
-      <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-theme-surface-hover via-transparent to-theme-info-soft" />
-
+    <div className={clsx(CARD_STYLES.base, "p-2 overflow-hidden", className)}>
+      <div className={CARD_STYLES.glow} />
+      <div className={CARD_STYLES.overlay} />
       <div className="relative flex items-center gap-4">
         {icon && (
           <div
             className={clsx(
-              "flex h-12 w-12 shrink-0 items-center justify-center rounded-theme-lg",
-              "border border-theme-border",
-              "bg-linear-to-br from-theme-surface-raised to-theme-surface-sunken",
-              "backdrop-blur-md",
-              "text-theme-info shadow-inner",
-              "transition-all duration-500",
-              "group-hover:scale-110 group-hover:rotate-2",
-              "group-hover:text-theme-success",
+              CARD_STYLES.icon,
+              "h-12 w-12 shrink-0",
               iconClassName,
             )}
           >
@@ -89,14 +63,7 @@ export const InfoCard = ({
       </div>
 
       {/* Animated Bottom Gradient */}
-      <div
-        className={clsx(
-          "absolute bottom-0 left-1/2 h-px w-0 -translate-x-1/2",
-          "bg-linear-to-r from-transparent via-theme-info to-transparent",
-          "transition-all duration-700",
-          "group-hover:w-3/4",
-        )}
-      />
+      <div className={CARD_STYLES.bottomGradient} />
     </div>
   );
 };

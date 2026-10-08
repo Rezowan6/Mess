@@ -1,5 +1,5 @@
 import { Accordion } from "@/shared/components/ui/Accordion";
-import { faqItems } from "../configs/faq.config";
+import { faqItems } from "../../configs/faq.config";
 
 export const FAQList = () => {
   return (

@@ -10,7 +10,7 @@ export const Accordion = ({ title, children, defaultOpen = false }: Props) => {
   return (
     <details
       open={defaultOpen}
-      className="group rounded-theme-lg border border-theme-border bg-theme-info-soft"
+      className="group rounded-theme-lg border border-theme-border "
     >
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-lg font-semibold text-theme-text [&::-webkit-details-marker]:hidden">
         {title}

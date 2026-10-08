@@ -1,9 +1,10 @@
-import { ContactSection } from "../components/ContactSection";
-import { FAQSection } from "../components/FAQSection";
-import { FeaturesSection } from "../components/FeaturesSection";
-import { HeroSection } from "../components/HeroSection";
-import { HowItWorksSection } from "../components/HowItWorksSection";
-import { PricingSection } from "../components/PricingSection";
+import { ContactSection } from "../components/contact/ContactSection";
+import { FAQSection } from "../components/faq/FAQSection";
+import { FeaturesSection } from "../components/features/FeaturesSection";
+import { HeroSection } from "../components/hero/HeroSection";
+import { HowItWorksSection } from "../components/how-it-works/HowItWorksSection";
+import { PricingSection } from "../components/pricing/PricingSection";
+
 
 export const LandingPage = () => {
   return (

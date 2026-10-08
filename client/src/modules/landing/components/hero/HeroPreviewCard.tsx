@@ -1,16 +1,16 @@
 import { InfoCard } from "@/shared/components/ui/InfoCard";
 
-import { heroPreviewConfig } from "../configs/hero-preview.config";
+import { heroPreviewConfig } from "../../configs/hero-preview.config";
 import { Badge } from "@/shared/components/ui/Badge";
 
 export const HeroPreviewCard = () => {
   return (
     <div className="flex justify-center">
-      <div className="w-full max-w-md rounded-2xl bg-accent/10 p-6">
+      <div className="w-full max-w-md rounded-2xl bg-theme-accent-soft p-6">
         <div className="mb-6 flex items-center justify-between">
-          <h3 className="font-semibold text-accent">Monthly Overview</h3>
+          <h3 className="font-semibold text-theme-accent">Monthly Overview</h3>
 
-          <Badge variant="success">Active</Badge>
+          <Badge variant="soft-success">Active</Badge>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

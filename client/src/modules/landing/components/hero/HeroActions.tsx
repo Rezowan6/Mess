@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { Button } from "@/shared/components/ui/Button";
 
-import { heroConfig } from "../configs/hero.config";
+import { heroConfig } from "../../configs/hero.config";
 
 export const HeroActions = () => {
   return (

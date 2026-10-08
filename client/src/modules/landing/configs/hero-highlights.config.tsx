@@ -10,17 +10,17 @@ interface HeroHighlight {
 export const heroHighlights: HeroHighlight[] = [
   {
     id: 1,
-    icon: <CheckCircle className="text-success" size={20} />,
+    icon: <CheckCircle size={18} />,
     title: "Meal Tracking",
   },
   {
     id: 2,
-    icon: <CheckCircle className="text-success" size={20} />,
+    icon: <CheckCircle size={18} />,
     title: "Expense Management",
   },
   {
     id: 3,
-    icon: <CheckCircle className="text-success" size={20} />,
+    icon: <CheckCircle size={18} />,
     title: "Deposit System",
   },
   {
