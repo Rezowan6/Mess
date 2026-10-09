@@ -46,7 +46,7 @@ const iconSizes = {
 const variantStyles: Record<IBadgeVariant, string> = {
   success: "bg-theme-success text-theme-on-brand",
 
-  accent: "bg-theme-accent text-theme-on-brand",
+  accent: "bg-theme-secondary text-theme-on-brand",
 
   warning: "bg-theme-warning text-theme-on-brand",
 
@@ -62,7 +62,7 @@ const variantStyles: Record<IBadgeVariant, string> = {
 
   "soft-info": "bg-theme-info-soft text-theme-info",
   "soft-success": "bg-theme-success-soft text-theme-success",
-  "soft-secondary": "bg-theme-accent-soft text-theme-accent",
+  "soft-secondary": "bg-theme-secondary-soft text-theme-secondary",
   "soft-warning": "bg-theme-warning-soft text-theme-warning",
   "soft-error": "bg-theme-danger-soft text-theme-danger",
 };

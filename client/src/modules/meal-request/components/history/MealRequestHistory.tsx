@@ -31,8 +31,14 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
       message: (
         <>
           Are you sure you want to permanently delete the meal request of{" "}
-          <strong className="text-theme-danger">{request.requester.name}</strong> for{" "}
-          <strong className="text-theme-danger">{formatDate(request.date)}</strong>?
+          <strong className="text-theme-success">
+            {request.requester.name}
+          </strong>{" "}
+          for{" "}
+          <strong className="text-theme-danger">
+            {formatDate(request.date)}
+          </strong>
+          ?
         </>
       ),
       onConfirm: async () => {
@@ -51,8 +57,8 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
     return <EmptyState title={title} description={description} />;
   }
   return (
-    <div className="max-h-92 rounded-theme-md bg-theme-brand-soft overflow-y-auto">
-      <div className="flex-1 overflow-y-auto">
+    <div className="max-h-92 overflow-y-auto">
+      <div className="flex-1">
         <div className="divide-y divide-theme-border">
           {requests.map((request) => {
             const isCurrentMealReqDate =

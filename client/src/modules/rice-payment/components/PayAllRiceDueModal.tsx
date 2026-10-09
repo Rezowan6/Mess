@@ -81,7 +81,7 @@ export const PayAllRiceDueModal = ({
       message: (
         <>
           Are you sure you want to pay{" "}
-          <strong className="text-success">{formatTaka(totalDue)}</strong>{" "}
+          <strong className="text-theme-success">{formatTaka(totalDue)}</strong>{" "}
           across <strong>{dueCount}</strong> rice{" "}
           {dueCount === 1 ? "purchase" : "purchases"} via{" "}
           <strong>{values.paymentMethod}</strong>? This cannot be undone in one
@@ -126,7 +126,7 @@ export const PayAllRiceDueModal = ({
           </div>
         </div>
 
-        <div className="rounded-theme-md bg-theme-danger-soft p-3 text-sm text-theme-danger">
+        <div className="rounded-theme-md bg-theme-warning-soft p-3 text-sm text-theme-warning">
           This will settle <strong>all outstanding rice dues</strong> for the
           current meal session. A separate payment will be recorded for each
           purchase.

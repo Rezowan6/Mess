@@ -85,8 +85,8 @@ export const DesktopMoreMenu = () => {
                   }}
                   className={`flex items-center gap-3 rounded-theme-md px-4 py-2 transition-all duration-200 ${
                     isActive
-                      ? "bg-theme-brand-subtle"
-                      : "hover:bg-theme-info-soft"
+                      ? "bg-theme-sidebar-active text-theme-sidebar-text-active"
+                      : "text-theme-sidebar-text hover:bg-theme-sidebar-hover"
                   }`}
                 >
                   <Icon size={18} />
