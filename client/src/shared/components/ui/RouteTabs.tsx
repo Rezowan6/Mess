@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/shared/components/ui/Button";
 import { useSlidingIndicator } from "@/shared/hooks/useSlidingIndicator";
 import { SlidingTabIndicator } from "./SlidingTabIndicator";
+import { neuCardClass } from "./SummaryStat";
 
 export interface RouteTabItem {
   key: string;
@@ -36,7 +37,7 @@ export const RouteTabs = ({ tabs }: Props) => {
     <div
       ref={containerRef}
       role="tablist"
-      className="relative mb-3 flex w-fit max-w-full flex-nowrap gap-1 overflow-x-auto rounded-full border  border-theme-border p-1 scrollbar-none [&::-webkit-scrollbar]:hidden"
+      className={`${neuCardClass} relative mb-3 flex w-fit max-w-full flex-nowrap gap-1 overflow-x-auto p-1 scrollbar-none [&::-webkit-scrollbar]:hidden`}
     >
       {/* Glass Sliding Indicator */}
       <SlidingTabIndicator

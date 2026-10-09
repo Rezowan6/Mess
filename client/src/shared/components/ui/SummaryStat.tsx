@@ -21,7 +21,7 @@ const toneStyles = {
 export const neuCardClass = cn(
   "rounded-theme-sm border border-theme-border-subtle bg-theme-neu-surface",
   "shadow-theme-neu transition-shadow duration-300 ease-out",
-  "hover:shadow-theme-neu-inset",
+  "hover:shadow-theme-neu-inset active:shadow-theme-neu-inset",
 );
 
 interface SummaryStatProps {

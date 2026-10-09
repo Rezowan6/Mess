@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 
 import { useRBAC } from "@/shared/hooks/useRBAC";
 
-import { SOLID_VARIANTS, variantClasses } from "./button.styles";
+import { variantClasses } from "./button.styles";
 import type { ButtonProps } from "./button.types";
 import { ButtonContent } from "./ButtonContent";
 import { ButtonTooltip } from "./ButtonTooltip";
@@ -47,7 +47,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       return null;
     }
 
-    const isSolid = SOLID_VARIANTS.has(variant);
     const hasContent = Boolean(children);
 
     const button = (
@@ -66,13 +65,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             ? "inline-flex items-center justify-center"
             : [
                 variantClasses[variant],
-                "flex items-center justify-center gap-2 rounded-full py-2 px-6 text-sm ",
+                "flex items-center justify-center gap-2 rounded-full py-2 text-sm ",
                 hasContent ? "px-4" : "px-3",
-                isSolid && [
-                  "text-theme-on-brand shadow-theme-sm",
-                  "hover:-translate-y-px hover:shadow-theme-lg",
-                  "active:translate-y-0 active:scale-[0.98]",
-                ],
               ],
 
           fullWidth && "w-full",
