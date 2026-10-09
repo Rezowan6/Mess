@@ -1,4 +1,4 @@
-import { AnimatedNumber } from "@/shared/components/ui/AnimatedNumber";
+import { SummaryStat } from "@/shared/components/ui/SummaryStat";
 
 import type { IRiceWithSummary } from "../../types/rice.types";
 
@@ -9,28 +9,27 @@ interface Props {
 
 export const RicePaymentSummary = ({ rice, hasDue }: Props) => {
   const ITEMS = [
-    { label: "Total", value: rice.totalAmount },
-    { label: "Paid", value: rice.totalPaid, color: "text-theme-success" },
+    { label: "Total", amount: Number(rice.totalAmount), tone: "info" },
+    { label: "Paid", amount: Number(rice.totalPaid), tone: "success" },
     {
       label: "Remaining",
-      value: rice.remainingDue,
-      color: hasDue ? "text-theme-danger" : "",
+      amount: Number(rice.remainingDue),
+      tone: hasDue ? "error" : "success",
     },
-  ];
-  
+  ] as const;
+
   return (
     <div className="grid grid-cols-3 gap-3">
-      {ITEMS.map(({ label, value, color }) => (
-        <div
+      {ITEMS.map(({ label, amount, tone }) => (
+        <SummaryStat
           key={label}
-          className="p-3 border border-theme-border rounded-theme-sm"
-        >
-          <p className="text-xs text-theme-text-muted">{label}</p>
-
-          <p className={`text-lg font-bold ${color}`}>
-            <AnimatedNumber value={Number(value)} prefix="৳ " duration={1000} />
-          </p>
-        </div>
+          label={label}
+          amount={amount}
+          tone={tone}
+          prefix="৳ "
+          duration={1000}
+          layout="stacked"
+        />
       ))}
     </div>
   );
