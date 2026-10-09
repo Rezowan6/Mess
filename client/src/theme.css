@@ -135,6 +135,10 @@
   --shadow-theme-lg: var(--theme-shadow-lg);
   --shadow-theme-brand: var(--theme-shadow-brand);
   --shadow-theme-focus: var(--theme-shadow-focus);
+
+  --color-theme-neu-surface: var(--theme-neu-surface);
+  --shadow-theme-neu: var(--theme-shadow-neu);
+  --shadow-theme-neu-inset: var(--theme-shadow-neu-inset);
 }
 
 /* =========================================================
@@ -197,12 +201,11 @@
     );
 
   /* Status */
-  --theme-success: #00FF00;
+  --theme-success: #00ff00;
   --theme-success-soft: #dcfce7;
   --theme-warning: #d97706;
   --theme-warning-soft: #fef3c7;
-  --theme-danger: #FF0000;
-;
+  --theme-danger: #ff0000;
   --theme-danger-soft: #fee2e2;
   --theme-info: #0284c7;
   --theme-info-soft: #e0f2fe;
@@ -326,11 +329,11 @@
   --theme-sidebar-gradient: linear-gradient(180deg, #ffffff 0%, #ffffff 100%);
   --theme-page-glow: none;
 
-  --theme-success: #00FF00;
+  --theme-success: #00ff00;
   --theme-success-soft: #dcfce7;
   --theme-warning: #d97706;
   --theme-warning-soft: #fef3c7;
-  --theme-danger: #FF0000;
+  --theme-danger: #ff0000;
   --theme-danger-soft: #fee2e2;
   --theme-info: #0284c7;
   --theme-info-soft: #e0f2fe;
@@ -441,7 +444,7 @@
     #8b5cf6 55%,
     #06b6d4 100%
   );
-  --theme-success-gradient: linear-gradient(135deg, #059669 0%, #00FF00 100%);
+  --theme-success-gradient: linear-gradient(135deg, #059669 0%, #00ff00 100%);
   --theme-danger-gradient: linear-gradient(135deg, #dc2626 0%, #e11d48 100%);
   --theme-warning-gradient: linear-gradient(135deg, #d97706 0%, #f97316 100%);
   --theme-info-gradient: linear-gradient(135deg, #0369a1 0%, #2563eb 100%);
@@ -459,11 +462,11 @@
       transparent 55%
     );
 
-  --theme-success: #00FF00;
+  --theme-success: #00ff00;
   --theme-success-soft: #08381ed3;
   --theme-warning: #fbbf24;
   --theme-warning-soft: #451a03;
-  --theme-danger: #FF0000;
+  --theme-danger: #ff0000;
   --theme-danger-soft: #450a0a;
   --theme-info: #38bdf8;
   --theme-info-soft: #082f49;
@@ -541,6 +544,42 @@
   --theme-shadow-lg: 0 14px 35px rgb(0 0 0 / 0.45);
   --theme-shadow-brand: 0 8px 24px rgb(99 102 241 / 0.35);
   --theme-shadow-focus: 0 0 0 3px rgb(129 140 248 / 0.35);
+}
+
+/* =========================================================
+   NEUMORPHIC THEME TOKENS
+========================================================= */
+
+/* Default + Light Theme */
+:root,
+[data-theme="default"],
+[data-theme="light"] {
+  --theme-neu-surface: #f8f9ff;
+  --theme-neu-highlight: #ffffff;
+  --theme-neu-shade: #d1d2d6;
+
+  --theme-shadow-neu:
+    1.5px 1.5px 1px var(--theme-neu-shade),
+    -1.5px -1.5px 1px var(--theme-neu-highlight);
+
+  --theme-shadow-neu-inset:
+    inset 1.5px 1.5px 1px var(--theme-neu-shade),
+    inset -1.5px -1.5px 1px var(--theme-neu-highlight);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --theme-neu-surface: #1e293b;
+  --theme-neu-highlight: #334155;
+  --theme-neu-shade: #0f172a;
+
+  --theme-shadow-neu:
+    1.5px 1.5px 1px var(--theme-neu-shade),
+    -1.5px -1.5px 1px var(--theme-neu-highlight);
+
+  --theme-shadow-neu-inset:
+    inset 1.5px 1.5px 1px var(--theme-neu-shade),
+    inset -1.5px -1.5px 1px var(--theme-neu-highlight);
 }
 
 /* =========================================================

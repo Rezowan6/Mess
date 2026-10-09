@@ -9,13 +9,21 @@ export type SummaryStatTone =
 
 // Full class names, so Tailwind can detect them (dynamic names would be purged)
 const toneStyles = {
-  info: { box: "bg-theme-info-soft", value: "text-theme-info" },
-  success: { box: "bg-theme-success-soft", value: "text-theme-success" },
-  accent: { box: "bg-theme-accent-soft", value: "text-theme-accent" },
-  secondary: { box: "bg-theme-brand-soft", value: "text-theme-brand" },
-  error: { box: "bg-theme-danger-soft", value: "text-theme-danger" },
-  warning: { box: "bg-theme-warning-soft", value: "text-theme-warning" },
-} as const satisfies Record<SummaryStatTone, { box: string; value: string }>;
+  info: { value: "text-theme-info", dot: "bg-theme-info" },
+  success: { value: "text-theme-success", dot: "bg-theme-success" },
+  accent: { value: "text-theme-accent", dot: "bg-theme-accent" },
+  secondary: { value: "text-theme-brand", dot: "bg-theme-brand" },
+  error: { value: "text-theme-danger", dot: "bg-theme-danger" },
+  warning: { value: "text-theme-warning", dot: "bg-theme-warning" },
+} as const satisfies Record<SummaryStatTone, { value: string; dot: string }>;
+
+// Shared card style: change it here and both layouts update
+const neuCardClass = cn(
+  "rounded-theme-sm border border-theme-border-subtle bg-theme-neu-surface",
+  "shadow-theme-neu transition-shadow duration-300 ease-out",
+  "hover:shadow-theme-neu-inset",
+);
+
 interface SummaryStatProps {
   label: string;
   amount: number;
@@ -59,12 +67,12 @@ export const SummaryStat = ({
     return (
       <div
         className={cn(
-          "flex min-w-0 flex-col justify-center gap-1 rounded-xl px-4 py-3",
-          styles.box,
+          "flex min-w-0 flex-col justify-center gap-1 px-4 py-3",
+          neuCardClass,
           className,
         )}
       >
-        <span className="truncate text-[12px] font-medium tracking-wide text-base-content/60 sm:text-xs">
+        <span className="truncate text-[12px] font-medium tracking-wide text-theme-text-muted sm:text-xs">
           {toTitleCase(label)}
         </span>
 
@@ -77,7 +85,9 @@ export const SummaryStat = ({
           {value}
         </span>
 
-        {hint && <span className="truncate text-xs opacity-60">{hint}</span>}
+        {hint && (
+          <span className="truncate text-xs text-theme-text-muted">{hint}</span>
+        )}
 
         {action}
       </div>
@@ -87,15 +97,22 @@ export const SummaryStat = ({
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-theme-xl px-4 py-2",
-        styles.box,
+        "flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-2.5",
+        neuCardClass,
         className,
       )}
     >
       <div className="flex w-full items-center justify-between gap-x-2 sm:w-auto sm:justify-start">
-        <span className="text-xs font-medium tracking-wide text-theme-text-muted">
-          {toTitleCase(label)}
-        </span>
+        <div className="flex items-center gap-2">
+          <span
+            aria-hidden="true"
+            className={cn("size-2 shrink-0 rounded-full", styles.dot)}
+          />
+
+          <span className="text-xs font-medium tracking-wide text-theme-text-muted">
+            {toTitleCase(label)}
+          </span>
+        </div>
 
         <span className={cn("text-lg font-bold tabular-nums", styles.value)}>
           {value}
