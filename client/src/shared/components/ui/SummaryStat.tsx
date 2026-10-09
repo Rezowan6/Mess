@@ -18,7 +18,7 @@ const toneStyles = {
 } as const satisfies Record<SummaryStatTone, { value: string; dot: string }>;
 
 // Shared card style: change it here and both layouts update
-const neuCardClass = cn(
+export const neuCardClass = cn(
   "rounded-theme-sm border border-theme-border-subtle bg-theme-neu-surface",
   "shadow-theme-neu transition-shadow duration-300 ease-out",
   "hover:shadow-theme-neu-inset",

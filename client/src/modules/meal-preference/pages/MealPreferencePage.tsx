@@ -10,28 +10,25 @@ import { MealPreferenceForm } from "../components/MealPreferenceForm";
 export function MealPreferencePage() {
   const [isDayRequestOpen, setIsDayRequestOpen] = useState(false);
   const [isRangeRequestOpen, setIsRangeRequestOpen] = useState(false);
+
+  const ITEMS = [
+    {
+      label: "For a Specific Day",
+      icon: Calendar1,
+      onClick: () => setIsDayRequestOpen(true),
+    },
+    {
+      label: "For a Date Range",
+      icon: CalendarRange,
+      onClick: () => setIsRangeRequestOpen(true),
+    },
+  ];
   return (
     <>
       <ManagementPage
         title="My Meal Preference"
         description="Select your daily meal preference"
-        action={
-          <PageActionMenu
-            label="Create Meal Request"
-            items={[
-              {
-                label: "For a Specific Day",
-                icon: Calendar1,
-                onClick: () => setIsDayRequestOpen(true),
-              },
-              {
-                label: "For a Date Range",
-                icon: CalendarRange,
-                onClick: () => setIsRangeRequestOpen(true),
-              },
-            ]}
-          />
-        }
+        action={<PageActionMenu items={ITEMS} />}
       >
         <MealPreferenceForm />
 

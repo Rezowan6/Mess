@@ -329,7 +329,7 @@
   --theme-sidebar-gradient: linear-gradient(180deg, #ffffff 0%, #ffffff 100%);
   --theme-page-glow: none;
 
-  --theme-success: #00ff00;
+  --theme-success: #81ec81;
   --theme-success-soft: #dcfce7;
   --theme-warning: #d97706;
   --theme-warning-soft: #fef3c7;
@@ -462,7 +462,7 @@
       transparent 55%
     );
 
-  --theme-success: #00ff00;
+  --theme-success: #7adc7a;
   --theme-success-soft: #08381ed3;
   --theme-warning: #fbbf24;
   --theme-warning-soft: #451a03;
