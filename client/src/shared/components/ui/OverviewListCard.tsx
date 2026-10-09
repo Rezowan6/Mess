@@ -2,13 +2,12 @@ import type { LucideIcon } from "lucide-react";
 
 import { useMountAnimation } from "@/shared/hooks/useMountAnimation";
 import { AnimatedNumber } from "./AnimatedNumber";
+import { SummaryStat, neuCardClass } from "./SummaryStat";
 
 interface OverviewListItem {
   id: string | number;
   label: string;
-  /** Static value. Used when `amount` is not provided. */
   value?: string | number;
-  /** Numeric value. When provided, it is animated with a count-up. */
   amount?: number;
   prefix?: string;
   suffix?: string;
@@ -25,9 +24,7 @@ interface Props {
   description: string;
   items: OverviewListItem[];
   totalLabel: string;
-  /** Static total. Used when `totalAmount` is not provided. */
   totalValue?: string | number;
-  /** Numeric total. When provided, it is animated with a count-up. */
   totalAmount?: number;
   totalPrefix?: string;
   totalSuffix?: string;
@@ -47,15 +44,15 @@ export const OverviewListCard = ({
   totalValue,
   totalAmount,
   totalPrefix,
-  totalSuffix,
   totalDecimals,
   totalClassName = "text-theme-info",
   emptyMessage = "No data found",
   duration = 1500,
 }: Props) => {
   const mounted = useMountAnimation();
+
   return (
-    <div className="overflow-hidden rounded-theme-xl p-4 shadow-theme-sm">
+    <div className={`overflow-hidden p-4`}>
       <div className="mb-5">
         <h3 className="font-semibold text-theme-text">{title}</h3>
         <p className="text-sm text-theme-text-muted">{description}</p>
@@ -76,13 +73,13 @@ export const OverviewListCard = ({
                 style={{
                   transitionDelay: `${Math.min(index, MAX_STAGGER_STEPS) * 60}ms`,
                 }}
-                className={`flex items-center justify-between rounded-theme-xl bg-theme-info-soft p-3 transition-all duration-500 ease-out ${
+                className={`${neuCardClass} flex items-center justify-between p-3 transition-all duration-500 ease-out ${
                   mounted
                     ? "translate-y-0 opacity-100"
                     : "translate-y-2 opacity-0"
                 }`}
               >
-                <div className="flex items-center gap-3">
+                <div className={`flex items-center gap-3`}>
                   <div
                     className={`rounded-theme-md p-2 ${
                       item.iconBgClassName ?? "bg-theme-brand-soft"
@@ -127,22 +124,30 @@ export const OverviewListCard = ({
         </div>
       )}
 
-      <div className="mt-4 flex items-center justify-between border-t border-theme-border pt-4">
-        <span className="font-medium text-theme-text-muted">{totalLabel}</span>
-
-        <span className={`text-lg font-bold tabular-nums ${totalClassName}`}>
-          {totalAmount !== undefined ? (
-            <AnimatedNumber
-              value={totalAmount}
-              prefix={totalPrefix}
-              suffix={totalSuffix}
-              decimals={totalDecimals}
-              duration={duration}
-            />
-          ) : (
-            totalValue
-          )}
-        </span>
+      <div className="mt-4 border-t border-theme-border pt-4">
+        {totalAmount !== undefined ? (
+          <SummaryStat
+            label={totalLabel}
+            amount={totalAmount}
+            prefix={totalPrefix}
+            tone="info"
+            decimals={totalDecimals}
+            duration={duration}
+            layout="inline"
+            className={totalClassName}
+          />
+        ) : (
+          <div className="flex items-center justify-between">
+            <span className="font-medium text-theme-text-muted">
+              {totalLabel}
+            </span>
+            <span
+              className={`text-lg font-bold tabular-nums ${totalClassName}`}
+            >
+              {totalValue}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );

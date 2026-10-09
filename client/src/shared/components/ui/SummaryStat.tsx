@@ -102,7 +102,7 @@ export const SummaryStat = ({
         className,
       )}
     >
-      <div className="flex w-full items-center justify-between gap-x-2 sm:w-auto sm:justify-start">
+      <div className="flex w-full items-center justify-between gap-x-2">
         <div className="flex items-center gap-2">
           <span
             aria-hidden="true"

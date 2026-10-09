@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { MoreHorizontal } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -11,6 +12,15 @@ interface Props {
   onMoreClick: () => void;
 }
 
+const itemClass = (isActive: boolean) =>
+  clsx(
+    "relative flex min-w-0 flex-1 flex-col items-center justify-center gap-1 py-1 text-[11px] font-medium",
+    "transition-all duration-200 active:scale-95",
+    isActive
+      ? "scale-105 font-semibold text-theme-success"
+      : "text-theme-text-muted hover:text-theme-text",
+  );
+
 export const MobileBottomNavBar = ({
   menus,
   moreMenus,
@@ -18,41 +28,34 @@ export const MobileBottomNavBar = ({
   isMoreOpen,
   onMoreClick,
 }: Props) => {
-  // const scrolled = useScrolled();
-  // ${
-  //     scrolled
-  //       ? "border-t border-theme-border bg-theme-header shadow-theme-lg backdrop-blur-xl"
-  //       : "border-t border-theme-border bg-theme-header shadow-theme-md backdrop-blur-xl"
-  //   }
-
   const primaryMenus = menus.slice(0, 4);
-
   const hasMoreMenus = moreMenus.length > 0;
+  const isMoreHighlighted = isMoreActive || isMoreOpen;
 
   return (
-    <nav
-      className={`fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-theme-header border-t border-theme-border transition-all duration-300
-    
-  `}
-    >
-      <div className="flex h-16 w-full">
+    <nav className="pointer-events-auto fixed inset-x-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 lg:hidden">
+      <div
+        className={clsx(
+          "mx-auto flex h-16 max-w-md items-center justify-around px-2",
+          "rounded-full border border-theme-border",
+          "bg-theme-surface",
+          "backdrop-blur-2xl backdrop-saturate-150",
+          "shadow-[0_8px_32px_-8px_rgb(0_0_0/0.25),inset_0_1px_0_rgb(255_255_255/0.35)]",
+        )}
+      >
         {primaryMenus.map(({ title, path, icon: Icon }) => (
           <NavLink
             key={path}
             to={path}
-            className={({ isActive }) =>
-              `relative z-10 flex min-w-0 flex-1 flex-col items-center justify-center gap-1 text-xs transition-all duration-200 ${
-                isActive
-                  ? "font-semibold text-theme-success!"
-                  : "text-theme-text hover:text-theme-info"
-              }`
-            }
+            className={({ isActive }) => itemClass(isActive)}
           >
             {({ isActive }) => (
               <>
-                <Icon size={16} strokeWidth={isActive ? 2.5 : 2} />
+                <Icon size={22} strokeWidth={isActive ? 2.5 : 1.8} />
 
-                <span className="truncate max-w-fit text-xs">{title}</span>
+                <span className="max-w-full truncate tracking-tight">
+                  {title}
+                </span>
               </>
             )}
           </NavLink>
@@ -62,20 +65,16 @@ export const MobileBottomNavBar = ({
           <button
             type="button"
             onClick={onMoreClick}
-            className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-1 text-xs transition-all duration-200 ${
-              isMoreActive || isMoreOpen
-                ? "font-semibold text-theme-accent"
-                : "text-theme-text hover:text-theme-info"
-            }`}
+            className={itemClass(isMoreHighlighted)}
             aria-label="More"
             aria-expanded={isMoreOpen}
           >
             <MoreHorizontal
-              size={21}
-              strokeWidth={isMoreActive || isMoreOpen ? 2.5 : 2}
+              size={22}
+              strokeWidth={isMoreHighlighted ? 2.5 : 1.8}
             />
 
-            <span>More</span>
+            <span className="tracking-tight">More</span>
           </button>
         )}
       </div>
