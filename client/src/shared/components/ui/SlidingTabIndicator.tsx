@@ -20,7 +20,7 @@ export const SlidingTabIndicator = ({
       }}
       className={clsx(
         "pointer-events-none absolute inset-y-1 left-0 overflow-hidden rounded-full",
-        "border border-white/25 bg-theme-brand/80 backdrop-blur-md",
+        "border border-white/25  backdrop-blur-lg",
         "shadow-[0_8px_24px_-6px_var(--theme-brand),inset_0_1px_0_rgb(255_255_255/0.45),inset_0_-1px_0_rgb(0_0_0/0.12)]",
         "before:absolute before:inset-x-0 before:top-0 before:h-1/2",
         "before:rounded-t-full before:bg-linear-to-b before:from-white/35 before:to-transparent",

@@ -50,7 +50,7 @@ export const Tabs = <T extends string>({
             disabled={tab.disabled}
             onClick={() => onChange(tab.key)}
             className={`relative z-10 shrink-0 sm:min-w-24 active:scale-95 ${
-              isActive ? "text-white! hover:bg-transparent!" : ""
+              isActive ? "text-theme-text hover:bg-transparent!" : ""
             }`}
           >
             {tab.label}

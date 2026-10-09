@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 
-import { AnimatedNumber } from "@/shared/components/ui/AnimatedNumber";
 import { Pagination } from "@/shared/components/ui/Pagination";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Table, type TableColumn } from "@/shared/components/ui/Table";
+import { SummaryStat } from "./SummaryStat";
 
 interface DataTableSummary {
   label: string;
@@ -75,25 +75,16 @@ export const DataTableSection = <T,>({
         </div>
 
         {summary && !isPending && (
-          <div className="flex items-center justify-between gap-3 rounded-xl bg-theme-success/10 px-4 py-2 sm:justify-end">
-            <span className="text-xs font-medium uppercase tracking-wide text-theme-text-muted">
-              {summary.label}
-            </span>
-
-            <span
-              className={`text-lg font-bold tabular-nums ${
-                summary.className ?? "text-theme-success"
-              }`}
-            >
-              <AnimatedNumber
-                value={summary.amount}
-                prefix={summary.prefix}
-                suffix={summary.suffix}
-                decimals={summary.decimals}
-                duration={summary.duration ?? 1200}
-              />
-            </span>
-          </div>
+          <SummaryStat
+            label={summary.label}
+            amount={summary.amount}
+            prefix={summary.prefix}
+            tone="success"
+            decimals={summary.decimals}
+            duration={summary.duration}
+            layout="inline"
+            className={summary.className}
+          />
         )}
       </div>
 
