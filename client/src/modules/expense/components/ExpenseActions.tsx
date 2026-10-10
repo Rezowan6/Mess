@@ -1,13 +1,9 @@
-import { Pencil, Trash2 } from "lucide-react";
-
 import type { IExpense } from "../types/expense.types";
 
-import { Button } from "@/shared/components/ui/Button";
-
-import { useConfirmStore } from "@/shared/store/confirm.store";
-
-import { TOOLTIP_TEXT } from "@/shared/constants/tooltip.config";
-import { isRecordLocked } from "@/shared/utils/date.utils";
+import { PERMISSIONS } from "@/shared/constants/permissions";
+import { RecordActions } from "@/shared/data-display/RecordActions";
+import { RecordDeleteMessage } from "@/shared/data-display/RecordDeleteMessage";
+import { formatDate, isRecordLocked } from "@/shared/utils/date.utils";
 import { useDeleteExpense } from "../hooks/useDeleteExpense";
 
 interface Props {
@@ -16,50 +12,36 @@ interface Props {
 }
 
 export const ExpenseActions = ({ expense, onEdit }: Props) => {
-  const openConfirm = useConfirmStore((state) => state.openConfirm);
-  const setLoading = useConfirmStore((state) => state.setLoading);
-
   const deleteMutation = useDeleteExpense();
-
-  const handleDelete = () =>
-    openConfirm({
-      title: "Delete Expense",
-      message: (
-        <>
-          Are you sure you want to delete{" "}
-          <span className="font-bold text-error">{expense.signature}</span>?
-        </>
-      ),
-      onConfirm: async () => {
-        setLoading(true);
-        try {
-          await deleteMutation.mutateAsync(expense.id);
-        } finally {
-          setLoading(false);
-        }
-      },
-    });
-
-  const locked = isRecordLocked(expense.createdAt);
+  const deleteMsg = (
+    <RecordDeleteMessage
+      description="Are you sure you want to delete this expense?"
+      details={[
+        {
+          label: "Signature",
+          value: expense.signature,
+          highlight: true,
+        },
+        {
+          label: "Amount",
+          value: expense.amount,
+        },
+        {
+          label: "Date",
+          value: formatDate(expense.createdAt),
+        },
+      ]}
+    />
+  );
 
   return (
-    <div className="flex items-center gap-2">
-      <Button
-        unstyled
-        leftIcon={<Pencil />}
-        onClick={() => onEdit(expense)}
-        disabled={locked}
-        tooltip={locked ? TOOLTIP_TEXT.LOCKED_AFTER_24H : undefined}
-      />
-
-      <Button
-        unstyled
-        leftIcon={<Trash2 />}
-        onClick={handleDelete}
-        disabled={locked}
-        tooltip={locked ? TOOLTIP_TEXT.LOCKED_AFTER_24H : undefined}
-        className="text-theme-danger"
-      />
-    </div>
+    <RecordActions
+      updatePermission={PERMISSIONS.EXPENSE_UPDATE}
+      locked={isRecordLocked(expense.createdAt)}
+      onEdit={() => onEdit(expense)}
+      onDelete={() => deleteMutation.mutateAsync(expense.id)}
+      deleteTitle="Delete Expense"
+      deleteMessage={deleteMsg}
+    />
   );
 };

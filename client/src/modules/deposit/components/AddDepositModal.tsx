@@ -8,9 +8,7 @@ import { useUpdateDeposit } from "../hooks/useUpdateDeposit";
 
 import { useRBAC } from "@/shared/hooks/useRBAC";
 
-import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
-import { Modal } from "@/shared/components/ui/Modal";
 
 import { PERMISSIONS } from "@/shared/constants/permissions";
 
@@ -21,6 +19,7 @@ import {
 
 import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { ROUTES } from "@/shared/constants/routes";
+import { RecordFormModal } from "@/shared/forms/RecordFormModal";
 import { depositFields } from "../configs/depositFields";
 import type { IDeposit } from "../types/deposit.types";
 
@@ -104,49 +103,32 @@ export const AddDepositModal = ({ isOpen, onClose, deposit }: Props) => {
   };
 
   return (
-    <Modal
+    <RecordFormModal
       isOpen={isOpen}
       onClose={onClose}
       title={isEdit ? "Update Deposit" : "Add Deposit"}
+      isEdit={isEdit}
+      isPending={isEdit ? updateMutation.isPending : createMutation.isPending}
+      onSubmit={handleSubmit(onSubmit)}
+      permission={
+        isEdit ? PERMISSIONS.DEPOSIT_UPDATE : PERMISSIONS.DEPOSIT_CREATE
+      }
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-        {depositFields &&
-          depositFields.map((field) => (
-            <Input
-              key={field.name}
-              label={field.label}
-              type={field.type}
-              placeholder={field.placeholder}
-              leftIcon={field.leftIcon && field.leftIcon}
-              error={errors[field.name]?.message}
-              {...register(field.name, {
-                valueAsNumber: field.valueAsNumber,
-              })}
-            />
-          ))}
+      {depositFields.map((field) => (
+        <Input
+          key={field.name}
+          label={field.label}
+          type={field.type}
+          placeholder={field.placeholder}
+          leftIcon={field.leftIcon}
+          error={errors[field.name]?.message}
+          {...register(field.name, {
+            valueAsNumber: field.valueAsNumber,
+          })}
+        />
+      ))}
 
-        <ActionLink to={`${ROUTES.DEPOSIT}/quick-add`}>Quick Add</ActionLink>
-
-        <div className="flex justify-end gap-2 pt-4">
-          <Button type="button" variant="error" onClick={onClose}>
-            Cancel
-          </Button>
-
-          <Button
-            variant="success"
-            type="submit"
-            loading={
-              isEdit ? updateMutation.isPending : createMutation.isPending
-            }
-            loadingText={isEdit ? "Updating..." : "Saving..."}
-            permission={
-              isEdit ? PERMISSIONS.DEPOSIT_UPDATE : PERMISSIONS.DEPOSIT_CREATE
-            }
-          >
-            {isEdit ? "Update Deposit" : "Save Deposit"}
-          </Button>
-        </div>
-      </form>
-    </Modal>
+      <ActionLink to={`${ROUTES.DEPOSIT}/quick-add`}>Quick Add</ActionLink>
+    </RecordFormModal>
   );
 };
