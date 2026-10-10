@@ -1,48 +1,48 @@
+import { Check, Trash2, X } from "lucide-react";
+import type { ReactNode } from "react";
+
 import { Button } from "@/shared/components/ui/Button";
-import { useIsMobile } from "@/shared/hooks/useIsMobile";
+import { RecordDeleteMessage } from "@/shared/data-display/RecordDeleteMessage";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { formatDate } from "@/shared/utils/date.utils";
-import { Check, Trash2, X } from "lucide-react";
+
 import { useApprovedMealReq } from "../../hooks/useApprovedMealReq";
 import { useParmanetDeleteMealReq } from "../../hooks/useParmanetDeleteMealReq";
 import { useRejectMealReq } from "../../hooks/useRejectPendingMealReq";
 import type { IMyPendingMealReq } from "../../types/mealRequest.types";
+
+interface Props {
+  isApprovedDisabled: boolean;
+  isRejectDisabled: boolean;
+  isDeleteDisabled: boolean;
+  request: IMyPendingMealReq;
+}
 
 export const PendingMealReqAction = ({
   isApprovedDisabled,
   isRejectDisabled,
   isDeleteDisabled,
   request,
-}: {
-  isApprovedDisabled: boolean;
-  isRejectDisabled: boolean;
-  isDeleteDisabled: boolean;
-  request: IMyPendingMealReq;
-}) => {
+}: Props) => {
   const openConfirm = useConfirmStore((state) => state.openConfirm);
   const setLoading = useConfirmStore((state) => state.setLoading);
 
-  const approvedMealRequest = useApprovedMealReq();
-  const rejectMealRequest = useRejectMealReq();
-  const deleteMealRequest = useParmanetDeleteMealReq();
+  const approveMutation = useApprovedMealReq();
+  const rejectMutation = useRejectMealReq();
+  const deleteMutation = useParmanetDeleteMealReq();
 
-  const isMobile = useIsMobile();
-
-  const handleApprove = (request: IMyPendingMealReq) => {
+  const confirmAction = (
+    title: string,
+    message: ReactNode,
+    action: () => Promise<unknown>,
+  ) => {
     openConfirm({
-      title: "Approve Meal Request",
-      message: (
-        <>
-          Are you sure you want to approve{" "}
-          <strong className="text-theme-success">{request.requester.name}</strong>
-          's meal request for{" "}
-          <strong className="text-theme-success">{formatDate(request.date)}</strong>?
-        </>
-      ),
+      title,
+      message,
       onConfirm: async () => {
         setLoading(true);
         try {
-          await approvedMealRequest.mutateAsync(request.id);
+          await action();
         } finally {
           setLoading(false);
         }
@@ -50,96 +50,76 @@ export const PendingMealReqAction = ({
     });
   };
 
-  const handleReject = (request: IMyPendingMealReq) => {
-    openConfirm({
-      title: "Reject Meal Request",
-      message: (
-        <>
-          Are you sure you want to reject the meal request of{" "}
-          <strong className="text-theme-danger">{request.requester.name}</strong> for{" "}
-          <strong className="text-theme-danger">{formatDate(request.date)}</strong>?
-        </>
-      ),
-      onConfirm: async () => {
-        setLoading(true);
-        try {
-          await rejectMealRequest.mutateAsync(request.id);
-        } finally {
-          setLoading(false);
-        }
-      },
-    });
-  };
-
-  const handleDelete = (request: IMyPendingMealReq) => {
-    openConfirm({
-      title: "Delete Meal Request",
-      message: (
-        <>
-          Are you sure you want to permanently delete the meal request of{" "}
-          <strong className="text-theme-danger">{request.requester.name}</strong> for{" "}
-          <strong className="text-theme-danger">{formatDate(request.date)}</strong>?
-        </>
-      ),
-      onConfirm: async () => {
-        setLoading(true);
-        try {
-          await deleteMealRequest.mutateAsync(request.id);
-        } finally {
-          setLoading(false);
-        }
-      },
-    });
-  };
-
-  const getTooltip = (
-    disabled: boolean,
-    tooltip: string,
-    disabledReason: string,
-  ): string | undefined => {
-    if (disabled) return disabledReason; // mobile ও desktop দুই জায়গাতেই
-    return isMobile ? undefined : tooltip; // enabled হলে শুধু desktop এ
-  };
+  const buildMessage = (description: string) => (
+    <RecordDeleteMessage
+      description={description}
+      details={[
+        {
+          label: "Member",
+          value: request.requester.name,
+          highlight: true,
+        },
+        {
+          label: "Date",
+          value: formatDate(request.date),
+        },
+      ]}
+    />
+  );
 
   const actions = [
     {
       key: "approve",
-      tooltip: "Approve Request",
       disabledReason: "Future date requests cannot be approved yet",
       disabled: isApprovedDisabled,
       icon: <Check size={15} />,
       style: "text-theme-success",
-      onClick: () => handleApprove(request),
+      onClick: () =>
+        confirmAction(
+          "Approve Meal Request",
+          buildMessage("Are you sure you want to approve this meal request?"),
+          () => approveMutation.mutateAsync(request.id),
+        ),
     },
     {
       key: "reject",
-      tooltip: "Reject Request",
       disabledReason: "Today's requests cannot be rejected",
       disabled: isRejectDisabled,
-      style: "text-theme-warning",
       icon: <X size={15} />,
-      onClick: () => handleReject(request),
+      style: "text-theme-warning",
+      onClick: () =>
+        confirmAction(
+          "Reject Meal Request",
+          buildMessage("Are you sure you want to reject this meal request?"),
+          () => rejectMutation.mutateAsync(request.id),
+        ),
     },
     {
       key: "delete",
-      tooltip: "Delete Request",
       disabledReason: "Today's pending requests cannot be deleted",
       disabled: isDeleteDisabled,
-      style: "text-theme-danger",
       icon: <Trash2 size={17} />,
-      onClick: () => handleDelete(request),
+      style: "text-theme-danger",
+      onClick: () =>
+        confirmAction(
+          "Delete Meal Request",
+          buildMessage(
+            "Are you sure you want to permanently delete this meal request?",
+          ),
+          () => deleteMutation.mutateAsync(request.id),
+        ),
     },
   ];
 
   return (
     <div className="flex items-center gap-6">
       {actions.map(
-        ({ key, tooltip, disabledReason, disabled, icon, style, onClick }) => (
+        ({ key, disabledReason, disabled, icon, style, onClick }) => (
           <Button
             key={key}
             unstyled
             disabled={disabled}
-            tooltip={getTooltip(disabled, tooltip, disabledReason)}
+            tooltip={disabled ? disabledReason : undefined}
             leftIcon={icon}
             onClick={onClick}
             className={style}
