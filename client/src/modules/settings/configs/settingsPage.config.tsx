@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 
-import { BackButton } from "@/shared/components/ui/BackButton";
 import { ROUTES } from "@/shared/constants/routes";
 
 interface SettingsPageConfigProps {
@@ -27,8 +26,6 @@ export const getSettingsPageConfig = ({
     [`${ROUTES.SETTINGS}/meal-setting`]: {
       title: "Meal Setting Management",
       description: "Manage meal rules, cutoff times and preferences.",
-
-      footer: <BackButton />,
     },
   };
 
