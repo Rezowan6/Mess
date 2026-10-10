@@ -17,7 +17,7 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     PERMISSIONS.PLAN_FEATURE_CREATE,
     PERMISSIONS.PLAN_FEATURE_UPDATE,
     PERMISSIONS.PLAN_FEATURE_DELETE,
-    
+
     PERMISSIONS.SETTINGS_VIEW,
   ],
 
@@ -31,6 +31,8 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
 
     // meal setting
     PERMISSIONS.MEAL_SETTING_VIEW,
+
+    PERMISSIONS.MEAL_REQUEST_CREATE,
 
     // meal preference
     PERMISSIONS.MEAL_PREFERENCE_UPDATE,
@@ -68,6 +70,8 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     // subscription
     PERMISSIONS.SUBSCRIPTION_VIEW,
     PERMISSIONS.SUBSCRIPTION_MANAGE,
+
+    PERMISSIONS.MEAL_REQUEST_CREATE,
 
     // tenant
     PERMISSIONS.TENANT_CREATE,
@@ -133,6 +137,8 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     // user
     PERMISSIONS.USER_VIEW,
 
+    PERMISSIONS.MEAL_REQUEST_CREATE,
+
     // meal setting
     PERMISSIONS.MEAL_SETTING_VIEW,
 
@@ -164,6 +170,8 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
   [ROLES.MESS_MALIK]: [
     // user
     PERMISSIONS.USER_VIEW,
+
+    PERMISSIONS.MEAL_REQUEST_CREATE,
 
     // meal setting
     PERMISSIONS.MEAL_SETTING_VIEW,
