@@ -1,25 +1,23 @@
 // File: AddPartyExpenseModal.tsx
 
-import { DollarSign } from "lucide-react";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-
-
-import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
-import { Modal } from "@/shared/components/ui/Modal";
-
-
-
 
 import { MemberSelector } from "@/shared/components/ui/MemberSelector";
-import type { IPartyExpense } from "../../types/partyExpense.types";
+import { PERMISSIONS } from "@/shared/constants/permissions";
+import { RecordFormModal } from "@/shared/forms/RecordFormModal";
+import { partyExpenseFields } from "../../configs/partyExpense.fields.config";
 import { useCreatePartyExpense } from "../../hooks/useCreatePartyExpense";
 import { useUpdatePartyExpense } from "../../hooks/useUpdatePartyExpense";
-import { partyExpenseSchema, type PartyExpenseFormValues } from "../../schemas/partyExpense.schema";
+import {
+  partyExpenseSchema,
+  type PartyExpenseFormValues,
+} from "../../schemas/partyExpense.schema";
+import type { IPartyExpense } from "../../types/partyExpense.types";
 
 interface Props {
   isOpen: boolean;
@@ -95,57 +93,39 @@ export const AddPartyExpenseModal = ({
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title={isEdit ? "Update Party Expense" : "Add Party Expense"}
-    >
-      <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
+    <FormProvider {...methods}>
+      <RecordFormModal
+        isOpen={isOpen}
+        onClose={onClose}
+        title={isEdit ? "Update Party Expense" : "Add Party Expense"}
+        isEdit={isEdit}
+        isPending={isEdit ? updateMutation.isPending : createMutation.isPending}
+        onSubmit={handleSubmit(onSubmit)}
+        permission={
+          isEdit ? PERMISSIONS.EXPENSE_CREATE : PERMISSIONS.EXPENSE_CREATE
+        }
+      >
+        {partyExpenseFields.map((field) => (
           <Input
-            label="Amount"
-            type="number"
-            leftIcon={<DollarSign size={18} />}
-            placeholder="Enter party expense amount"
-            error={errors.amount?.message}
-            {...register("amount", {
-              valueAsNumber: true,
+            key={field.name}
+            label={field.label}
+            type={field.type}
+            placeholder={field.placeholder}
+            leftIcon={field.leftIcon}
+            error={errors[field.name]?.message}
+            {...register(field.name, {
+              valueAsNumber: field.valueAsNumber,
             })}
           />
+        ))}
 
-          <Input
-            label="Description"
-            type="text"
-            placeholder="Enter description"
-            error={errors.description?.message}
-            {...register("description")}
-          />
-
-          <MemberSelector<PartyExpenseFormValues>
-            name="memberIds"
-            label="Select Members"
-            multiple
-            showSelectAll
-          />
-
-          <div className="flex justify-end gap-2 pt-4">
-            <Button type="button" variant="error" onClick={onClose}>
-              Cancel
-            </Button>
-
-            <Button
-              variant="success"
-              type="submit"
-              loading={
-                isEdit ? updateMutation.isPending : createMutation.isPending
-              }
-              loadingText={isEdit ? "Updating..." : "Saving..."}
-            >
-              {isEdit ? "Update Party Expense" : "Save Party Expense"}
-            </Button>
-          </div>
-        </form>
-      </FormProvider>
-    </Modal>
+        <MemberSelector<PartyExpenseFormValues>
+          name="memberIds"
+          label="Select Members"
+          multiple
+          showSelectAll
+        />
+      </RecordFormModal>
+    </FormProvider>
   );
 };

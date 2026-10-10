@@ -1,9 +1,6 @@
-import { Pencil, Trash2 } from "lucide-react";
-
-import { Button } from "@/shared/components/ui/Button";
-import { useConfirmStore } from "@/shared/store/confirm.store";
-
-import { TOOLTIP_TEXT } from "@/shared/constants/tooltip.config";
+import { PERMISSIONS } from "@/shared/constants/permissions";
+import { RecordActions } from "@/shared/data-display/RecordActions";
+import { RecordDeleteMessage } from "@/shared/data-display/RecordDeleteMessage";
 import { formatDate, isRecordLocked } from "@/shared/utils/date.utils";
 import { useDeletePartyExpense } from "../../hooks/useDeletePartyExpense";
 import type { IPartyExpense } from "../../types/partyExpense.types";
@@ -14,55 +11,37 @@ interface Props {
 }
 
 export const PartyExpenseActions = ({ partyExpense, onEdit }: Props) => {
-  const openConfirm = useConfirmStore((state) => state.openConfirm);
-  const setLoading = useConfirmStore((state) => state.setLoading);
-
   const deleteMutation = useDeletePartyExpense();
 
-  const locked = isRecordLocked(partyExpense.createdAt);
+  const deleteMsg = (
+    <RecordDeleteMessage
+      description="Are you sure you want to delete this party expense?"
+      details={[
+        {
+          label: "Description",
+          value: partyExpense.description,
+          highlight: true,
+        },
+        {
+          label: "Amount",
+          value: partyExpense.amount,
+        },
+        {
+          label: "Date",
+          value: formatDate(partyExpense.date),
+        },
+      ]}
+    />
+  );
 
   return (
-    <div className="flex items-center gap-2">
-      <Button
-        unstyled
-        leftIcon={<Pencil />}
-        onClick={() => onEdit(partyExpense)}
-        disabled={locked}
-        tooltip={locked ? TOOLTIP_TEXT.LOCKED_AFTER_24H : undefined}
-      />
-
-      <Button
-        unstyled
-        leftIcon={<Trash2 />}
-        disabled={locked}
-        tooltip={locked ? TOOLTIP_TEXT.LOCKED_AFTER_24H : undefined}
-        className="text-theme-danger"
-        onClick={() =>
-          openConfirm({
-            title: "Delete Party Expense",
-            message: (
-              <>
-                Are you sure you want to delete{" "}
-                <span className="font-bold text-error pr-1">
-                  {partyExpense.description}
-                </span>
-                <span className="text-success">
-                  date: {formatDate(partyExpense.date)}
-                </span>
-                ?
-              </>
-            ),
-            onConfirm: async () => {
-              try {
-                setLoading(true);
-                await deleteMutation.mutateAsync(partyExpense.id);
-              } finally {
-                setLoading(false);
-              }
-            },
-          })
-        }
-      />
-    </div>
+    <RecordActions
+      updatePermission={PERMISSIONS.EXPENSE_CREATE}
+      locked={isRecordLocked(partyExpense.createdAt)}
+      onEdit={() => onEdit(partyExpense)}
+      onDelete={() => deleteMutation.mutateAsync(partyExpense.id)}
+      deleteTitle="Delete Party Expense"
+      deleteMessage={deleteMsg}
+    />
   );
 };
