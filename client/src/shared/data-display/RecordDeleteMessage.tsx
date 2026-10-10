@@ -34,7 +34,7 @@ export const RecordDeleteMessage = ({
         ))}
       </div>
 
-      <p className="mt-3 text-sm text-theme-muted">
+      <p className="mt-3 text-sm text-theme-warning">
         This action cannot be undone.
       </p>
     </>

@@ -23,7 +23,7 @@ export const BackButton = () => {
       type="button"
       onClick={handleBack}
       aria-label="Go back"
-      className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border border-theme-border bg-theme-surface text-theme-text-secondary shadow-theme-sm transition-all duration-200 hover:bg-theme-surface-hover hover:text-theme-brand active:scale-95"
+      className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border border-theme-border bg-theme-surface text-theme-brand shadow-theme-sm transition-all duration-200 hover:bg-theme-surface-hover active:scale-95"
     >
       <ArrowLeft size={18} />
     </button>

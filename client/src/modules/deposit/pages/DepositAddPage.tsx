@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 import { Pagination } from "@/shared/components/ui/Pagination";
 import { SearchInput } from "@/shared/components/ui/SearchInput";
 import { Table } from "@/shared/components/ui/Table";
@@ -13,7 +11,7 @@ import type { ITenantMember } from "@/modules/user-management/types/userManageme
 
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { ErrorState } from "@/shared/components/feedback/ErrorState";
-import { ROUTES } from "@/shared/constants/routes";
+import { RecordDeleteMessage } from "@/shared/data-display/RecordDeleteMessage";
 import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { DEPOSIT_ADD_MESSAGES } from "../configs/depositAdd.messages";
@@ -21,8 +19,6 @@ import { useCreateDeposit } from "../hooks/useCreateDeposit";
 
 export const DepositAddPage = () => {
   const { page, search, handleSearch, handlePage } = useTableSearchParams();
-
-  const navigate = useNavigate();
 
   const openConfirm = useConfirmStore((state) => state.openConfirm);
   const setLoading = useConfirmStore((state) => state.setLoading);
@@ -40,16 +36,30 @@ export const DepositAddPage = () => {
   const meta = data?.meta;
 
   const handleQuickDeposit = async (member: ITenantMember, amount: number) => {
+    const quickDepositMsg = (
+      <RecordDeleteMessage
+        description="Are you sure you want to add this deposit?"
+        details={[
+          {
+            label: "Member",
+            value: member.user.name,
+            highlight: true,
+          },
+          {
+            label: "Amount",
+            value: amount,
+            highlight: true,
+          },
+          {
+            label: "Payment Method",
+            value: "Cash",
+          },
+        ]}
+      />
+    );
     openConfirm({
       title: "Add Deposit",
-      message: (
-        <>
-          Are you sure you want to add{" "}
-          <strong className="text-theme-success">{amount}</strong> to{" "}
-          <strong className="text-theme-success">{member.user.name}</strong>
-          's deposit?
-        </>
-      ),
+      message: quickDepositMsg,
 
       onConfirm: async () => {
         try {
@@ -59,12 +69,8 @@ export const DepositAddPage = () => {
             memberId: member.user.id,
             amount,
             paymentMethod: "Cash",
-            note: "Quick Deposit",
+            note: "",
           });
-
-          setTimeout(() => {
-            navigate(ROUTES.DEPOSIT);
-          }, 500);
         } finally {
           setLoading(false);
         }

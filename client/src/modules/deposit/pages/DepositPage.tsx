@@ -4,7 +4,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { AddDepositModal } from "../components/AddDepositModal";
 
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
-import { Button } from "@/shared/components/ui/Button";
+import { AddButton } from "@/shared/components/ui/Button/AddButton";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { PermissionGuard } from "@/shared/guards/permission.guard";
 import { getDepositPageConfig } from "../configs/deposit.page.config";
@@ -28,13 +28,11 @@ export const DepositPage = () => {
         description={currentPage.description}
         action={
           currentPage.showAddButton && (
-            <Button
-              variant="success"
+            <AddButton
               permission={PERMISSIONS.DEPOSIT_CREATE}
+              label="Deposit"
               onClick={() => setIsOpen(true)}
-            >
-              Add Deposit
-            </Button>
+            />
           )
         }
         footer={currentPage.footer}

@@ -65,7 +65,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             ? "inline-flex items-center justify-center"
             : [
                 variantClasses[variant],
-                "flex items-center justify-center gap-2 rounded-full py-2 text-sm ",
+                "flex items-center justify-center gap-1 rounded-full py-2 text-sm ",
                 hasContent ? "px-4" : "px-3",
               ],
 

@@ -27,7 +27,7 @@ export const getDepositPageConfig = ({
     [`${ROUTES.DEPOSIT}/quick-add`]: {
       title: "Add Deposit",
       description: "Quickly add deposits for mess members.",
-      showAddButton: false,
+      showAddButton: true,
     },
 
     [`${ROUTES.DEPOSIT}/history`]: {
