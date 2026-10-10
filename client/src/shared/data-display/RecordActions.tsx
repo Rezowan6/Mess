@@ -54,9 +54,9 @@ export const RecordActions = ({
     });
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-4">
       {leading}
-      {showEditDelete  && can(updatePermission) && (
+      {showEditDelete && can(updatePermission) && (
         <>
           <Button
             unstyled

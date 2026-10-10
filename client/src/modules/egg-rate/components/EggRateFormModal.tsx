@@ -9,10 +9,9 @@ import type {
   IUpdateEggRateDto,
 } from "@/modules/egg-rate/types/eggRate.types";
 
-import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
-import { Modal } from "@/shared/components/ui/Modal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { RecordFormModal } from "@/shared/forms/RecordFormModal";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 import {
   eggRateSchema,
@@ -104,50 +103,34 @@ export const EggRateFormModal = ({
   };
 
   return (
-    <Modal
+    <RecordFormModal
       isOpen={isOpen}
       onClose={onClose}
       title={isEdit ? "Update Egg Rate" : "Set Egg Rate"}
+      isEdit={isEdit}
+      isPending={isEdit ? updateMutation.isPending : createMutation.isPending}
+      onSubmit={handleSubmit(onSubmit)}
+      permission={
+        isEdit
+          ? PERMISSIONS.MEAL_SETTING_UPDATE
+          : PERMISSIONS.MEAL_SETTING_CREATE
+      }
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-4">
-        <Input
-          label="Egg Rate"
-          type="number"
-          step="0.01"
-          min="0.01"
-          placeholder="Enter egg rate"
-          error={errors.rate?.message}
-          {...register("rate", {
-            valueAsNumber: true,
-          })}
-        />
+      <Input
+        label="Egg Rate"
+        type="number"
+        step="0.01"
+        min="0.01"
+        placeholder="Enter egg rate"
+        error={errors.rate?.message}
+        {...register("rate", {
+          valueAsNumber: true,
+        })}
+      />
 
-        <p className="text-sm text-base-content/60">
-          Enter the current price of one egg.
-        </p>
-
-        <div className="flex justify-end gap-2 pt-4">
-          <Button type="button" variant="error" onClick={onClose}>
-            Cancel
-          </Button>
-
-          <Button
-            variant="success"
-            type="submit"
-            loading={
-              isEdit ? updateMutation.isPending : createMutation.isPending
-            }
-            loadingText={isEdit ? "Updating..." : "Saving..."}
-            permission={
-              isEdit
-                ? PERMISSIONS.MEAL_SETTING_UPDATE
-                : PERMISSIONS.MEAL_SETTING_CREATE
-            }
-          >
-            {isEdit ? "Update Egg Rate" : "Save Egg Rate"}
-          </Button>
-        </div>
-      </form>
-    </Modal>
+      <p className="text-sm text-theme-text-muted">
+        Enter the current price of one egg.
+      </p>
+    </RecordFormModal>
   );
 };
