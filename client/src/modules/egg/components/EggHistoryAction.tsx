@@ -1,12 +1,10 @@
-import { Pencil, Trash2 } from "lucide-react";
+import type { IEgg } from "../types/egg.types";
 
-import { Button } from "@/shared/components/ui/Button";
-import { useConfirmStore } from "@/shared/store/confirm.store";
-
-import { TOOLTIP_TEXT } from "@/shared/constants/tooltip.config";
+import { PERMISSIONS } from "@/shared/constants/permissions";
+import { RecordActions } from "@/shared/data-display/RecordActions";
+import { RecordDeleteMessage } from "@/shared/data-display/RecordDeleteMessage";
 import { isRecordLocked } from "@/shared/utils/date.utils";
 import { useDeleteEgg } from "../hooks/useDeleteEgg";
-import type { IEgg } from "../types/egg.types";
 
 interface Props {
   egg: IEgg;
@@ -14,54 +12,38 @@ interface Props {
 }
 
 export const EggHistoryAction = ({ egg, onEdit }: Props) => {
-  const openConfirm = useConfirmStore((state) => state.openConfirm);
-  const setLoading = useConfirmStore((state) => state.setLoading);
-
   const deleteMutation = useDeleteEgg();
 
-  const handleDelete = () =>
-    openConfirm({
-      title: "Delete Egg Record",
-      message: (
-        <>
-          Are you sure you want to delete{" "}
-          <span className="font-bold text-error">{egg.quantity} egg(s)</span>?
-        </>
-      ),
-      onConfirm: async () => {
-        setLoading(true);
-
-        try {
-          await deleteMutation.mutateAsync({
-            id: egg.id,
-            memberId: egg.memberId,
-          });
-        } finally {
-          setLoading(false);
-        }
-      },
-    });
-
-  const locked = isRecordLocked(egg.createdAt);
+  const deleteMsg = (
+    <RecordDeleteMessage
+      description="Are you sure you want to delete this egg record?"
+      details={[
+        {
+          label: "Member",
+          value: egg.member.name,
+          highlight: true,
+        },
+        {
+          label: "Quantity",
+          value: `${egg.quantity} egg(s)`,
+        },
+      ]}
+    />
+  );
 
   return (
-    <div className="flex items-center gap-2">
-      <Button
-        unstyled
-        disabled={locked}
-        tooltip={locked ? TOOLTIP_TEXT.LOCKED_AFTER_24H : undefined}
-        leftIcon={<Pencil />}
-        onClick={() => onEdit(egg)}
-      />
-
-      <Button
-        unstyled
-        disabled={locked}
-        tooltip={locked ? TOOLTIP_TEXT.LOCKED_AFTER_24H : undefined}
-        leftIcon={<Trash2 />}
-        onClick={handleDelete}
-        className="text-theme-danger"
-      />
-    </div>
+    <RecordActions
+      updatePermission={PERMISSIONS.EXPENSE_UPDATE}
+      locked={isRecordLocked(egg.createdAt)}
+      onEdit={() => onEdit(egg)}
+      onDelete={() =>
+        deleteMutation.mutateAsync({
+          id: egg.id,
+          memberId: egg.memberId,
+        })
+      }
+      deleteTitle="Delete Egg Record"
+      deleteMessage={deleteMsg}
+    />
   );
 };
