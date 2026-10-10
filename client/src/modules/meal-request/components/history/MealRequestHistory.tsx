@@ -2,7 +2,7 @@ import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { Badge } from "@/shared/components/ui/Badge";
 import { Button } from "@/shared/components/ui/Button";
 import { MealBadges } from "@/shared/components/ui/MealBadges";
-import { useIsMobile } from "@/shared/hooks/useIsMobile";
+import { RecordDeleteMessage } from "@/shared/data-display/RecordDeleteMessage";
 import { useConfirmStore } from "@/shared/store/confirm.store";
 import { formatDate, getLocalDate } from "@/shared/utils/date.utils";
 import { formatDateTime } from "@/shared/utils/time";
@@ -19,28 +19,31 @@ interface MealRequestHistoryProps {
 export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
   requests,
 }) => {
-  const isMobile = useIsMobile();
   const openConfirm = useConfirmStore((state) => state.openConfirm);
 
   const setLoading = useConfirmStore((state) => state.setLoading);
   const deleteMealRequest = useParmanetDeleteMealReq();
 
   const handleDelete = (request: IMyPendingMealReq) => {
+    const deleteMsg = (
+      <RecordDeleteMessage
+        description="Are you sure you want to permanently delete this meal request?"
+        details={[
+          {
+            label: "Member",
+            value: request.requester.name,
+            highlight: true,
+          },
+          {
+            label: "Date",
+            value: formatDate(request.date),
+          },
+        ]}
+      />
+    );
     openConfirm({
       title: "Delete Meal Request",
-      message: (
-        <>
-          Are you sure you want to permanently delete the meal request of{" "}
-          <strong className="text-theme-success">
-            {request.requester.name}
-          </strong>{" "}
-          for{" "}
-          <strong className="text-theme-danger">
-            {formatDate(request.date)}
-          </strong>
-          ?
-        </>
-      ),
+      message: deleteMsg,
       onConfirm: async () => {
         setLoading(true);
         try {
@@ -56,13 +59,15 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
     const { title, description } = MEAL_REQUEST_HISTORY_MESSAGES.empty;
     return <EmptyState title={title} description={description} />;
   }
+
+  const today = formatDate(getLocalDate());
+
   return (
     <div className="max-h-92 overflow-y-auto">
       <div className="flex-1">
         <div className="divide-y divide-theme-border">
           {requests.map((request) => {
-            const isCurrentMealReqDate =
-              formatDate(request.date) === formatDate(getLocalDate());
+            const isCurrentMealReqDate = formatDate(request.date) === today;
 
             const isDeleteDisabled =
               request.status === "pending" && isCurrentMealReqDate;
@@ -89,9 +94,7 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                       tooltip={
                         isDeleteDisabled
                           ? "Today's pending requests cannot be deleted"
-                          : isMobile
-                            ? undefined
-                            : "Delete Request"
+                          : undefined
                       }
                       className="text-theme-danger"
                       leftIcon={<Trash2 />}
