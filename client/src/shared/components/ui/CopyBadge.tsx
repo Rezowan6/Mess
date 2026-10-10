@@ -40,7 +40,7 @@ export const CopyBadge = ({
           copied ? (
             <Check className="text-theme-success" />
           ) : (
-            <Copy className="opacity-0 transition-opacity group-hover:opacity-100" />
+            <Copy className="opacity-100 sm:opacity-0 transition-opacity group-hover:opacity-100" />
           )
         }
       >
