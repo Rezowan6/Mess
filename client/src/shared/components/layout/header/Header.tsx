@@ -10,10 +10,13 @@ export const Header = () => {
       <div className="flex h-16 w-full items-center gap-2 px-3 sm:gap-3 sm:px-4 lg:px-6">
         <BackButton />
 
-        {/* min-w-0 + flex-1 lets this area shrink instead of pushing profile out */}
-        <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-2 sm:flex-none sm:gap-4 lg:gap-6">
+        <div className="flex min-w-0 flex-1 items-center justify-end gap-2 sm:gap-4 lg:gap-6">
           <MealSessionSelector />
-          <MealSessionStatus />
+
+          <div className="hidden shrink-0 sm:block">
+            <MealSessionStatus />
+          </div>
+
           <NotificationBell />
           <HeaderProfile />
         </div>
