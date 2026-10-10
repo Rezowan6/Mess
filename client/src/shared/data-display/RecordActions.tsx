@@ -8,10 +8,11 @@ import { useConfirmStore } from "@/shared/store/confirm.store";
 import type { Permission } from "../constants/permissions";
 
 interface RecordActionsProps {
-  updatePermission: Permission;
+  updatePermission?: Permission;
+  deletePermission?: Permission;
   locked?: boolean;
   showEditDelete?: boolean;
-  onEdit: () => void;
+  onEdit?: () => void;
   onDelete: () => Promise<unknown>;
   deleteTitle: string;
   deleteMessage: ReactNode;
@@ -21,6 +22,7 @@ interface RecordActionsProps {
 
 export const RecordActions = ({
   updatePermission,
+  deletePermission,
   locked = false,
   /** false হলে edit/delete বাটন দেখাবে না (default: true) */
   showEditDelete = true,
@@ -34,6 +36,13 @@ export const RecordActions = ({
   trailing,
 }: RecordActionsProps) => {
   const { can } = useRBAC();
+  const canEdit = updatePermission ? can(updatePermission) : false;
+  const canDelete = deletePermission
+    ? can(deletePermission)
+    : updatePermission
+      ? can(updatePermission)
+      : undefined;
+
   const openConfirm = useConfirmStore((state) => state.openConfirm);
   const setLoading = useConfirmStore((state) => state.setLoading);
 
@@ -56,24 +65,28 @@ export const RecordActions = ({
   return (
     <div className="flex items-center gap-4">
       {leading}
-      {showEditDelete && can(updatePermission) && (
+      {showEditDelete && (
         <>
-          <Button
-            unstyled
-            disabled={locked}
-            tooltip={tooltip}
-            leftIcon={<Pencil />}
-            onClick={onEdit}
-          />
+          {canEdit && onEdit && (
+            <Button
+              unstyled
+              disabled={locked}
+              tooltip={tooltip}
+              leftIcon={<Pencil />}
+              onClick={onEdit}
+            />
+          )}
 
-          <Button
-            unstyled
-            disabled={locked}
-            tooltip={tooltip}
-            leftIcon={<Trash2 />}
-            className="text-theme-danger"
-            onClick={handleDelete}
-          />
+          {canDelete && (
+            <Button
+              unstyled
+              disabled={locked}
+              tooltip={tooltip}
+              leftIcon={<Trash2 />}
+              className="text-theme-danger"
+              onClick={handleDelete}
+            />
+          )}
         </>
       )}
 

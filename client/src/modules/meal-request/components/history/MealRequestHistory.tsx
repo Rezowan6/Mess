@@ -1,16 +1,13 @@
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { Badge } from "@/shared/components/ui/Badge";
-import { Button } from "@/shared/components/ui/Button";
 import { MealBadges } from "@/shared/components/ui/MealBadges";
-import { RecordDeleteMessage } from "@/shared/data-display/RecordDeleteMessage";
-import { useConfirmStore } from "@/shared/store/confirm.store";
 import { formatDate, getLocalDate } from "@/shared/utils/date.utils";
 import { formatDateTime } from "@/shared/utils/time";
-import { CalendarDays, Trash2 } from "lucide-react";
+import { CalendarDays } from "lucide-react";
 import React from "react";
 import { MEAL_REQUEST_HISTORY_MESSAGES } from "../../configs/mealRequestHistory.message";
-import { useParmanetDeleteMealReq } from "../../hooks/useParmanetDeleteMealReq";
 import type { IMyPendingMealReq } from "../../types/mealRequest.types";
+import { MealRequestHistoryAction } from "./MealRequestHistoryAction";
 
 interface MealRequestHistoryProps {
   requests: IMyPendingMealReq[];
@@ -19,42 +16,6 @@ interface MealRequestHistoryProps {
 export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
   requests,
 }) => {
-  const openConfirm = useConfirmStore((state) => state.openConfirm);
-
-  const setLoading = useConfirmStore((state) => state.setLoading);
-  const deleteMealRequest = useParmanetDeleteMealReq();
-
-  const handleDelete = (request: IMyPendingMealReq) => {
-    const deleteMsg = (
-      <RecordDeleteMessage
-        description="Are you sure you want to permanently delete this meal request?"
-        details={[
-          {
-            label: "Member",
-            value: request.requester.name,
-            highlight: true,
-          },
-          {
-            label: "Date",
-            value: formatDate(request.date),
-          },
-        ]}
-      />
-    );
-    openConfirm({
-      title: "Delete Meal Request",
-      message: deleteMsg,
-      onConfirm: async () => {
-        setLoading(true);
-        try {
-          await deleteMealRequest.mutateAsync(request.id);
-        } finally {
-          setLoading(false);
-        }
-      },
-    });
-  };
-
   if (requests.length === 0) {
     const { title, description } = MEAL_REQUEST_HISTORY_MESSAGES.empty;
     return <EmptyState title={title} description={description} />;
@@ -88,17 +49,9 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                       {request.status}
                     </Badge>
 
-                    <Button
-                      unstyled
-                      disabled={isDeleteDisabled}
-                      tooltip={
-                        isDeleteDisabled
-                          ? "Today's pending requests cannot be deleted"
-                          : undefined
-                      }
-                      className="text-theme-danger"
-                      leftIcon={<Trash2 />}
-                      onClick={() => handleDelete(request)}
+                    <MealRequestHistoryAction
+                      request={request}
+                      isDeleteDisabled={isDeleteDisabled}
                     />
                   </div>
                   {/* meal Badge */}
