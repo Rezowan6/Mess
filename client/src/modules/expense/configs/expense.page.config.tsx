@@ -20,39 +20,39 @@ export const getExpensePageConfig = ({
     [ROUTES.EXPENSE]: {
       title: "Expense Management",
       description: "Manage mess expenses and records",
-      actionText: "Add Expense",
+      actionText: "Expense",
       onAction: onAddExpense,
     },
 
     [`${ROUTES.EXPENSE}/party`]: {
       title: "Party Expense",
       description: "Manage party expenses and participating members",
-      actionText: "Add Party Expense",
+      actionText: "Party",
       onAction: onAddPartyExpense,
     },
 
     [`${ROUTES.EXPENSE}/party/history`]: {
       title: "Party Expense History",
       description: "View party expense members and share details",
-      actionText: "Add Party Expense",
+      actionText: "Party",
       onAction: onAddPartyExpense,
     },
     [`${ROUTES.EXPENSE}/egg`]: {
       title: "Egg Management",
       description: "Manage member egg records and track egg consumption",
-      actionText: "Add Egg",
+      actionText: "Egg",
       onAction: onAddEggExpense,
     },
     [`${ROUTES.EXPENSE}/egg/history`]: {
       title: "Egg History",
       description: "View member egg history and track egg consumption",
-      actionText: "Add Egg",
+      actionText: "Egg",
       onAction: onAddEggExpense,
     },
     [`${ROUTES.EXPENSE}/rice`]: {
       title: "Rice Management",
       description: "Manage rice purchases and payment records",
-      actionText: "Add Rice",
+      actionText: "Rice",
       onAction: onAddRiceExpense,
     },
 
@@ -60,7 +60,7 @@ export const getExpensePageConfig = ({
       title: "Rice Purchase Details",
       description:
         "View supplier information, payment progress and payment history",
-      actionText: "Add Rice",
+      actionText: "Rice",
       onAction: onAddRiceExpense,
     },
   };

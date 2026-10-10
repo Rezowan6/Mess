@@ -1,112 +1,74 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useInviteMember } from "../hooks/useInviteMember";
 import { inviteSchema, type InviteFormValues } from "../schemas/invite.schema";
 
-import { useInviteMember } from "../hooks/useInviteMember";
-
-import { ROLES } from "@/shared/constants/roles";
-
-import { useRBAC } from "@/shared/hooks/useRBAC";
-
-import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
-import { Modal } from "@/shared/components/ui/Modal";
 import { Select } from "@/shared/components/ui/Select";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { ROLES } from "@/shared/constants/roles";
 import { ROLE_OPTIONS } from "@/shared/constants/selectOptions";
-import { useState } from "react";
+import { RecordFormModal } from "@/shared/forms/RecordFormModal";
 
-export const InviteMemberModal = () => {
-  const { can } = useRBAC();
+interface InviteMemberModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
+export const InviteMemberModal = ({
+  isOpen,
+  onClose,
+}: InviteMemberModalProps) => {
   const inviteMutation = useInviteMember();
-
-  const [isOpen, setIsOpen] = useState(false);
 
   const {
     register,
-
     handleSubmit,
-
     reset,
-
     formState: { errors },
   } = useForm<InviteFormValues>({
     resolver: zodResolver(inviteSchema),
-
     defaultValues: {
       role: ROLES.MEMBER,
     },
   });
 
-  if (!can(PERMISSIONS.USER_INVITE)) {
-    return null;
-  }
-
   const onSubmit = (data: InviteFormValues) => {
     inviteMutation.mutate(data, {
       onSuccess: () => {
         reset();
+        onClose();
       },
     });
   };
 
   return (
-    <>
-      <Button
-        variant="success"
-        permission={PERMISSIONS.USER_INVITE}
-        onClick={() => setIsOpen(true)}
-      >
-        Invite Member
-      </Button>
+    <RecordFormModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Invite Member"
+      isEdit={false}
+      isPending={inviteMutation.isPending}
+      onSubmit={handleSubmit(onSubmit)}
+      permission={PERMISSIONS.USER_INVITE}
+    >
+      <Input
+        label="Email"
+        type="email"
+        leftIcon={<Mail size={18} />}
+        placeholder="member@email.com"
+        error={errors.email?.message}
+        {...register("email")}
+      />
 
-      <Modal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Invite Member"
-      >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-          <Input
-            label="Email"
-            type="email"
-            leftIcon={<Mail size={18} />}
-            placeholder="member@email.com"
-            error={errors?.email?.message}
-            {...register("email")}
-          />
-
-          <Select
-            label="Role"
-            defaultValue={ROLES.MEMBER}
-            options={ROLE_OPTIONS}
-            error={errors.role?.message}
-            {...register("role")}
-          />
-          <div className="flex justify-end gap-2 pt-4">
-            <Button
-              type="button"
-              variant="error"
-              onClick={() => setIsOpen(false)}
-            >
-              Cancel
-            </Button>
-
-            <Button
-              variant="success"
-              type="submit"
-              loading={inviteMutation.isPending}
-              loadingText="Sending..."
-              permission={PERMISSIONS.USER_INVITE}
-            >
-              Send Invite
-            </Button>
-          </div>
-        </form>
-      </Modal>
-    </>
+      <Select
+        label="Role"
+        options={ROLE_OPTIONS}
+        error={errors.role?.message}
+        {...register("role")}
+      />
+    </RecordFormModal>
   );
 };

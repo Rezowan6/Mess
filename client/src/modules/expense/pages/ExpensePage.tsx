@@ -5,13 +5,13 @@ import { AddExpenseModal } from "../components/AddExpenseModal";
 import { getExpensePageConfig } from "../configs/expense.page.config";
 
 import { AddEggModal } from "@/modules/egg/components/AddEggModal";
+import { AddPartyExpenseModal } from "@/modules/party-expense/components/modla/AddPartyExpenseModal";
 import { AddRiceModal } from "@/modules/rice/components/AddRiceModal";
 import { ManagementPage } from "@/shared/components/layout/pages/ManagementPage";
-import { Button } from "@/shared/components/ui/Button";
+import { AddButton } from "@/shared/components/ui/Button/AddButton";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { PermissionGuard } from "@/shared/guards/permission.guard";
 import { ExpenseRouteTabs } from "../components/ExpenseRouteTabs";
-import { AddPartyExpenseModal } from "@/modules/party-expense/components/modla/AddPartyExpenseModal";
 
 export const ExpensePage = () => {
   const [isExpenseOpen, setIsExpenseOpen] = useState(false);
@@ -43,13 +43,11 @@ export const ExpensePage = () => {
         title={currentPage.title}
         description={currentPage.description}
         action={
-          <Button
-            variant="success"
+          <AddButton
+            label={currentPage.actionText}
             onClick={currentPage.onAction}
             permission={PERMISSIONS.EXPENSE_CREATE}
-          >
-            {currentPage.actionText}
-          </Button>
+          />
         }
       >
         <Outlet />

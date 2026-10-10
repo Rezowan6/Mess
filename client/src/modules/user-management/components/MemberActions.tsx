@@ -15,6 +15,7 @@ import { useRemoveMember } from "../hooks/useRemoveMember";
 import { Select } from "@/shared/components/ui/Select";
 import { ROLES } from "@/shared/constants/roles";
 import { ROLE_OPTIONS } from "@/shared/constants/selectOptions";
+import { RecordDeleteMessage } from "@/shared/data-display/RecordDeleteMessage";
 import { useUpdateRole } from "../hooks/useUpdateRole";
 
 interface Props {
@@ -63,6 +64,24 @@ export const MemberActions = ({ member }: Props) => {
   }, [role, member.role]);
 
   const memberName = member.user?.name ?? "this member";
+  const memberRole = member.role ?? "member";
+
+  const deleteMsg = (
+    <RecordDeleteMessage
+      description="Are you sure you want to remove this member from the mess?"
+      details={[
+        {
+          label: "Member",
+          value: memberName,
+          highlight: true,
+        },
+        {
+          label: "Role",
+          value: memberRole,
+        },
+      ]}
+    />
+  );
 
   return (
     <div className="flex items-center gap-4">
@@ -79,16 +98,11 @@ export const MemberActions = ({ member }: Props) => {
         <Button
           unstyled
           leftIcon={<Trash2 />}
+          className="text-theme-danger"
           onClick={() =>
             openConfirm({
               title: "Remove Member",
-              message: (
-                <>
-                  Are you sure you want to remove{" "}
-                  <span className="font-bold text-theme-success">{memberName}</span>{" "}
-                  from this mess?
-                </>
-              ),
+              message: deleteMsg,
               onConfirm: async () => {
                 await removeMutation.mutateAsync(member.id);
               },

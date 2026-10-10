@@ -96,9 +96,9 @@ export const MealPreferenceForm = () => {
           variant="success"
           disabled={!isDirty || isPending}
           loading={isPending}
-          loadingText="Save Preferenceing..."
+          loadingText="Saveing..."
         >
-          Save Preference
+          Save
         </Button>
       </form>
     </div>
