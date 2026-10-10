@@ -9,10 +9,9 @@ import type {
   IUpdateSoldProductDto,
 } from "@/modules/sold-product/types/soldProduct.types";
 
-import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
-import { Modal } from "@/shared/components/ui/Modal";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { RecordFormModal } from "@/shared/forms/RecordFormModal";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 import {
   soldProductSchema,
@@ -104,51 +103,35 @@ export const SoldProductFormModal = ({
   };
 
   return (
-    <Modal
+    <RecordFormModal
       isOpen={isOpen}
       onClose={onClose}
       title={isEdit ? "Update Sold Product" : "Add Sold Product"}
+      isEdit={isEdit}
+      isPending={isEdit ? updateMutation.isPending : createMutation.isPending}
+      onSubmit={handleSubmit(onSubmit)}
+      permission={
+        isEdit
+          ? PERMISSIONS.MEAL_SETTING_UPDATE
+          : PERMISSIONS.MEAL_SETTING_CREATE
+      }
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-4">
-        <Input
-          label="Total Sold Product Amount"
-          type="number"
-          step="0.01"
-          min="0.01"
-          placeholder="Enter total sold product amount"
-          error={errors.totalAmount?.message}
-          {...register("totalAmount", {
-            valueAsNumber: true,
-          })}
-        />
+      <Input
+        label="Total Sold Product Amount"
+        type="number"
+        step="0.01"
+        min="0.01"
+        placeholder="Enter total sold product amount"
+        error={errors.totalAmount?.message}
+        {...register("totalAmount", {
+          valueAsNumber: true,
+        })}
+      />
 
-        <p className="text-sm text-base-content/60">
-          Enter the total amount received from sold products for this meal
-          session.
-        </p>
-
-        <div className="flex justify-end gap-2 pt-4">
-          <Button type="button" variant="error" onClick={onClose}>
-            Cancel
-          </Button>
-
-          <Button
-            variant="success"
-            type="submit"
-            loading={
-              isEdit ? updateMutation.isPending : createMutation.isPending
-            }
-            loadingText={isEdit ? "Updating..." : "Saving..."}
-            permission={
-              isEdit
-                ? PERMISSIONS.MEAL_SETTING_UPDATE
-                : PERMISSIONS.MEAL_SETTING_CREATE
-            }
-          >
-            {isEdit ? "Update Sold Product" : "Save Sold Product"}
-          </Button>
-        </div>
-      </form>
-    </Modal>
+      <p className="text-sm text-theme-text-muted">
+        Enter the total amount received from sold products for this meal
+        session.
+      </p>
+    </RecordFormModal>
   );
 };
