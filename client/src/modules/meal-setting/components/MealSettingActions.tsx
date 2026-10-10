@@ -1,4 +1,4 @@
-import { Edit } from "lucide-react";
+import { Pencil } from "lucide-react";
 
 import type { IMealSetting } from "../types/mealSetting.types";
 
@@ -35,7 +35,7 @@ export const MealSettingActions = ({ setting, onEdit }: Props) => {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-4">
       {can(PERMISSIONS.MEAL_SETTING_UPDATE) && (
         <ToggleSwitch
           checked={autoApprove}
@@ -46,8 +46,8 @@ export const MealSettingActions = ({ setting, onEdit }: Props) => {
       )}
       {can(PERMISSIONS.MEAL_SETTING_UPDATE) && (
         <Button
-          variant="success"
-          leftIcon={<Edit size={14} />}
+          unstyled
+          leftIcon={<Pencil />}
           className="px-2 sm:px-3 h-8"
           onClick={onEdit}
         >

@@ -3,9 +3,7 @@ import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
-import { Modal } from "@/shared/components/ui/Modal";
 
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
@@ -20,6 +18,7 @@ import {
 
 import { mealSettingFields } from "../configs/mealSettingFields";
 
+import { RecordFormModal } from "@/shared/forms/RecordFormModal";
 import { nationalMinutesToTime, timeToMinutes } from "@/shared/utils/time";
 import type { IMealSetting } from "../types/mealSetting.types";
 
@@ -116,49 +115,33 @@ export const MealSettingFormModal = ({ isOpen, onClose, setting }: Props) => {
   };
 
   return (
-    <Modal
+    <RecordFormModal
       isOpen={isOpen}
       onClose={onClose}
       title={isEdit ? "Update Meal Setting" : "Create Meal Setting"}
+      isEdit={isEdit}
+      isPending={isEdit ? updateMutation.isPending : createMutation.isPending}
+      onSubmit={handleSubmit(onSubmit)}
+      permission={
+        isEdit
+          ? PERMISSIONS.MEAL_SETTING_UPDATE
+          : PERMISSIONS.MEAL_SETTING_CREATE
+      }
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-        {mealSettingFields.map((field) => (
-          <Input
-            key={field.name}
-            label={field.label}
-            type={field.type}
-            placeholder={field.placeholder}
-            error={errors[field.name]?.message}
-            {...register(field.name, {
-              ...(field.type === "number" && {
-                valueAsNumber: true,
-              }),
-            })}
-          />
-        ))}
-
-        <div className="flex justify-end gap-2 pt-4">
-          <Button type="button" variant="error" onClick={onClose}>
-            Cancel
-          </Button>
-
-          <Button
-            variant="success"
-            type="submit"
-            loading={
-              isEdit ? updateMutation.isPending : createMutation.isPending
-            }
-            loadingText={isEdit ? "Updating..." : "Saving..."}
-            permission={
-              isEdit
-                ? PERMISSIONS.MEAL_SETTING_UPDATE
-                : PERMISSIONS.MEAL_SETTING_CREATE
-            }
-          >
-            {isEdit ? "Update Setting" : "Save Setting"}
-          </Button>
-        </div>
-      </form>
-    </Modal>
+      {mealSettingFields.map((field) => (
+        <Input
+          key={field.name}
+          label={field.label}
+          type={field.type}
+          placeholder={field.placeholder}
+          error={errors[field.name]?.message}
+          {...register(field.name, {
+            ...(field.type === "number" && {
+              valueAsNumber: true,
+            }),
+          })}
+        />
+      ))}
+    </RecordFormModal>
   );
 };
