@@ -107,8 +107,8 @@ export const MobileMoreMenu = ({ menus, isOpen, onClose }: Props) => {
               className={({ isActive }) =>
                 `mb-1 flex items-center gap-3 rounded-theme-lg px-3 py-3 text-sm transition-colors ${
                   isActive
-                    ? "bg-theme-sidebar-active font-semibold text-theme-sidebar-text"
-                    : "text-theme-text hover:bg-theme-info-soft"
+                    ? "bg-theme-sidebar-active text-theme-sidebar-text-active"
+                    : "text-theme-sidebar-text hover:bg-theme-sidebar-hover"
                 }`
               }
             >

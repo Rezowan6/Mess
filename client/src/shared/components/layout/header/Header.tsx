@@ -6,32 +6,16 @@ import { HeaderProfile } from "./HeaderProfile";
 
 export const Header = () => {
   return (
-    <header
-      className={`fixed left-0 right-0 top-0 z-30 bg-theme-header border-b border-theme-border transition-all duration-300 backdrop-blur-xl`}
-    >
-      <div className="flex h-16 w-full items-center px-3 sm:px-4 lg:px-6">
-        <div className="ml-auto flex w-full items-center justify-between gap-2 sm:w-auto sm:gap-4 lg:gap-6">
-          {/* Back */}
-          <BackButton />
-          {/* Meal Session Selector */}
-          <div className="shrink-0">
-            <MealSessionSelector />
-          </div>
+    <header className="fixed inset-x-0 top-0 z-30 border-b border-theme-border bg-theme-header backdrop-blur-xl">
+      <div className="flex h-16 w-full items-center gap-2 px-3 sm:gap-3 sm:px-4 lg:px-6">
+        <BackButton />
 
-          {/* Session Status */}
-          <div className="shrink-0">
-            <MealSessionStatus />
-          </div>
-
-          {/* Notification */}
-          <div className="shrink-0">
-            <NotificationBell />
-          </div>
-
-          {/* Profile */}
-          <div className="shrink-0">
-            <HeaderProfile />
-          </div>
+        {/* min-w-0 + flex-1 lets this area shrink instead of pushing profile out */}
+        <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-2 sm:flex-none sm:gap-4 lg:gap-6">
+          <MealSessionSelector />
+          <MealSessionStatus />
+          <NotificationBell />
+          <HeaderProfile />
         </div>
       </div>
     </header>

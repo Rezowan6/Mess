@@ -51,7 +51,7 @@ export const MealSessionSelector = () => {
   return (
     <div className="w-41 sm:w-48" aria-busy={isLoading}>
       <Select
-        className="text-xs sm:text-sm"
+        className="w-full truncate text-xs sm:text-sm"
         options={options}
         value={selection?.mealSessionId ?? ""}
         onChange={(event) => {
