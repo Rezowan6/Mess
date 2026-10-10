@@ -9,10 +9,11 @@ import {
   RICE_PURCHASE_TYPE_VARIANT,
 } from "./rice.badge";
 import { useRiceTablePermissions } from "./rice.columns.permission";
+import { formatDate } from "@/shared/utils/date.utils";
 
 interface UseRiceSummaryColumnsProps {
   onPay: (rice: IRice) => void;
-  onEdit: (rice: IRice) => void
+  onEdit: (rice: IRice) => void;
 }
 
 export const useRiceSummaryColumns = ({
@@ -33,6 +34,11 @@ export const useRiceSummaryColumns = ({
           )}
         </div>
       ),
+    },
+    {
+      key: "purchaseDate",
+      title: "Date",
+      render: (rice) => formatDate(rice.purchaseDate),
     },
     {
       key: "quantity",

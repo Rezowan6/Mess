@@ -1,18 +1,15 @@
-import { Pencil, Plus, Trash2, Wallet } from "lucide-react";
+import { Plus } from "lucide-react";
 
-import { AnimatedNumber } from "@/shared/components/ui/AnimatedNumber";
+import { EmptyState } from "@/shared/components/feedback/EmptyState"; // adjust path
+import { ErrorState } from "@/shared/components/feedback/ErrorState"; // adjust path
 import { Button } from "@/shared/components/ui/Button";
 
-import { formatDate, isLocked } from "@/shared/utils/date.utils";
-
-import {
-  canAddRicePayment,
-  RICE_PAYMENT_METHOD_LABEL,
-} from "../../utils/rice.utils";
+import { canAddRicePayment } from "../../utils/rice.utils";
 
 import type { IRicePayment } from "@/modules/rice-payment/types/ricePayment.types";
 import type { IRiceWithSummary } from "../../types/rice.types";
 import { PaymentHistorySkeleton } from "../skeleton/PaymentHistorySkeleton";
+import { RicePaymentHistoryItem } from "./RicePaymentHistoryItem";
 
 interface Props {
   rice: IRiceWithSummary;
@@ -28,7 +25,6 @@ interface Props {
   onRetry: () => void;
   onAdd: () => void;
   onEdit: (payment: IRicePayment) => void;
-  onDelete: (payment: IRicePayment) => void;
 }
 
 export const RicePaymentHistory = ({
@@ -41,8 +37,9 @@ export const RicePaymentHistory = ({
   onRetry,
   onAdd,
   onEdit,
-  onDelete,
 }: Props) => {
+  const canAddPayment = canManage && canAddRicePayment(rice);
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
@@ -53,7 +50,7 @@ export const RicePaymentHistory = ({
           </span>
         </h3>
 
-        {canManage && canAddRicePayment(rice) && (
+        {canAddPayment && (
           <Button
             variant="pay"
             type="button"
@@ -68,80 +65,44 @@ export const RicePaymentHistory = ({
       {isPending && <PaymentHistorySkeleton rows={4} />}
 
       {isError && (
-        <div className="flex items-center justify-between rounded-theme-md border border-theme-danger bg-theme-danger-soft p-3 text-sm">
-          <span className="text-theme-danger">Failed to load payments.</span>
-
-          <Button variant="primary" type="button" onClick={onRetry}>
-            Retry
-          </Button>
-        </div>
+        <ErrorState
+          title="Failed to load payments"
+          description="We couldn't load the payment history. Please try again."
+          onRetry={onRetry}
+        />
       )}
 
       {!isPending && !isError && paymentList.length === 0 && (
-        <p className="rounded-theme-md border border-theme-border p-4 text-center text-sm text-theme-text-muted">
-          No payments yet.
-        </p>
+        <EmptyState
+          title="No payments yet"
+          description="Payments added for this rice purchase will appear here."
+          action={
+            canAddPayment ? (
+              <Button
+                variant="pay"
+                type="button"
+                onClick={onAdd}
+                leftIcon={<Plus size={16} />}
+              >
+                Add Payment
+              </Button>
+            ) : undefined
+          }
+        />
       )}
 
       {paymentList.length > 0 && (
         <ul className="divide-y divide-theme-border">
-          {paymentList.map((payment) => {
-            const canEdit =
-              canEditPayments &&
-              canAddRicePayment(rice) &&
-              !isLocked(String(payment.createdAt));
-
-            return (
-              <li key={payment.id} className="flex items-center gap-3 p-3">
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-theme-success-soft text-theme-success">
-                  <Wallet size={18} />
-                </div>
-
-                <div className="min-w-0 flex-1">
-                  <p className="font-semibold text-theme-text">
-                    <AnimatedNumber
-                      value={Number(payment.amount)}
-                      prefix="৳ "
-                      duration={1000}
-                    />
-                  </p>
-
-                  <p className="text-xs text-theme-text-muted">
-                    {formatDate(payment.paymentDate)} ·{" "}
-                    {RICE_PAYMENT_METHOD_LABEL[payment.paymentMethod] ??
-                      payment.paymentMethod}
-                  </p>
-
-                  {payment.note && (
-                    <p className="truncate text-xs text-theme-text-muted">
-                      {payment.note}
-                    </p>
-                  )}
-                </div>
-
-                {canEdit && (
-                  <div className="flex items-center gap-4">
-                    <Button
-                      unstyled
-                      type="button"
-                      aria-label="Edit payment"
-                      leftIcon={<Pencil size={16} />}
-                      onClick={() => onEdit(payment)}
-                    />
-
-                    <Button
-                      unstyled
-                      type="button"
-                      aria-label="Delete payment"
-                      className="text-theme-danger"
-                      leftIcon={<Trash2 size={16} />}
-                      onClick={() => onDelete(payment)}
-                    />
-                  </div>
-                )}
-              </li>
-            );
-          })}
+          {paymentList.map((payment) => (
+            <RicePaymentHistoryItem
+              key={payment.id}
+              rice={rice}
+              payment={payment}
+              canManage={canManage}
+              canEditPayments={canEditPayments}
+              onEdit={onEdit}
+            />
+          ))}
         </ul>
       )}
     </div>

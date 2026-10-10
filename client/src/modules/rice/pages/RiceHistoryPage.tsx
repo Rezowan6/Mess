@@ -34,7 +34,6 @@ export const RiceHistoryPage = () => {
     hasDue,
     isPaymentOpen,
     editingPayment,
-    handleDelete,
     openAdd,
     openEdit,
     closePayment,
@@ -83,7 +82,6 @@ if (isRicePending) {
           onRetry={() => payments.refetch()}
           onAdd={openAdd}
           onEdit={openEdit}
-          onDelete={handleDelete}
         />
       </div>
 
