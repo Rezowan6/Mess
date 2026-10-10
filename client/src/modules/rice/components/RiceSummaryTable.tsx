@@ -37,8 +37,6 @@ export const RiceSummaryTable = () => {
     openEditModal,
     closeEditModal,
 
-    handleDelete,
-
     isPayAllOpen,
     openPayAll,
     closePayAll,
@@ -48,7 +46,6 @@ export const RiceSummaryTable = () => {
   const columns = useRiceSummaryColumns({
     onPay: openPayModal,
     onEdit: openEditModal,
-    onDelete: handleDelete,
   });
 
   const hasDue = dueSummary.dueCount > 0;

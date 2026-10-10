@@ -10,19 +10,28 @@ import type { Permission } from "../constants/permissions";
 interface RecordActionsProps {
   updatePermission: Permission;
   locked?: boolean;
+  showEditDelete?: boolean;
   onEdit: () => void;
   onDelete: () => Promise<unknown>;
   deleteTitle: string;
   deleteMessage: ReactNode;
+  leading?: ReactNode;
+  trailing?: ReactNode;
 }
 
 export const RecordActions = ({
   updatePermission,
   locked = false,
+  /** false হলে edit/delete বাটন দেখাবে না (default: true) */
+  showEditDelete = true,
   onEdit,
   onDelete,
   deleteTitle,
   deleteMessage,
+  /** edit/delete-এর আগে বসবে, যেমন Pay বাটন */
+  leading,
+  /** edit/delete-এর পরে বসবে, যেমন Details link */
+  trailing,
 }: RecordActionsProps) => {
   const { can } = useRBAC();
   const openConfirm = useConfirmStore((state) => state.openConfirm);
@@ -46,7 +55,8 @@ export const RecordActions = ({
 
   return (
     <div className="flex items-center gap-2">
-      {can(updatePermission) && (
+      {leading}
+      {showEditDelete  && can(updatePermission) && (
         <>
           <Button
             unstyled
@@ -66,6 +76,8 @@ export const RecordActions = ({
           />
         </>
       )}
+
+      {trailing}
     </div>
   );
 };

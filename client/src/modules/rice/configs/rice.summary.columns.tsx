@@ -1,13 +1,9 @@
 import { Badge } from "@/shared/components/ui/Badge";
 import type { TableColumn } from "@/shared/components/ui/Table";
 
-import { ActionLink } from "@/shared/components/ui/ActionLink";
-import { Button } from "@/shared/components/ui/Button";
-import { ROUTES } from "@/shared/constants/routes";
 import { formatKg, formatTaka, toTitleCase } from "@/shared/utils/format.utils";
-import { Pencil, Trash2 } from "lucide-react";
-import { RicePaymentStatus, type IRice } from "../types/rice.types";
-import { canAddRicePayment } from "../utils/rice.utils";
+import { RiceSummaryActions } from "../components/RiceSummaryActions";
+import { type IRice } from "../types/rice.types";
 import {
   RICE_PAYMENT_STATUS_VARIANT,
   RICE_PURCHASE_TYPE_VARIANT,
@@ -16,14 +12,12 @@ import { useRiceTablePermissions } from "./rice.columns.permission";
 
 interface UseRiceSummaryColumnsProps {
   onPay: (rice: IRice) => void;
-  onEdit: (rice: IRice) => void;
-  onDelete: (rice: IRice) => void;
+  onEdit: (rice: IRice) => void
 }
 
 export const useRiceSummaryColumns = ({
   onPay,
   onEdit,
-  onDelete,
 }: UseRiceSummaryColumnsProps): TableColumn<IRice>[] => {
   const { canManage } = useRiceTablePermissions();
 
@@ -95,40 +89,7 @@ export const useRiceSummaryColumns = ({
       key: "actions",
       title: "Actions",
       render: (rice) => (
-        <div className="flex items-center gap-2">
-          {canAddRicePayment(rice) && (
-            <>
-              <Button
-                variant="pay"
-                type="button"
-                onClick={() => onPay(rice)}
-                className="h-8 w-fit"
-              >
-                Pay
-              </Button>
-            </>
-          )}
-
-          {rice.paymentStatus === RicePaymentStatus.DUE && (
-            <>
-              <Button
-                unstyled
-                leftIcon={<Pencil size={16} />}
-                onClick={() => onEdit(rice)}
-              />
-
-              <Button
-                unstyled
-                leftIcon={<Trash2 size={16} className="text-theme-danger" />}
-                onClick={() => onDelete(rice)}
-              />
-            </>
-          )}
-
-          <ActionLink to={`${ROUTES.EXPENSE}/rice/${rice.id}`}>
-            Details
-          </ActionLink>
-        </div>
+        <RiceSummaryActions rice={rice} onPay={onPay} onEdit={onEdit} />
       ),
     });
   }
