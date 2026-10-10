@@ -23,6 +23,10 @@ export const neuCardClass = cn(
   "shadow-theme-neu transition-shadow duration-300 ease-out",
   "hover:shadow-theme-neu-inset active:shadow-theme-neu-inset",
 );
+export const neuCardStaticClass = cn(
+  "rounded-theme-sm border border-theme-border-subtle bg-theme-neu-surface",
+  "shadow-theme-neu",
+);
 
 interface SummaryStatProps {
   label: string;

@@ -9,10 +9,10 @@ import { useUpsertMealPreference } from "../hooks/useUpsertMealPreference";
 import { MealCounterField } from "@/modules/meal-request/components/createReq/MealCounterField";
 import { mealFields } from "@/modules/meal-request/configs/mealFields";
 import { useMealSetting } from "@/modules/meal-setting/hooks/useMealSetting";
+import { neuCardStaticClass } from "@/shared/components/ui/SummaryStat";
+import { cn } from "@/shared/utils/cn";
 import type { IUpsertMealPreferenceDto } from "../types/mealPreference.types";
 import { MealPreferenceSkeleton } from "./MealPreferenceSkeleton";
-import { cn } from "@/shared/utils/cn";
-import { neuCardClass } from "@/shared/components/ui/SummaryStat";
 
 export const MealPreferenceForm = () => {
   const {
@@ -79,7 +79,7 @@ export const MealPreferenceForm = () => {
         </div>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={cn(neuCardClass, "p-2 mb-4")}>
+        <div className={cn(neuCardStaticClass, "p-2 mb-4")}>
           {mealFields.map((meal) => (
             <MealCounterField
               key={meal.name}

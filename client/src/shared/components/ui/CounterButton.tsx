@@ -20,11 +20,11 @@ export function CounterButton({
         "disabled:cursor-not-allowed disabled:opacity-40",
         position === "left" && [
           "rounded-l-theme-sm border-theme-danger text-theme-danger",
-          "hover:bg-theme-danger-soft hover:text-theme-on-brand",
+          "hover:bg-theme-danger-soft",
         ],
         position === "right" && [
-          "rounded-r-theme-sm border-theme-info text-theme-success",
-          "hover:bg-theme-info-soft hover:text-theme-on-brand",
+          "rounded-r-theme-sm border-theme-success text-theme-success",
+          "hover:bg-theme-info-soft",
         ],
         className,
       )}
