@@ -27,11 +27,13 @@ export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
         groupBy(requests, (request) => formatDate(request.date)),
         ([date, items]) => ({
           date,
-          items: sortBy(items, (request) => request.requester.name, "desc"),
+          items: sortBy(items, (request) => request.userId, "asc"),
         }),
       ),
     [requests],
   );
+
+  console.log(requests);
 
   return (
     <div className="max-h-[70vh] overflow-y-auto">

@@ -93,6 +93,7 @@ export interface mealSession {
 
 export interface IMyPendingMealReq {
   id: number;
+  userId: number;
   date: string;
   breakfast: string;
   lunch: string;

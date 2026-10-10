@@ -11,6 +11,7 @@ interface RecordActionsProps {
   updatePermission?: Permission;
   deletePermission?: Permission;
   locked?: boolean;
+  tooltipText?: string;
   showEditDelete?: boolean;
   onEdit?: () => void;
   onDelete: () => Promise<unknown>;
@@ -24,6 +25,7 @@ export const RecordActions = ({
   updatePermission,
   deletePermission,
   locked = false,
+  tooltipText,
   /** false হলে edit/delete বাটন দেখাবে না (default: true) */
   showEditDelete = true,
   onEdit,
@@ -46,8 +48,9 @@ export const RecordActions = ({
   const openConfirm = useConfirmStore((state) => state.openConfirm);
   const setLoading = useConfirmStore((state) => state.setLoading);
 
-  const tooltip = locked ? TOOLTIP_TEXT.LOCKED_AFTER_24H : undefined;
-
+  const tooltip = locked
+    ? (tooltipText ?? TOOLTIP_TEXT.LOCKED_AFTER_24H)
+    : undefined;
   const handleDelete = () =>
     openConfirm({
       title: deleteTitle,

@@ -41,6 +41,8 @@ export const MealRequestHistoryAction = ({
       deleteTitle="Delete Meal Request"
       deleteMessage={deleteMsg}
       locked={isDeleteDisabled}
+      tooltipText="Today's pending request cannot be deleted"
+
     />
   );
 };
