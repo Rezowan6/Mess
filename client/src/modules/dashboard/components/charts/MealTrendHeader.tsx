@@ -10,7 +10,7 @@ export const MealTrendHeader = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-theme-accent">Meal Trend</h3>
+            <h3 className="font-semibold text-theme-success">Meal Trend</h3>
             <p className="mt-0.5 text-xs text-theme-text-muted">
               Daily meal consumption overview
             </p>
