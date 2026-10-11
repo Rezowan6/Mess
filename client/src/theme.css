@@ -268,7 +268,7 @@
 
   --theme-page-glow: none;
 
-  --theme-success: #16a34a;
+  --theme-success: #22c55e;
   --theme-success-soft: #22c55e17;
 
   --theme-warning: #f59e0b;
@@ -368,7 +368,7 @@
   --theme-warning: #f59e0b;
   --theme-warning-soft: #f59f0b21;
 
-  --theme-danger: #ff0000;
+  --theme-danger: #dc2626;
   --theme-danger-soft: #ff00001e;
 
   --theme-info: #00a3f4;
