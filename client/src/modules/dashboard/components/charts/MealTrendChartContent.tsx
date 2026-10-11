@@ -32,7 +32,7 @@ export const MealTrendChartContent = ({ data }: Props) => {
               <stop
                 offset="0%"
                 stopColor="var(--theme-chart-1)"
-                stopOpacity={0.25}
+                stopOpacity={0.20}
               />
               <stop
                 offset="100%"
@@ -96,7 +96,7 @@ export const MealTrendChartContent = ({ data }: Props) => {
             type="monotone"
             dataKey="meals"
             stroke="var(--theme-chart-1)"
-            strokeWidth={2}
+            strokeWidth={0.5}
             fill="url(#mealTrendFill)"
             fillOpacity={1}
             activeDot={{
