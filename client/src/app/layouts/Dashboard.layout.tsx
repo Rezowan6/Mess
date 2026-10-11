@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 
+import { MealSessionInitializer } from "@/modules/meal-session/components/MealSessionInitializer";
 import { Header } from "@/shared/components/layout/header/Header";
 import { Sidebar } from "@/shared/components/layout/sidebar/Sidebar";
 import { MobileBottomNav } from "@/shared/components/navigation/MobileBottomNav";
@@ -17,7 +18,9 @@ export const DashboardLayout = () => {
         <Header />
 
         <main className="min-w-0 flex-1 overflow-x-hidden px-4 pb-24 pt-20 sm:px-6 lg:px-8 lg:pb-6">
-          <Outlet />
+          <MealSessionInitializer>
+            <Outlet />
+          </MealSessionInitializer>
         </main>
       </div>
 
