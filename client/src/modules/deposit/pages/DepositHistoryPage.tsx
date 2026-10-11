@@ -7,7 +7,7 @@ import { AnimatedNumber } from "@/shared/components/ui/AnimatedNumber";
 import { MemberHeader } from "@/shared/components/ui/MemberHeader";
 import { Table } from "@/shared/components/ui/Table";
 import { AddDepositModal } from "../components/AddDepositModal";
-import { DepositTableSkeleton } from "../components/DepositTableSkeleton";
+import { DepositHistoryTableSkeleton } from "../components/DepositHistoryTableSkeleton";
 import { useDepositHistoryColumns } from "../configs/deposit.history.columns";
 import { DEPOSIT_MESSAGES } from "../configs/deposit.messages";
 import { useDeposits } from "../hooks/useDeposits";
@@ -30,7 +30,7 @@ export const DepositHistoryPage = () => {
   const columns = useDepositHistoryColumns(handleEdit);
 
   if (isPending) {
-    return <DepositTableSkeleton />;
+    return <DepositHistoryTableSkeleton />;
   }
 
   // Show the error only when there is no cached data to display

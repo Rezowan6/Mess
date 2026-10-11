@@ -2,13 +2,12 @@ import type { TableColumn } from "@/shared/components/ui/Table";
 
 import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
-import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
-import { useRBAC } from "@/shared/hooks/useRBAC";
 import type { IDeposit } from "../types/deposit.types";
+import { useDepositTablePermissions } from "./deposit.columns.permission";
 
 export const useDepositMemberSummaryColumns = (): TableColumn<IDeposit>[] => {
-  const { can } = useRBAC();
+  const { canViewDetails } = useDepositTablePermissions();
 
   const columns: TableColumn<IDeposit>[] = [
     {
@@ -28,7 +27,7 @@ export const useDepositMemberSummaryColumns = (): TableColumn<IDeposit>[] => {
     },
   ];
 
-  if (can(PERMISSIONS.DEPOSIT_DELETE || PERMISSIONS.DEPOSIT_UPDATE)) {
+  if (canViewDetails) {
     columns.push({
       key: "action",
       title: "Actions",

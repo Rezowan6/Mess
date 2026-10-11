@@ -19,7 +19,7 @@ export const MealSessionInitializer = ({
     (state) => state.mealSessionId,
   );
 
-  if (isLoading) return <PageLoader />;
+  if (isLoading) return <PageLoader className="h-[60vh]"  />;
 
   if (isError) {
     return (
@@ -33,7 +33,7 @@ export const MealSessionInitializer = ({
 
   // Wait until the session id is in the store, so no request goes without it
   if (selection && storedSessionId !== selection.mealSessionId) {
-    return <PageLoader />;
+    return <PageLoader className="h-[60vh]"  />;
   }
 
   return <>{children}</>;
