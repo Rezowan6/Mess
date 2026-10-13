@@ -1,4 +1,5 @@
 import { Badge } from "@/shared/components/ui/Badge";
+import { DescriptionText } from "@/shared/components/ui/DescriptionText";
 import type { TableColumn } from "@/shared/components/ui/Table";
 import { formatDateTime } from "@/shared/utils/time";
 import { NoticeActions } from "../components/NoticeActions";
@@ -23,9 +24,11 @@ export const useNoticeColumns = (
       key: "description",
       title: "Description",
       render: (notice) => (
-        <p className="max-w-md truncate text-sm text-theme-muted">
-          {notice.description}
-        </p>
+        <DescriptionText
+          text={notice.description}
+          maxWords={6}
+          className="text-sm text-theme-text-muted"
+        />
       ),
     },
     {

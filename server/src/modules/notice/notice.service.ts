@@ -58,7 +58,7 @@ class NoticeService {
       throw new ApiError(404, "Notice not foudn.");
     }
 
-    await noticeRepository.delete({ id, tenantId });
+    await noticeRepository.delete({ id, tenantId }, { force: true });
 
     return null;
   }
