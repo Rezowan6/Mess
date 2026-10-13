@@ -15,7 +15,7 @@ import type {
   IMealPlanningResponse,
   IMealType,
 } from "../types/mealPlanning.types";
-import { MealPlanningTableSkeleton } from "./MealPlanningTableSkeleton.tsx";
+import { MealPlanningTableSkeleton } from "./MealPlanningTableSkeleton";
 
 interface Props {
   planning?: IMealPlanningResponse["data"];

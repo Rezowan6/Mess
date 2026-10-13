@@ -15,7 +15,6 @@ export const mealEntryRoutes = {
         ROLES.ADMIN,
         ROLES.MANAGER,
         ROLES.MESS_MALIK,
-        ROLES.MEMBER,
       ]}
     />
   ),

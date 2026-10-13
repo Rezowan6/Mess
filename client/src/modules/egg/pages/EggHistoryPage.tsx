@@ -28,7 +28,7 @@ export const EggHistoryPage = () => {
   const memberEggs = useMemo<IEgg[]>(() => {
     if (memberId === undefined) return [];
 
-    return (data?.data ?? []).filter((egg: any) => egg.memberId === memberId);
+    return (data?.data ?? []).filter((egg: any) => Number(egg.memberId) === memberId);
   }, [data, memberId]);
 
   const totalEggs = useMemo(
