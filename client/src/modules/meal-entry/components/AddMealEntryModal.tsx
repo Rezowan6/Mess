@@ -16,7 +16,7 @@ import { useRBAC } from "@/shared/hooks/useRBAC";
 import { Input } from "@/shared/components/ui/Input";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { RecordFormModal } from "@/shared/forms/RecordFormModal";
-import { formatDate, formatDateForInput, getLocalDate } from "@/shared/utils/date.utils";
+import { formatDateForInput, getLocalDate } from "@/shared/utils/date.utils";
 
 interface Props {
   isOpen: boolean;
