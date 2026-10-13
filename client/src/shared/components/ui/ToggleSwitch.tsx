@@ -27,7 +27,7 @@ export const ToggleSwitch = ({
           "relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-300",
           disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
           checked
-            ? "bg-theme-success"
+            ? "bg-theme-success-gradient"
             : "bg-theme-surface-sunken ring-1 ring-theme-border",
         ].join(" ")}
       >

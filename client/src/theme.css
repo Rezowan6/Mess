@@ -15,18 +15,9 @@
 ========================================================= */
 
 @theme inline {
-  /* Gradients  → bg-theme-brand-gradient ... */
-  --background-image-theme-brand-gradient: var(--theme-brand-gradient);
-  --background-image-theme-brand-gradient-hover: var(
-    --theme-brand-gradient-hover
-  );
+  /* Gradients ... */
   --background-image-theme-success-gradient: var(--theme-success-gradient);
   --background-image-theme-danger-gradient: var(--theme-danger-gradient);
-  --background-image-theme-warning-gradient: var(--theme-warning-gradient);
-  --background-image-theme-info-gradient: var(--theme-info-gradient);
-  --background-image-theme-accent-gradient: var(--theme-accent-gradient);
-  --background-image-theme-sidebar-gradient: var(--theme-sidebar-gradient);
-  --background-image-theme-page-glow: var(--theme-page-glow);
 
   /* Brand */
   --color-theme-brand: var(--theme-brand);
@@ -106,24 +97,8 @@
   --color-theme-tooltip-text: var(--theme-tooltip-text);
   --color-theme-skeleton: var(--theme-skeleton);
 
-  /* Badges */
-  --color-theme-badge-success: var(--theme-badge-success);
-  --color-theme-badge-success-text: var(--theme-badge-success-text);
-  --color-theme-badge-warning: var(--theme-badge-warning);
-  --color-theme-badge-warning-text: var(--theme-badge-warning-text);
-  --color-theme-badge-danger: var(--theme-badge-danger);
-  --color-theme-badge-danger-text: var(--theme-badge-danger-text);
-  --color-theme-badge-info: var(--theme-badge-info);
-  --color-theme-badge-info-text: var(--theme-badge-info-text);
-  --color-theme-badge-neutral: var(--theme-badge-neutral);
-  --color-theme-badge-neutral-text: var(--theme-badge-neutral-text);
-
   /* Charts */
   --color-theme-chart-1: var(--theme-chart-1);
-  --color-theme-chart-2: var(--theme-chart-2);
-  --color-theme-chart-3: var(--theme-chart-3);
-  --color-theme-chart-4: var(--theme-chart-4);
-  --color-theme-chart-5: var(--theme-chart-5);
 
   /* Radius → rounded-theme-md */
   --radius-theme-sm: var(--theme-radius-sm);
@@ -280,6 +255,10 @@
   --theme-info: #00a3f4;
   --theme-info-soft: #00a3f420;
 
+  /* Gradients ... */
+  --theme-success-gradient: linear-gradient(135deg, #059669 0%, #22c55e 100%);
+  --theme-danger-gradient: linear-gradient(135deg, #dc2626 0%, #e11d48 100%);
+
   --theme-background: #ffffff;
   --theme-surface: #ffffff;
   --theme-surface-raised: #ffffff;
@@ -373,6 +352,10 @@
 
   --theme-info: #00a3f4;
   --theme-info-soft: #00a3f420;
+
+  /* Gradients ... */
+  --theme-success-gradient: linear-gradient(135deg, #059669 0%, #16a34a 100%);
+  --theme-danger-gradient: linear-gradient(135deg, #dc2626 0%, #e11d48 100%);
 
   --theme-background: #090d1a;
   --theme-surface: #111827;
