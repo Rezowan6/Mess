@@ -7,6 +7,7 @@ import { mealPreferences } from "@/modules/meal-preference/query/mealPrefeerence
 import { mealRequests } from "@/modules/meal-request/query/mealRequest.querykey";
 import { mealSessions } from "@/modules/meal-session/query/mealSession.querykey";
 import { mealSettings } from "@/modules/meal-setting/query/mealSetting.query";
+import { notices } from "@/modules/notice/query/notice.querykey";
 import { notifications } from "@/modules/notification/query/notifications.query";
 import { partyExpenses } from "@/modules/party-expense/query/partyExpense.querykey";
 import { ricePayments } from "@/modules/rice-payment/query/ricePayment.querykey";
@@ -165,6 +166,12 @@ export const queryKeys = {
   // Tenant + Meal Session based
   // ============================================================
   mealRequests,
+
+  // ============================================================
+  // NOTICES
+  // Tenant + Meal Session based
+  // ============================================================
+  notices,
 
   // ============================================================
   // MEAL PREFERENCE

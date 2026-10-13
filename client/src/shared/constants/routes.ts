@@ -27,6 +27,7 @@ export const ROUTES = {
   MEAL_PLANNING: "/meal-planning",
 
   NOTIFICATIONS: "notifications",
+  NOTICE: "notices",
 
   EXPENSE: "/expenses",
   

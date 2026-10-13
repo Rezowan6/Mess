@@ -2,6 +2,7 @@ import { NotificationBell } from "@/modules/notification/components/Notification
 import { BackButton } from "../../ui/BackButton";
 import { TenantName } from "../../ui/TenantName";
 import { HeaderProfile } from "./HeaderProfile";
+import { NoticeButton } from "@/modules/notice/components/NoticeButton";
 
 export const Header = () => {
   return (
@@ -15,6 +16,7 @@ export const Header = () => {
         </div>
 
         <div className="ml-auto flex shrink-0 items-center gap-4 sm:gap-6 lg:gap-8">
+          <NoticeButton />
           <NotificationBell />
           <HeaderProfile />
         </div>

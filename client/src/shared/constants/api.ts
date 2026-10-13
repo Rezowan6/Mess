@@ -26,6 +26,13 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `/plans/${id}`,
     DELETE: (id: number) => `/plans/${id}`,
   },
+  NOTICE: {
+    LIST: "/notices",
+    BY_ID: (id: number) => `/notices/${id}`,
+    CREATE: "/notices",
+    UPDATE: (id: number) => `/notices/${id}`,
+    DELETE: (id: number) => `/notices/${id}`,
+  },
   FEATURE: {
     LIST: "/features",
     BY_ID: (id: number) => `/features/${id}`,

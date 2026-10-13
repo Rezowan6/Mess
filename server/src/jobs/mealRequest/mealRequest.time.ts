@@ -1,6 +1,5 @@
 import { appTime } from "@/configs/time.js";
 import { logger } from "@/utils/logger.js";
-import { APP_TIMEZONE } from "@/utils/timezone.util.js";
 import { CalculationMethod, Coordinates, PrayerTimes } from "adhan";
 
 const coordinates = new Coordinates(23.8103, 90.4125);
@@ -8,6 +7,7 @@ const coordinates = new Coordinates(23.8103, 90.4125);
 const params = CalculationMethod.MuslimWorldLeague();
 
 const MAGHRIB_DELAY_MINUTES = 5;
+const APP_TIMEZONE = "Asia/Dhaka";
 
 /**
  * Get today's date in application timezone.

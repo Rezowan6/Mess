@@ -9,6 +9,7 @@ import { mealPreferenceRoutes } from "@/modules/meal-preference/routes/mealPrefe
 import { mealRequestRoutes } from "@/modules/meal-request/routes/mealRequest.routes";
 import { monthlyCalculationRoutes } from "@/modules/monthly-calculation/routes/monthlyCalculation.routes";
 import { myProfileRoutes } from "@/modules/my-profile/routes/myProfile.routes";
+import { noticeRoutes } from "@/modules/notice/routes/notice.routes";
 import { notificationRoutes } from "@/modules/notification/routes/notification.routes";
 import { paymentRoutes } from "@/modules/payment/routes/payment.routes";
 import { planFeatureRoutes } from "@/modules/plan-feature/routes/planFeature.routes";
@@ -19,6 +20,7 @@ import { tenantRoutes } from "@/modules/tenant/routes/tenant.routes";
 import { userManagementRoutes } from "@/modules/user-management/routes/userManagement.routes";
 
 export const dashboardRoutes = [
+  noticeRoutes,
   mealRequestRoutes,
   depositRoutes,
   expenseRoutes,
