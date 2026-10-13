@@ -7,7 +7,7 @@ import { NoticeTable } from "../components/NoticeTable";
 export const noticeRoutes = {
   path: ROUTES.NOTICE,
 
-  element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+  element: <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER]} />,
 
   children: [
     {

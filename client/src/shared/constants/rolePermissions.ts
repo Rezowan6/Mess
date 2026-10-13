@@ -56,6 +56,11 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     PERMISSIONS.NOTICE_CREATE,
     PERMISSIONS.NOTICE_UPDATE,
 
+    // notice 
+    PERMISSIONS.NOTICE_VIEW,
+    PERMISSIONS.NOTICE_CREATE,
+    PERMISSIONS.NOTICE_UPDATE,
+
     // setting
     PERMISSIONS.SETTINGS_VIEW,
     PERMISSIONS.SETTINGS_UPDATE,
@@ -153,6 +158,9 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     PERMISSIONS.EXPENSE_VIEW,
 
     // notification
+    PERMISSIONS.NOTICE_VIEW,
+
+    // notice 
     PERMISSIONS.NOTICE_VIEW,
 
     // setting

@@ -18,6 +18,7 @@
   /* Gradients ... */
   --background-image-theme-success-gradient: var(--theme-success-gradient);
   --background-image-theme-danger-gradient: var(--theme-danger-gradient);
+  --background-image-theme-notice-gradient: var(--theme-notice-gradient);
 
   /* Brand */
   --color-theme-brand: var(--theme-brand);
@@ -258,6 +259,7 @@
   /* Gradients ... */
   --theme-success-gradient: linear-gradient(135deg, #059669 0%, #22c55e 100%);
   --theme-danger-gradient: linear-gradient(135deg, #dc2626 0%, #e11d48 100%);
+  --theme-notice-gradient: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
 
   --theme-background: #ffffff;
   --theme-surface: #ffffff;
@@ -356,6 +358,7 @@
   /* Gradients ... */
   --theme-success-gradient: linear-gradient(135deg, #059669 0%, #16a34a 100%);
   --theme-danger-gradient: linear-gradient(135deg, #dc2626 0%, #e11d48 100%);
+  --theme-notice-gradient: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
 
   --theme-background: #090d1a;
   --theme-surface: #111827;
