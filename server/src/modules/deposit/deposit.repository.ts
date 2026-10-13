@@ -236,24 +236,6 @@ class DepositRepository extends BaseRepository<Deposit> {
     });
   }
 
-  async getMemberDepositsByMealSession(
-    tenantId: number,
-    mealSessionId: number,
-  ) {
-    return Deposit.findAll({
-      where: {
-        tenantId,
-        mealSessionId,
-      },
-
-      attributes: ["memberId", [fn("SUM", col("amount")), "totalDeposit"]],
-
-      group: ["memberId"],
-
-      raw: true,
-    });
-  }
-
   async getMemberDepositSum(
     tenantId: number,
     mealSessionId: number,

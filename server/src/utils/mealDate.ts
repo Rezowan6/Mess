@@ -1,6 +1,5 @@
 import { appTime } from "@/configs/time.js";
 import { getTodayMaghribTime } from "@/jobs/mealRequest/mealRequest.time.js";
-import { APP_TIMEZONE } from "./timezone.util.js";
 
 /**
  * Returns the meal date based on Maghrib.
@@ -18,7 +17,6 @@ import { APP_TIMEZONE } from "./timezone.util.js";
 export const getCurrentMealDate = (): Date => {
   const now = appTime();
   const maghrib = appTime(getTodayMaghribTime());
-
 
   // Before today's Maghrib
   // → Today's meal date

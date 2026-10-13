@@ -30,68 +30,6 @@ class ExpensesRepository extends BaseRepository<Expenses> {
     });
   }
 
-  // async getAlls(
-  //   tenantId: number,
-  //   mealSessionId: number,
-  //   query: IPaginationQuery,
-  // ) {
-  //   return this.paginate(
-  //     {
-  //       where: {
-  //         tenantId,
-  //         mealSessionId,
-  //       },
-
-  //       include: [
-  //         {
-  //           model: User,
-  //           as: "creator",
-
-  //           attributes: ["id", "name", "email", "avatar"],
-
-  //           required: !!query.search,
-
-  //           ...(query.search && {
-  //             where: {
-  //               [Op.or]: [
-  //                 {
-  //                   name: {
-  //                     [Op.like]: `%${query.search}%`,
-  //                   },
-  //                 },
-  //                 {
-  //                   email: {
-  //                     [Op.like]: `%${query.search}%`,
-  //                   },
-  //                 },
-  //               ],
-  //             },
-  //           }),
-  //         },
-
-  //         {
-  //           association: "mealSession",
-  //           attributes: ["id", "month", "year", "status"],
-  //         },
-  //       ],
-
-  //       attributes: [
-  //         "id",
-  //         "amount",
-  //         "category",
-  //         "description",
-  //         "signature",
-  //         "expenseDate",
-  //         "createdAt",
-  //       ],
-
-  //       order: [["expenseDate", "DESC"]],
-  //     },
-
-  //     query,
-  //   );
-  // }
-
   async getAll(
     tenantId: number,
     mealSessionId: number,
