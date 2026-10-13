@@ -87,6 +87,7 @@ export const PERMISSIONS = {
   NOTICE_VIEW: "notice.view",
   NOTICE_CREATE: "notice.create",
   NOTICE_UPDATE: "notice.update",
+  NOTICE_DELETE: "notice.delete",
 
   // Settings
   SETTINGS_VIEW: "settings.view",

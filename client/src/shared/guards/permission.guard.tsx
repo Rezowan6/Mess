@@ -4,6 +4,7 @@ import { useAuthStore } from "@/modules/auth/store/auth.store";
 import type { ReactNode } from "react";
 import { PageLoader } from "../components/feedback/PageLoader";
 import type { Permission } from "../constants/permissions";
+import { ROUTES } from "../constants/routes";
 import { useOnlineStatus } from "../hooks/useOnlineStatus";
 import { useRBAC } from "../hooks/useRBAC";
 
@@ -33,7 +34,7 @@ export const PermissionGuard = ({ permission, children }: Props) => {
       return <PageLoader />;
     }
 
-    return <Navigate to="/403" replace />;
+    return <Navigate to={ROUTES.FORBIDDEN} replace />;
   }
 
   return children ? <>{children}</> : <Outlet />;

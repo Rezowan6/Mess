@@ -5,6 +5,7 @@ import { useTenantStore } from "@/modules/tenant/store/tenant.store";
 
 import { PageLoader } from "../components/feedback/PageLoader";
 import { ROLES, type Role } from "../constants/roles";
+import { ROUTES } from "../constants/routes";
 import { useOnlineStatus } from "../hooks/useOnlineStatus";
 
 interface Props {
@@ -28,11 +29,11 @@ export const RoleGuard = ({ allowedRoles }: Props) => {
       return <PageLoader />;
     }
 
-    return <Navigate to="/403" replace />;
+    return <Navigate to={ROUTES.FORBIDDEN} replace />;
   }
 
   if (!allowedRoles.includes(role)) {
-    return <Navigate to="/403" replace />;
+    return <Navigate to={ROUTES.FORBIDDEN} replace />;
   }
 
   return <Outlet />;

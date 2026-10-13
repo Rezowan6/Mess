@@ -4,6 +4,7 @@ import { ProtectedRoute } from "./protected.route";
 import { PublicRoute } from "./public.route";
 
 import { LoginPage } from "@/modules/auth/pages/LoginPage";
+import { ForbiddenPage } from "@/pages/errors/ForbiddenPage";
 import { NotFoundPage } from "@/pages/errors/NotFoundPage";
 
 import { ROUTES } from "@/shared/constants/routes";
@@ -37,18 +38,23 @@ export const router = createBrowserRouter([
         element: <LoginPage />,
       },
       {
-        path: ROUTES.VERIFY_EMAIL,
-        element: <VerifyEmailPage />,
-      },
-      {
-        path: ROUTES.INVITES_ACCEPT,
-        element: <AcceptInvitePage />,
-      },
-      {
         path: ROUTES.REGISTER,
         element: <RegisterPage />,
       },
     ],
+  },
+
+  {
+    path: ROUTES.VERIFY_EMAIL,
+    element: <VerifyEmailPage />,
+  },
+  {
+    path: ROUTES.INVITES_ACCEPT,
+    element: <AcceptInvitePage />,
+  },
+  {
+    path: ROUTES.FORBIDDEN,
+    element: <ForbiddenPage />,
   },
 
   // Protected Routes

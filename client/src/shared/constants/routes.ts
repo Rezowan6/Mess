@@ -2,6 +2,7 @@ export const ROUTES = {
   HOME: "/home",
 
   LOGIN: "/login",
+  FORBIDDEN: "/403",
   VERIFY_EMAIL: "/verify-email/:token",
 
   INVITES_ACCEPT: "/invite/accept/:token",
@@ -26,8 +27,8 @@ export const ROUTES = {
   
   MEAL_PLANNING: "/meal-planning",
 
-  NOTIFICATIONS: "notifications",
-  NOTICE: "notices",
+  NOTIFICATIONS: "/notifications",
+  NOTICE: "/notices",
 
   EXPENSE: "/expenses",
   
