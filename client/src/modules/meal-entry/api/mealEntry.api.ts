@@ -1,10 +1,12 @@
 import { API_ENDPOINTS } from "@/shared/constants/api";
 import { API } from "@/shared/lib/axios";
 import type {
+  ICreateMealEntryDto,
   IMealEntryListResponse,
   IMealEntryQuery,
   IMealEntrySummaryResponse,
   IMyMealApiResponse,
+  IUpdateMealEntryDto,
 } from "../types/mealEntry.types";
 
 export const mealEntryApi = {
@@ -91,6 +93,32 @@ export const mealEntryApi = {
       },
     );
 
+    return data;
+  },
+
+  create: async (payload: ICreateMealEntryDto) => {
+    const { data } = await API.post(
+      API_ENDPOINTS.MEAL_ENTRY.CREATE,
+      payload,
+    );
+  
+    return data;
+  },
+  
+  update: async (id: number, payload: IUpdateMealEntryDto) => {
+    const { data } = await API.patch(
+      API_ENDPOINTS.MEAL_ENTRY.UPDATE(id),
+      payload,
+    );
+  
+    return data;
+  },
+  
+  delete: async (id: number) => {
+    const { data } = await API.delete(
+      API_ENDPOINTS.MEAL_ENTRY.DELETE(id),
+    );
+  
     return data;
   },
 };

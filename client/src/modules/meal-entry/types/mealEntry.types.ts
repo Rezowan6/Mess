@@ -78,8 +78,15 @@ export interface ICreateMealEntryDto {
   lunch: number;
 
   dinner: number;
+}
 
-  guestMeal: number;
+export interface IUpdateMealEntryDto {
+
+  breakfast: number;
+
+  lunch: number;
+
+  dinner: number;
 }
 
 export interface IMealSummary {

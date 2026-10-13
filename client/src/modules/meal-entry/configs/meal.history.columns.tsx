@@ -1,13 +1,18 @@
 import type { TableColumn } from "@/shared/components/ui/Table";
 
 import type { IMealEntry } from "../types/mealEntry.types";
+import { useExpenseTablePermissions } from "@/modules/expense/configs/expense.columns.permission";
+import { MealEntryActions } from "../components/MealEntryActions";
+import { formatDate } from "@/shared/utils/date.utils";
 
-export const useMealHistoryColumns = (): TableColumn<IMealEntry>[] => {
+export const useMealHistoryColumns = (onEdit: (meal: IMealEntry) => void,): TableColumn<IMealEntry>[] => {
+  const {canViewDetails} = useExpenseTablePermissions();
+  
   const columns: TableColumn<IMealEntry>[] = [
     {
       key: "date",
       title: "Date",
-      render: (meal) => new Date(meal.date).toLocaleDateString(),
+      render: (meal) => formatDate(meal.date),
     },
 
     {
@@ -38,6 +43,14 @@ export const useMealHistoryColumns = (): TableColumn<IMealEntry>[] => {
         Number(meal.guestMeal),
     },
   ];
+
+  if(canViewDetails) {
+    columns.push({
+      key: "actions",
+      title: "Actions",
+      render: (meal) => <MealEntryActions meal={meal} onEdit={onEdit} />,
+    })
+  }
 
   return columns;
 };

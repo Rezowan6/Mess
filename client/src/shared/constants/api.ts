@@ -102,6 +102,9 @@ export const API_ENDPOINTS = {
     MEMBERS_MEAL_SUMMARY: "/meal-entries/members-meal-summary",
     SUMMARY: "/meal-entries/summary",
     MEMBER_SUMMARY: "/meal-entries/member-summary",
+    CREATE: "/meal-entries",
+    UPDATE: (id: number) => `/meal-entries${id}`,
+    DELETE: (id: number) => `/meal-entries${id}`,
   },
 
   MEAL_REQUEST: {

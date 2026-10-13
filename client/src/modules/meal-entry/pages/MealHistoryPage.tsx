@@ -8,13 +8,23 @@ import { MealEntryHistorySkeleton } from "../components/skeleton/MealEntryHistor
 import { MEAL_ENTRY_MESSAGES } from "../configs/meal.entries.message";
 import { useMealHistoryColumns } from "../configs/meal.history.columns";
 import { useAllMembersMeal } from "../hooks/useAllMembersMeal";
+import { useState } from "react";
+import type { IMealEntry } from "../types/mealEntry.types";
+import { AddMealEntryModal } from "../components/AddMealEntryModal";
 
 export const MealHistoryPage = () => {
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedMeal, setSelectedMeal] = useState<IMealEntry | null>(null);
   const location = useLocation();
 
   const { data, isPending } = useAllMembersMeal();
 
-  const columns = useMealHistoryColumns();
+  const handleEdit = (meal: IMealEntry) => {
+    setSelectedMeal(meal);
+    setIsEditOpen(true);
+  };
+
+  const columns = useMealHistoryColumns(handleEdit);
 
   const userId = location.state?.userId;
 
@@ -23,10 +33,11 @@ export const MealHistoryPage = () => {
   }
 
   if (!data) {
+    const { title, description } = MEAL_ENTRY_MESSAGES.empty;
     return (
       <EmptyState
-        title={MEAL_ENTRY_MESSAGES.empty.title}
-        description={MEAL_ENTRY_MESSAGES.empty.description}
+        title={title}
+        description={description}
       />
     );
   }
@@ -66,6 +77,14 @@ export const MealHistoryPage = () => {
         loading={isPending}
         message={MEAL_ENTRY_MESSAGES}
       />
+
+
+      <AddMealEntryModal isOpen={isEditOpen} onClose={()=> {
+        setIsEditOpen(false);
+        setSelectedMeal(null);
+      }} meal={selectedMeal ?? undefined}
+      />
+
     </>
   );
 };
