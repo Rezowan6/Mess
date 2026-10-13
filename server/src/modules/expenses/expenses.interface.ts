@@ -1,6 +1,6 @@
-export interface CreateExpensesDto {
-  tenantId: number;
-  mealSessionId: number;
+import { ISessionScope } from "@/types/scope.interface.js";
+
+export interface CreateExpensesDto extends ISessionScope {
   amount: number;
   signature: string;
   expenseDate: Date;

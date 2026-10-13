@@ -71,7 +71,7 @@ Deposit.init(
     depositDate: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: new Date(),
+      defaultValue: DataTypes.NOW,
     },
     note: {
       type: DataTypes.TEXT,

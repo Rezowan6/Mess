@@ -14,7 +14,7 @@ const toInstant = (value: Date | string | number) => {
   return dayjs(value);
 };
 
-export const getHoursDifference = (
+const getHoursDifference = (
   from: Date | string | number,
   to: Date | string | number = Date.now(),
 ): number => {
@@ -31,18 +31,12 @@ export const isWithinHours = (
   return Number.isFinite(diff) && diff <= hours;
 };
 
-export const getCurrentDate = (): string => {
-  return appTime().format("YYYY-MM-DD");
-};
-
-// ================================
-
-// done and use
-export const formatDate = (date: Date): string => {
-  return appTime(date).format("YYYY-MM-DD");
-};
 export const getAppDate = (date?: Date | string | number): Date => {
   return appTime(date).startOf("day").toDate();
+};
+
+export const formatDate = (date: Date): string => {
+  return appTime(date).format("YYYY-MM-DD");
 };
 
 export const isSameDate = (

@@ -5,21 +5,6 @@ import { Request, Response } from "express";
 import { dashboardService } from "./dashboard.service.js";
 
 class DashboardController {
-  getTodayDashboard = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, mealSessionId } = getTenantContext(req);
-
-    const result = await dashboardService.getTodayDashboard(
-      tenantId,
-      mealSessionId,
-    );
-
-    return sendResponse(res, {
-      statusCode: 200,
-      message: "Manager dashboard data retrieved successfully.",
-      data: result,
-    });
-  });
-
   getDashboardStats = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
