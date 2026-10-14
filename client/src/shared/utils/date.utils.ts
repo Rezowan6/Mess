@@ -20,11 +20,10 @@ export const formatDateByBangla = (date: string | Date | null): string => {
   return dayjs(date).tz(APP_TIMEZONE).locale("bn-bd").format("DD MMM");
 };
 
-
 export const formatDate = (date: string | Date | null): string => {
   if (!date) return "N/A";
 
-  return dayjs(date).tz(APP_TIMEZONE).format("DD MMM");
+  return dayjs(date).tz(APP_TIMEZONE).format("DD MMM YYYY");
 };
 
 export const formatDateForChart = (date: string | Date | null): string => {
@@ -81,4 +80,24 @@ export const isRecordLocked = (
   if (!created.isValid()) return true;
 
   return dayjs().diff(created, "hour", true) > lockHours;
+};
+
+/**
+ * Returns true if a record was actually edited after creation.
+ * A small tolerance avoids false positives when the record is
+ * saved twice within the same request (createdAt and updatedAt differ by a few ms).
+ */
+export const isRecordUpdated = (
+  createdAt: string | Date | null,
+  updatedAt: string | Date | null,
+  toleranceSeconds = 1,
+): boolean => {
+  if (!createdAt || !updatedAt) return false;
+
+  const created = dayjs(createdAt);
+  const updated = dayjs(updatedAt);
+
+  if (!created.isValid() || !updated.isValid()) return false;
+
+  return updated.diff(created, "second", true) > toleranceSeconds;
 };

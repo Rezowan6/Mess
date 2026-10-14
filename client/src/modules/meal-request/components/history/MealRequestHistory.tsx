@@ -1,7 +1,11 @@
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { Badge } from "@/shared/components/ui/Badge";
 import { MealBadges } from "@/shared/components/ui/MealBadges";
-import { formatDate, getLocalDate } from "@/shared/utils/date.utils";
+import {
+  formatDate,
+  getLocalDate,
+  isRecordUpdated,
+} from "@/shared/utils/date.utils";
 import { formatDateTime } from "@/shared/utils/time";
 import { CalendarDays } from "lucide-react";
 import React from "react";
@@ -25,26 +29,37 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
 
   return (
     <div className="max-h-92 overflow-y-auto">
-      <div className="flex-1">
-        <div className="divide-y divide-theme-border">
-          {requests.map((request) => {
-            const isCurrentMealReqDate = formatDate(request.date) === today;
+      <div className="divide-y divide-theme-border">
+        {requests.map((request) => {
+          const isCurrentMealReqDate = formatDate(request.date) === today;
 
-            const isDeleteDisabled =
-              request.status === "pending" && isCurrentMealReqDate;
+          const isDeleteDisabled =
+            request.status === "pending" && isCurrentMealReqDate;
 
-            return (
-              <div
-                key={request.id}
-                className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-theme-background"
-              >
-                <div className="min-w-0 flex-1">
-                  <div className="mb-1 flex items-center justify-between  gap-3">
-                    <h3 className=" flex items-center gap-1.5 truncate text-[15px] font-semibold text-theme-text">
-                      <CalendarDays size={13} />
-                      <span>{formatDate(request.date)}</span>
+          const isUpdated = isRecordUpdated(
+            request.createdAt,
+            request.updatedAt,
+          );
+
+          return (
+            <div
+              key={request.id}
+              className="flex items-start gap-3 px-4 py-3 transition-colors hover:bg-theme-surface-hover"
+            >
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-theme-md bg-theme-brand-soft text-theme-brand">
+                <CalendarDays className="h-5 w-5" />
+              </div>
+
+              <div className="min-w-0 flex-1 space-y-2">
+                {/* Top row: date + status + actions */}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0">
+                    <h3 className="truncate text-[15px] font-semibold text-theme-text">
+                      {formatDate(request.date)}
                     </h3>
+                  </div>
 
+                  <div className="flex shrink-0 items-center gap-4 md:gap-6">
                     <Badge variant="soft-warning" size="sm">
                       {request.status}
                     </Badge>
@@ -54,20 +69,22 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                       isDeleteDisabled={isDeleteDisabled}
                     />
                   </div>
-                  {/* meal Badge */}
-                  <MealBadges meals={request} />
+                </div>
 
-                  <div className="mb-2 mt-2 flex gap-1 text-xs text-theme-text-muted sm:flex-row sm:items-center sm:gap-2">
-                    <div className="flex  items-center gap-1.5 text-[11px]">
-                      <span>Created: {formatDateTime(request.createdAt)}</span>/
-                      <span>Updated: {formatDateTime(request.updatedAt)}</span>
-                    </div>
-                  </div>
+                {/* Meals */}
+                <MealBadges meals={request} />
+
+                {/* Timestamps */}
+                <div className="flex flex-col gap-0.5 text-[11px] text-theme-text-muted sm:flex-row sm:items-center sm:gap-3">
+                  <span>Created: {formatDateTime(request.createdAt)}</span>
+                  {isUpdated && (
+                    <span>Updated: {formatDateTime(request.updatedAt)}</span>
+                  )}
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

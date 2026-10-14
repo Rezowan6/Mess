@@ -21,6 +21,29 @@ const PLACEMENT_CLASS: Record<TooltipPlacement, string> = {
   right: "left-full top-1/2 ml-2 -translate-y-1/2",
 };
 
+const ARROW_CLASS: Record<TooltipPlacement, string> = {
+  top: [
+    "left-1/2 top-full -translate-x-1/2",
+    "border-x-[5px] border-t-[5px] border-x-transparent",
+    "border-t-theme-tooltip",
+  ].join(" "),
+  bottom: [
+    "left-1/2 bottom-full -translate-x-1/2",
+    "border-x-[5px] border-b-[5px] border-x-transparent",
+    "border-b-theme-tooltip",
+  ].join(" "),
+  left: [
+    "left-full top-1/2 -translate-y-1/2",
+    "border-y-[5px] border-l-[5px] border-y-transparent",
+    "border-l-theme-tooltip",
+  ].join(" "),
+  right: [
+    "right-full top-1/2 -translate-y-1/2",
+    "border-y-[5px] border-r-[5px] border-y-transparent",
+    "border-r-theme-tooltip",
+  ].join(" "),
+};
+
 export const ButtonTooltip = ({
   tooltip,
   placement,
@@ -59,6 +82,10 @@ export const ButtonTooltip = ({
             : "opacity-0 group-hover:opacity-100 group-focus-within:opacity-100",
         )}
       >
+        <span
+          aria-hidden="true"
+          className={clsx("absolute h-0 w-0", ARROW_CLASS[placement])}
+        />
         {tooltip}
       </span>
     </div>
