@@ -28,7 +28,7 @@ export const MealSessionSelector = () => {
     return (
       <div
         role="alert"
-        className="flex min-w-56 items-center gap-2 text-sm text-red-600"
+        className="flex min-w-56 items-center gap-2 text-sm text-theme-danger"
       >
         <span>Couldn&apos;t load sessions.</span>
         <button
