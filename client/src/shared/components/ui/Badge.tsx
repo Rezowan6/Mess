@@ -60,11 +60,11 @@ const variantStyles: Record<IBadgeVariant, string> = {
 
   neutral: "bg-theme-surface-hover text-theme-text",
 
-  "soft-info": "bg-theme-info-soft text-theme-info",
-  "soft-success": "bg-theme-success-soft text-theme-success",
-  "soft-secondary": "bg-theme-secondary-soft text-theme-secondary",
-  "soft-warning": "bg-theme-warning-soft text-theme-warning",
-  "soft-error": "bg-theme-danger-soft text-theme-danger",
+  "soft-info": "bg-theme-info-soft text-theme-info border border-theme-info/20",
+  "soft-success": "bg-theme-success-soft text-theme-success border border-theme-success/20",
+  "soft-secondary": "bg-theme-secondary-soft text-theme-secondary border border-theme-secondary/20",
+  "soft-warning": "bg-theme-warning-soft text-theme-warning border border-theme-warning/20",
+  "soft-error": "bg-theme-danger-soft text-theme-danger border border-theme-danger/20",
 };
 
 const sizeStyles = {
@@ -98,14 +98,10 @@ export const Badge = ({
   return (
     <span
       className={cn(
-        "inline-flex capitalize text-center items-center justify-center gap-1 font-medium whitespace-nowrap leading-none align-middle text-white",
-
+        "inline-flex capitalize text-center items-center justify-center gap-1 font-medium whitespace-nowrap leading-none align-middle",
         variantStyles[variant],
-
         sizeStyles[size],
-
         roundedStyles[rounded],
-
         className,
       )}
     >

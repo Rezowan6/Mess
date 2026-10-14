@@ -33,8 +33,6 @@ export const AllPendingMealReqTable: React.FC<AllPendingMealReqTableProps> = ({
     [requests],
   );
 
-  console.log(requests);
-
   return (
     <div className="max-h-[70vh] overflow-y-auto">
       {groups.map(({ date, items }) => (
