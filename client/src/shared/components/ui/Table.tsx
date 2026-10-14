@@ -103,14 +103,14 @@ export function Table<T>({
         className,
       )}
     >
-      <table className="w-full border-collapse text-left text-sm">
+      <table className="w-full min-w-max border-collapse text-left text-sm">
         <thead>
           <tr>
             {columns.map((column) => (
               <th
                 key={String(column.key)}
                 className={clsx(
-                  "bg-theme-table-header px-3 py-2 text-xs font-semibold uppercase tracking-wide text-theme-text-secondary",
+                  "whitespace-nowrap bg-theme-table-header px-3 py-2 text-xs font-semibold tracking-wide text-theme-text-secondary",
                   column.className,
                   column.hideOnMobile && "hidden md:table-cell",
                 )}
@@ -137,7 +137,7 @@ export function Table<T>({
                   <td
                     key={String(column.key)}
                     className={clsx(
-                      "border-b border-theme-border px-3 py-2 text-theme-text",
+                      "whitespace-nowrap border-b border-theme-border px-3 py-2 text-theme-text",
                       column.className,
                       column.hideOnMobile && "hidden md:table-cell",
                     )}
