@@ -11,10 +11,20 @@ export const getLocalDate = () => {
   return dayjs().tz(APP_TIMEZONE).format("YYYY-MM-DD");
 };
 
+import "dayjs/locale/bn-bd";
+
+// not used
+export const formatDateByBangla = (date: string | Date | null): string => {
+  if (!date) return "N/A";
+
+  return dayjs(date).tz(APP_TIMEZONE).locale("bn-bd").format("DD MMM");
+};
+
+
 export const formatDate = (date: string | Date | null): string => {
   if (!date) return "N/A";
 
-  return dayjs(date).tz(APP_TIMEZONE).format("DD MMM YYYY");
+  return dayjs(date).tz(APP_TIMEZONE).format("DD MMM");
 };
 
 export const formatDateForChart = (date: string | Date | null): string => {
