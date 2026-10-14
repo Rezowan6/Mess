@@ -18,4 +18,10 @@ router.get("/summary", ...adminAndManagerAccess, mealEntryController.summary);
 
 router.get("/member-summary", ...allAccess, mealEntryController.memberSummary);
 
+router.post("/", ...managerAccess, mealEntryController.create);
+
+router.patch("/:id", ...managerAccess, mealEntryController.update);
+
+router.delete("/:id", ...managerAccess, mealEntryController.delete);
+
 export default router;

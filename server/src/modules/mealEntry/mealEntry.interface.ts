@@ -7,7 +7,16 @@ export interface ICreateMealEntryDto {
   breakfast: number;
   lunch: number;
   dinner: number;
-  guestMeal: number;
+}
+export interface IUpdateMealEntryDto {
+  id: number;
+  tenantId: number;
+  userId: number;
+  mealSessionId: number;
+  date: Date;
+  breakfast: number;
+  lunch: number;
+  dinner: number;
 }
 
 export interface IMealSummary {

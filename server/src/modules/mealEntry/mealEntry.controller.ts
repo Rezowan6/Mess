@@ -4,6 +4,7 @@ import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { mealEntryService } from "./mealEntry.service.js";
+import { ApiError } from "@/utils/ApiError.js";
 
 class MealEntriesController {
   my = asyncHandler(async (req: Request, res: Response) => {
@@ -111,6 +112,67 @@ class MealEntriesController {
       statusCode: 200,
       message: "Meal summary fetched successfully.",
       data,
+    });
+  });
+
+  create = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, userId, mealSessionId } = getTenantContext(req);
+
+    const expenses = await mealEntryService.create({
+      ...req.body,
+      tenantId,
+      mealSessionId,
+      createdBy: userId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 201,
+      message: "Meal Entry created successfully.",
+      data: expenses,
+    });
+  });
+
+  update = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
+
+    const id = Number(req.params.id);
+    if (Number.isNaN(id)) {
+      throw new ApiError(400, "Valid expense id is required");
+    }
+
+    const data = await mealEntryService.update({
+      ...req.body,
+      id,
+      tenantId,
+      mealSessionId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Meal Entry updated successfully.",
+      data,
+    });
+  });
+
+  delete = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
+
+    const id = Number(req.params.id);
+
+    if (Number.isNaN(id)) {
+      throw new ApiError(400, "Valid expense id is required");
+    }
+
+    await mealEntryService.delete({
+      id,
+      tenantId,
+      mealSessionId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Meal Entry deleted successfully.",
+      data: null,
     });
   });
 }
