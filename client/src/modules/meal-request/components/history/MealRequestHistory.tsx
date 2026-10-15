@@ -46,7 +46,7 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
               key={request.id}
               className="flex items-start gap-3 px-4 py-3 transition-colors hover:bg-theme-surface-hover"
             >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-theme-md bg-theme-brand-soft text-theme-brand">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center  rounded-theme-md bg-theme-brand-gradient text-theme-on-brand shadow-theme-brand">
                 <CalendarDays className="h-5 w-5" />
               </div>
 
