@@ -7,10 +7,11 @@ import { Badge } from "@/shared/components/ui/Badge";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { PermissionGate } from "@/shared/guards/PermissionGate";
 import { useRBAC } from "@/shared/hooks/useRBAC";
-import { formatDate } from "@/shared/utils/date.utils";
+import { formatMonthName } from "@/shared/utils/date.utils";
 import { useMealSession } from "../hooks/useMealSession";
 import { CloseSessionButton } from "./CloseSessionButton";
 import { OpenMealSessionButton } from "./OpenMealSessionButton";
+import { formatDateTime } from "@/shared/utils/time";
 
 export const MealSessionSettings = () => {
   const { data, isLoading } = useMealSession();
@@ -38,7 +39,7 @@ export const MealSessionSettings = () => {
                   </h3>
 
                   <p className="text-sm text-theme-text-muted">
-                    {session.month}/{session.year}
+                    {formatMonthName(session.month)}-{session.year}
                   </p>
                 </div>
 
@@ -52,7 +53,7 @@ export const MealSessionSettings = () => {
                 <div>
                   <div className="text-sm text-theme-text-muted">
                     Opened At:
-                    <span className="ml-2">{formatDate(session.openedAt)}</span>
+                    <span className="ml-2">{formatDateTime(session.openedAt)}</span>
                   </div>
                 </div>
               </div>

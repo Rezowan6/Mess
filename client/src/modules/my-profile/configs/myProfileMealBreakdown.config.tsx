@@ -14,6 +14,7 @@ export const myProfileMealBreakdownConfig = (summary: mealSummary) => [
     decimals: getMealDecimals(summary.breakfast),
     icon: Coffee,
     iconClassName: "text-theme-info",
+    iconBgClassName: "bg-theme-info-soft"
   },
   {
     id: "lunch",
@@ -23,6 +24,7 @@ export const myProfileMealBreakdownConfig = (summary: mealSummary) => [
     decimals: getMealDecimals(summary.lunch),
     icon: Sun,
     iconClassName: "text-theme-info",
+    iconBgClassName: "bg-theme-info-soft"
   },
   {
     id: "dinner",
@@ -32,5 +34,6 @@ export const myProfileMealBreakdownConfig = (summary: mealSummary) => [
     decimals: getMealDecimals(summary.dinner),
     icon: Moon,
     iconClassName: "text-theme-info",
+    iconBgClassName: "bg-theme-info-soft"
   },
 ];

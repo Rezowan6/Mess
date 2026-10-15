@@ -10,7 +10,6 @@ import { formatDate } from "@/shared/utils/date.utils";
 import { mealTabs } from "../configs/meal.tabs.config";
 import { getMealPlanningColumns } from "../configs/mealPlanning.columns";
 import { useMealPlanningTable } from "../hooks/useMealPlanningTable";
-import { useRejectMeal } from "../hooks/useRejectMeal";
 import type {
   IMealPlanningResponse,
   IMealType,
@@ -31,9 +30,7 @@ export const MealPlanningTable = ({
   refetch,
 }: Props) => {
   const [activeMeal, setActiveMeal] = useState<IMealType>("breakfast");
-  const [pendingUserId, setPendingUserId] = useState<number | null>(null);
 
-  const { mutate: rejectMeal, isPending } = useRejectMeal();
 
   const {
     search,
@@ -47,20 +44,7 @@ export const MealPlanningTable = ({
     activeMeal,
   });
 
-  const handleReject = (userId: number) => {
-    setPendingUserId(userId);
-
-    rejectMeal(
-      { userId, meal: activeMeal },
-      { onSettled: () => setPendingUserId(null) },
-    );
-  };
-
-  const columns = getMealPlanningColumns(
-    handleReject,
-    isPending,
-    pendingUserId,
-  );
+  const columns = getMealPlanningColumns(activeMeal);
 
   // Half meals are possible, so show decimals only when needed
   const formatCount = (value: number) =>

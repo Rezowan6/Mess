@@ -45,9 +45,9 @@ export const OverviewListCard = ({
   totalAmount,
   totalPrefix,
   totalDecimals,
-  totalClassName = "text-theme-info",
+  totalClassName = "text-theme-success",
   emptyMessage = "No data found",
-  duration = 1500,
+  duration = 1000,
 }: Props) => {
   const mounted = useMountAnimation();
 
