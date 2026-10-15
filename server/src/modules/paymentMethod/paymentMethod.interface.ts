@@ -1,7 +1,7 @@
 import type { PaymentProvider } from "./paymentMethod.model.js";
 
-export interface PaymentMethodAttributes {
-  id: string;
+export interface IPaymentMethodAttributes {
+  id: number;
   tenantId: number;
   userId: number;
   provider: PaymentProvider;
@@ -17,8 +17,8 @@ export interface PaymentMethodAttributes {
   deletedAt: Date | null;
 }
 
-export interface PaymentMethodResponse {
-  id: string;
+export interface IPaymentMethodResponse {
+  id: number;
   tenantId: number;
   userId: number;
   provider: PaymentProvider;
@@ -33,8 +33,8 @@ export interface PaymentMethodResponse {
   updatedAt: Date;
 }
 
-export type CreatePaymentMethodInput = Pick<
-  PaymentMethodAttributes,
+export type ICreatePaymentMethodInput = Pick<
+  IPaymentMethodAttributes,
   | "provider"
   | "accountName"
   | "accountNumberEncrypted"
@@ -42,9 +42,9 @@ export type CreatePaymentMethodInput = Pick<
   | "isDefault"
 >;
 
-export type UpdatePaymentMethodInput = Partial<
+export type IUpdatePaymentMethodInput = Partial<
   Pick<
-    PaymentMethodAttributes,
+    IPaymentMethodAttributes,
     "accountName" | "isDefault" | "isActive"
   >
 >;
