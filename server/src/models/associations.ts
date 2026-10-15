@@ -17,6 +17,7 @@ import { setupPlanFeatureAssociations } from "@/modules/planFeature/planFeature.
 import { setupRefreshTokenAssociations } from "@/modules/refreshToken/refreshToken.association.js";
 import { setupRiceAssociations } from "@/modules/rice/rice.association.js";
 import { setupSettlementAssociations } from "@/modules/settlement/settlement.association.js";
+import { setupSettlementConfirmationAssociations } from "@/modules/settlementConfirmation/settlementConfirmation.association.js";
 import { setupSoldProductAssociations } from "@/modules/soldProduct/soldProduct.association.js";
 import { setupSubscriptionAssociations } from "@/modules/subscription/subscription.association.js";
 import { setupTenantMembershipAssociations } from "@/modules/tenantMembership/tenantMembership.association.js";
@@ -46,4 +47,5 @@ export const setupAssociations = () => {
 
   setupSettlementAssociations();
   setupPaymentMethodAssociations();
+  setupSettlementConfirmationAssociations();
 };

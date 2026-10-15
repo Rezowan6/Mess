@@ -14,18 +14,18 @@ import { MealSetting } from "@/modules/mealSetting/mealSetting.model.js";
 import { Notice } from "@/modules/notice/notice.model.js";
 import { Notification } from "@/modules/notification/notification.model.js";
 import { Payment } from "@/modules/payment/payment.model.js";
+import { PaymentMethod } from "@/modules/paymentMethod/paymentMethod.model.js";
 import { Plan } from "@/modules/plan/plan.model.js";
 import { PlanFeature } from "@/modules/planFeature/planFeature.model.js";
 import { RefreshToken } from "@/modules/refreshToken/refreshToken.model.js";
 import { Settlement } from "@/modules/settlement/settlement.model.js";
+import { SettlementConfirmation } from "@/modules/settlementConfirmation/settlementConfirmation.model.js";
 import { Subscription } from "@/modules/subscription/subscription.model.js";
 import { Tenant } from "@/modules/tenant/tenant.model.js";
 import { TenantMembership } from "@/modules/tenantMembership/tenantMembership.model.js";
 import { User } from "@/modules/user/user.model.js";
-import { PaymentMethod } from '@/modules/paymentMethod/paymentMethod.model.js';
 
 export {
-  PaymentMethod,
   Deposit,
   Egg,
   EggRate,
@@ -42,10 +42,12 @@ export {
   PartyExpense,
   PartyExpenseMember,
   Payment,
+  PaymentMethod,
   Plan,
   PlanFeature,
   RefreshToken,
   Settlement,
+  SettlementConfirmation,
   Subscription,
   Tenant,
   TenantMembership,
