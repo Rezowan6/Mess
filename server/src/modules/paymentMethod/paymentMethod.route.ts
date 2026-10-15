@@ -6,4 +6,6 @@ const router = express.Router();
 
 router.post("/", ...managerAccess, paymentMethodController.create);
 
+router.get("/", ...managerAccess, paymentMethodController.getAll);
+
 export default router;

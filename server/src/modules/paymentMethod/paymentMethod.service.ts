@@ -56,6 +56,35 @@ class PaymentMethodService {
       updatedAt: result.updatedAt,
     };
   }
+
+  async getPaymentMethods(tenantId: number, userId: number) {
+    const paymentMethods = await paymentMethodRepository.findAll({
+      where: {
+        tenantId,
+        userId,
+      },
+      attributes: {
+        exclude: ["accountNumberEncrypted"],
+      },
+      order: [["createdAt", "DESC"]],
+    });
+
+    return paymentMethods.map((paymentMethod) => ({
+      id: String(paymentMethod.id),
+      tenantId: paymentMethod.tenantId,
+      userId: paymentMethod.userId,
+      provider: paymentMethod.provider,
+      accountName: paymentMethod.accountName,
+      maskedAccountNumber: `****${paymentMethod.accountLast4}`,
+      accountLast4: paymentMethod.accountLast4,
+      isDefault: paymentMethod.isDefault,
+      isVerified: paymentMethod.isVerified,
+      verifiedAt: paymentMethod.verifiedAt,
+      isActive: paymentMethod.isActive,
+      createdAt: paymentMethod.createdAt,
+      updatedAt: paymentMethod.updatedAt,
+    }));
+  }
 }
 
 export const paymentMethodService = new PaymentMethodService();
