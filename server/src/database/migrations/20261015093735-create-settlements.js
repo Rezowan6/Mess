@@ -251,13 +251,9 @@ export default {
       },
     );
 
-    await queryInterface.addIndex(
-      "settlements",
-      ["transaction_reference"],
-      {
-        name: "settlements_transaction_reference_index",
-      },
-    );
+    await queryInterface.addIndex("settlements", ["transaction_reference"], {
+      name: "settlements_transaction_reference_index",
+    });
 
     await queryInterface.addIndex(
       "settlements",
