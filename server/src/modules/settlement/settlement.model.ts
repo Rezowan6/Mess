@@ -70,7 +70,7 @@ export class Settlement extends Model<
 Settlement.init(
   {
     id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false,
@@ -129,7 +129,7 @@ Settlement.init(
     },
 
     paymentMethodId: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       allowNull: true,
     },
 

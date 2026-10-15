@@ -47,17 +47,17 @@ export class AuditLog extends Model<
 AuditLog.init(
   {
     id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       primaryKey: true,
       autoIncrement: true,
     },
     tenantId: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       allowNull: false,
       field: "tenant_id",
     },
     actorId: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       allowNull: true,
       field: "actor_id",
     },
@@ -71,7 +71,7 @@ AuditLog.init(
       field: "entity_type",
     },
     entityId: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       allowNull: false,
       field: "entity_id",
     },
