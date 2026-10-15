@@ -1,3 +1,4 @@
+import { setupAuditLogAssociations } from "@/modules/auditLog/auditLog.association.js";
 import { setupDepositAssociations } from "@/modules/deposit/deposit.association.js";
 import { setupEggAssociations } from "@/modules/egg/egg.association.js";
 import { setupEggRateAssociations } from "@/modules/eggRates/eggRate.association.js";
@@ -48,4 +49,5 @@ export const setupAssociations = () => {
   setupSettlementAssociations();
   setupPaymentMethodAssociations();
   setupSettlementConfirmationAssociations();
+  setupAuditLogAssociations();
 };

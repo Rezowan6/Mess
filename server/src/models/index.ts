@@ -1,6 +1,7 @@
 import { MealPreference } from "@/modules/MealPreference/mealPreference.model.js";
 import { PartyExpense } from "@/modules/PartyExpense/partyExpense.model.js";
 import { PartyExpenseMember } from "@/modules/PartyExpenseMember/partyExpenseMember.model.js";
+import { AuditLog } from "@/modules/auditLog/auditLog.model.js";
 import { Deposit } from "@/modules/deposit/deposit.model.js";
 import { Egg } from "@/modules/egg/egg.model.js";
 import { EggRate } from "@/modules/eggRates/eggRate.model.js";
@@ -26,6 +27,7 @@ import { TenantMembership } from "@/modules/tenantMembership/tenantMembership.mo
 import { User } from "@/modules/user/user.model.js";
 
 export {
+  AuditLog,
   Deposit,
   Egg,
   EggRate,
