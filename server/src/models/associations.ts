@@ -15,6 +15,7 @@ import { setupPaymentAssociations } from "@/modules/payment/payment.association.
 import { setupPlanFeatureAssociations } from "@/modules/planFeature/planFeature.association.js";
 import { setupRefreshTokenAssociations } from "@/modules/refreshToken/refreshToken.association.js";
 import { setupRiceAssociations } from "@/modules/rice/rice.association.js";
+import { setupSettlementAssociations } from "@/modules/settlement/settlement.association.js";
 import { setupSoldProductAssociations } from "@/modules/soldProduct/soldProduct.association.js";
 import { setupSubscriptionAssociations } from "@/modules/subscription/subscription.association.js";
 import { setupTenantMembershipAssociations } from "@/modules/tenantMembership/tenantMembership.association.js";
@@ -41,4 +42,6 @@ export const setupAssociations = () => {
   setupEggAssociations();
   setupEggRateAssociations();
   setupSoldProductAssociations();
+
+  setupSettlementAssociations();
 };

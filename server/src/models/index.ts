@@ -17,6 +17,7 @@ import { Payment } from "@/modules/payment/payment.model.js";
 import { Plan } from "@/modules/plan/plan.model.js";
 import { PlanFeature } from "@/modules/planFeature/planFeature.model.js";
 import { RefreshToken } from "@/modules/refreshToken/refreshToken.model.js";
+import { Settlement } from "@/modules/settlement/settlement.model.js";
 import { Subscription } from "@/modules/subscription/subscription.model.js";
 import { Tenant } from "@/modules/tenant/tenant.model.js";
 import { TenantMembership } from "@/modules/tenantMembership/tenantMembership.model.js";
@@ -42,6 +43,7 @@ export {
   Plan,
   PlanFeature,
   RefreshToken,
+  Settlement,
   Subscription,
   Tenant,
   TenantMembership,
