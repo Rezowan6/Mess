@@ -12,6 +12,7 @@ import { setupNoticeAssociations } from "@/modules/notice/notice.association.js"
 import { setupNotificationAssociations } from "@/modules/notification/notification.association.js";
 import { setupPartyExpenseAssociations } from "@/modules/PartyExpense/partyExpense.association.js";
 import { setupPaymentAssociations } from "@/modules/payment/payment.association.js";
+import { setupPaymentMethodAssociations } from "@/modules/paymentMethod/paymentMethod.association.js";
 import { setupPlanFeatureAssociations } from "@/modules/planFeature/planFeature.association.js";
 import { setupRefreshTokenAssociations } from "@/modules/refreshToken/refreshToken.association.js";
 import { setupRiceAssociations } from "@/modules/rice/rice.association.js";
@@ -44,4 +45,5 @@ export const setupAssociations = () => {
   setupSoldProductAssociations();
 
   setupSettlementAssociations();
+  setupPaymentMethodAssociations();
 };

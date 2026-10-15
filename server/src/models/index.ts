@@ -22,8 +22,10 @@ import { Subscription } from "@/modules/subscription/subscription.model.js";
 import { Tenant } from "@/modules/tenant/tenant.model.js";
 import { TenantMembership } from "@/modules/tenantMembership/tenantMembership.model.js";
 import { User } from "@/modules/user/user.model.js";
+import { PaymentMethod } from '@/modules/paymentMethod/paymentMethod.model.js';
 
 export {
+  PaymentMethod,
   Deposit,
   Egg,
   EggRate,
