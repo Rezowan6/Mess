@@ -18,7 +18,7 @@ export class PaymentMethod extends Model<
   InferAttributes<PaymentMethod>,
   InferCreationAttributes<PaymentMethod>
 > {
-  declare id: CreationOptional<string>;
+  declare id: CreationOptional<number>;
   declare tenantId: number;
   declare userId: number;
   declare provider: PaymentProvider;
@@ -37,18 +37,18 @@ export class PaymentMethod extends Model<
 PaymentMethod.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT.UNSIGNED,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
     },
     tenantId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       field: "tenant_id",
     },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       field: "user_id",
     },

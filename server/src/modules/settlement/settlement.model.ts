@@ -22,7 +22,7 @@ export class Settlement extends Model<
   >,
   InferCreationAttributes<Settlement>
 > {
-  declare id: CreationOptional<string>;
+  declare id: CreationOptional<number>;
 
   declare tenantId: number;
   declare mealSessionId: number;
@@ -34,7 +34,7 @@ export class Settlement extends Model<
   declare currency: CreationOptional<string>;
   declare status: CreationOptional<SettlementStatus>;
 
-  declare paymentMethodId: CreationOptional<string | null>;
+  declare paymentMethodId: CreationOptional<number | null>;
   declare paymentMethod: SettlementPaymentMethod;
   declare paymentProviderSnapshot: CreationOptional<string | null>;
   declare accountLast4: CreationOptional<string | null>;

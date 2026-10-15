@@ -25,7 +25,7 @@ export class SettlementConfirmation extends Model<
   >,
   InferCreationAttributes<SettlementConfirmation>
 > {
-  declare id: CreationOptional<string>;
+  declare id: CreationOptional<number>;
   declare tenantId: number;
   declare settlementId: string;
   declare userId: number;
