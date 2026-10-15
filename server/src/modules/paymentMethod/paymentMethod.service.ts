@@ -1,6 +1,9 @@
 import { ApiError } from "@/utils/ApiError.js";
 import { encrypt } from "@/utils/encryption.util.js";
-import type { ICreatePaymentMethodInput } from "./paymentMethod.interface.js";
+import type {
+  ICreatePaymentMethodInput,
+  IUpdatePaymentMethodInput,
+} from "./paymentMethod.interface.js";
 import { paymentMethodRepository } from "./paymentMethod.repository.js";
 
 class PaymentMethodService {
@@ -91,6 +94,67 @@ class PaymentMethodService {
       createdAt: paymentMethod.createdAt,
       updatedAt: paymentMethod.updatedAt,
     }));
+  }
+
+  async updatePaymentMethod(
+    id: number,
+    tenantId: number,
+    userId: number,
+    data: IUpdatePaymentMethodInput,
+  ) {
+    const paymentMethod = await paymentMethodRepository.findOne({
+      id,
+      tenantId,
+      userId,
+    });
+
+    if (!paymentMethod) {
+      throw new ApiError(404, "Payment method not found.");
+    }
+
+    await paymentMethod.update({
+      ...(data.accountName !== undefined && {
+        accountName: data.accountName.trim(),
+      }),
+      ...(data.isDefault !== undefined && {
+        isDefault: data.isDefault,
+      }),
+      ...(data.isActive !== undefined && {
+        isActive: data.isActive,
+      }),
+    });
+
+    return {
+      id: String(paymentMethod.id),
+      tenantId: paymentMethod.tenantId,
+      userId: paymentMethod.userId,
+      provider: paymentMethod.provider,
+      accountName: paymentMethod.accountName,
+      maskedAccountNumber: `****${paymentMethod.accountLast4}`,
+      accountLast4: paymentMethod.accountLast4,
+      isDefault: paymentMethod.isDefault,
+      isVerified: paymentMethod.isVerified,
+      isActive: paymentMethod.isActive,
+      verifiedAt: paymentMethod.verifiedAt,
+      createdAt: paymentMethod.createdAt,
+      updatedAt: paymentMethod.updatedAt,
+    };
+  }
+
+  async deletePaymentMethod(id: number, tenantId: number, userId: number) {
+    const paymentMethod = await paymentMethodRepository.findOne({
+      id,
+      tenantId,
+      userId,
+    });
+
+    if (!paymentMethod) {
+      throw new ApiError(404, "Payment method not found.");
+    }
+
+    await paymentMethodRepository.delete({id, tenantId, userId});
+
+    return null;
   }
 }
 

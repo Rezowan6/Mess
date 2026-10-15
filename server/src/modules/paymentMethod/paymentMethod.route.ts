@@ -8,4 +8,8 @@ router.post("/", ...managerAccess, paymentMethodController.create);
 
 router.get("/", ...managerAccess, paymentMethodController.getAll);
 
+router.patch("/:id", ...managerAccess, paymentMethodController.update);
+
+router.delete("/:id", ...managerAccess, paymentMethodController.delete);
+
 export default router;
