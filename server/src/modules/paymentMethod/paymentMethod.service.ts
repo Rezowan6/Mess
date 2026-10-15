@@ -1,4 +1,5 @@
 import { ApiError } from "@/utils/ApiError.js";
+import { encrypt } from "@/utils/encryption.util.js";
 import type { ICreatePaymentMethodInput } from "./paymentMethod.interface.js";
 import { paymentMethodRepository } from "./paymentMethod.repository.js";
 
@@ -7,6 +8,7 @@ class PaymentMethodService {
     data: ICreatePaymentMethodInput & {
       tenantId: number;
       userId: number;
+      accountNumber: string;
     },
   ) {
     const {
@@ -14,21 +16,26 @@ class PaymentMethodService {
       userId,
       provider,
       accountName,
-      accountNumberEncrypted,
-      accountLast4,
+      accountNumber,
       isDefault = false,
     } = data;
+
+    const normalizedAccountNumber = accountNumber?.replace(/\s+/g, "");
 
     if (
       !tenantId ||
       !userId ||
       !provider ||
       !accountName?.trim() ||
-      !accountNumberEncrypted ||
-      !/^\d{4}$/.test(accountLast4)
+      !normalizedAccountNumber ||
+      !/^\d{11}$/.test(normalizedAccountNumber)
     ) {
       throw new ApiError(400, "Invalid payment method data.");
     }
+
+    const accountLast4 = normalizedAccountNumber.slice(-4);
+
+    const accountNumberEncrypted = encrypt(normalizedAccountNumber);
 
     const result = await paymentMethodRepository.create({
       tenantId,
@@ -50,8 +57,8 @@ class PaymentMethodService {
       accountLast4: result.accountLast4,
       isDefault: result.isDefault,
       isVerified: result.isVerified,
-      verifiedAt: result.verifiedAt,
       isActive: result.isActive,
+      verifiedAt: result.verifiedAt,
       createdAt: result.createdAt,
       updatedAt: result.updatedAt,
     };

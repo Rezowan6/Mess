@@ -97,6 +97,10 @@ export const PERMISSIONS = {
 
   // System
   SYSTEM_MANAGE: "system.manage",
+
+
+  PAYMENT_METHOD_CREATE: "paymentMethod.create",
+  PAYMENT_METHOD_VIEW: "paymentMethod.view",
 } as const;
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];

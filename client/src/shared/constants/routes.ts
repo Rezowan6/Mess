@@ -24,14 +24,14 @@ export const ROUTES = {
   MEAL_ENTRY: "/meal-entries",
 
   MEAL_REQUEST: "/meal-request",
-  
+
   MEAL_PLANNING: "/meal-planning",
 
   NOTIFICATIONS: "/notifications",
   NOTICE: "/notices",
 
   EXPENSE: "/expenses",
-  
+
   PARTY_EXPENSE: "/party-expenses",
 
   DEPOSIT: "/deposits",
@@ -46,4 +46,6 @@ export const ROUTES = {
   PAYMENT: "/payments",
 
   SETTINGS: "/settings",
+
+  PAYMENT_METHOD: "/payment-methods",
 } as const;

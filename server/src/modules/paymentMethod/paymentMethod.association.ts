@@ -1,5 +1,4 @@
-
-import { PaymentMethod, Settlement, Tenant, User } from '@/models/index.js';
+import { PaymentMethod, Settlement, Tenant, User } from "@/models/index.js";
 
 export function setupPaymentMethodAssociations(): void {
   Tenant.hasMany(PaymentMethod, {
@@ -29,6 +28,6 @@ export function setupPaymentMethodAssociations(): void {
 
   Settlement.belongsTo(PaymentMethod, {
     foreignKey: "paymentMethodId",
-    as: "paymentMethod",
+    as: "linkedPaymentMethod",
   });
 }

@@ -19,6 +19,9 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     PERMISSIONS.PLAN_FEATURE_DELETE,
 
     PERMISSIONS.SETTINGS_VIEW,
+
+    PERMISSIONS.PAYMENT_METHOD_CREATE,
+    PERMISSIONS.PAYMENT_METHOD_VIEW,
   ],
 
   [ROLES.ADMIN]: [
@@ -65,6 +68,9 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     // subcripton
     PERMISSIONS.SUBSCRIPTION_VIEW,
     PERMISSIONS.SUBSCRIPTION_MANAGE,
+
+    PERMISSIONS.PAYMENT_METHOD_CREATE,
+    PERMISSIONS.PAYMENT_METHOD_VIEW,
   ],
 
   [ROLES.MANAGER]: [
@@ -132,6 +138,10 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
 
     // settings
     PERMISSIONS.SETTINGS_VIEW,
+
+    // payment method
+    PERMISSIONS.PAYMENT_METHOD_CREATE,
+    PERMISSIONS.PAYMENT_METHOD_VIEW,
   ],
 
   [ROLES.MEMBER]: [
@@ -156,7 +166,7 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     // notification
     PERMISSIONS.NOTICE_VIEW,
 
-    // notice 
+    // notice
     PERMISSIONS.NOTICE_VIEW,
 
     // setting
@@ -169,6 +179,10 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     PERMISSIONS.SUBSCRIPTION_MANAGE,
     // tenant
     PERMISSIONS.TENANT_CREATE,
+
+    // payment method
+    PERMISSIONS.PAYMENT_METHOD_CREATE,
+    PERMISSIONS.PAYMENT_METHOD_VIEW,
   ],
 
   [ROLES.MESS_MALIK]: [
@@ -204,5 +218,9 @@ export const ROLE_PERMISSIONS: Record<Role, string[]> = {
     // subcripton
     PERMISSIONS.SUBSCRIPTION_VIEW,
     PERMISSIONS.SUBSCRIPTION_MANAGE,
+
+    // payment method
+    PERMISSIONS.PAYMENT_METHOD_CREATE,
+    PERMISSIONS.PAYMENT_METHOD_VIEW,
   ],
 };
