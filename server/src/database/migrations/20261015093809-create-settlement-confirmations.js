@@ -7,7 +7,7 @@ export default {
   async up(queryInterface) {
     await queryInterface.createTable("settlement_confirmations", {
       id: {
-        type: DataTypes.BIGINT.UNSIGNED,
+        type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
@@ -23,7 +23,7 @@ export default {
         onDelete: "CASCADE",
       },
       settlement_id: {
-        type: DataTypes.BIGINT.UNSIGNED,
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
           model: "settlements",

@@ -4,7 +4,7 @@ export default {
   async up(queryInterface) {
     await queryInterface.createTable("payment_methods", {
       id: {
-        type: DataTypes.BIGINT.UNSIGNED,
+        type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
@@ -91,7 +91,7 @@ export default {
           THEN user_id
           ELSE NULL
         END
-      ) STORED
+      ) VIRTUAL
     `);
 
     await queryInterface.addIndex(

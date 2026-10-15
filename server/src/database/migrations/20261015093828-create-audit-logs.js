@@ -4,7 +4,7 @@ export default {
   async up(queryInterface) {
     await queryInterface.createTable("audit_logs", {
       id: {
-        type: DataTypes.BIGINT.UNSIGNED,
+        type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,

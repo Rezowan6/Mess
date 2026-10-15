@@ -8,6 +8,7 @@ import {
 } from "sequelize";
 
 export enum PaymentProvider {
+  CASH = "CASH",
   BKASH = "BKASH",
   NAGAD = "NAGAD",
   ROCKET = "ROCKET",

@@ -8,7 +8,7 @@ export default {
   async up(queryInterface) {
     await queryInterface.createTable("settlements", {
       id: {
-        type: DataTypes.BIGINT.UNSIGNED,
+        type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
@@ -27,7 +27,7 @@ export default {
         allowNull: false,
         references: { model: "meal_sessions", key: "id" },
         onUpdate: "CASCADE",
-        onDelete: "RESTRICT",
+        onDelete: "CASCADE",
       },
 
       member_id: {
@@ -35,7 +35,7 @@ export default {
         allowNull: false,
         references: { model: "users", key: "id" },
         onUpdate: "CASCADE",
-        onDelete: "RESTRICT",
+        onDelete: "CASCADE",
       },
 
       payer_id: {
@@ -43,7 +43,7 @@ export default {
         allowNull: false,
         references: { model: "users", key: "id" },
         onUpdate: "CASCADE",
-        onDelete: "RESTRICT",
+        onDelete: "CASCADE",
       },
 
       payee_id: {
@@ -51,7 +51,7 @@ export default {
         allowNull: false,
         references: { model: "users", key: "id" },
         onUpdate: "CASCADE",
-        onDelete: "RESTRICT",
+        onDelete: "CASCADE",
       },
 
       amount: {
@@ -80,7 +80,7 @@ export default {
       },
 
       payment_method_id: {
-        type: DataTypes.BIGINT.UNSIGNED,
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
         references: { model: "payment_methods", key: "id" },
         onUpdate: "CASCADE",
@@ -233,13 +233,6 @@ export default {
           [queryInterface.sequelize.Sequelize.Op.gt]: 0,
         },
       },
-    });
-
-    await queryInterface.addConstraint("settlements", {
-      fields: ["payer_id", "payee_id"],
-      type: "check",
-      name: "settlements_payer_payee_different_check",
-      where: queryInterface.sequelize.literal("payer_id <> payee_id"),
     });
 
     await queryInterface.addIndex(
