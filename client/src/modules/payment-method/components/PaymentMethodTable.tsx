@@ -1,12 +1,20 @@
 import { DataTableSection } from "@/shared/components/ui/DataTableSection";
 import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
 
+import { useState } from "react";
 import { usePaymentMethodColumns } from "../configs/paymentMethod.columns";
 import { PAYMENT_METHOD_MESSAGES } from "../configs/paymentMethod.messages";
 import { usePaymentMethods } from "../hooks/usePaymentMethods";
+import type { IPaymentMethod } from "../types/paymentMethod.types";
+import { AddPaymentMethodModal } from "./AddPaymentMethodModal";
 import { PaymentMethodTableSkeleton } from "./skeleton/PaymentMethodTableSkeleton";
 
 export const PaymentMethodTable = () => {
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState<IPaymentMethod | null>(null);
+
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
   const { page, search, handleSearch, handlePage } = useTableSearchParams();
 
   const { data, isPending, isError, refetch } = usePaymentMethods();
@@ -27,20 +35,37 @@ export const PaymentMethodTable = () => {
     page * PAGE_LIMIT,
   );
 
-  const columns = usePaymentMethodColumns();
+  const handleEdit = (paymentMethod: IPaymentMethod) => {
+    setSelectedPaymentMethod(paymentMethod);
+    setIsEditOpen(true);
+  };
+
+  const columns = usePaymentMethodColumns(handleEdit);
 
   return (
-    <DataTableSection
-      columns={columns}
-      data={paginatedData}
-      isPending={isPending}
-      isError={isError}
-      skeleton={<PaymentMethodTableSkeleton />}
-      refetch={refetch}
-      search={search}
-      onSearch={handleSearch}
-      onPageChange={handlePage}
-      message={PAYMENT_METHOD_MESSAGES}
-    />
+    <>
+      <DataTableSection
+        columns={columns}
+        data={paginatedData}
+        isPending={isPending}
+        isError={isError}
+        skeleton={<PaymentMethodTableSkeleton />}
+        refetch={refetch}
+        search={search}
+        onSearch={handleSearch}
+        onPageChange={handlePage}
+        message={PAYMENT_METHOD_MESSAGES}
+      />
+      {selectedPaymentMethod && (
+        <AddPaymentMethodModal
+          isOpen={isEditOpen}
+          onClose={() => {
+            setIsEditOpen(false);
+            setSelectedPaymentMethod(null);
+          }}
+          paymentMethod={selectedPaymentMethod}
+        />
+      )}
+    </>
   );
 };

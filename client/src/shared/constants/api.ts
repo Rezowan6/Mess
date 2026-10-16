@@ -206,5 +206,7 @@ export const API_ENDPOINTS = {
   PAYMENT_METHOD: {
     GET_ALL: "/payment-methods",
     CREATE: "/payment-methods",
+    UPDATE: (id: number) => `/payment-methods/${id}`,
+    DELETE: (id: number) => `/payment-methods/${id}`,
   },
 };

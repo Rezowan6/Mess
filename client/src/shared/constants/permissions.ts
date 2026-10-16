@@ -100,6 +100,7 @@ export const PERMISSIONS = {
 
 
   PAYMENT_METHOD_CREATE: "paymentMethod.create",
+  PAYMENT_METHOD_UPDATE: "paymentMethod.update",
   PAYMENT_METHOD_VIEW: "paymentMethod.view",
 } as const;
 

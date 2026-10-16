@@ -7,8 +7,16 @@ export interface ICreatePaymentMethodDto {
   isDefault?: boolean;
 }
 
+export interface IUpdatePaymentMethodDto {
+  provider?: PaymentProvider;
+  accountName?: string;
+  accountNumber?: string;
+  isDefault?: boolean;
+  isActive?: boolean;
+}
+
 export interface IPaymentMethod {
-  id: string;
+  id: number;
   tenantId: number;
   userId: number;
   provider: PaymentProvider;

@@ -21,6 +21,8 @@ export const RealtimeResource = {
   MEAL_ENTRY: "meal-entry",
 
   MY_PROFILE: "my-profile",
+
+  PAYMENT_METHOD: "payment-method",
 } as const;
 
 export type RealtimeResourceType =

@@ -1,3 +1,4 @@
+import { getIdParam } from "@/helpers/getIdParam.helper.js";
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
@@ -38,7 +39,7 @@ class PaymentMethodController {
 
   update = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId } = getTenantContext(req);
-    const id = Number(req.params.id);
+    const id = getIdParam(req);
 
     const paymentMethod = await paymentMethodService.updatePaymentMethod(
       id,
@@ -56,7 +57,7 @@ class PaymentMethodController {
 
   delete = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId } = getTenantContext(req);
-    const id = Number(req.params.id);
+    const id = getIdParam(req);
 
     await paymentMethodService.deletePaymentMethod(id, tenantId, userId);
 

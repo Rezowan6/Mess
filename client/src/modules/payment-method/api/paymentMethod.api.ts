@@ -4,6 +4,7 @@ import { API } from "@/shared/lib/axios";
 import type {
   ICreatePaymentMethodDto,
   IPaymentMethodListResponse,
+  IUpdatePaymentMethodDto,
 } from "../types/paymentMethod.types";
 
 export const paymentMethodApi = {
@@ -21,6 +22,19 @@ export const paymentMethodApi = {
       payload,
     );
 
+    return data;
+  },
+
+  update: async (id: number, payload: IUpdatePaymentMethodDto) => {
+    const { data } = await API.patch(
+      API_ENDPOINTS.PAYMENT_METHOD.UPDATE(id),
+      payload,
+    );
+    return data;
+  },
+
+  delete: async (id: number) => {
+    const { data } = await API.delete(API_ENDPOINTS.PAYMENT_METHOD.DELETE(id));
     return data;
   },
 };

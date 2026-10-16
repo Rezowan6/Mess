@@ -27,7 +27,7 @@ export class PaymentMethod extends Model<
   declare accountLast4: string;
   declare isDefault: CreationOptional<boolean>;
   declare isVerified: CreationOptional<boolean>;
-  declare verifiedAt: Date | null;
+  declare verifiedAt: CreationOptional<Date | null>;
   declare isActive: CreationOptional<boolean>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;

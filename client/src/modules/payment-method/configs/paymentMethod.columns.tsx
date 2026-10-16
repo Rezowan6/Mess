@@ -1,7 +1,10 @@
 import type { TableColumn } from "@/shared/components/ui/Table";
+import { PaymentMethodActions } from "../components/PaymentMethodActions";
 import type { IPaymentMethod } from "../types/paymentMethod.types";
 
-export const usePaymentMethodColumns = (): TableColumn<IPaymentMethod>[] => {
+export const usePaymentMethodColumns = (
+  onEdit: (paymentMethod: IPaymentMethod) => void,
+): TableColumn<IPaymentMethod>[] => {
   const columns: TableColumn<IPaymentMethod>[] = [
     {
       key: "provider",
@@ -28,6 +31,13 @@ export const usePaymentMethodColumns = (): TableColumn<IPaymentMethod>[] => {
       title: "Status",
       render: (paymentMethod) =>
         paymentMethod.isActive ? "Active" : "Inactive",
+    },
+    {
+      key: "actions",
+      title: "Actions",
+      render: (paymentMethod) => (
+        <PaymentMethodActions paymentMethod={paymentMethod} onEdit={onEdit} />
+      ),
     },
   ];
 

@@ -101,3 +101,20 @@ export const isRecordUpdated = (
 
   return updated.diff(created, "second", true) > toleranceSeconds;
 };
+
+/**
+ * Picks which timestamp a list item should show.
+ * Edited record -> "Updated" + updatedAt, untouched record -> "Created" + createdAt.
+ * Reuses isRecordUpdated so the same tolerance rule applies everywhere.
+ */
+export const getRecordTimestamp = <T extends string | Date>(
+  createdAt: T,
+  updatedAt: T | null,
+  toleranceSeconds = 1,
+): { label: "Created" | "Updated"; value: T } => {
+  if (updatedAt && isRecordUpdated(createdAt, updatedAt, toleranceSeconds)) {
+    return { label: "Updated", value: updatedAt };
+  }
+
+  return { label: "Created", value: createdAt };
+};

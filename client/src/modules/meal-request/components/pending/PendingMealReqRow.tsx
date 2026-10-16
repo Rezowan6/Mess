@@ -1,67 +1,80 @@
+import React from "react";
+
 import { Avatar } from "@/shared/components/ui/Avatar";
 import { Badge } from "@/shared/components/ui/Badge";
 import { MealBadges } from "@/shared/components/ui/MealBadges";
-import { formatDate } from "@/shared/utils/date.utils";
+import { formatDate, getRecordTimestamp } from "@/shared/utils/date.utils";
 import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
 import { formatDateTime } from "@/shared/utils/time";
-import React from "react";
 import type { IMyPendingMealReq } from "../../types/mealRequest.types";
 import { PendingMealReqAction } from "./PendingMealReqAction";
 
 interface PendingMealReqRowProps {
   request: IMyPendingMealReq;
-  currentDate: string;
+  currentDate: string; // YYYY-MM-DD (use getLocalDate())
 }
 
-export const PendingMealReqRow = React.memo(
-  ({ request, currentDate }: PendingMealReqRowProps) => {
-    const requestDate = formatDate(request.date);
+const STATUS_VARIANT: Record<
+  string,
+  "soft-warning" | "soft-success" | "soft-error"
+> = {
+  pending: "soft-warning",
+  approved: "soft-success",
+  rejected: "soft-error",
+} as const;
 
-    const isCurrentMealReqDate = requestDate === currentDate;
-    const isApprovedDisabled = requestDate > currentDate;
-    const isRejectDisabled = isCurrentMealReqDate;
-    const isDeleteDisabled =
-      request.status === "pending" && isCurrentMealReqDate;
+export const PendingMealReqRow = React.memo(function PendingMealReqRow({
+  request,
+  currentDate,
+}: PendingMealReqRowProps) {
+  // YYYY-MM-DD strings compare correctly with <, > and ===
+  const requestDate = formatDate(request.date);
 
-    return (
-      <div className="flex items-center gap-3 px-2 py-3 transition-colors hover:bg-theme-background">
-        <Avatar
-          src={request.requester.avatar}
-          alt={request.requester.name}
-          size="md"
-          fallback={getAvatarInitial(request.requester.name)}
-        />
+  const isCurrentMealReqDate = requestDate === currentDate;
+  const isApprovedDisabled = requestDate > currentDate;
+  const isRejectDisabled = isCurrentMealReqDate;
+  const isDeleteDisabled = request.status === "pending" && isCurrentMealReqDate;
 
-        <div className="min-w-0 flex-1">
-          <div className="mb-2 flex items-center justify-between gap-3">
-            <h3 className="min-w-0 truncate text-[15px] font-semibold text-theme-text-secondary">
-              {request.requester.name}
-            </h3>
+  const timestamp = getRecordTimestamp(request.createdAt, request.updatedAt);
 
-            <Badge variant="soft-warning" size="sm">
-              {request.status}
-            </Badge>
-          </div>
+  return (
+    <div className="flex items-center gap-3 px-2 py-3 transition-colors hover:bg-theme-surface-hover">
+      <Avatar
+        src={request.requester.avatar}
+        alt={request.requester.name}
+        size="md"
+        fallback={getAvatarInitial(request.requester.name)}
+      />
 
-          <MealBadges meals={request} />
+      <div className="min-w-0 flex-1">
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <h3 className="min-w-0 truncate text-[15px] font-semibold text-theme-text-secondary">
+            {request.requester.name}
+          </h3>
 
-          <div className="flex items-center justify-between">
-            <div className="my-2 flex flex-col items-center gap-1.5 text-[11px] text-theme-text-muted sm:flex-row">
-              <span>Created: {formatDateTime(request.createdAt)}</span>
-              <span>Updated: {formatDateTime(request.updatedAt)}</span>
-            </div>
+          <Badge
+            variant={STATUS_VARIANT[request.status] ?? "soft-warning"}
+            size="sm"
+          >
+            {request.status}
+          </Badge>
+        </div>
 
-            <PendingMealReqAction
-              request={request}
-              isApprovedDisabled={isApprovedDisabled}
-              isRejectDisabled={isRejectDisabled}
-              isDeleteDisabled={isDeleteDisabled}
-            />
-          </div>
+        <MealBadges meals={request} />
+
+        <div className="mt-2 flex items-center justify-between gap-2">
+          <span className="text-[11px] text-theme-text-muted">
+            {timestamp.label}: {formatDateTime(timestamp.value)}
+          </span>
+
+          <PendingMealReqAction
+            request={request}
+            isApprovedDisabled={isApprovedDisabled}
+            isRejectDisabled={isRejectDisabled}
+            isDeleteDisabled={isDeleteDisabled}
+          />
         </div>
       </div>
-    );
-  },
-);
-
-PendingMealReqRow.displayName = "PendingMealReqRow";
+    </div>
+  );
+});
