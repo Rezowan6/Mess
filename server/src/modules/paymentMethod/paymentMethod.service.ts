@@ -68,16 +68,7 @@ class PaymentMethodService {
   }
 
   async getPaymentMethods(tenantId: number, userId: number) {
-    const paymentMethods = await paymentMethodRepository.findAll({
-      where: {
-        tenantId,
-        userId,
-      },
-      attributes: {
-        exclude: ["accountNumberEncrypted"],
-      },
-      order: [["createdAt", "DESC"]],
-    });
+    const paymentMethods = await paymentMethodRepository.findAllByTenantAndUser(tenantId, userId)
 
     return paymentMethods.map((paymentMethod) => ({
       id: String(paymentMethod.id),

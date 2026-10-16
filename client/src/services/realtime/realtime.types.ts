@@ -15,6 +15,7 @@ export type RealtimeResource =
   | "party-expense"
   | "sold-product"
   | "meal-entry"
+  | "payment-method"
   | "my-profile";
 
 export interface IDataUpdatedPayload {
