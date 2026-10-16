@@ -209,4 +209,12 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `/payment-methods/${id}`,
     DELETE: (id: number) => `/payment-methods/${id}`,
   },
+
+  SETTLEMENT: {
+    LIST: "/settlements",
+    CREATE: "/settlements",
+    BY_ID: (id: number) => `/settlements/${id}`,
+    UPDATE: (id: number) => `/settlements/${id}`,
+    DELETE: (id: number) => `/settlements/${id}`,
+  },
 };
