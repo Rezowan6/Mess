@@ -48,7 +48,7 @@ class PaymentMethodService {
 
     const accountNumberEncrypted = encrypt(normalizedAccountNumber);
 
-    const result = await paymentMethodRepository.create({
+    await paymentMethodRepository.create({
       tenantId,
       userId,
       provider,
@@ -58,21 +58,13 @@ class PaymentMethodService {
       isDefault,
     });
 
-    return {
-      id: String(result.id),
-      tenantId: result.tenantId,
-      userId: result.userId,
-      provider: result.provider,
-      accountName: result.accountName,
-      maskedAccountNumber: `****${result.accountLast4}`,
-      accountLast4: result.accountLast4,
-      isDefault: result.isDefault,
-      isVerified: result.isVerified,
-      isActive: result.isActive,
-      verifiedAt: result.verifiedAt,
-      createdAt: result.createdAt,
-      updatedAt: result.updatedAt,
-    };
+    socketService.emitToUser(userId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.PAYMENT_METHOD,
+      action: RealtimeAction.CREATED,
+      tenantId,
+    });
+
+    return null;
   }
 
   async getPaymentMethods(tenantId: number, userId: number) {
@@ -228,6 +220,12 @@ class PaymentMethodService {
       { id, tenantId, userId },
       { force: true },
     );
+
+    socketService.emitToUser(userId, SocketEvent.DATA_UPDATED, {
+  resource: RealtimeResource.PAYMENT_METHOD,
+  action: RealtimeAction.DELETED,
+  tenantId,
+});
 
     return null;
   }

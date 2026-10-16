@@ -147,7 +147,6 @@ export const AddPaymentMethodModal = ({
       <Input
         label="Account Name"
         placeholder="Enter account name"
-        value={paymentMethod?.maskedAccountNumber ?? ""}
         autoComplete="off"
         error={errors.accountName?.message}
         {...register("accountName")}
