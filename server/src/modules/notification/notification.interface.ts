@@ -22,6 +22,10 @@ export const Notification = {
   DEPOSIT_ADDED: "DEPOSIT_ADDED",
   DEPOSIT_UPDATED: "DEPOSIT_UPDATED",
   DEPOSIT_DELETED: "DEPOSIT_DELETED",
+
+  SETTLEMENT_CREATED: "SETTLEMENT_CREATED",
+  SETTLEMENT_UPDATED: "SETTLEMENT_UPDATED",
+  SETTLEMENT_DELETED: "SETTLEMENT_DELETED",
 } as const;
 
 export type NotificationType = (typeof Notification)[keyof typeof Notification];

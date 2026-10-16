@@ -37,6 +37,7 @@ import {
   planRouter,
   ricePaymentRouter,
   riceRouter,
+  settlementRouter,
   soldProductRouter,
   subscriptionRouter,
   tenantMembershipRouter,
@@ -104,6 +105,7 @@ app.use("/api/v1/meal-settings", mealSettingRouter);
 app.use("/api/v1/meal-preferences", mealPreferenceRouter);
 app.use("/api/v1/my-profile", myProfileRouter);
 app.use("/api/v1/payment-methods", paymentMethodRouter);
+app.use("/api/v1/settlements", settlementRouter);
 
 // testing purpose-----
 

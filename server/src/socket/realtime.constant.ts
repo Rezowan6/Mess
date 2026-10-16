@@ -23,6 +23,7 @@ export const RealtimeResource = {
   MY_PROFILE: "my-profile",
 
   PAYMENT_METHOD: "payment-method",
+  SETTLEMENT: "settlement",
 } as const;
 
 export type RealtimeResourceType =

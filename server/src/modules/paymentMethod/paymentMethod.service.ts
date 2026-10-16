@@ -68,7 +68,10 @@ class PaymentMethodService {
   }
 
   async getPaymentMethods(tenantId: number, userId: number) {
-    const paymentMethods = await paymentMethodRepository.findAllByTenantAndUser(tenantId, userId)
+    const paymentMethods = await paymentMethodRepository.findAllByTenantAndUser(
+      tenantId,
+      userId,
+    );
 
     return paymentMethods.map((paymentMethod) => ({
       id: String(paymentMethod.id),
@@ -213,10 +216,10 @@ class PaymentMethodService {
     );
 
     socketService.emitToUser(userId, SocketEvent.DATA_UPDATED, {
-  resource: RealtimeResource.PAYMENT_METHOD,
-  action: RealtimeAction.DELETED,
-  tenantId,
-});
+      resource: RealtimeResource.PAYMENT_METHOD,
+      action: RealtimeAction.DELETED,
+      tenantId,
+    });
 
     return null;
   }

@@ -23,6 +23,7 @@ import planRouter from "@/modules/plan/plan.route.js";
 import planFeatureRouter from "@/modules/planFeature/planFeature.route.js";
 import riceRouter from "@/modules/rice/rice.route.js";
 import ricePaymentRouter from "@/modules/ricePayment/ricePayment.route.js";
+import settlementRouter from "@/modules/settlement/settlement.route.js";
 import soldProductRouter from "@/modules/soldProduct/soldProduct.route.js";
 import subscriptionRouter from "@/modules/subscription/subscription.route.js";
 import tenantRoute from "@/modules/tenant/tenant.route.js";
@@ -54,6 +55,7 @@ export {
   planRouter,
   ricePaymentRouter,
   riceRouter,
+  settlementRouter,
   soldProductRouter,
   subscriptionRouter,
   tenantMembershipRouter,
