@@ -224,7 +224,10 @@ class PaymentMethodService {
       throw new ApiError(404, "Payment method not found.");
     }
 
-    await paymentMethodRepository.delete({ id, tenantId, userId });
+    await paymentMethodRepository.delete(
+      { id, tenantId, userId },
+      { force: true },
+    );
 
     return null;
   }
