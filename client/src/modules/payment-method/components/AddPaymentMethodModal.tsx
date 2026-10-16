@@ -8,6 +8,7 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 import { RecordFormModal } from "@/shared/forms/RecordFormModal";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 
+import { Checkbox } from "@/shared/components/ui/Checkbox";
 import { useCreatePaymentMethod } from "../hooks/useCreatePaymentMethod";
 import { useUpdatePaymentMethod } from "../hooks/useUpdatePaymentMethod";
 import {
@@ -170,17 +171,22 @@ export const AddPaymentMethodModal = ({
         />
       )}
 
-      <label className="flex cursor-pointer items-center gap-3">
-        <input
-          type="checkbox"
-          className="h-4 w-4 rounded border-theme-border accent-theme-brand"
-          disabled={isEdit && paymentMethod?.isActive === false}
-          {...register("isDefault")}
-        />
-        <span className="text-sm text-theme-text">
-          Set as default payment method
-        </span>
-      </label>
+      <Controller
+        name="isDefault"
+        control={control}
+        render={({ field }) => (
+          <label className="flex cursor-pointer items-center gap-3">
+            <Checkbox
+              checked={field.value}
+              onChange={field.onChange}
+              disabled={isEdit && paymentMethod?.isActive === false}
+            />
+            <span className="text-sm text-theme-text">
+              Set as default payment method
+            </span>
+          </label>
+        )}
+      />
     </RecordFormModal>
   );
 };
