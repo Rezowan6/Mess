@@ -2,6 +2,7 @@ import { deposits } from "@/modules/deposit/query/deposit.querykey";
 import { eggRates } from "@/modules/egg-rate/query/eggRate.querykey";
 import { eggs } from "@/modules/egg/query/egg.querykey";
 import { expenses } from "@/modules/expense/query/expense.querykey";
+import { khalaBill } from "@/modules/khala-bill/query/khalaBill.querykey";
 import { mealPlannings } from "@/modules/meal-planning/query/mealPlanning.querykey";
 import { mealPreferences } from "@/modules/meal-preference/query/mealPrefeerence.querykey";
 import { mealRequests } from "@/modules/meal-request/query/mealRequest.querykey";
@@ -264,4 +265,7 @@ export const queryKeys = {
   // Tenant + Meal Session based
   // ============================================================
   notifications,
+
+
+  khalaBill,
 };
