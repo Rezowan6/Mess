@@ -51,9 +51,9 @@ export const PERMISSIONS = {
   MEAL_ENTRY_VIEW: "meal_entry.view",
   MEAL_ENTRY_CREATE: "meal_entry.create",
   MEAL_ENTRY_UPDATE: "meal_entry.update",
-  
+
   MEAL_REQUEST_CREATE: "meal_request.create",
-  
+
   // meal setting
   MEAL_SETTING_VIEW: "meal_setting.view",
   MEAL_SETTING_CREATE: "meal_setting.create",
@@ -98,10 +98,16 @@ export const PERMISSIONS = {
   // System
   SYSTEM_MANAGE: "system.manage",
 
-
+  // payment method
   PAYMENT_METHOD_CREATE: "paymentMethod.create",
   PAYMENT_METHOD_UPDATE: "paymentMethod.update",
   PAYMENT_METHOD_VIEW: "paymentMethod.view",
+
+  // Settlement
+  SETTLEMENT_VIEW: "settlement.view",
+  SETTLEMENT_CREATE: "settlement.create",
+  SETTLEMENT_UPDATE: "settlement.update",
+  SETTLEMENT_DELETE: "settlement.delete",
 } as const;
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];

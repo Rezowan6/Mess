@@ -16,11 +16,13 @@ import { paymentRoutes } from "@/modules/payment/routes/payment.routes";
 import { planFeatureRoutes } from "@/modules/plan-feature/routes/planFeature.routes";
 import { planRoutes } from "@/modules/plan/routes/plan.routes";
 import { settingRoutes } from "@/modules/settings/routes/setting.routes";
+import { settlementRoutes } from "@/modules/settlement/routes/settlement.routes";
 import { subscriptionRoutes } from "@/modules/subscription/routes/subscription.routes";
 import { tenantRoutes } from "@/modules/tenant/routes/tenant.routes";
 import { userManagementRoutes } from "@/modules/user-management/routes/userManagement.routes";
 
 export const dashboardRoutes = [
+  settlementRoutes,
   paymentMethodRoutes,
   noticeRoutes,
   mealRequestRoutes,
