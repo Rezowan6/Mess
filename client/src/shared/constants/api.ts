@@ -210,4 +210,11 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `/khala-bills/${id}`,
     DELETE: (id: number) => `/khala-bills/${id}`,
   },
+  CURRENT_BILL: {
+    CREATE: "/current-bills",
+    GET_ALL: "/current-bills",
+    GET_BY_ID: (id: number) => `/current-bills/${id}`,
+    UPDATE: (id: number) => `/current-bills/${id}`,
+    DELETE: (id: number) => `/current-bills/${id}`,
+  },
 };

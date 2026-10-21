@@ -5,7 +5,7 @@ import type { IKhalaBillListResponse } from "../types/khalaBill.types";
 export const khalaBillApi = {
   getAll: async (): Promise<IKhalaBillListResponse> => {
     const { data } = await API.get<IKhalaBillListResponse>(
-      API_ENDPOINTS.DEPOSIT.GET_ALL,
+      API_ENDPOINTS.KHALA_BILL.GET_ALL,
     );
 
     return data;
