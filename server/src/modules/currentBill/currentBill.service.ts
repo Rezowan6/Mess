@@ -6,6 +6,7 @@ import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { isWithinHours } from "@/utils/date.util.js";
+import { logger } from "@/utils/logger.js";
 import { Notification } from "../notification/notification.interface.js";
 import { notificationService } from "../notification/notification.service.js";
 import {
@@ -26,11 +27,7 @@ class CurrentBillService {
     });
   }
 
-  async getById({
-    tenantId,
-    userId,
-    year,
-  }: IGetBYIdCurrentBill) {
+  async getById({ tenantId, userId, year }: IGetBYIdCurrentBill) {
     return await currentBillRepository.getByIdMemberCurrentBill({
       tenantId,
       userId,
@@ -72,9 +69,9 @@ class CurrentBillService {
         type: Notification.CURRENT_BILL_ADDED,
       });
     } catch (error) {
-      console.error(
-        `[Deposit] Failed to create notification for tenant ${tenantId}, user ${userId}:`,
-        error,
+      logger.error(
+        { error, tenantId, userId },
+        "Current-bill create notification creation failed",
       );
     }
 
@@ -137,9 +134,9 @@ class CurrentBillService {
         type: Notification.CURRENT_BILL_UPDATED,
       });
     } catch (error) {
-      console.error(
-        `[current-bill] Failed to create update notification for tenant ${tenantId}, user ${currentBill.userId}:`,
-        error,
+      logger.error(
+        { error, tenantId, userId: currentBill.userId },
+        "current-bill update notification creation failed",
       );
     }
 
@@ -196,9 +193,9 @@ class CurrentBillService {
         type: Notification.CURRENT_BILL_DELETED,
       });
     } catch (error) {
-      console.error(
-        `[current-bill] Failed to create delete notification for tenant ${tenantId}, user ${userId}:`,
-        error,
+      logger.error(
+        { error, tenantId, userId },
+        "Current-bill delete notification creation failed",
       );
     }
 
