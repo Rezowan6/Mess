@@ -4,6 +4,7 @@ import { setupEggAssociations } from "@/modules/egg/egg.association.js";
 import { setupEggRateAssociations } from "@/modules/eggRates/eggRate.association.js";
 import { setupExpenseAssociations } from "@/modules/expenses/expense.association.js";
 import { setupInviteAssociations } from "@/modules/invite/invite.association.js";
+import { setupKhalaBillAssociations } from "@/modules/khalaBill/khalaBill.association.js";
 import { setupMealEntryAssociations } from "@/modules/mealEntry/mealEntry.association.js";
 import { setupMealPreferenceAssociations } from "@/modules/MealPreference/mealPreference.association.js";
 import { setupMealRequestAssociations } from "@/modules/mealRequest/mealRequest.association.js";
@@ -44,4 +45,5 @@ export const setupAssociations = () => {
   setupSoldProductAssociations();
 
   setupCurrentBillAssociations();
+  setupKhalaBillAssociations();
 };

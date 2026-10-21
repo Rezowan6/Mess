@@ -7,7 +7,7 @@ import { Request, Response } from "express";
 import { currentBillService } from "./currentBill.service.js";
 
 class CurrentBillController {
-  getMembercurrentBills = asyncHandler(async (req: Request, res: Response) => {
+  getMemberCurrentBills = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 
     const { month, year } = getCurrentMonthAndYear();
@@ -25,26 +25,24 @@ class CurrentBillController {
     });
   });
 
-  getById = asyncHandler(
-    async (req: Request, res: Response) => {
-      const { tenantId } = getTenantContext(req);
-      const id = getIdParam(req);
+  getById = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantContext(req);
+    const id = getIdParam(req);
 
-      const { year } = getCurrentMonthAndYear();
+    const { year } = getCurrentMonthAndYear();
 
-      const currentBill = await currentBillService.getById({
-        tenantId,
-        userId: id,
-        year: Number(year),
-      });
+    const currentBill = await currentBillService.getById({
+      tenantId,
+      userId: id,
+      year: Number(year),
+    });
 
-      return sendResponse(res, {
-        statusCode: 201,
-        message: "Current-bill fetched successfully",
-        data: currentBill,
-      });
-    },
-  );
+    return sendResponse(res, {
+      statusCode: 201,
+      message: "Current-bill fetched successfully",
+      data: currentBill,
+    });
+  });
 
   create = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId } = getTenantContext(req);
@@ -57,7 +55,7 @@ class CurrentBillController {
 
     return sendResponse(res, {
       statusCode: 201,
-      message: "Deposit create successfully",
+      message: "Current-bill create successfully",
       data: deposit,
     });
   });

@@ -26,6 +26,10 @@ export const Notification = {
   CURRENT_BILL_ADDED: "CURRENT_BILL_ADDED",
   CURRENT_BILL_UPDATED: "CURRENT_BILL_UPDATED",
   CURRENT_BILL_DELETED: "CURRENT_BILL_DELETED",
+
+  KHALA_BILL_ADDED: "KHALA_BILL_ADDED",
+  KHALA_BILL_UPDATED: "KHALA_BILL_UPDATED",
+  KHALA_BILL_DELETED: "KHALA_BILL_DELETED",
 } as const;
 
 export type NotificationType = (typeof Notification)[keyof typeof Notification];

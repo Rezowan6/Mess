@@ -8,6 +8,7 @@ import { EggRate } from "@/modules/eggRates/eggRate.model.js";
 import { Expenses } from "@/modules/expenses/expenses.model.js";
 import { Feature } from "@/modules/feature/feature.model.js";
 import { Invite } from "@/modules/invite/invite.model.js";
+import { KhalaBill } from "@/modules/khalaBill/khalaBill.model.js";
 import { MealEntry } from "@/modules/mealEntry/mealEntry.model.js";
 import { MealRequest } from "@/modules/mealRequest/mealRequest.model.js";
 import { MealSession } from "@/modules/mealSession/mealSession.model.js";
@@ -31,6 +32,7 @@ export {
   Expenses,
   Feature,
   Invite,
+  KhalaBill,
   MealEntry,
   MealPreference,
   MealRequest,

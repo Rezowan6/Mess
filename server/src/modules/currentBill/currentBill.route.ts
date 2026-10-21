@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/", ...managerAccess, currentBillController.create);
 
-router.get("/", ...allAccess, currentBillController.getMembercurrentBills);
+router.get("/", ...allAccess, currentBillController.getMemberCurrentBills);
 
 router.get("/:id", ...allAccess, currentBillController.getById);
 

@@ -1,4 +1,5 @@
 import authRouter from "@/modules/auth/auth.routes.js";
+import currentBillRouter from "@/modules/currentBill/currentBill.route.js";
 import dashboardRouter from "@/modules/dashboard/dashboard.route.js";
 import depositRouter from "@/modules/deposit/deposit.route.js";
 import eggRouter from "@/modules/egg/egg.route.js";
@@ -6,6 +7,7 @@ import eggRateRouter from "@/modules/eggRates/eggRate.route.js";
 import expensesRouter from "@/modules/expenses/expenses.route.js";
 import featureRouter from "@/modules/feature/feature.route.js";
 import invitesRouter from "@/modules/invite/invite.route.js";
+import khalaBillRouter from "@/modules/khalaBill/khalaBill.route.js";
 import mealEntriesRouter from "@/modules/mealEntry/mealEntry.route.js";
 import mealPlanningRouter from "@/modules/mealPlanning/mealPlanning.route.js";
 import mealPreferenceRouter from "@/modules/MealPreference/mealPreference.route.js";
@@ -26,11 +28,10 @@ import soldProductRouter from "@/modules/soldProduct/soldProduct.route.js";
 import subscriptionRouter from "@/modules/subscription/subscription.route.js";
 import tenantRoute from "@/modules/tenant/tenant.route.js";
 import tenantMembershipRouter from "@/modules/tenantMembership/tenantMembership.route.js";
-import currentBillRouter from "@/modules/currentBill/currentBill.route.js";
 
 export {
-  currentBillRouter,
   authRouter,
+  currentBillRouter,
   dashboardRouter,
   depositRouter,
   eggRateRouter,
@@ -38,6 +39,7 @@ export {
   expensesRouter,
   featureRouter,
   invitesRouter,
+  khalaBillRouter,
   mealEntriesRouter,
   mealPlanningRouter,
   mealPreferenceRouter,

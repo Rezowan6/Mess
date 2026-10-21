@@ -23,6 +23,8 @@ export const RealtimeResource = {
   MY_PROFILE: "my-profile",
 
   CURRENT_BILL: "current-bill",
+
+  KHALA_BILL: "khala-bill"
 } as const;
 
 export type RealtimeResourceType =
