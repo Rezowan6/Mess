@@ -13,6 +13,7 @@ import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
 // router:
 import {
   authRouter,
+  currentBillRouter,
   dashboardRouter,
   depositRouter,
   eggRateRouter,
@@ -102,6 +103,8 @@ app.use("/api/v1/notifications", notificationRouter);
 app.use("/api/v1/meal-settings", mealSettingRouter);
 app.use("/api/v1/meal-preferences", mealPreferenceRouter);
 app.use("/api/v1/my-profile", myProfileRouter);
+
+app.use("/api/v1/current-bills", currentBillRouter);
 
 // testing purpose-----
 

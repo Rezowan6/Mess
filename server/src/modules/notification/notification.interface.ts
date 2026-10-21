@@ -22,6 +22,10 @@ export const Notification = {
   DEPOSIT_ADDED: "DEPOSIT_ADDED",
   DEPOSIT_UPDATED: "DEPOSIT_UPDATED",
   DEPOSIT_DELETED: "DEPOSIT_DELETED",
+
+  CURRENT_BILL_ADDED: "CURRENT_BILL_ADDED",
+  CURRENT_BILL_UPDATED: "CURRENT_BILL_UPDATED",
+  CURRENT_BILL_DELETED: "CURRENT_BILL_DELETED",
 } as const;
 
 export type NotificationType = (typeof Notification)[keyof typeof Notification];
@@ -29,7 +33,7 @@ export type NotificationType = (typeof Notification)[keyof typeof Notification];
 export interface INotificationContext {
   tenantId: number;
   userId: number;
-  mealSessionId: number;
+  mealSessionId: number | null;
 }
 
 export interface INotificationPaginationContext extends INotificationContext {

@@ -26,8 +26,10 @@ import soldProductRouter from "@/modules/soldProduct/soldProduct.route.js";
 import subscriptionRouter from "@/modules/subscription/subscription.route.js";
 import tenantRoute from "@/modules/tenant/tenant.route.js";
 import tenantMembershipRouter from "@/modules/tenantMembership/tenantMembership.route.js";
+import currentBillRouter from "@/modules/currentBill/currentBill.route.js";
 
 export {
+  currentBillRouter,
   authRouter,
   dashboardRouter,
   depositRouter,

@@ -1,3 +1,4 @@
+import { setupCurrentBillAssociations } from "@/modules/currentBill/currentBill.association.js";
 import { setupDepositAssociations } from "@/modules/deposit/deposit.association.js";
 import { setupEggAssociations } from "@/modules/egg/egg.association.js";
 import { setupEggRateAssociations } from "@/modules/eggRates/eggRate.association.js";
@@ -41,4 +42,6 @@ export const setupAssociations = () => {
   setupEggAssociations();
   setupEggRateAssociations();
   setupSoldProductAssociations();
+
+  setupCurrentBillAssociations();
 };
