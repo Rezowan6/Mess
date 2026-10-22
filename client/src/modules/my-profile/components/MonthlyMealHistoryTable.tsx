@@ -21,19 +21,20 @@ export const MonthlyMealHistoryTable = ({
   totalMeal,
   isPending,
 }: Props) => {
-  const { page, search, handleSearch, handlePage } =
-    useTableSearchParams();
+  const { page, search, handleSearch, handlePage } = useTableSearchParams();
 
   const columns = useMonthlyMealHistoryColumns();
 
   const filteredMeals = useMemo(() => {
-    if (!search) return meals;
+    const normalizedSearch = search.trim().toLowerCase();
 
-    const normalizedSearch = search.toLowerCase();
+    if (!normalizedSearch) return meals;
 
-    return meals.filter((meal) =>
-      meal.date.toLowerCase().includes(normalizedSearch),
-    );
+    return meals.filter((meal) => {
+      const date = String(meal.date ?? "").toLowerCase();
+
+      return date.includes(normalizedSearch);
+    });
   }, [meals, search]);
 
   const totalPages = Math.ceil(filteredMeals.length / PAGE_LIMIT);
@@ -41,10 +42,7 @@ export const MonthlyMealHistoryTable = ({
   const paginatedMeals = useMemo(() => {
     const startIndex = (page - 1) * PAGE_LIMIT;
 
-    return filteredMeals.slice(
-      startIndex,
-      startIndex + PAGE_LIMIT,
-    );
+    return filteredMeals.slice(startIndex, startIndex + PAGE_LIMIT);
   }, [filteredMeals, page]);
 
   const meta =
@@ -68,6 +66,7 @@ export const MonthlyMealHistoryTable = ({
       message={MONTHLY_MEAL_HISTORY_MESSAGES}
       skeleton={<MyMealHistorySkeleton />}
       search={search}
+      searchPlaceholder="date"
       onSearch={handleSearch}
       onPageChange={handlePage}
       summary={{

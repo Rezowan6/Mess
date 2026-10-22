@@ -36,29 +36,7 @@ class MealEntryService {
     });
   }
 
-  async dailySummary({ tenantId, date }: { tenantId: number; date: Date }) {
-    if (!date || Number.isNaN(date.getTime())) {
-      throw new ApiError(400, "Valid date is required");
-    }
 
-    return mealEntryRepository.getDailySummary(tenantId, date);
-  }
-
-  async getMemberMealSummary({
-    tenantId,
-    mealSessionId,
-    query,
-  }: {
-    tenantId: number;
-    mealSessionId: number;
-    query: IPaginationQuery;
-  }) {
-    return await mealEntryRepository.getMemberMealSummary({
-      tenantId,
-      mealSessionId,
-      query,
-    });
-  }
 
   async memberSummary({
     tenantId,
@@ -68,19 +46,6 @@ class MealEntryService {
     mealSessionId: number;
   }) {
     return mealEntryRepository.getMemberSummary(tenantId, mealSessionId);
-  }
-
-  async summary({
-    tenantId,
-    mealSessionId,
-  }: {
-    tenantId: number;
-    mealSessionId: number;
-  }) {
-    return mealEntryRepository.getTotalMealByMealSession(
-      tenantId,
-      mealSessionId,
-    );
   }
 
   // client site not used

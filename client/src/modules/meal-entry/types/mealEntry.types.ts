@@ -111,15 +111,7 @@ export interface IMealEntryListResponse {
   meta: IPaginationMeta;
 }
 
-export interface IMealEntrySummaryResponse {
-  statusCode: number;
 
-  success: boolean;
-
-  message: string;
-
-  data: IMealSummary;
-}
 
 export interface ITodayMealEntry extends IMealEntry {
   mealRequest?: {
