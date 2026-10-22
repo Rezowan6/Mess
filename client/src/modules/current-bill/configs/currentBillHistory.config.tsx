@@ -8,6 +8,7 @@ import { formatDateTime } from "@/shared/utils/time";
 
 import { CurrentBillAction } from "../components/currentBillAction";
 import type { ICurrentBill } from "../types/currentBill.types";
+import { formatMonthName } from "@/shared/utils/date.utils";
 
 export const useCurrentBillHistoryColumns = (
   onEdit: (currentBill: ICurrentBill) => void,
@@ -19,6 +20,11 @@ export const useCurrentBillHistoryColumns = (
       key: "sl",
       title: "#",
       render: (_, index) => index + 1,
+    },
+    {
+      key: "month",
+      title: "Billing Month",
+      render: (bill) => <span>{formatMonthName(bill.month)}</span>,
     },
     {
       key: "date",
@@ -41,6 +47,17 @@ export const useCurrentBillHistoryColumns = (
         <Badge size="sm" variant="soft-secondary">
           {currentBill.paymentMethod}
         </Badge>
+      ),
+    },
+    {
+      key: "status",
+      title: "Status",
+      render: (bill) => (
+        <>
+          <Badge size="sm" variant="soft-success">
+            {bill.status.replace("_", " ")}
+          </Badge>
+        </>
       ),
     },
   ];
