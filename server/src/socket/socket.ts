@@ -97,6 +97,8 @@ export const initSocket = (server: HttpServer) => {
 
         socket.join(SocketRoom.tenant(tenantId));
 
+        socket.join(SocketRoom.tenantUser(tenantId, userId));
+
         socket.join(SocketRoom.mealSession(tenantId, mealSessionId));
       },
     );

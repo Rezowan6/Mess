@@ -1,3 +1,4 @@
+import type { DepositPaymentMethodType } from "../deposit/deposit.interface.js";
 export const CURRENT_BILL_STATUS = [
   "pending",
   "partially_paid",
@@ -6,21 +7,27 @@ export const CURRENT_BILL_STATUS = [
 
 export type CurrentBillStatus = (typeof CURRENT_BILL_STATUS)[number];
 
-interface Base {
+export interface ICreateCurrentBillDto {
   tenantId: number;
   userId: number;
   createdBy: number;
   amount: number;
-  status: CurrentBillStatus;
+  paymentMethod: DepositPaymentMethodType;
   month: number;
   year: number;
+  status?: CurrentBillStatus;
 }
 
-export interface ICreateCuttentBillDto extends Base {}
-export interface IUpdateCuttentBillDto extends Base {
+export interface IUpdateCurrentBillDto {
   id: number;
+  tenantId: number;
+  createdBy: number;
+  amount?: number;
+  paymentMethod?: DepositPaymentMethodType;
+  status?: CurrentBillStatus;
 }
-export interface IDeleteCuttentBillDto {
+
+export interface IDeleteCurrentBillDto {
   id: number;
   tenantId: number;
   createdBy: number;

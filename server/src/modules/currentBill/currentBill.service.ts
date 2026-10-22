@@ -10,11 +10,11 @@ import { logger } from "@/utils/logger.js";
 import { Notification } from "../notification/notification.interface.js";
 import { notificationService } from "../notification/notification.service.js";
 import {
-  ICreateCuttentBillDto,
-  IDeleteCuttentBillDto,
+  ICreateCurrentBillDto,
+  IDeleteCurrentBillDto,
   IGetBYIdCurrentBill,
   IGetCurrentBills,
-  IUpdateCuttentBillDto,
+  IUpdateCurrentBillDto,
 } from "./currentBill.interface.js";
 import { currentBillRepository } from "./currentBill.repository.js";
 
@@ -35,7 +35,7 @@ class CurrentBillService {
     });
   }
 
-  async create(data: ICreateCuttentBillDto) {
+  async create(data: ICreateCurrentBillDto) {
     const { tenantId, userId, month, year, createdBy } = data;
 
     const currentBill = await currentBillRepository.findOne({
@@ -48,9 +48,12 @@ class CurrentBillService {
     if (currentBill) {
       throw new ApiError(409, "Current bill allready exists this month.");
     }
-    const result = await currentBillRepository.create({ ...data, status: "paid", });
+    const result = await currentBillRepository.create({
+      ...data,
+      status: "paid",
+    });
 
-    socketService.emitToUser(tenantId, SocketEvent.DATA_UPDATED, {
+    socketService.emitToTenantUser(tenantId, userId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.CURRENT_BILL,
       action: RealtimeAction.CREATED,
       tenantId,
@@ -58,6 +61,7 @@ class CurrentBillService {
     });
 
     // Notify only the member who received the currentBill.
+    const billingPeriod = `${month}/${year}`;
     try {
       await notificationService.create({
         tenantId,
@@ -65,7 +69,7 @@ class CurrentBillService {
         createdBy,
         mealSessionId: null,
         title: "Current-bill Added",
-        message: `A Current bill of ৳ ${Number(result.amount).toFixed(2)} has been added to your account.`,
+        message: `Your current bill of ৳ ${Number(result.amount).toFixed(2)} for ${billingPeriod} has been added to your account.`,
         type: Notification.CURRENT_BILL_ADDED,
       });
     } catch (error) {
@@ -78,13 +82,11 @@ class CurrentBillService {
     return null;
   }
 
-  async update(data: IUpdateCuttentBillDto) {
-    const { id, tenantId, month, year, createdBy } = data;
+  async update(data: IUpdateCurrentBillDto) {
+    const { id, tenantId, createdBy } = data;
     const currentBill = await currentBillRepository.findOne({
       id,
       tenantId,
-      month,
-      year,
     });
 
     if (!currentBill) {
@@ -103,10 +105,19 @@ class CurrentBillService {
     // Keep the old amount for the notification message
     const oldAmount = Number(currentBill.amount);
 
-    // tenantId and mealSessionId in the where clause keep the update inside this tenant
-    await currentBillRepository.update({ id, userId, tenantId }, data);
+    const updates = {
+      ...(data.amount !== undefined && { amount: data.amount }),
+      ...(data.paymentMethod !== undefined && {
+        paymentMethod: data.paymentMethod,
+      }),
+      ...(data.status !== undefined && { status: data.status }),
+    };
 
-    socketService.emitToUser(tenantId, SocketEvent.DATA_UPDATED, {
+    await currentBillRepository.update(
+      { id, tenantId, userId: currentBill.userId },
+      updates,
+    );
+    socketService.emitToTenantUser(tenantId, userId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.CURRENT_BILL,
       action: RealtimeAction.UPDATED,
       tenantId,
@@ -119,10 +130,12 @@ class CurrentBillService {
       const newAmount =
         data.amount !== undefined ? Number(data.amount) : oldAmount;
 
+      const billingPeriod = `${currentBill.month}/${currentBill.year}`;
+
       const message =
         newAmount !== oldAmount
-          ? `Your current-bill has been updated from ৳ ${oldAmount.toFixed(2)} to ৳ ${newAmount.toFixed(2)}.`
-          : "Your current-bill details have been updated.";
+          ? `Your current bill for ${billingPeriod} has been updated from ৳ ${oldAmount.toFixed(2)} to ৳ ${newAmount.toFixed(2)}.`
+          : `Your current bill details for ${billingPeriod} have been updated.`;
 
       await notificationService.create({
         tenantId,
@@ -143,7 +156,7 @@ class CurrentBillService {
     return null;
   }
 
-  async delete(data: IDeleteCuttentBillDto) {
+  async delete(data: IDeleteCurrentBillDto) {
     const { id, tenantId, createdBy } = data;
 
     const currentBill = await currentBillRepository.findOne({
@@ -173,7 +186,7 @@ class CurrentBillService {
       userId,
     });
 
-    socketService.emitToUser(tenantId, SocketEvent.DATA_UPDATED, {
+    socketService.emitToTenantUser(tenantId, userId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.CURRENT_BILL,
       action: RealtimeAction.DELETED,
       tenantId,
@@ -183,13 +196,15 @@ class CurrentBillService {
     // Notify only the member whose deposit was removed.
     // A notification failure must never fail the delete itself.
     try {
+      const billingPeriod = `${currentBill.month}/${currentBill.year}`;
+
       await notificationService.create({
         tenantId,
         userId,
         createdBy,
         mealSessionId: null,
         title: "current-bill Removed",
-        message: `Your current-bill of ৳ ${amount.toFixed(2)} has been removed.`,
+        message: `Your current bill of ৳ ${amount.toFixed(2)} for ${billingPeriod} has been removed.`,
         type: Notification.CURRENT_BILL_DELETED,
       });
     } catch (error) {
