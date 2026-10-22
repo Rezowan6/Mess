@@ -7,6 +7,7 @@ import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { isWithinHours } from "@/utils/date.util.js";
 import { logger } from "@/utils/logger.js";
+import { khalaBillStatus } from "../khalaBill/khalaBill.interface.js";
 import { Notification } from "../notification/notification.interface.js";
 import { notificationService } from "../notification/notification.service.js";
 import {
@@ -50,7 +51,7 @@ class CurrentBillService {
     }
     const result = await currentBillRepository.create({
       ...data,
-      status: "paid",
+      status: khalaBillStatus.paid,
     });
 
     socketService.emitToTenantUser(tenantId, userId, SocketEvent.DATA_UPDATED, {
