@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { DepositHistoryTableSkeleton } from "@/modules/deposit/components/DepositHistoryTableSkeleton";
-import { DEPOSIT_MESSAGES } from "@/modules/deposit/configs/deposit.messages";
 import { EmptyState } from "@/shared/components/feedback/EmptyState";
 import { ErrorState } from "@/shared/components/feedback/ErrorState";
 import { AnimatedNumber } from "@/shared/components/ui/AnimatedNumber";
 import { MemberHeader } from "@/shared/components/ui/MemberHeader";
 import { Table } from "@/shared/components/ui/Table";
 import { CurrentBillFormModal } from "../components/CurrentBillFormModal";
+import { CURRENT_BILL_MESSAGES } from "../configs/currentBill.messages";
 import { useCurrentBillHistoryColumns } from "../configs/currentBillHistory.config";
 import { useCurrentBill } from "../hooks/useCurrentBill";
 import type { ICurrentBill } from "../types/currentBill.types";
@@ -36,10 +36,11 @@ export const CurrentBillHistoryPage = () => {
   }
 
   if (isError || !data) {
+    const { title, description } = CURRENT_BILL_MESSAGES.error;
     return (
       <ErrorState
-        title={DEPOSIT_MESSAGES.error.title}
-        description={DEPOSIT_MESSAGES.error.description}
+        title={title}
+        description={description}
         onRetry={() => void refetch()}
       />
     );
@@ -48,17 +49,18 @@ export const CurrentBillHistoryPage = () => {
   const currentBills = data.data ?? [];
 
   if (currentBills.length === 0) {
-    return (
-      <EmptyState
-        title={DEPOSIT_MESSAGES.memberNotFound.title}
-        description={DEPOSIT_MESSAGES.memberNotFound.description}
-      />
-    );
+    const { title, description } = CURRENT_BILL_MESSAGES.memberNotFound;
+    return <EmptyState title={title} description={description} />;
   }
 
   const currentBill = currentBills[0];
 
   const { name, avatar } = currentBill.member ?? {};
+
+  const totalBill = currentBills.reduce(
+    (total, bill) => total + Number(bill.amount),
+    0,
+  );
 
   return (
     <>
@@ -70,13 +72,17 @@ export const CurrentBillHistoryPage = () => {
           <div className="text-right">
             <p className="text-xs text-theme-text-muted">Total Current Bill</p>
             <p className="font-bold text-theme-success tabular-nums">
-              <AnimatedNumber value={0} prefix="৳ " duration={1000} />
+              <AnimatedNumber value={totalBill} prefix="৳ " duration={1000} />
             </p>
           </div>
         }
       />
 
-      <Table columns={columns} data={data.data} message={DEPOSIT_MESSAGES} />
+      <Table
+        columns={columns}
+        data={data.data}
+        message={CURRENT_BILL_MESSAGES}
+      />
 
       <CurrentBillFormModal
         isOpen={isEditOpen}
