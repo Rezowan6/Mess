@@ -4,6 +4,7 @@ import { depositRoutes } from "@/modules/deposit/routes/deposit.routes";
 import { expenseRoutes } from "@/modules/expense/routes/expense.routes";
 import { featureRoutes } from "@/modules/feature/routes/feature.routes";
 import { homeRoutes } from "@/modules/home/routes/home.routes";
+import { khalaBillRoutes } from "@/modules/khala-bill/routes/khalaBill.routes";
 import { mealEntryRoutes } from "@/modules/meal-entry/routes/mealEntry.routes";
 import { mealPlanningRoutes } from "@/modules/meal-planning/routes/mealPlanning.routes";
 import { mealPreferenceRoutes } from "@/modules/meal-preference/routes/mealPreference.routes";
@@ -21,6 +22,7 @@ import { tenantRoutes } from "@/modules/tenant/routes/tenant.routes";
 import { userManagementRoutes } from "@/modules/user-management/routes/userManagement.routes";
 
 export const dashboardRoutes = [
+  khalaBillRoutes,
   currentBillRoutes,
   noticeRoutes,
   mealRequestRoutes,

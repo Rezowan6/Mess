@@ -5,6 +5,7 @@ export const khalaBill = {
 
   list: ({ tenantId }: InvalidationContext) =>
     ["khala-bill", tenantId, "list"] as const,
-  getById: ({ tenantId }: InvalidationContext) =>
-    ["khala-bill", tenantId, "get-by-id"] as const,
+
+  getById: ({ tenantId, userId }: InvalidationContext & { userId: number }) =>
+    ["khala-bill", tenantId, "member-history", userId] as const,
 };

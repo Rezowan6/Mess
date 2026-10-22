@@ -6,16 +6,10 @@ import { invalidateKhalaBillQueries } from "../query/khalaBill.invalidation";
 
 export const useDeleteKhalaBill = () => {
   const queryClient = useQueryClient();
-
   const tenantId = useCurrentTenantId();
 
   return useMutation({
     mutationFn: (id: number) => khalaBillApi.delete(id),
-
-    onSuccess: () => {
-      invalidateKhalaBillQueries(queryClient, {
-        tenantId,
-      });
-    },
+    onSuccess: () => invalidateKhalaBillQueries(queryClient, { tenantId }),
   });
 };

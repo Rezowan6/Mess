@@ -103,6 +103,12 @@ export const PERMISSIONS = {
   CURRENT_BILL_CREATE: "current-bill.create",
   CURRENT_BILL_UPDATE: "current-bill.update",
   CURRENT_BILL_DELETE: "current-bill.delete",
+
+  // Khala Bill
+  KHALA_BILL_VIEW: "khala_bill.view",
+  KHALA_BILL_CREATE: "khala_bill.create",
+  KHALA_BILL_UPDATE: "khala_bill.update",
+  KHALA_BILL_DELETE: "khala_bill.delete",
 } as const;
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];

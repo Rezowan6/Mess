@@ -7,15 +7,10 @@ import { khalaBill } from "../query/khalaBill.querykey";
 export const useKhalaBills = () => {
   const tenantId = useCurrentTenantId();
 
-  return useQuery<any>({
+  return useQuery({
     queryKey: khalaBill.list({ tenantId }),
-
     queryFn: khalaBillApi.getAll,
-
     enabled: Boolean(tenantId),
-
-    placeholderData: (previous: any) => previous,
-
     staleTime: 1000 * 60 * 5,
   });
 };
