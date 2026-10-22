@@ -2,7 +2,7 @@ import { PERMISSIONS } from "@/shared/constants/permissions";
 
 import { RecordActions } from "@/shared/data-display/RecordActions";
 import { RecordDeleteMessage } from "@/shared/data-display/RecordDeleteMessage";
-import { isRecordLocked } from "@/shared/utils/date.utils";
+import { formatMonthName, isRecordLocked } from "@/shared/utils/date.utils";
 import { useDeleteCurrentBill } from "../hooks/useDeleteCurrentBill";
 import type { ICurrentBill } from "../types/currentBill.types";
 
@@ -29,7 +29,7 @@ export const CurrentBillAction = ({ currentBill, onEdit }: Props) => {
         },
         {
           label: "Month",
-          value: `${currentBill.month}/${currentBill.year}`,
+          value: `${formatMonthName(currentBill.month)}/${currentBill.year}`,
         },
       ]}
     />

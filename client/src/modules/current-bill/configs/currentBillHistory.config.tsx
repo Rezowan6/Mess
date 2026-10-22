@@ -1,8 +1,11 @@
 import type { TableColumn } from "@/shared/components/ui/Table";
 
+import { Badge } from "@/shared/components/ui/Badge";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
-import { formatDate } from "@/shared/utils/date.utils";
+import { formatTaka } from "@/shared/utils/format.utils";
+import { formatDateTime } from "@/shared/utils/time";
+
 import { CurrentBillAction } from "../components/currentBillAction";
 import type { ICurrentBill } from "../types/currentBill.types";
 
@@ -19,18 +22,26 @@ export const useCurrentBillHistoryColumns = (
     },
     {
       key: "date",
-      title: "Date",
-      render: (currentBill) => formatDate(currentBill.createdAt),
+      title: "Created At",
+      render: (currentBill) => (
+        <span className="text-theme-text-muted text-xs">
+          {formatDateTime(currentBill.createdAt)}
+        </span>
+      ),
     },
     {
       key: "amount",
       title: "Amount",
-      render: (deposit) => `৳ ${deposit.amount}`,
+      render: (currentBill) => formatTaka(currentBill.amount),
     },
     {
       key: "paymentMethod",
       title: "Payment Method",
-      render: (currentBill) => currentBill.paymentMethod,
+      render: (currentBill) => (
+        <Badge size="sm" variant="soft-secondary">
+          {currentBill.paymentMethod}
+        </Badge>
+      ),
     },
   ];
 
