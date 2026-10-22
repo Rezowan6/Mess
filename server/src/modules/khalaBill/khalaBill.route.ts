@@ -1,17 +1,17 @@
-import { allAccess, managerAccess } from "@/helpers/permission.js";
+import { adminAndManagerTenantAccess, allTenantAccess } from "@/helpers/permission.js";
 import express from "express";
 import { khalaBillController } from "./khalaBill.controller.js";
 
 const router = express.Router();
 
-router.post("/", ...managerAccess, khalaBillController.create);
+router.post("/", ...adminAndManagerTenantAccess, khalaBillController.create);
 
-router.get("/", ...allAccess, khalaBillController.getMemberKhalaBills);
+router.get("/", ...allTenantAccess, khalaBillController.getMemberKhalaBills);
 
-router.get("/:id", ...allAccess, khalaBillController.getById);
+router.get("/:id", ...allTenantAccess, khalaBillController.getById);
 
-router.patch("/:id", ...managerAccess, khalaBillController.update);
+router.patch("/:id", ...adminAndManagerTenantAccess, khalaBillController.update);
 
-router.delete("/:id", ...managerAccess, khalaBillController.delete);
+router.delete("/:id", ...adminAndManagerTenantAccess, khalaBillController.delete);
 
 export default router;

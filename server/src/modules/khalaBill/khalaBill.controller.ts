@@ -1,5 +1,5 @@
 import { getIdParam } from "@/helpers/getIdParam.helper.js";
-import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
+import { getTenantOnlyContext } from "@/helpers/getTenantOnlyContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { getCurrentMonthAndYear } from "@/utils/date.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
@@ -8,7 +8,7 @@ import { khalaBillService } from "./khalaBill.service.js";
 
 class KhalaBillController {
   getMemberKhalaBills = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId } = getTenantOnlyContext(req);
 
     const { month, year } = getCurrentMonthAndYear();
 
@@ -26,7 +26,7 @@ class KhalaBillController {
   });
 
   getById = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantContext(req);
+    const { tenantId } = getTenantOnlyContext(req);
     const id = getIdParam(req);
 
     const { year } = getCurrentMonthAndYear();
@@ -45,7 +45,7 @@ class KhalaBillController {
   });
 
   create = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, userId } = getTenantContext(req);
+    const { tenantId, userId } = getTenantOnlyContext(req);
 
     const deposit = await khalaBillService.create({
       ...req.body,
@@ -61,7 +61,7 @@ class KhalaBillController {
   });
 
   update = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, userId } = getTenantContext(req);
+    const { tenantId, userId } = getTenantOnlyContext(req);
     const id = getIdParam(req);
 
     const khalaBill = await khalaBillService.update({
@@ -79,7 +79,7 @@ class KhalaBillController {
   });
 
   delete = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId, userId } = getTenantContext(req);
+    const { tenantId, userId } = getTenantOnlyContext(req);
     const id = getIdParam(req);
 
     const khalaBill = await khalaBillService.delete({

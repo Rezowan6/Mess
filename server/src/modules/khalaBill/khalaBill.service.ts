@@ -15,6 +15,7 @@ import {
   IGetBYIdKhalaBill,
   IGetKhalaBills,
   IUpdateKhalaBillDto,
+  khalaBillStatus,
 } from "./khalaBill.interface.js";
 import { khalaBillRepository } from "./khalaBill.repository.js";
 
@@ -50,11 +51,11 @@ class KhalaBillService {
     }
     const result = await khalaBillRepository.create({
       ...data,
-      status: "paid",
+      status: khalaBillStatus.paid,
     });
 
-    socketService.emitToUser(tenantId, SocketEvent.DATA_UPDATED, {
-      resource: RealtimeResource.CURRENT_BILL,
+    socketService.emitToTenantUser(tenantId, userId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.KHALA_BILL,
       action: RealtimeAction.CREATED,
       tenantId,
       userId,
@@ -82,12 +83,10 @@ class KhalaBillService {
   }
 
   async update(data: IUpdateKhalaBillDto) {
-    const { id, tenantId, month, year, createdBy } = data;
+    const { id, tenantId, createdBy } = data;
     const khalaBill = await khalaBillRepository.findOne({
       id,
       tenantId,
-      month,
-      year,
     });
 
     if (!khalaBill) {
@@ -109,7 +108,7 @@ class KhalaBillService {
     // tenantId and mealSessionId in the where clause keep the update inside this tenant
     await khalaBillRepository.update({ id, userId, tenantId }, data);
 
-    socketService.emitToUser(tenantId, SocketEvent.DATA_UPDATED, {
+    socketService.emitToTenantUser(tenantId, userId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.KHALA_BILL,
       action: RealtimeAction.UPDATED,
       tenantId,
@@ -176,7 +175,7 @@ class KhalaBillService {
       userId,
     });
 
-    socketService.emitToUser(tenantId, SocketEvent.DATA_UPDATED, {
+    socketService.emitToTenantUser(tenantId, userId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.KHALA_BILL,
       action: RealtimeAction.DELETED,
       tenantId,
