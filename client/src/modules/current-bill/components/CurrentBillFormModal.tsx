@@ -178,13 +178,6 @@ export const CurrentBillFormModal = ({
         onSubmit={handleSubmit(onSubmit)}
         permission={permission}
       >
-        {!isEdit && (
-          <MemberSelector<CurrentBillFormValues>
-            name="userId"
-            label="Select Member"
-          />
-        )}
-
         <div className="grid grid-cols-2 gap-3">
           <Controller
             name="month"
@@ -240,6 +233,13 @@ export const CurrentBillFormModal = ({
             />
           )}
         />
+
+        {!isEdit && (
+          <MemberSelector<CurrentBillFormValues>
+            name="userId"
+            label="Select Member"
+          />
+        )}
       </RecordFormModal>
     </FormProvider>
   );

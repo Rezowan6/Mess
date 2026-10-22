@@ -1,6 +1,6 @@
-import { IconBox } from "@/shared/components/ui/IconBox";
-import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
+
+import { IconBox } from "@/shared/components/ui/IconBox";
 
 interface SettingsCardProps {
   title: string;
@@ -18,34 +18,38 @@ export const SettingsCard = ({
   children,
 }: SettingsCardProps) => {
   return (
-    <section className="rounded-theme-md border border-theme-border bg-theme-background shadow-theme-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-theme-md">
-      {/* Header */}
-      <div className="flex items-center justify-center p-4">
-        <div className="flex gap-4">
+    <section className="rounded-theme-md border border-theme-border bg-theme-background shadow-theme-sm">
+      <header className="flex flex-col gap-4 border-b border-theme-border p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+        <div className="flex min-w-0 items-start gap-3">
           {icon && (
             <IconBox
               icon={icon}
-              className="bg-theme-success-gradient text-theme-text"
+              size="md"
+              className="shrink-0"
+              bgClassName="bg-theme-info/10"
+              textClassName="text-theme-info"
             />
           )}
 
-          <div>
-            <h2 className="text-lg font-semibold">{title}</h2>
+          <div className="min-w-0">
+            <h2 className="text-base font-semibold text-theme-text sm:text-lg">
+              {title}
+            </h2>
 
             {description && (
-              <p className="mt-1 text-sm text-text">{description}</p>
+              <p className="mt-1 text-sm leading-5 text-theme-text-muted">
+                {description}
+              </p>
             )}
-            {actionLink && actionLink}
           </div>
         </div>
 
-        <ChevronRight size={18} className="text-theme-text-muted" />
-      </div>
+        {actionLink && (
+          <div className="shrink-0 sm:ml-auto">{actionLink}</div>
+        )}
+      </header>
 
-      <div className="border-t border-theme-border">
-        {/* Content */}
-        <div>{children}</div>
-      </div>
+      <div className="p-4 sm:p-5">{children}</div>
     </section>
   );
 };

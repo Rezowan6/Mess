@@ -169,13 +169,6 @@ export const KhalaBillFormModal = ({ isOpen, onClose, khalaBill }: Props) => {
         onSubmit={handleSubmit(onSubmit)}
         permission={permission}
       >
-        {!isEdit && (
-          <MemberSelector<KhalaBillFormValues>
-            name="userId"
-            label="Select Member"
-          />
-        )}
-
         <div className="grid grid-cols-2 gap-3">
           <Controller
             name="month"
@@ -230,6 +223,13 @@ export const KhalaBillFormModal = ({ isOpen, onClose, khalaBill }: Props) => {
             />
           )}
         />
+
+        {!isEdit && (
+          <MemberSelector<KhalaBillFormValues>
+            name="userId"
+            label="Select Member"
+          />
+        )}
       </RecordFormModal>
     </FormProvider>
   );
