@@ -98,10 +98,7 @@ export const API_ENDPOINTS = {
     LIST: "meal-entries",
     MY: "/meal-entries/my",
     TODAY_MEALS: "/meal-entries/today-meals",
-    DAILY_SUMMARY: "/meal-entries/daily-summary",
     MEMBERS_MEAL_SUMMARY: "/meal-entries/members-meal-summary",
-    SUMMARY: "/meal-entries/summary",
-    MEMBER_SUMMARY: "/meal-entries/member-summary",
     CREATE: "/meal-entries",
     UPDATE: (id: number) => `/meal-entries/${id}`,
     DELETE: (id: number) => `/meal-entries/${id}`,
@@ -203,6 +200,7 @@ export const API_ENDPOINTS = {
     DELETE: (id: number) => `/eggs/${id}`,
   },
 
+<<<<<<< HEAD
   PAYMENT_METHOD: {
     GET_ALL: "/payment-methods",
     CREATE: "/payment-methods",
@@ -216,5 +214,22 @@ export const API_ENDPOINTS = {
     BY_ID: (id: number) => `/settlements/${id}`,
     UPDATE: (id: number) => `/settlements/${id}`,
     DELETE: (id: number) => `/settlements/${id}`,
+=======
+  KHALA_BILL: {
+    CREATE: "/khala-bills",
+    GET_ALL: "/khala-bills",
+    GET_BY_ID: (id: number) => `/khala-bills/${id}`,
+    UPDATE: (id: number) => `/khala-bills/${id}`,
+    DELETE: (id: number) => `/khala-bills/${id}`,
+  },
+  CURRENT_BILL: {
+    CREATE: "/current-bills",
+    GET_ALL: "/current-bills",
+    GET_BY_ID: (id: number) => `/current-bills/${id}`,
+    UPDATE: (id: number) => `/current-bills/${id}`,
+    DELETE: (id: number) => `/current-bills/${id}`,
+    GET_DELETED: "/current-bills/deleted",
+    RESTORE: (id: number) => `/current-bills/${id}/restore`,
+>>>>>>> 3fca7c4f14f0a8892c10dc7ea95bad9da42af510
   },
 };

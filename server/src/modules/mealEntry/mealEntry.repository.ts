@@ -216,37 +216,6 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
     });
   }
 
-  async getDailySummary(tenantId: number, date: Date) {
-    const { start, end } = getRangeTime(date);
-
-    const summary = await this.findOneWithOptions({
-      where: {
-        tenantId,
-        date: {
-          [Op.between]: [start, end],
-        },
-      },
-
-      attributes: [
-        [fn("SUM", col("breakfast")), "totalBreakfast"],
-        [fn("SUM", col("lunch")), "totalLunch"],
-        [fn("SUM", col("dinner")), "totalDinner"],
-        [fn("SUM", col("guest_meal")), "totalGuestMeal"],
-
-        [
-          fn("SUM", literal("breakfast + lunch + dinner + guest_meal")),
-          "totalMeal",
-        ],
-
-        [fn("COUNT", literal("DISTINCT user_id")), "memberCount"],
-      ],
-
-      raw: true,
-    });
-
-    return summary;
-  }
-
   async getMemberSummary(tenantId: number, mealSessionId: number) {
     return await this.findAll({
       where: { tenantId, mealSessionId },
@@ -268,30 +237,6 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
     });
   }
 
-  async getTotalMealByMealSession(
-    tenantId: number,
-    mealSessionId: number,
-  ): Promise<IMealSummary | null> {
-    const result = await this.findOneWithOptions({
-      where: {
-        tenantId,
-        mealSessionId,
-      },
-
-      attributes: [
-        [fn("SUM", literal("breakfast + lunch + dinner")), "totalMeals"],
-        [
-          fn("SUM", literal("breakfast + lunch + dinner + guest_meal")),
-          "grandTotalMeals",
-        ],
-        [fn("SUM", col("guest_meal")), "totalGuestMeals"],
-        [fn("COUNT", literal("DISTINCT user_id")), "memberCount"],
-      ],
-      raw: true,
-    });
-
-    return result as IMealSummary | null;
-  }
 }
 
 export const mealEntryRepository = new MealEntryRepository();

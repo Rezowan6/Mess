@@ -1,5 +1,5 @@
 export const formatTaka = (value: number | string): string =>
-  `৳${Number(value).toFixed(2)}`;
+  `৳${Number(value)}`;
 
 export const formatKg = (value: number | string): string =>
   `${Number(value).toFixed(2)} kg`;

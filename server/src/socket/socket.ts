@@ -57,10 +57,16 @@ export const initSocket = (server: HttpServer) => {
 
     socket.on(
       SocketEvent.JOIN,
-      async (payload: { tenantId: number; mealSessionId: number }) => {
+      async (payload: { tenantId: number; mealSessionId?: number }) => {
         const { tenantId, mealSessionId } = payload;
-
         const userId = socket.data.userId;
+
+        if (!Number.isInteger(tenantId) || tenantId <= 0) {
+          socket.emit(SocketEvent.ERROR, {
+            message: "Invalid tenant.",
+          });
+          return;
+        }
 
         const membership = await TenantMembership.findOne({
           where: {
@@ -74,30 +80,32 @@ export const initSocket = (server: HttpServer) => {
           socket.emit(SocketEvent.ERROR, {
             message: "You are not an active member of this tenant.",
           });
-
           return;
         }
 
-        const mealSession = await MealSession.findOne({
-          where: {
-            id: mealSessionId,
-            tenantId,
-          },
-        });
-
-        if (!mealSession) {
-          socket.emit(SocketEvent.ERROR, {
-            message: "Invalid meal session.",
+        if (mealSessionId !== undefined) {
+          const mealSession = await MealSession.findOne({
+            where: {
+              id: mealSessionId,
+              tenantId,
+            },
           });
 
-          return;
+          if (!mealSession) {
+            socket.emit(SocketEvent.ERROR, {
+              message: "Invalid meal session.",
+            });
+            return;
+          }
         }
 
         socket.join(SocketRoom.user(userId));
-
         socket.join(SocketRoom.tenant(tenantId));
+        socket.join(SocketRoom.tenantUser(tenantId, userId));
 
-        socket.join(SocketRoom.mealSession(tenantId, mealSessionId));
+        if (mealSessionId !== undefined) {
+          socket.join(SocketRoom.mealSession(tenantId, mealSessionId));
+        }
       },
     );
 

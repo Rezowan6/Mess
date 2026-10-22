@@ -22,6 +22,12 @@ export const variantClasses = {
     "bg-theme-brand text-theme-on-brand shadow-theme-brand",
     "hover:bg-theme-brand-hover active:scale-[0.98]",
   ),
+  premium: cn(
+    "bg-gradient-to-r from-theme-brand to-theme-accent text-theme-on-brand",
+    "shadow-sm hover:shadow-md active:scale-[0.98]",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-brand focus-visible:ring-offset-2",
+    "disabled:pointer-events-none disabled:opacity-50",
+  ),
 } satisfies Record<ButtonVariant, string>;
 
 // Full class names, so Tailwind can detect them

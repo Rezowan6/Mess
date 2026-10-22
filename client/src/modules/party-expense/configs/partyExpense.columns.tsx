@@ -1,6 +1,7 @@
 // File: partyExpense.columns.ts
 
 import { ActionLink } from "@/shared/components/ui/ActionLink";
+import { Badge } from "@/shared/components/ui/Badge";
 import type { TableColumn } from "@/shared/components/ui/Table";
 import { ROUTES } from "@/shared/constants/routes";
 import { formatDate } from "@/shared/utils/date.utils";
@@ -26,7 +27,13 @@ export const usePartyExpenseColumns = (
     {
       key: "description",
       title: "Description",
-      render: (expense) => expense.description ?? "-",
+      render: (expense) => (
+        <>
+          <Badge size="sm" variant="soft-success">
+            {expense.description ?? "-"}
+          </Badge>
+        </>
+      ),
     },
     {
       key: "members",

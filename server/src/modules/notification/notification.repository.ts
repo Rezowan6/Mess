@@ -1,6 +1,7 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
 import { Notification, User } from "@/models/index.js";
 
+import { Op } from "sequelize";
 import {
   INotificationContext,
   INotificationPaginationContext,
@@ -9,6 +10,15 @@ import {
 class NotificationRepository extends BaseRepository<Notification> {
   constructor() {
     super(Notification);
+  }
+  private getSessionWhere(mealSessionId: number | null) {
+    if (mealSessionId === null) {
+      return { mealSessionId: null };
+    }
+
+    return {
+      [Op.or]: [{ mealSessionId }, { mealSessionId: null }],
+    };
   }
 
   async getAll({
@@ -22,7 +32,7 @@ class NotificationRepository extends BaseRepository<Notification> {
         where: {
           tenantId,
           userId,
-          mealSessionId,
+          ...this.getSessionWhere(mealSessionId),
         },
 
         include: [
@@ -48,7 +58,7 @@ class NotificationRepository extends BaseRepository<Notification> {
         id,
         tenantId,
         userId,
-        mealSessionId,
+        ...this.getSessionWhere(mealSessionId),
       },
 
       include: [
@@ -69,7 +79,7 @@ class NotificationRepository extends BaseRepository<Notification> {
       where: {
         tenantId,
         userId,
-        mealSessionId,
+        ...this.getSessionWhere(mealSessionId),
         isRead: false,
       },
     });
@@ -84,7 +94,7 @@ class NotificationRepository extends BaseRepository<Notification> {
         id,
         tenantId,
         userId,
-        mealSessionId,
+        ...this.getSessionWhere(mealSessionId),
       },
       {
         isRead: true,
@@ -101,7 +111,7 @@ class NotificationRepository extends BaseRepository<Notification> {
       {
         tenantId,
         userId,
-        mealSessionId,
+        ...this.getSessionWhere(mealSessionId),
         isRead: false,
       },
       {
@@ -119,7 +129,7 @@ class NotificationRepository extends BaseRepository<Notification> {
         id,
         tenantId,
         userId,
-        mealSessionId,
+        ...this.getSessionWhere(mealSessionId),
       },
       {
         force: true,

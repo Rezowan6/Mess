@@ -33,8 +33,12 @@ class NotificationService {
       type,
     });
 
-    socketService.emitToUser(userId, SocketEvent.NOTIFICATION, notification);
-
+    socketService.emitToTenantUser(
+      tenantId,
+      userId,
+      SocketEvent.NOTIFICATION,
+      notification,
+    );
     return notification;
   }
 

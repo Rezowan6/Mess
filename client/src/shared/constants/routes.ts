@@ -47,7 +47,13 @@ export const ROUTES = {
 
   SETTINGS: "/settings",
 
+<<<<<<< HEAD
   PAYMENT_METHOD: "/payment-methods",
 
   SETTLEMENT: "/settlements",
+=======
+  CURRENT_BILL: "/current-bills",
+
+  KHALA_BILL: "/khala-bills",
+>>>>>>> 3fca7c4f14f0a8892c10dc7ea95bad9da42af510
 } as const;

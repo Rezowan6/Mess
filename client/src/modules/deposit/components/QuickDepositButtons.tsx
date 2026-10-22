@@ -8,7 +8,8 @@ interface Props {
 }
 
 const QUICK_AMOUNTS = [
-  500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 2000,
+  500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 2000, 2100, 2200,
+  2300, 2400, 2500,
 ];
 
 export const QuickDepositButtons = ({ member, onAddDeposit }: Props) => {
@@ -22,7 +23,7 @@ export const QuickDepositButtons = ({ member, onAddDeposit }: Props) => {
           onClick={() => onAddDeposit(member, amount)}
           className="h-8 w-16 shrink-0"
         >
-          {amount}
+          ৳{Number(amount)}
         </Button>
       ))}
     </HorizontalScroller>

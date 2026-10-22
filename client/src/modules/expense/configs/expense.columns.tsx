@@ -4,6 +4,7 @@ import type { IExpense } from "../types/expense.types";
 
 import { ExpenseActions } from "../components/ExpenseActions";
 
+import { Badge } from "@/shared/components/ui/Badge";
 import { formatDate } from "@/shared/utils/date.utils";
 import { useExpenseTablePermissions } from "./expense.columns.permission";
 
@@ -16,7 +17,13 @@ export const useExpenseColumns = (
     {
       key: "signature",
       title: "Signature",
-      render: (expense) => expense.signature,
+      render: (expense) => (
+        <>
+          <Badge size="sm" variant="soft-success">
+            {expense.signature}
+          </Badge>
+        </>
+      ),
     },
     {
       key: "amount",

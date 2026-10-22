@@ -11,27 +11,28 @@ import { useEffect } from "react";
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const { tenantId, mealSessionId } = useCurrentTenantContext();
-
   const user = useAuthStore((state) => state.user);
-
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (!user?.id || !tenantId || !mealSessionId) {
+    if (!user?.id || !tenantId) {
       return;
     }
-    socket.connect();
 
-    socket.on("connect", () => {
+    const handleConnect = () => {
       socket.emit(SocketEvent.JOIN, {
-        tenantId: tenantId,
-        mealSessionId,
+        tenantId,
+        ...(mealSessionId ? { mealSessionId } : {}),
       });
-    });
+    };
 
     const handleDataUpdated = (payload: IDataUpdatedPayload) => {
+      if (payload.tenantId !== tenantId) {
+        return;
+      }
+
       if (
-        payload.tenantId !== tenantId ||
+        payload.mealSessionId !== undefined &&
         payload.mealSessionId !== mealSessionId
       ) {
         return;
@@ -39,19 +40,17 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
       invalidateRealtimeQueries(queryClient, payload);
     };
-    // notification
-    const handleNotification = (notification: any) => {
-      addNotificationToCache(
-        queryClient,
-        notification,
-        tenantId,
-        mealSessionId as number,
-      );
 
-      /**
-       * Role updated
-       * Refetch /auth/me so RBAC gets the latest role.
-       */
+    const handleNotification = (notification: any) => {
+      if (mealSessionId) {
+        addNotificationToCache(
+          queryClient,
+          notification,
+          tenantId,
+          mealSessionId,
+        );
+      }
+
       if (notification?.type === "ROLE_UPDATED") {
         queryClient.invalidateQueries({
           queryKey: queryKeys.auth.me,
@@ -59,19 +58,20 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
+    socket.on("connect", handleConnect);
     socket.on(SocketEvent.DATA_UPDATED, handleDataUpdated);
     socket.on(SocketEvent.NOTIFICATION, handleNotification);
 
-    socket.on("disconnect", () => {
-      console.log("❌ Disconnected");
-    });
+    socket.connect();
 
-    // cleanup...
+    if (socket.connected) {
+      handleConnect();
+    }
+
     return () => {
+      socket.off("connect", handleConnect);
       socket.off(SocketEvent.DATA_UPDATED, handleDataUpdated);
       socket.off(SocketEvent.NOTIFICATION, handleNotification);
-      socket.off("connect");
-      socket.off("disconnect");
       socket.disconnect();
     };
   }, [user?.id, tenantId, mealSessionId, queryClient]);

@@ -4,9 +4,11 @@ import type { IDeposit } from "../types/deposit.types";
 
 import { DepositActions } from "../components/DepositActions";
 
+import { Badge } from "@/shared/components/ui/Badge";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
-import { formatDate } from "@/shared/utils/date.utils";
+import { formatTaka } from "@/shared/utils/format.utils";
+import { formatDateTime } from "@/shared/utils/time";
 
 export const useDepositHistoryColumns = (
   onEdit: (deposit: IDeposit) => void,
@@ -20,18 +22,29 @@ export const useDepositHistoryColumns = (
       render: (_, index) => index + 1,
     },
     {
-      key: "depositDate",
-      title: "Date",
-      render: (deposit) => formatDate(deposit.depositDate),
+      key: "created",
+      title: "Created",
+      render: (deposit) => (
+        <span className="text-xs text-theme-text-muted">
+          {formatDateTime(deposit.createdAt)}
+        </span>
+      ),
     },
     {
       key: "amount",
       title: "Amount",
-      render: (deposit) => `৳ ${deposit.amount}`,
+      render: (deposit) => formatTaka(deposit.amount),
     },
     {
       key: "paymentMethod",
       title: "Payment Method",
+      render: (deposit) => (
+        <>
+          <Badge size="sm" variant="soft-secondary">
+            {deposit.paymentMethod}
+          </Badge>
+        </>
+      ),
     },
     {
       key: "note",

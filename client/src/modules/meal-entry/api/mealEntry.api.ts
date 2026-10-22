@@ -4,7 +4,6 @@ import type {
   ICreateMealEntryDto,
   IMealEntryListResponse,
   IMealEntryQuery,
-  IMealEntrySummaryResponse,
   IMyMealApiResponse,
   IUpdateMealEntryDto,
 } from "../types/mealEntry.types";
@@ -57,68 +56,24 @@ export const mealEntryApi = {
     return data;
   },
 
-  dailySummary: async (
-    params?: IMealEntryQuery,
-  ): Promise<IMealEntrySummaryResponse> => {
-    const { data } = await API.get<IMealEntrySummaryResponse>(
-      API_ENDPOINTS.MEAL_ENTRY.DAILY_SUMMARY,
-      {
-        params,
-      },
-    );
-
-    return data;
-  },
-
-  summary: async (
-    params?: IMealEntryQuery,
-  ): Promise<IMealEntrySummaryResponse> => {
-    const { data } = await API.get<IMealEntrySummaryResponse>(
-      API_ENDPOINTS.MEAL_ENTRY.SUMMARY,
-      {
-        params,
-      },
-    );
-
-    return data;
-  },
-
-  memberSummary: async (
-    params?: IMealEntryQuery,
-  ): Promise<IMealEntrySummaryResponse> => {
-    const { data } = await API.get<IMealEntrySummaryResponse>(
-      API_ENDPOINTS.MEAL_ENTRY.MEMBER_SUMMARY,
-      {
-        params,
-      },
-    );
-
-    return data;
-  },
-
   create: async (payload: ICreateMealEntryDto) => {
-    const { data } = await API.post(
-      API_ENDPOINTS.MEAL_ENTRY.CREATE,
-      payload,
-    );
-  
+    const { data } = await API.post(API_ENDPOINTS.MEAL_ENTRY.CREATE, payload);
+
     return data;
   },
-  
+
   update: async (id: number, payload: IUpdateMealEntryDto) => {
     const { data } = await API.patch(
       API_ENDPOINTS.MEAL_ENTRY.UPDATE(id),
       payload,
     );
-  
+
     return data;
   },
-  
+
   delete: async (id: number) => {
-    const { data } = await API.delete(
-      API_ENDPOINTS.MEAL_ENTRY.DELETE(id),
-    );
-  
+    const { data } = await API.delete(API_ENDPOINTS.MEAL_ENTRY.DELETE(id));
+
     return data;
   },
 };

@@ -20,7 +20,7 @@ export interface IDeposit {
 
   amount: number;
 
-  totalDeposit?: number;
+  totalDeposit: number;
 
   paymentMethod: string;
 

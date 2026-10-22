@@ -13,6 +13,7 @@ import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
 // router:
 import {
   authRouter,
+  currentBillRouter,
   dashboardRouter,
   depositRouter,
   eggRateRouter,
@@ -20,6 +21,7 @@ import {
   expensesRouter,
   featureRouter,
   invitesRouter,
+  khalaBillRouter,
   mealEntriesRouter,
   mealPlanningRouter,
   mealPreferenceRouter,
@@ -106,6 +108,9 @@ app.use("/api/v1/meal-preferences", mealPreferenceRouter);
 app.use("/api/v1/my-profile", myProfileRouter);
 app.use("/api/v1/payment-methods", paymentMethodRouter);
 app.use("/api/v1/settlements", settlementRouter);
+
+app.use("/api/v1/current-bills", currentBillRouter);
+app.use("/api/v1/khala-bills", khalaBillRouter);
 
 // testing purpose-----
 

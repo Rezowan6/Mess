@@ -11,6 +11,7 @@ export type ButtonVariant =
   | "error"
   | "ghost"
   | "outline"
+  | "premium"
   | "pay";
 
 export type TooltipPlacement = "top" | "bottom" | "left" | "right";

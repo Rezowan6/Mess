@@ -5,6 +5,7 @@ import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
 import { ROUTES } from "@/shared/constants/routes";
 import type { IDeposit } from "../types/deposit.types";
 import { useDepositTablePermissions } from "./deposit.columns.permission";
+import { formatTaka } from "@/shared/utils/format.utils";
 
 export const useDepositMemberSummaryColumns = (): TableColumn<IDeposit>[] => {
   const { canViewDetails } = useDepositTablePermissions();
@@ -23,7 +24,7 @@ export const useDepositMemberSummaryColumns = (): TableColumn<IDeposit>[] => {
     {
       key: "amount",
       title: "Total Amount",
-      render: (deposit) => deposit.totalDeposit,
+      render: (deposit) => formatTaka(deposit.totalDeposit),
     },
   ];
 

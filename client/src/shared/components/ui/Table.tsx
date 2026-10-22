@@ -131,7 +131,7 @@ export function Table<T>({
             return (
               <tr
                 key={key}
-                className="bg-theme-table-row transition-colors hover:bg-theme-table-row-hover"
+                className="bg-theme-table-row font-semibold transition-colors hover:bg-theme-table-row-hover"
               >
                 {columns.map((column) => (
                   <td

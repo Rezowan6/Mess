@@ -107,6 +107,22 @@ export const sidebarItems: ISidebarItem[] = [
     desktop: "primary",
   },
   {
+    title: "Current-bill",
+    path: ROUTES.CURRENT_BILL,
+    icon: Landmark,
+    permission: PERMISSIONS.CURRENT_BILL_VIEW,
+    mobile: "more",
+    desktop: "primary",
+  },
+  {
+    title: "Khala-bill",
+    path: ROUTES.KHALA_BILL,
+    icon: Landmark,
+    permission: PERMISSIONS.KHALA_BILL_VIEW,
+    mobile: "more",
+    desktop: "primary",
+  },
+  {
     title: "Meal Entry",
     path: ROUTES.MEAL_ENTRY,
     icon: ClipboardList,

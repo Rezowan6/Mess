@@ -25,6 +25,15 @@ class SocketService {
       .emit(event, payload);
   }
 
+  emitToTenantUser(
+    tenantId: number,
+    userId: number,
+    event: string,
+    payload: unknown,
+  ) {
+    this.io.to(SocketRoom.tenantUser(tenantId, userId)).emit(event, payload);
+  }
+
   broadcast(event: string, payload: unknown) {
     this.io.emit(event, payload);
   }

@@ -10,12 +10,6 @@ router.get("/my", ...allAccess, mealEntryController.my);
 
 router.get("/today-meals", ...adminAndManagerAccess, mealEntryController.todayMealEntries);
 
-router.get("/daily-summary", ...adminAndManagerAccess, mealEntryController.dailySummary);
-
-router.get("/members-meal-summary", ...adminAndManagerAccess, mealEntryController.getMemberMealSummary);
-
-router.get("/summary", ...adminAndManagerAccess, mealEntryController.summary);
-
 router.get("/member-summary", ...allAccess, mealEntryController.memberSummary);
 
 router.post("/", ...managerAccess, mealEntryController.create);

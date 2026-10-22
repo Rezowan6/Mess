@@ -1,5 +1,7 @@
+import { Badge } from "@/shared/components/ui/Badge";
 import type { TableColumn } from "@/shared/components/ui/Table";
 import { formatDate } from "@/shared/utils/date.utils";
+import { formatTaka } from "@/shared/utils/format.utils";
 
 interface IDepositHistory {
   id: number;
@@ -18,15 +20,17 @@ export const useDepositHistoryColumns = (): TableColumn<IDepositHistory>[] => {
     {
       key: "amount",
       title: "Amount",
-      render: (deposit) => `৳ ${deposit.amount.toLocaleString()}`,
+      render: (deposit) => formatTaka(deposit.amount),
     },
     {
       key: "paymentMethod",
       title: "Payment Method",
       render: (deposit) => (
-        <span className="badge badge-outline badge-sm">
-          {deposit.paymentMethod}
-        </span>
+        <>
+          <Badge size="sm" variant="soft-secondary">
+            {deposit.paymentMethod}
+          </Badge>
+        </>
       ),
     },
   ];
