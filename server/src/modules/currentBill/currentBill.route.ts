@@ -1,17 +1,17 @@
-import { allAccess, managerAccess } from "@/helpers/permission.js";
+import { adminAndManagerTenantAccess, allAccess, allTenantAccess } from "@/helpers/permission.js";
 import express from "express";
 import { currentBillController } from "./currentBill.controller.js";
 
 const router = express.Router();
 
-router.post("/", ...managerAccess, currentBillController.create);
+router.post("/", ...adminAndManagerTenantAccess, currentBillController.create);
 
-router.get("/", ...allAccess, currentBillController.getMemberCurrentBills);
+router.get("/", ...allTenantAccess, currentBillController.getMemberCurrentBills);
 
 router.get("/:id", ...allAccess, currentBillController.getById);
 
-router.patch("/:id", ...managerAccess, currentBillController.update);
+router.patch("/:id", ...adminAndManagerTenantAccess, currentBillController.update);
 
-router.delete("/:id", ...managerAccess, currentBillController.delete);
+router.delete("/:id", ...adminAndManagerTenantAccess, currentBillController.delete);
 
 export default router;
