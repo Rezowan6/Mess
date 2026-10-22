@@ -49,6 +49,45 @@ export const formatDateForInput = (date: string | Date | null): string => {
   return dayjs(date).tz(APP_TIMEZONE).format("YYYY-MM-DD");
 };
 
+const MONTH_NAMES = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+] as const;
+
+// label = month name shown to the user, value = month number sent to the server
+export const MONTH_OPTIONS = MONTH_NAMES.map((label, index) => ({
+  label,
+  value: index + 1,
+}));
+
+// Always the Dhaka calendar month, not the device timezone
+export const getCurrentMonthYear = () => {
+  const now = dayjs().tz(APP_TIMEZONE);
+  const month = now.month() + 1;
+
+  return { month, monthName: MONTH_NAMES[month - 1], year: now.year() };
+};
+
+// Current year first, then older years
+export const getYearOptions = (yearsBack = 2) => {
+  const { year } = getCurrentMonthYear();
+
+  return Array.from({ length: yearsBack + 1 }, (_, index) => ({
+    label: String(year - index),
+    value: year - index,
+  }));
+};
+
 export const isLocked = (createdAt: string | Date | null): boolean => {
   if (!createdAt) return true;
 

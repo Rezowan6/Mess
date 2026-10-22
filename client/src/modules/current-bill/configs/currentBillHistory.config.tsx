@@ -1,12 +1,10 @@
 import type { TableColumn } from "@/shared/components/ui/Table";
 
-
-
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 import { formatDate } from "@/shared/utils/date.utils";
-import type { ICurrentBill } from "../types/currentBill.types";
 import { CurrentBillAction } from "../components/currentBillAction";
+import type { ICurrentBill } from "../types/currentBill.types";
 
 export const useCurrentBillHistoryColumns = (
   onEdit: (currentBill: ICurrentBill) => void,
@@ -22,7 +20,7 @@ export const useCurrentBillHistoryColumns = (
     {
       key: "date",
       title: "Date",
-      render: (currentBill) => formatDate(currentBill.createAt),
+      render: (currentBill) => formatDate(currentBill.createdAt),
     },
     {
       key: "amount",
@@ -32,16 +30,21 @@ export const useCurrentBillHistoryColumns = (
     {
       key: "paymentMethod",
       title: "Payment Method",
-      render: (currentBill) => currentBill.paymentMethod
+      render: (currentBill) => currentBill.paymentMethod,
     },
   ];
 
-  if (can(PERMISSIONS.DEPOSIT_UPDATE) || can(PERMISSIONS.DEPOSIT_DELETE)) {
+  if (
+    can(PERMISSIONS.CURRENT_BILL_UPDATE) ||
+    can(PERMISSIONS.CURRENT_BILL_DELETE)
+  ) {
     columns.push({
       key: "actions",
       title: "Actions",
       className: "w-28",
-      render: (currentBill) => <CurrentBillAction currentBill={currentBill} onEdit={onEdit} />,
+      render: (currentBill) => (
+        <CurrentBillAction currentBill={currentBill} onEdit={onEdit} />
+      ),
     });
   }
 

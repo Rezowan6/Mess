@@ -8,14 +8,16 @@ import { ErrorState } from "@/shared/components/feedback/ErrorState";
 import { AnimatedNumber } from "@/shared/components/ui/AnimatedNumber";
 import { MemberHeader } from "@/shared/components/ui/MemberHeader";
 import { Table } from "@/shared/components/ui/Table";
-import { useCurrentBill } from "../hooks/useCurrentBill";
-import type { ICurrentBill } from "../types/currentBill.types";
 import { CurrentBillFormModal } from "../components/CurrentBillFormModal";
 import { useCurrentBillHistoryColumns } from "../configs/currentBillHistory.config";
+import { useCurrentBill } from "../hooks/useCurrentBill";
+import type { ICurrentBill } from "../types/currentBill.types";
 
 export const CurrentBillHistoryPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [selectedDeposit, setSelectedDeposit] = useState<ICurrentBill | null>(null);
+  const [selectedDeposit, setSelectedDeposit] = useState<ICurrentBill | null>(
+    null,
+  );
 
   const { userId: memberIdParam } = useParams<{ userId: string }>();
   const memberId = Number(memberIdParam);
@@ -33,22 +35,19 @@ export const CurrentBillHistoryPage = () => {
     return <DepositHistoryTableSkeleton />;
   }
 
-  const currentBill = data.data[0] ?? [];
-
-
-  // Show the error only when there is no cached data to display
-  if (isError && !data) {
+  if (isError || !data) {
     return (
       <ErrorState
         title={DEPOSIT_MESSAGES.error.title}
         description={DEPOSIT_MESSAGES.error.description}
-        onRetry={() => refetch()}
+        onRetry={() => void refetch()}
       />
     );
   }
 
+  const currentBills = data.data ?? [];
 
-  if (!currentBill) {
+  if (currentBills.length === 0) {
     return (
       <EmptyState
         title={DEPOSIT_MESSAGES.memberNotFound.title}
@@ -57,38 +56,27 @@ export const CurrentBillHistoryPage = () => {
     );
   }
 
-  const { name, avatar } = currentBill.member ?? {};
+  const currentBill = currentBills[0];
 
-//   const totalDeposit = currentBill.reduce(
-//     (sum, item) => sum + Number(item.amount),
-//     0,
-//   );
+  const { name, avatar } = currentBill.member ?? {};
 
   return (
     <>
       <MemberHeader
         name={name}
         avatar={avatar}
-        subtitle="Deposit History"
+        subtitle="Current Bill History"
         rightContent={
           <div className="text-right">
-            <p className="text-xs text-theme-text-muted">Total Deposit</p>
+            <p className="text-xs text-theme-text-muted">Total Current Bill</p>
             <p className="font-bold text-theme-success tabular-nums">
-              <AnimatedNumber
-                value={0}
-                prefix="৳ "
-                duration={1000}
-              />
+              <AnimatedNumber value={0} prefix="৳ " duration={1000} />
             </p>
           </div>
         }
       />
 
-      <Table
-        columns={columns}
-        data={data.data}
-        message={DEPOSIT_MESSAGES}
-      />
+      <Table columns={columns} data={data.data} message={DEPOSIT_MESSAGES} />
 
       <CurrentBillFormModal
         isOpen={isEditOpen}

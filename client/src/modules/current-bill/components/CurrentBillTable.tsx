@@ -11,11 +11,15 @@ const PAGE_LIMIT = 10;
 export const CurrentBillTable = () => {
   const { page, search, handleSearch, handlePage } = useTableSearchParams();
 
-  const { data, isPending, isError, refetch } = useCurrentBills();
+  const { data, isPending, isError, refetch } = useCurrentBills({
+    page,
+    limit: PAGE_LIMIT,
+    search,
+  });
 
   const columns = useCurrentBillsColumns();
 
-  const totalDeposit =
+  const totalCurrentBill =
     data?.data?.reduce((sum, item) => sum + Number(item.amount), 0) ?? 0;
 
   return (
@@ -32,8 +36,8 @@ export const CurrentBillTable = () => {
       onSearch={handleSearch}
       onPageChange={handlePage}
       summary={{
-        label: "Total Deposit",
-        amount: Number(totalDeposit),
+        label: "Total Current Bill",
+        amount: Number(totalCurrentBill),
         prefix: "৳ ",
       }}
     />

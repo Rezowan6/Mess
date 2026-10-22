@@ -23,7 +23,7 @@ class CurrentBillRepository extends BaseRepository<CurrentBill> {
           attributes: ["id", "name", "avatar", "email"],
         },
       ],
-      order: [["userId", "DESC"]],
+      order: [["userId", "ASC"]],
     });
   }
 
