@@ -30,6 +30,7 @@ export const Notification = {
   KHALA_BILL_ADDED: "KHALA_BILL_ADDED",
   KHALA_BILL_UPDATED: "KHALA_BILL_UPDATED",
   KHALA_BILL_DELETED: "KHALA_BILL_DELETED",
+  CURRENT_BILL_RESTORED: "CURRENT_BILL_RESTORED",
 } as const;
 
 export type NotificationType = (typeof Notification)[keyof typeof Notification];

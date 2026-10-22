@@ -1,3 +1,4 @@
+import sequelize from "@/configs/db.js";
 import {
   RealtimeAction,
   RealtimeResource,
@@ -7,6 +8,7 @@ import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { isWithinHours } from "@/utils/date.util.js";
 import { logger } from "@/utils/logger.js";
+import { UniqueConstraintError } from "sequelize";
 import { khalaBillStatus } from "../khalaBill/khalaBill.interface.js";
 import { Notification } from "../notification/notification.interface.js";
 import { notificationService } from "../notification/notification.service.js";
@@ -15,6 +17,7 @@ import {
   IDeleteCurrentBillDto,
   IGetBYIdCurrentBill,
   IGetCurrentBills,
+  IRestoreCurrentBillDto,
   IUpdateCurrentBillDto,
 } from "./currentBill.interface.js";
 import { currentBillRepository } from "./currentBill.repository.js";
@@ -34,6 +37,10 @@ class CurrentBillService {
       userId,
       year,
     });
+  }
+
+  async getDeletedCurrentBills(tenantId: number) {
+    return currentBillRepository.getDeletedCurrentBills(tenantId);
   }
 
   async create(data: ICreateCurrentBillDto) {
@@ -212,6 +219,100 @@ class CurrentBillService {
       logger.error(
         { error, tenantId, userId },
         "Current-bill delete notification creation failed",
+      );
+    }
+
+    return null;
+  }
+
+  async restore(data: IRestoreCurrentBillDto) {
+    const { id, tenantId, createdBy } = data;
+
+    const restored = await sequelize
+      .transaction(async (transaction) => {
+        const currentBill =
+          await currentBillRepository.findByIdIncludingDeleted(
+            { id, tenantId },
+            transaction,
+          );
+
+        if (!currentBill) {
+          throw new ApiError(404, "currentBill not found.");
+        }
+
+        if (!currentBill.deletedAt) {
+          throw new ApiError(409, "This currentBill is not deleted.");
+        }
+
+        if (!isWithinHours(currentBill.createdAt, 24)) {
+          throw new ApiError(
+            409,
+            "This currentBill can only be restored within 24 hours of creation.",
+          );
+        }
+
+        const { userId, month, year } = currentBill;
+
+        // A new bill may have been created for the same member and month after this one was deleted
+        const duplicate = await currentBillRepository.findOneWithOptions({
+          where: { tenantId, userId, month, year },
+          transaction,
+        });
+
+        if (duplicate) {
+          throw new ApiError(
+            409,
+            "A current bill already exists for this member and month.",
+          );
+        }
+
+        await currentBillRepository.restore({ id, tenantId }, { transaction });
+
+        return {
+          userId,
+          month,
+          year,
+          amount: Number(currentBill.amount),
+        };
+      })
+      .catch((error: unknown) => {
+        // Two requests created the same bill at the same moment, the unique index stops the second
+        if (error instanceof UniqueConstraintError) {
+          throw new ApiError(
+            409,
+            "A current bill already exists for this member and month.",
+          );
+        }
+
+        throw error;
+      });
+
+    const { userId, month, year, amount } = restored;
+
+    // Emit only after a successful commit
+    socketService.emitToTenantUser(tenantId, userId, SocketEvent.DATA_UPDATED, {
+      resource: RealtimeResource.CURRENT_BILL,
+      action: RealtimeAction.RESTORED,
+      tenantId,
+      userId,
+    });
+
+    // Notify only the member whose current bill came back.
+    // A notification failure must never fail the restore itself.
+    try {
+      await notificationService.create({
+        tenantId,
+        userId,
+        createdBy,
+        mealSessionId: null,
+        title: "Current-bill Restored",
+        message: `Your current bill of ৳ ${amount.toFixed(2)} for ${month}/${year} has been restored.`,
+        type: Notification.CURRENT_BILL_RESTORED,
+      });
+    } catch (error) {
+      logger.error(
+        { error, tenantId, userId },
+        "Current-bill restore notification creation failed",
       );
     }
 

@@ -44,6 +44,19 @@ class CurrentBillController {
     });
   });
 
+  getDeletedCurrentBills = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantOnlyContext(req);
+
+    const currentBills =
+      await currentBillService.getDeletedCurrentBills(tenantId);
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Deleted current bills fetched successfully.",
+      data: currentBills,
+    });
+  });
+
   create = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId } = getTenantOnlyContext(req);
 
@@ -92,6 +105,23 @@ class CurrentBillController {
       statusCode: 201,
       message: "Current-bill deleted successfully",
       data: currentBill,
+    });
+  });
+
+  restore = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, userId } = getTenantOnlyContext(req);
+    const id = getIdParam(req);
+
+    await currentBillService.restore({
+      id,
+      tenantId,
+      createdBy: userId,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Current-bill restored successfully",
+      data: null,
     });
   });
 }

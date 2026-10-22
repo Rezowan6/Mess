@@ -33,6 +33,9 @@ export interface IDeleteCurrentBillDto {
   createdBy: number;
 }
 
+// Same shape as delete: the record id, the tenant and the user who did the action
+export type IRestoreCurrentBillDto = IDeleteCurrentBillDto;
+
 export interface IGetCurrentBills {
   tenantId: number;
   month: number;

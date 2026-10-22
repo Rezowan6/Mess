@@ -6,6 +6,7 @@ import {
   FindOptions,
   Model,
   ModelStatic,
+  RestoreOptions,
   UpdateOptions,
   WhereOptions,
 } from "sequelize";
@@ -154,6 +155,25 @@ export abstract class BaseRepository<T extends Model> {
     options?: Omit<DestroyOptions<Attributes<T>>, "where">,
   ): Promise<number> {
     return this.model.destroy({
+      where,
+      ...options,
+    });
+  }
+
+  /**
+   * Restores soft deleted rows (sets deletedAt back to null).
+   * Works only for models created with `paranoid: true`.
+   * A where condition is required, so it can never restore every row by accident.
+   */
+  async restore(
+    where: WhereOptions<Attributes<T>>,
+    options?: Omit<RestoreOptions<Attributes<T>>, "where">,
+  ): Promise<void> {
+    if (Reflect.ownKeys(where as object).length === 0) {
+      throw new Error("restore requires a where condition.");
+    }
+
+    return this.model.restore({
       where,
       ...options,
     });

@@ -24,7 +24,7 @@ export const RealtimeResource = {
 
   CURRENT_BILL: "current-bill",
 
-  KHALA_BILL: "khala-bill"
+  KHALA_BILL: "khala-bill",
 } as const;
 
 export type RealtimeResourceType =
@@ -34,6 +34,7 @@ export const RealtimeAction = {
   CREATED: "created",
   UPDATED: "updated",
   DELETED: "deleted",
+  RESTORED: "restored",
 } as const;
 
 export type RealtimeActionType =
