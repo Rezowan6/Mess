@@ -20,6 +20,7 @@ import { invalidateRicePaymentQueries } from "@/modules/rice-payment/query/riceP
 import { invalidateRiceQueries } from "@/modules/rice/query/rice.invalidation";
 import { invalidateSoldProductQueries } from "@/modules/sold-product/query/soldProduct.invalidation";
 
+import { invalidateCurrentBillQueries } from "@/modules/current-bill/query/currentBill.invalidation";
 import {
   invalidateMembershipQueries,
   invalidateTenantQueries,
@@ -113,6 +114,11 @@ export const invalidateRealtimeQueries = (
     }
     case "my-profile": {
       invalidateMyProfileQueries(queryClient, { tenantId, mealSessionId });
+      break;
+    }
+
+    case "current-bill": {
+      invalidateCurrentBillQueries(queryClient, { tenantId });
       break;
     }
     default:

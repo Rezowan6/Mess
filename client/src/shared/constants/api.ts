@@ -216,5 +216,7 @@ export const API_ENDPOINTS = {
     GET_BY_ID: (id: number) => `/current-bills/${id}`,
     UPDATE: (id: number) => `/current-bills/${id}`,
     DELETE: (id: number) => `/current-bills/${id}`,
+    GET_DELETED: "/current-bills/deleted",
+    RESTORE: (id: number) => `/current-bills/${id}/restore`,
   },
 };

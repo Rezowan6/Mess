@@ -9,4 +9,7 @@ export const currentBill = {
 
   getById: ({ tenantId, id }: InvalidationContext & { id: number }) =>
     ["current-bill", tenantId, "detail", id] as const,
+
+  deleted: ({ tenantId }: InvalidationContext) =>
+    ["current-bill", tenantId, "deleted"] as const,
 };

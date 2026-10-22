@@ -20,6 +20,7 @@ interface ICurrentBillBase {
   paymentMethod: string;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string | null;
 }
 
 export interface ICurrentBill extends ICurrentBillBase {

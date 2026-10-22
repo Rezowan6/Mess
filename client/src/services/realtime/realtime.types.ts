@@ -15,11 +15,12 @@ export type RealtimeResource =
   | "party-expense"
   | "sold-product"
   | "meal-entry"
-  | "my-profile";
+  | "my-profile"
+  | "current-bill";
 
 export interface IDataUpdatedPayload {
   resource: RealtimeResource;
-  action: "created" | "updated" | "deleted";
+  action: "created" | "updated" | "deleted" | "restored";
   tenantId: number;
   mealSessionId: number;
 }
