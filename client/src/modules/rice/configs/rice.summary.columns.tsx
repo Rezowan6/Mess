@@ -1,6 +1,7 @@
 import { Badge } from "@/shared/components/ui/Badge";
 import type { TableColumn } from "@/shared/components/ui/Table";
 
+import { formatDate } from "@/shared/utils/date.utils";
 import { formatKg, formatTaka, toTitleCase } from "@/shared/utils/format.utils";
 import { RiceSummaryActions } from "../components/RiceSummaryActions";
 import { type IRice } from "../types/rice.types";
@@ -9,7 +10,6 @@ import {
   RICE_PURCHASE_TYPE_VARIANT,
 } from "./rice.badge";
 import { useRiceTablePermissions } from "./rice.columns.permission";
-import { formatDate } from "@/shared/utils/date.utils";
 
 interface UseRiceSummaryColumnsProps {
   onPay: (rice: IRice) => void;
@@ -53,13 +53,19 @@ export const useRiceSummaryColumns = ({
     {
       key: "totalPaid",
       title: "Paid",
-      render: (rice) => formatTaka(rice.totalPaid),
+      render: (rice) => (
+        <span className="text-theme-success font-bold">
+          {formatTaka(rice.totalPaid)}
+        </span>
+      ),
     },
     {
       key: "remainingDue",
       title: "Due",
       render: (rice) => (
-        <span className={Number(rice.remainingDue) > 0 ? "text-error" : ""}>
+        <span
+          className={`${Number(rice.remainingDue) > 0 ? "text-theme-danger" : "text-theme-success"}`}
+        >
           {formatTaka(rice.remainingDue)}
         </span>
       ),

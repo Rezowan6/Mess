@@ -48,7 +48,10 @@ class KhalaBillService {
     if (khalaBill) {
       throw new ApiError(409, "Khala bill allready exists this month.");
     }
-    const result = await khalaBillRepository.create({ ...data });
+    const result = await khalaBillRepository.create({
+      ...data,
+      status: "paid",
+    });
 
     socketService.emitToUser(tenantId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.CURRENT_BILL,

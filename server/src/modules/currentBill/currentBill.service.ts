@@ -48,7 +48,7 @@ class CurrentBillService {
     if (currentBill) {
       throw new ApiError(409, "Current bill allready exists this month.");
     }
-    const result = await currentBillRepository.create({ ...data });
+    const result = await currentBillRepository.create({ ...data, status: "paid", });
 
     socketService.emitToUser(tenantId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.CURRENT_BILL,
