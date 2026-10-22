@@ -37,7 +37,8 @@ export const DataRecoverySettings = () => {
     >
       <div className="space-y-3">
         <Button
-          variant="primary"
+          variant="premium"
+          className="w-56 shrink-0 justify-center whitespace-nowrap"
           aria-expanded={isOpen}
           aria-controls={listId}
           leftIcon={
@@ -51,7 +52,7 @@ export const DataRecoverySettings = () => {
           onClick={() => setIsOpen((previous) => !previous)}
         >
           {isOpen
-            ? "Hide recovery options"
+            ? `Hide recovery options`
             : `Show recovery options (${visibleEntries.length})`}
         </Button>
 
