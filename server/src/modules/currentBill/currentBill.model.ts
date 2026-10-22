@@ -7,6 +7,10 @@ import {
   Model,
 } from "sequelize";
 import {
+  DEPOSIT_PAYMENT_METHOD,
+  DepositPaymentMethodType,
+} from "../deposit/deposit.interface.js";
+import {
   CURRENT_BILL_STATUS,
   CurrentBillStatus,
 } from "./currentBill.interface.js";
@@ -30,6 +34,8 @@ export class CurrentBill extends Model<
 
   declare status: CreationOptional<CurrentBillStatus>;
   declare createdBy: CreationOptional<number | null>;
+
+  declare paymentMethod: DepositPaymentMethodType;
 
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
@@ -75,6 +81,11 @@ CurrentBill.init(
     createdBy: {
       type: DataTypes.INTEGER,
       allowNull: true,
+    },
+
+    paymentMethod: {
+      type: DataTypes.ENUM(...DEPOSIT_PAYMENT_METHOD),
+      allowNull: false,
     },
   },
   {

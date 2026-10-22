@@ -46,4 +46,6 @@ export const ROUTES = {
   PAYMENT: "/payments",
 
   SETTINGS: "/settings",
+
+  CURRENT_BILL: "/current-bills"
 } as const;

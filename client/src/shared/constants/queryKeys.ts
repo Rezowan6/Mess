@@ -1,4 +1,4 @@
-import { CurrentBill } from "@/modules/current-bill/query/currentBill.querykey";
+import { currentBill } from "@/modules/current-bill/query/currentBill.querykey";
 import { deposits } from "@/modules/deposit/query/deposit.querykey";
 import { eggRates } from "@/modules/egg-rate/query/eggRate.querykey";
 import { eggs } from "@/modules/egg/query/egg.querykey";
@@ -270,5 +270,5 @@ export const queryKeys = {
 
   khalaBill,
 
-  CurrentBill,
+  currentBill,
 };

@@ -1,3 +1,4 @@
+import { currentBillRoutes } from "@/modules/current-bill/routes/currentBill.routes";
 import { dashboardModuleRoutes } from "@/modules/dashboard/routes/dashboard.routes";
 import { depositRoutes } from "@/modules/deposit/routes/deposit.routes";
 import { expenseRoutes } from "@/modules/expense/routes/expense.routes";
@@ -20,6 +21,7 @@ import { tenantRoutes } from "@/modules/tenant/routes/tenant.routes";
 import { userManagementRoutes } from "@/modules/user-management/routes/userManagement.routes";
 
 export const dashboardRoutes = [
+  currentBillRoutes,
   noticeRoutes,
   mealRequestRoutes,
   depositRoutes,

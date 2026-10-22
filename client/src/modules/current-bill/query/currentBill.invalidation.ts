@@ -5,9 +5,9 @@ import type { InvalidationContext } from "@/shared/types/invalidation.types";
 
 export const invalidateCurrentBillQueries = (
   queryClient: QueryClient,
-  { tenantId, }: InvalidationContext,
+  { tenantId }: InvalidationContext,
 ) => {
   queryClient.invalidateQueries({
-    queryKey: queryKeys.CurrentBill.all({ tenantId }),
+    queryKey: queryKeys.currentBill.all({ tenantId }),
   });
 };

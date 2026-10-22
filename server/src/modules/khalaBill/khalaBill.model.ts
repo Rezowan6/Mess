@@ -6,6 +6,10 @@ import {
   InferCreationAttributes,
   Model,
 } from "sequelize";
+import {
+  DEPOSIT_PAYMENT_METHOD,
+  DepositPaymentMethodType,
+} from "../deposit/deposit.interface.js";
 import { KHALA_BILL_STATUS, KhalaillStatus } from "./khalaBill.interface.js";
 
 export class KhalaBill extends Model<
@@ -27,6 +31,8 @@ export class KhalaBill extends Model<
 
   declare status: CreationOptional<KhalaillStatus>;
   declare createdBy: CreationOptional<number | null>;
+
+  declare paymentMethod: DepositPaymentMethodType;
 
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
@@ -72,6 +78,11 @@ KhalaBill.init(
     createdBy: {
       type: DataTypes.INTEGER,
       allowNull: true,
+    },
+
+    paymentMethod: {
+      type: DataTypes.ENUM(...DEPOSIT_PAYMENT_METHOD),
+      allowNull: false,
     },
   },
   {

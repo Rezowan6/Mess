@@ -57,6 +57,10 @@ export default {
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
+      payment_method: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       created_at: {
         type: DataTypes.DATE,
         allowNull: false,
