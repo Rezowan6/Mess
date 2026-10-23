@@ -6,8 +6,8 @@ import type { IPaginationParams } from "@/shared/types/pagination.types";
 import type { ICreateEggDto, IEgg, IUpdateEggDto } from "../types/egg.types";
 
 export const eggApi = {
-  getAll: async (params: IPaginationParams) => {
-    const { data } = await API.get(API_ENDPOINTS.EGG.GET_ALL, { params });
+  getAll: async () => {
+    const { data } = await API.get(API_ENDPOINTS.EGG.GET_ALL,);
 
     return data;
   },
