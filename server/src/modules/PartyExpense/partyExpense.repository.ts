@@ -21,8 +21,6 @@ export class PartyExpenseRepository extends BaseRepository<PartyExpense> {
           ...buildSearchCondition(["description", "date"], query.search),
         },
 
-        attributes: ["id", "amount", "description", "date", "createdAt"],
-
         include: [
           {
             association: "members",

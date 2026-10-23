@@ -6,6 +6,8 @@ import { usePartyExpenseTable } from "../../hooks/usePartyExpenseTable";
 import { AddPartyExpenseModal } from "../modla/AddPartyExpenseModal";
 import { PartyExpenseTableSkeleton } from "../skeleton/PartyExpenseTableSkeleton";
 
+const SEARCH_PLACEHOLDERS = ["description", "date"];
+
 export const PartyExpenseTable = () => {
   const {
     partyExpenses,
@@ -37,7 +39,7 @@ export const PartyExpenseTable = () => {
       message={PARTY_EXPENSE_MESSAGES}
       search={search}
       onSearch={handleSearch}
-      searchPlaceholder="description"
+      placeholderTexts={SEARCH_PLACEHOLDERS}
       summary={{
         label: "Total Expense",
         amount: Number(totalPartyExpense),
