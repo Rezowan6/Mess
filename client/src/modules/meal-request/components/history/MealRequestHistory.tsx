@@ -4,7 +4,7 @@ import { MealBadges } from "@/shared/components/ui/MealBadges";
 import {
   formatDate,
   getLocalDate,
-  isRecordUpdated,
+  getRecordTimestamp,
 } from "@/shared/utils/date.utils";
 import { formatDateTime } from "@/shared/utils/time";
 import { CalendarDays } from "lucide-react";
@@ -30,20 +30,17 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
   return (
     <div className="max-h-92 overflow-y-auto">
       <div className="divide-y divide-theme-border">
-        {requests.map((request) => {
-          const isCurrentMealReqDate = formatDate(request.date) === today;
+        {requests.map((req) => {
+          const isCurrentMealReqDate = formatDate(req.date) === today;
 
           const isDeleteDisabled =
-            request.status === "pending" && isCurrentMealReqDate;
+            req.status === "pending" && isCurrentMealReqDate;
 
-          const isUpdated = isRecordUpdated(
-            request.createdAt,
-            request.updatedAt,
-          );
+          const timestamp = getRecordTimestamp(req.createdAt, req.updatedAt);
 
           return (
             <div
-              key={request.id}
+              key={req.id}
               className="flex items-start gap-3 px-4 py-3 transition-colors hover:bg-theme-surface-hover"
             >
               <div className="flex h-10 w-10 shrink-0 items-center justify-center  rounded-theme-md bg-theme-brand-gradient text-theme-on-brand shadow-theme-brand">
@@ -55,32 +52,29 @@ export const MealRequestHistory: React.FC<MealRequestHistoryProps> = ({
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
                     <h3 className="truncate text-[15px] font-semibold text-theme-text">
-                      {formatDate(request.date)}
+                      {formatDate(req.date)}
                     </h3>
                   </div>
 
                   <div className="flex shrink-0 items-center gap-4 md:gap-6">
                     <Badge variant="soft-warning" size="sm">
-                      {request.status}
+                      {req.status}
                     </Badge>
 
                     <MealRequestHistoryAction
-                      request={request}
+                      request={req}
                       isDeleteDisabled={isDeleteDisabled}
                     />
                   </div>
                 </div>
 
                 {/* Meals */}
-                <MealBadges meals={request} />
+                <MealBadges meals={req} />
 
                 {/* Timestamps */}
-                <div className="flex flex-col gap-0.5 text-[11px] text-theme-text-muted sm:flex-row sm:items-center sm:gap-3">
-                  <span>Created: {formatDateTime(request.createdAt)}</span>
-                  {isUpdated && (
-                    <span>Updated: {formatDateTime(request.updatedAt)}</span>
-                  )}
-                </div>
+                <span className="text-[11px] text-theme-text-muted">
+                  {timestamp.label}: {formatDateTime(timestamp.value)}
+                </span>
               </div>
             </div>
           );

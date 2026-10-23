@@ -8,6 +8,7 @@ import { socketService } from "@/socket/socket.service.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { isWithinHours } from "@/utils/date.util.js";
+import { logger } from "@/utils/logger.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
 import { Notification } from "../notification/notification.interface.js";
 import { notificationService } from "../notification/notification.service.js";
@@ -72,9 +73,9 @@ class DepositService {
         type: Notification.DEPOSIT_ADDED,
       });
     } catch (error) {
-      console.error(
-        `[Deposit] Failed to create notification for tenant ${tenantId}, user ${memberId}:`,
-        error,
+      logger.error(
+        { error, tenantId, userId: memberId },
+        "Deposit notification creation failed",
       );
     }
 
@@ -215,9 +216,9 @@ class DepositService {
         type: Notification.DEPOSIT_UPDATED,
       });
     } catch (error) {
-      console.error(
-        `[Deposit] Failed to create update notification for tenant ${tenantId}, user ${deposit.memberId}:`,
-        error,
+      logger.error(
+        { error, tenantId, userId: deposit.memberId },
+        "Deposit update notification creation failed",
       );
     }
 
@@ -280,9 +281,9 @@ class DepositService {
         type: Notification.DEPOSIT_DELETED,
       });
     } catch (error) {
-      console.error(
-        `[Deposit] Failed to create delete notification for tenant ${tenantId}, user ${memberId}:`,
-        error,
+      logger.error(
+        { error, tenantId, userId: memberId },
+        "Deposit delete notification creation failed",
       );
     }
 

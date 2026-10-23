@@ -98,6 +98,17 @@ export const PERMISSIONS = {
   // System
   SYSTEM_MANAGE: "system.manage",
 
+  // payment method
+  PAYMENT_METHOD_CREATE: "paymentMethod.create",
+  PAYMENT_METHOD_UPDATE: "paymentMethod.update",
+  PAYMENT_METHOD_VIEW: "paymentMethod.view",
+
+  // Settlement
+  SETTLEMENT_VIEW: "settlement.view",
+  SETTLEMENT_CREATE: "settlement.create",
+  SETTLEMENT_UPDATE: "settlement.update",
+  SETTLEMENT_DELETE: "settlement.delete",
+
   // current bill
   CURRENT_BILL_VIEW: "current-bill.view",
   CURRENT_BILL_CREATE: "current-bill.create",

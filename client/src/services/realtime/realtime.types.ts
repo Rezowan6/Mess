@@ -15,6 +15,9 @@ export type RealtimeResource =
   | "party-expense"
   | "sold-product"
   | "meal-entry"
+
+  | "payment-method"
+  | "my-profile"
   | "my-profile"
   | "current-bill";
 

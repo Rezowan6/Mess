@@ -200,6 +200,20 @@ export const API_ENDPOINTS = {
     DELETE: (id: number) => `/eggs/${id}`,
   },
 
+  PAYMENT_METHOD: {
+    GET_ALL: "/payment-methods",
+    CREATE: "/payment-methods",
+    UPDATE: (id: number) => `/payment-methods/${id}`,
+    DELETE: (id: number) => `/payment-methods/${id}`,
+  },
+
+  SETTLEMENT: {
+    LIST: "/settlements",
+    CREATE: "/settlements",
+    BY_ID: (id: number) => `/settlements/${id}`,
+    UPDATE: (id: number) => `/settlements/${id}`,
+    DELETE: (id: number) => `/settlements/${id}`,
+  },
   KHALA_BILL: {
     CREATE: "/khala-bills",
     GET_ALL: "/khala-bills",

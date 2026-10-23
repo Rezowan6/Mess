@@ -1,6 +1,7 @@
 import { MealPreference } from "@/modules/MealPreference/mealPreference.model.js";
 import { PartyExpense } from "@/modules/PartyExpense/partyExpense.model.js";
 import { PartyExpenseMember } from "@/modules/PartyExpenseMember/partyExpenseMember.model.js";
+import { AuditLog } from "@/modules/auditLog/auditLog.model.js";
 import { CurrentBill } from "@/modules/currentBill/currentBill.model.js";
 import { Deposit } from "@/modules/deposit/deposit.model.js";
 import { Egg } from "@/modules/egg/egg.model.js";
@@ -16,15 +17,19 @@ import { MealSetting } from "@/modules/mealSetting/mealSetting.model.js";
 import { Notice } from "@/modules/notice/notice.model.js";
 import { Notification } from "@/modules/notification/notification.model.js";
 import { Payment } from "@/modules/payment/payment.model.js";
+import { PaymentMethod } from "@/modules/paymentMethod/paymentMethod.model.js";
 import { Plan } from "@/modules/plan/plan.model.js";
 import { PlanFeature } from "@/modules/planFeature/planFeature.model.js";
 import { RefreshToken } from "@/modules/refreshToken/refreshToken.model.js";
+import { Settlement } from "@/modules/settlement/settlement.model.js";
+import { SettlementConfirmation } from "@/modules/settlementConfirmation/settlementConfirmation.model.js";
 import { Subscription } from "@/modules/subscription/subscription.model.js";
 import { Tenant } from "@/modules/tenant/tenant.model.js";
 import { TenantMembership } from "@/modules/tenantMembership/tenantMembership.model.js";
 import { User } from "@/modules/user/user.model.js";
 
 export {
+  AuditLog,
   CurrentBill,
   Deposit,
   Egg,
@@ -43,9 +48,12 @@ export {
   PartyExpense,
   PartyExpenseMember,
   Payment,
+  PaymentMethod,
   Plan,
   PlanFeature,
   RefreshToken,
+  Settlement,
+  SettlementConfirmation,
   Subscription,
   Tenant,
   TenantMembership,

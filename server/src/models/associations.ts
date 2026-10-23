@@ -1,3 +1,4 @@
+import { setupAuditLogAssociations } from "@/modules/auditLog/auditLog.association.js";
 import { setupCurrentBillAssociations } from "@/modules/currentBill/currentBill.association.js";
 import { setupDepositAssociations } from "@/modules/deposit/deposit.association.js";
 import { setupEggAssociations } from "@/modules/egg/egg.association.js";
@@ -14,9 +15,12 @@ import { setupNoticeAssociations } from "@/modules/notice/notice.association.js"
 import { setupNotificationAssociations } from "@/modules/notification/notification.association.js";
 import { setupPartyExpenseAssociations } from "@/modules/PartyExpense/partyExpense.association.js";
 import { setupPaymentAssociations } from "@/modules/payment/payment.association.js";
+import { setupPaymentMethodAssociations } from "@/modules/paymentMethod/paymentMethod.association.js";
 import { setupPlanFeatureAssociations } from "@/modules/planFeature/planFeature.association.js";
 import { setupRefreshTokenAssociations } from "@/modules/refreshToken/refreshToken.association.js";
 import { setupRiceAssociations } from "@/modules/rice/rice.association.js";
+import { setupSettlementAssociations } from "@/modules/settlement/settlement.association.js";
+import { setupSettlementConfirmationAssociations } from "@/modules/settlementConfirmation/settlementConfirmation.association.js";
 import { setupSoldProductAssociations } from "@/modules/soldProduct/soldProduct.association.js";
 import { setupSubscriptionAssociations } from "@/modules/subscription/subscription.association.js";
 import { setupTenantMembershipAssociations } from "@/modules/tenantMembership/tenantMembership.association.js";
@@ -43,6 +47,11 @@ export const setupAssociations = () => {
   setupEggAssociations();
   setupEggRateAssociations();
   setupSoldProductAssociations();
+
+  setupSettlementAssociations();
+  setupPaymentMethodAssociations();
+  setupSettlementConfirmationAssociations();
+  setupAuditLogAssociations();
 
   setupCurrentBillAssociations();
   setupKhalaBillAssociations();
