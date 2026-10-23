@@ -8,6 +8,8 @@ import {
 } from "./tenantMembership.interface.js";
 
 import type { IPaginationQuery } from "@/types/pagination.interface.js";
+import { getSearchQuery } from "@/utils/string.util.js";
+import { buildSearchCondition } from "@/common/utils/search.util.js";
 
 export class TenantMembershipRepository extends BaseRepository<TenantMembership> {
   constructor() {
@@ -28,43 +30,28 @@ export class TenantMembershipRepository extends BaseRepository<TenantMembership>
     });
   }
 
-  async getMembers(tenantId: number, query: IPaginationQuery) {
-    const userInclude = {
-      model: User,
+async getMembers(tenantId: number, query: IPaginationQuery) {
+  const search = getSearchQuery(query);
 
-      as: "user",
+  const userInclude = {
+    model: User,
+    as: "user",
+    attributes: ["id", "name", "email", "avatar"],
+    required: Boolean(search),
+    where: buildSearchCondition(["name", "role", "email"], search),
+  };
 
-      attributes: ["id", "name", "email", "avatar"],
-
-      required: !!query.search,
-
-      ...(query.search && {
-        where: {
-          [Op.or]: [
-            {name: {[Op.like]: `%${query.search}%`},},
-            {
-              email: {
-                [Op.like]: `%${query.search}%`,
-              },
-            },
-          ],
-        },
-      }),
-    };
-    return this.paginate(
-      {
-        where: {
-          tenantId,
-        },
-
-        include: [userInclude],
-
-        order: [["id", "ASC"]],
+  return this.paginate(
+    {
+      where: {
+        tenantId,
       },
-
-      query,
-    );
-  }
+      include: [userInclude],
+      order: [["id", "ASC"]],
+    },
+    query,
+  );
+}
 
   async getAllMembers(tenantId: number, search?: string) {
     return await this.findAll({

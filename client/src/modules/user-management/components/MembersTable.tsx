@@ -9,7 +9,7 @@ import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
 import { useMembers } from "../hooks/useMembers";
 import { MembersTableSkeleton } from "./MembersTableSkeleton";
 
-const SEARCH_PLACEHOLDERS = ["member name", "email"];
+const SEARCH_PLACEHOLDERS = ["member name", "role", "email"];
 
 export const MembersTable = () => {
   const { page, search, handleSearch, handlePage } = useTableSearchParams();
