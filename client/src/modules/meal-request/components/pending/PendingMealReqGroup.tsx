@@ -58,7 +58,7 @@ export const PendingMealReqGroup: React.FC<PendingMealReqGroupProps> = ({
         </div>
       </div>
 
-      <div className="divide-y divide-slate-100">
+      <div className="divide-y divide-theme-border">
         {items.map((request) => (
           <PendingMealReqRow
             key={request.id}
