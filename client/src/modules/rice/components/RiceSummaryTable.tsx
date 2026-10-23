@@ -15,6 +15,8 @@ import { useRiceSummaryTable } from "../hooks/useRiceSummaryTable";
 import { AddRiceModal } from "./AddRiceModal";
 import { RiceTableSkeleton } from "./skeleton/RiceTableSkeleton";
 
+const SEARCH_PLACEHOLDERS  = ["supplier name", "phone number", "status", "type", "date"];
+
 export const RiceSummaryTable = () => {
   const { can } = useRBAC();
   const canManage = can(PERMISSIONS.EXPENSE_CREATE);
@@ -59,7 +61,7 @@ export const RiceSummaryTable = () => {
       <SearchInput
         value={search}
         onChange={handleSearch}
-        placeholderTexts={["supplier name", "phone number", "email"]}
+        placeholderTexts={SEARCH_PLACEHOLDERS}
       />
 
       {!isPending && (

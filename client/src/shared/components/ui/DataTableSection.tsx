@@ -37,6 +37,7 @@ interface DataTableSectionProps<T> {
   search: string;
   onSearch: (value: string) => void;
   searchPlaceholder?: string | undefined;
+  placeholderTexts?: string[] | undefined;
   onPageChange?: ((page: number) => void) | undefined;
 
   /** Optional total box next to the search input */
@@ -57,6 +58,7 @@ export const DataTableSection = <T,>({
   message,
   search,
   searchPlaceholder,
+  placeholderTexts,
   onSearch,
   onPageChange,
   summary,
@@ -71,6 +73,7 @@ export const DataTableSection = <T,>({
             value={search}
             onChange={onSearch}
             placeholder={searchPlaceholder}
+            placeholderTexts={placeholderTexts}
           />
         </div>
 

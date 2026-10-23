@@ -42,7 +42,7 @@ class ExpensesRepository extends BaseRepository<Expenses> {
         where: {
           tenantId,
           mealSessionId,
-          ...buildSearchCondition(["signature", "expenseDate"], search),
+          ...buildSearchCondition(["signature", "expenseDate", "category"], search),
         },
         include: [
           {

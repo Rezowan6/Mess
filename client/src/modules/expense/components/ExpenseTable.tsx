@@ -45,7 +45,7 @@ export const ExpenseTable = () => {
       skeleton={<ExpenseTableSkeleton />}
       message={EXPENSE_MESSAGES}
       search={search}
-      searchPlaceholder="member or date"
+      placeholderTexts={["signature", "category", "date"]}
       onSearch={handleSearch}
       onPageChange={handlePage}
       summary={{
