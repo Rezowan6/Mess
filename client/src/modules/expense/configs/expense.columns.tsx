@@ -6,6 +6,7 @@ import { ExpenseActions } from "../components/ExpenseActions";
 
 import { Badge } from "@/shared/components/ui/Badge";
 import { formatDate } from "@/shared/utils/date.utils";
+import { formatTaka } from "@/shared/utils/format.utils";
 import { useExpenseTablePermissions } from "./expense.columns.permission";
 
 export const useExpenseColumns = (
@@ -28,13 +29,18 @@ export const useExpenseColumns = (
     {
       key: "amount",
       title: "Amount",
-      render: (expense) => expense.amount,
+      render: (expense) => formatTaka(expense.amount),
     },
     {
       key: "category",
       title: "Category",
-      hideOnMobile: true,
-      render: (expense) => expense.category ?? "-",
+      render: (expense) => (
+        <>
+          <Badge size="sm" variant="soft-info">
+            {expense.category || "-"}
+          </Badge>
+        </>
+      ),
     },
     {
       key: "expenseDate",

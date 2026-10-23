@@ -1,6 +1,7 @@
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
 import { getAppDate } from "@/utils/date.util.js";
+import { getPaginationQuery } from "@/utils/pagination.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { eggService } from "./egg.service.js";
@@ -59,15 +60,19 @@ class EggController {
   getEggSummary = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
+    const query = getPaginationQuery(req);
+
     const summary = await eggService.getEggSummary({
       tenantId,
       mealSessionId,
+      query,
     });
 
     return sendResponse(res, {
       statusCode: 200,
       message: "Egg summary fetched successfully",
-      data: summary,
+      data: summary.data,
+      meta: summary.meta,
     });
   });
 

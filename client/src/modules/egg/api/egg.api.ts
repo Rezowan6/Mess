@@ -2,18 +2,22 @@ import { API_ENDPOINTS } from "@/shared/constants/api";
 import { API } from "@/shared/lib/axios";
 
 import type { ApiResponse } from "@/shared/types/api.types";
+import type { IPaginationParams } from "@/shared/types/pagination.types";
 import type { ICreateEggDto, IEgg, IUpdateEggDto } from "../types/egg.types";
 
 export const eggApi = {
-  getAll: async () => {
-    const { data } = await API.get(API_ENDPOINTS.EGG.GET_ALL);
+  getAll: async (params: IPaginationParams) => {
+    const { data } = await API.get(API_ENDPOINTS.EGG.GET_ALL, { params });
 
     return data;
   },
 
-  getSummary: async (): Promise<ApiResponse<IEgg[]>> => {
+  getSummary: async (
+    params: IPaginationParams,
+  ): Promise<ApiResponse<IEgg[]>> => {
     const { data } = await API.get<ApiResponse<IEgg[]>>(
       API_ENDPOINTS.EGG.GET_SUMMARY,
+      { params },
     );
 
     return data;

@@ -1,6 +1,9 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
+import { buildSearchCondition } from "@/common/utils/search.util.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { User } from "@/models/index.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
+import { getSearchQuery } from "@/utils/string.util.js";
 import {
   Attributes,
   col,
@@ -40,28 +43,39 @@ class EggRepository extends BaseRepository<Egg> {
     });
   }
 
-  async getEggSummary(tenantId: number, mealSessionId: number): Promise<any[]> {
-    return this.findAll({
-      where: {
-        tenantId,
-        mealSessionId,
-      },
-      attributes: [
-        "tenantId",
-        "mealSessionId",
-        "memberId",
-        [fn("SUM", col("quantity")), "quantity"],
-      ],
-      include: [
-        {
-          model: User,
-          as: "member",
-          attributes: ["id", "name", "email", "avatar"],
+  async getEggSummary(
+    tenantId: number,
+    mealSessionId: number,
+    query: IPaginationQuery,
+  ) {
+    const search = getSearchQuery(query);
+
+    return this.paginate(
+      {
+        where: {
+          tenantId,
+          mealSessionId,
         },
-      ],
-      group: ["tenantId", "mealSessionId", "memberId", "member.id"],
-      order: [["memberId", "ASC"]],
-    });
+        attributes: [
+          "tenantId",
+          "mealSessionId",
+          "memberId",
+          [fn("SUM", col("quantity")), "quantity"],
+        ],
+        include: [
+          {
+            model: User,
+            as: "member",
+            attributes: ["id", "name", "email", "avatar"],
+            required: Boolean(search),
+            where: buildSearchCondition(["name", "email"], search),
+          },
+        ],
+        group: ["tenantId", "mealSessionId", "memberId", "member.id"],
+        order: [["memberId", "ASC"]],
+      },
+      query,
+    );
   }
 
   async getTotalEggQuantity(

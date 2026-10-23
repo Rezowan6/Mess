@@ -4,6 +4,7 @@ import {
 } from "@/socket/realtime.constant.js";
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { isWithinHours } from "@/utils/date.util.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
@@ -70,17 +71,13 @@ class EggService {
   async getEggSummary({
     tenantId,
     mealSessionId,
+    query,
   }: {
     tenantId: number;
     mealSessionId: number;
+    query: IPaginationQuery;
   }) {
-    const eggs = await eggRepository.getEggSummary(tenantId, mealSessionId);
-
-    if (!eggs.length) {
-      throw new ApiError(404, "No egg summary found.");
-    }
-
-    return eggs;
+    return await eggRepository.getEggSummary(tenantId, mealSessionId, query);
   }
 
   async getAllEggs({

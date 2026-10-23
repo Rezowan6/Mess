@@ -11,7 +11,7 @@ export const useEggSummaryTable = () => {
   const [selectedEgg, setSelectedEgg] = useState<IEgg | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const eggQuery = useEggSummary();
+  const eggQuery = useEggSummary({ page, limit: 10, search });
 
   const eggs = eggQuery.data?.data ?? [];
   const meta = eggQuery.data?.meta;

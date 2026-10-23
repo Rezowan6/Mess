@@ -42,7 +42,7 @@ export const EggSummaryTable = () => {
         search={search}
         onSearch={handleSearch}
         onPageChange={handlePage}
-        searchPlaceholder="member name"
+        placeholderTexts={["member name", "email"]}
         summary={{
           label: "Total Egg",
           amount: totalEgg,
