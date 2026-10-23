@@ -41,11 +41,7 @@ export class TenantMembershipRepository extends BaseRepository<TenantMembership>
       ...(query.search && {
         where: {
           [Op.or]: [
-            {
-              name: {
-                [Op.like]: `%${query.search}%`,
-              },
-            },
+            {name: {[Op.like]: `%${query.search}%`},},
             {
               email: {
                 [Op.like]: `%${query.search}%`,
