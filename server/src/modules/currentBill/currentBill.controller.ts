@@ -1,8 +1,8 @@
 import { getIdParam } from "@/helpers/getIdParam.helper.js";
 import { getTenantOnlyContext } from "@/helpers/getTenantOnlyContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
-import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { getCurrentMonthAndYear } from "@/utils/date.util.js";
+import { getPaginationQuery } from "@/utils/pagination.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { currentBillService } from "./currentBill.service.js";
@@ -11,13 +11,11 @@ class CurrentBillController {
   getMemberCurrentBills = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantOnlyContext(req);
 
-    const query = req.query as IPaginationQuery;
-
-    console.log(query)
+    const query = getPaginationQuery(req);
 
     const { month, year } = getCurrentMonthAndYear();
 
-    const currentBill = await currentBillService.getMembercurrentBills({
+    const currentBills = await currentBillService.getMembercurrentBills({
       tenantId,
       month: Number(month),
       year: Number(year),
@@ -25,10 +23,10 @@ class CurrentBillController {
     });
 
     return sendResponse(res, {
-      statusCode: 201,
-      message: "Current-bill fetched successfully",
-      data: currentBill.data,
-      meta: currentBill.meta,
+      statusCode: 200,
+      message: "Current bills fetched successfully.",
+      data: currentBills.data,
+      meta: currentBills.meta,
     });
   });
 

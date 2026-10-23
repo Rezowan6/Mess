@@ -1,6 +1,6 @@
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import { asyncHandler } from "@/middlewares/index.js";
-import { IPaginationQuery } from "@/types/pagination.interface.js";
+import { getPaginationQuery } from "@/utils/pagination.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { membershipService } from "./tenantMembership.service.js";
@@ -9,7 +9,7 @@ export class TenantMembershipController {
   getMembers = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantContext(req);
 
-    const query = req.query as IPaginationQuery;
+    const query = getPaginationQuery(req);
 
     const members = await membershipService.getMembers(tenantId, query);
 
