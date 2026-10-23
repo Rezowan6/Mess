@@ -9,3 +9,8 @@ export const toTitleCase = (value: string): string =>
 
 export const formatPcs = (value: number | string): string =>
   `${Number(value)} pcs`;
+
+export const formatAmount = (value: number | string): string => {
+  const amount = Number(value);
+  return Number.isFinite(amount) ? amount.toFixed(2) : "0.00";
+};

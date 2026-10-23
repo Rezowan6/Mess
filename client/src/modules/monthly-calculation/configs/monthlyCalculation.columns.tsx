@@ -1,8 +1,22 @@
-import type { TableColumn } from "@/shared/components/ui/Table";
-
 import { Badge } from "@/shared/components/ui/Badge";
 import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
+import type { TableColumn } from "@/shared/components/ui/Table";
+import { formatTaka } from "@/shared/utils/format.utils";
+
 import type { IMonthlyCalculationMember } from "../types/monthlyCalculation.types";
+
+const getStatusVariant = (
+  status: IMonthlyCalculationMember["status"],
+): "soft-error" | "soft-success" | "soft-info" => {
+  switch (status) {
+    case "Payable":
+      return "soft-error";
+    case "Received":
+      return "soft-success";
+    default:
+      return "soft-info";
+  }
+};
 
 export const useMonthlyCalculationColumns =
   (): TableColumn<IMonthlyCalculationMember>[] => {
@@ -11,25 +25,31 @@ export const useMonthlyCalculationColumns =
         key: "name",
         title: "Member",
         render: (member) => (
-          <MemberAvatar name={member?.name} avatar={member?.avatar} />
+          <MemberAvatar name={member.name} avatar={member.avatar} />
         ),
       },
       {
         key: "deposit",
         title: "Deposit",
-        render: (member) => `৳ ${member?.deposit ?? 0}`,
+        render: (member) => (
+          <span className="text-theme-success font-bold">
+            {formatTaka(member.deposit ?? 0)}
+          </span>
+        ),
       },
       {
         key: "totalMeal",
         title: "Meal",
-        render: (member) => member?.totalMeal ?? 0,
+        render: (member) => (
+          <span className="text-theme-text">{member.totalMeal ?? 0}</span>
+        ),
       },
       {
         key: "totalMealCost",
         title: "Meal Cost",
         render: (member) => (
-          <span className="text-warning">
-            ৳ {member?.normalMealCost.toFixed(2) ?? 0}
+          <span className="font-medium text-theme-warning">
+            {formatTaka(member.normalMealCost ?? 0)}
           </span>
         ),
       },
@@ -37,8 +57,8 @@ export const useMonthlyCalculationColumns =
         key: "partyCost",
         title: "Party Cost",
         render: (member) => (
-          <span className="text-warning">
-            ৳ {member.partyCost.toFixed(2) ?? 0}
+          <span className="font-medium text-theme-warning">
+            {formatTaka(member.partyCost ?? 0)}
           </span>
         ),
       },
@@ -46,39 +66,46 @@ export const useMonthlyCalculationColumns =
         key: "eggCost",
         title: "Egg Cost",
         render: (member) => (
-          <span className="text-warning">
-            ৳ {member.eggCost.toFixed(2) ?? 0}
+          <span className="font-medium text-theme-warning">
+            {formatTaka(member.eggCost ?? 0)}
           </span>
         ),
       },
       {
         key: "memberTotalCost",
         title: "Total Cost",
-        render: (member) => `৳ ${member.memberCost.toFixed(2) ?? 0}`,
+        render: (member) => (
+          <span className="font-semibold text-theme-text">
+            {formatTaka(member.memberCost ?? 0)}
+          </span>
+        ),
       },
       {
         key: "balance",
         title: "Balance",
-        render: (member) => (
-          <span className={member.balance < 0 ? "text-error" : "text-success"}>
-            ৳ {Math.abs(member.balance).toFixed(2) ?? 0}
-          </span>
-        ),
+        render: (member) => {
+          const balance = Number(member.balance ?? 0);
+
+          return (
+            <span
+              className={`font-semibold ${
+                balance < 0
+                  ? "text-theme-danger"
+                  : balance > 0
+                    ? "text-theme-success"
+                    : "text-theme-text-muted"
+              }`}
+            >
+              {formatTaka(Math.abs(balance))}
+            </span>
+          );
+        },
       },
       {
         key: "status",
         title: "Status",
         render: (member) => (
-          <Badge
-            size="sm"
-            variant={`${
-              member.status === "Payable"
-                ? "soft-error"
-                : member.status === "Received"
-                  ? "soft-success"
-                  : "soft-info"
-            }`}
-          >
+          <Badge size="sm" variant={getStatusVariant(member.status)}>
             {member.status}
           </Badge>
         ),

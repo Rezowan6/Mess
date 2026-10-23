@@ -2,19 +2,26 @@ import type { TableColumn } from "@/shared/components/ui/Table";
 
 import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
 import type { IMealEntry } from "../types/mealEntry.types";
-import { useMealEntryTablePermissions } from "./mealEntry.columns.permission";
 
 export const useMembersMealSummaryColumns = (): TableColumn<IMealEntry>[] => {
-  const { canViewDetails } = useMealEntryTablePermissions();
-
   const columns: TableColumn<IMealEntry>[] = [
     {
       key: "member",
       title: "Member",
       render: (meal) => (
-        <MemberAvatar name={meal.user?.name} avatar={meal.user?.avatar} />
+        <ActionLink
+          state={meal}
+          to={`${ROUTES.MEAL_ENTRY}/history`}
+          permission={PERMISSIONS.MEAL_ENTRY_VIEW}
+          onDenied="plain"
+          showIcon={false}
+          showHoverBorder={false}
+        >
+          <MemberAvatar name={meal.user?.name} avatar={meal.user?.avatar} />
+        </ActionLink>
       ),
     },
     {
@@ -38,18 +45,6 @@ export const useMembersMealSummaryColumns = (): TableColumn<IMealEntry>[] => {
       render: (meal) => meal.totalMeals,
     },
   ];
-
-  if (canViewDetails) {
-    columns.push({
-      key: "details",
-      title: "Details",
-      render: (meal) => (
-        <ActionLink state={meal} to={`${ROUTES.MEAL_ENTRY}/history`}>
-          Details
-        </ActionLink>
-      ),
-    });
-  }
 
   return columns;
 };
