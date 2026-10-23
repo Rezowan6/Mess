@@ -1,7 +1,11 @@
+import clsx from "clsx";
 import type { LucideIcon } from "lucide-react";
 import { MoveRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
+
+import type { Permission } from "@/shared/constants/permissions";
+import { useRBAC } from "@/shared/hooks/useRBAC";
 
 interface Props {
   to: string;
@@ -11,6 +15,14 @@ interface Props {
   icon?: LucideIcon;
   iconPosition?: "left" | "right";
   iconSize?: number;
+  /** false = no arrow icon (default: true) */
+  showIcon?: boolean;
+  /** false = no border on hover (default: true) */
+  showHoverBorder?: boolean;
+  /** The link is available only to users who have this permission */
+  permission?: Permission;
+  /** Without the permission: render nothing, or the children without a link */
+  onDenied?: "hide" | "plain";
 }
 
 export const ActionLink = ({
@@ -21,27 +33,35 @@ export const ActionLink = ({
   icon: Icon = MoveRight,
   iconPosition = "right",
   iconSize = 14,
+  showIcon = true,
+  showHoverBorder = true,
+  permission,
+  onDenied = "hide",
 }: Props) => {
+  const { can } = useRBAC();
+
+  if (permission && !can(permission)) {
+    return onDenied === "plain" ? <>{children}</> : null;
+  }
+
+  const icon = showIcon ? (
+    <Icon size={iconSize} className="relative mt-1 shrink-0" />
+  ) : null;
+
   return (
     <Link
       to={to}
       state={state}
-      className={`
-        text-theme-info
-        inline-flex items-center gap-1
-        border-b border-transparent
-        hover:border-theme-info
-        transition-all duration-300 ease-in-out
-        w-fit
-        text-sm sm:text-md
-        ${className ?? ""}
-      `}
+      className={clsx(
+        "inline-flex w-fit items-center gap-1 text-sm text-theme-info sm:text-base",
+        showHoverBorder &&
+          "border-b border-transparent transition-all duration-300 ease-in-out hover:border-theme-info",
+        className,
+      )}
     >
-      {iconPosition === "left" && <Icon size={iconSize} className="shrink-0 relative mt-1" />}
-
+      {iconPosition === "left" && icon}
       {children}
-
-      {iconPosition === "right" && <Icon size={iconSize} className="shrink-0 relative mt-1" />}
+      {iconPosition === "right" && icon}
     </Link>
   );
 };
