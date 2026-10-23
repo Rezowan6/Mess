@@ -1,3 +1,4 @@
+import { IPaginationQuery } from "@/types/pagination.interface.js";
 import type { DepositPaymentMethodType } from "../deposit/deposit.interface.js";
 export const CURRENT_BILL_STATUS = [
   "pending",
@@ -40,6 +41,7 @@ export interface IGetCurrentBills {
   tenantId: number;
   month: number;
   year: number;
+  query: IPaginationQuery;
 }
 
 export interface IGetBYIdCurrentBill {

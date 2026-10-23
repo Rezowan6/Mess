@@ -23,12 +23,8 @@ import {
 import { currentBillRepository } from "./currentBill.repository.js";
 
 class CurrentBillService {
-  async getMembercurrentBills({ tenantId, month, year }: IGetCurrentBills) {
-    return await currentBillRepository.getMemberCurrentBills({
-      tenantId,
-      month,
-      year,
-    });
+  async getMembercurrentBills({ tenantId, month, year, query }: IGetCurrentBills) {
+    return await currentBillRepository.getMemberCurrentBills({tenantId, month, year,query,});
   }
 
   async getById({ tenantId, userId, year }: IGetBYIdCurrentBill) {

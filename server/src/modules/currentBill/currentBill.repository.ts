@@ -1,5 +1,5 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
-import { Transaction } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import {
   IGetBYIdCurrentBill,
   IGetCurrentBills,
@@ -10,25 +10,39 @@ class CurrentBillRepository extends BaseRepository<CurrentBill> {
   constructor() {
     super(CurrentBill);
   }
-  async getMemberCurrentBills({ tenantId, month, year }: IGetCurrentBills) {
-    return await this.findAll({
-      where: {
-        tenantId,
-        month,
-        year,
+  async getMemberCurrentBills({
+    tenantId,
+    month,
+    year,
+    query,
+  }: IGetCurrentBills) {
+    const search = query.search?.trim();
+    return this.paginate(
+      {
+        where: {tenantId, month, year},
+        include: [
+          {
+            association: "member",
+            attributes: ["id", "name", "avatar", "email"],
+            required: Boolean(search),
+            ...(search && {
+              where: {
+                [Op.or]: [
+                  { name: { [Op.like]: `%${search}%` } },
+                  { email: { [Op.like]: `%${search}%` } },
+                ],
+              },
+            }),
+          },
+          {
+            association: "creator",
+            attributes: ["id", "name", "avatar", "email"],
+          },
+        ],
+        order: [["userId", "ASC"]],
       },
-      include: [
-        {
-          association: "member",
-          attributes: ["id", "name", "avatar", "email"],
-        },
-        {
-          association: "creator",
-          attributes: ["id", "name", "avatar", "email"],
-        },
-      ],
-      order: [["userId", "ASC"]],
-    });
+      query,
+    );
   }
 
   async getByIdMemberCurrentBill({
