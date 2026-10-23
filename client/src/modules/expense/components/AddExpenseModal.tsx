@@ -12,12 +12,12 @@ import { Input } from "@/shared/components/ui/Input";
 
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { RecordFormModal } from "@/shared/forms/RecordFormModal";
+import { useExpenseFields } from "../configs/expense.fields.config";
 import {
   expenseSchema,
   type ExpenseFormValues,
 } from "../schemas/expense.schema";
 import type { IExpense } from "../types/expense.types";
-import { expenseFields } from "../configs/expense.fields.config";
 
 interface Props {
   isOpen: boolean;
@@ -98,6 +98,8 @@ export const AddExpenseModal = ({ isOpen, onClose, expense }: Props) => {
     }
   };
 
+  const expenseFields = useExpenseFields();
+
   return (
     <RecordFormModal
       isOpen={isOpen}
@@ -116,6 +118,7 @@ export const AddExpenseModal = ({ isOpen, onClose, expense }: Props) => {
           label={field.label}
           type={field.type}
           placeholder={field.placeholder}
+          placeholderTexts={field.placeholderTexts}
           leftIcon={field.leftIcon}
           error={errors[field.name]?.message}
           {...register(field.name, {
