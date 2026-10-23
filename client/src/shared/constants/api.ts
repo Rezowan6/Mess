@@ -200,7 +200,6 @@ export const API_ENDPOINTS = {
     DELETE: (id: number) => `/eggs/${id}`,
   },
 
-<<<<<<< HEAD
   PAYMENT_METHOD: {
     GET_ALL: "/payment-methods",
     CREATE: "/payment-methods",
@@ -214,7 +213,7 @@ export const API_ENDPOINTS = {
     BY_ID: (id: number) => `/settlements/${id}`,
     UPDATE: (id: number) => `/settlements/${id}`,
     DELETE: (id: number) => `/settlements/${id}`,
-=======
+  },
   KHALA_BILL: {
     CREATE: "/khala-bills",
     GET_ALL: "/khala-bills",
@@ -230,6 +229,5 @@ export const API_ENDPOINTS = {
     DELETE: (id: number) => `/current-bills/${id}`,
     GET_DELETED: "/current-bills/deleted",
     RESTORE: (id: number) => `/current-bills/${id}/restore`,
->>>>>>> 3fca7c4f14f0a8892c10dc7ea95bad9da42af510
   },
 };

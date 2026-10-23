@@ -98,7 +98,6 @@ export const PERMISSIONS = {
   // System
   SYSTEM_MANAGE: "system.manage",
 
-<<<<<<< HEAD
   // payment method
   PAYMENT_METHOD_CREATE: "paymentMethod.create",
   PAYMENT_METHOD_UPDATE: "paymentMethod.update",
@@ -109,7 +108,7 @@ export const PERMISSIONS = {
   SETTLEMENT_CREATE: "settlement.create",
   SETTLEMENT_UPDATE: "settlement.update",
   SETTLEMENT_DELETE: "settlement.delete",
-=======
+
   // current bill
   CURRENT_BILL_VIEW: "current-bill.view",
   CURRENT_BILL_CREATE: "current-bill.create",
@@ -121,7 +120,6 @@ export const PERMISSIONS = {
   KHALA_BILL_CREATE: "khala_bill.create",
   KHALA_BILL_UPDATE: "khala_bill.update",
   KHALA_BILL_DELETE: "khala_bill.delete",
->>>>>>> 3fca7c4f14f0a8892c10dc7ea95bad9da42af510
 } as const;
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];

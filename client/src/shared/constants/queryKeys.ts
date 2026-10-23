@@ -269,17 +269,11 @@ export const queryKeys = {
   // ============================================================
   notifications,
 
-
-<<<<<<< HEAD
-
-
-
   paymentMethods,
   // SETTLEMENTS — Tenant + Meal Session based
   settlements,
-=======
+
   khalaBill,
 
   currentBill,
->>>>>>> 3fca7c4f14f0a8892c10dc7ea95bad9da42af510
 };

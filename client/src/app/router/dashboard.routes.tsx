@@ -24,13 +24,11 @@ import { tenantRoutes } from "@/modules/tenant/routes/tenant.routes";
 import { userManagementRoutes } from "@/modules/user-management/routes/userManagement.routes";
 
 export const dashboardRoutes = [
-<<<<<<< HEAD
   settlementRoutes,
   paymentMethodRoutes,
-=======
+
   khalaBillRoutes,
   currentBillRoutes,
->>>>>>> 3fca7c4f14f0a8892c10dc7ea95bad9da42af510
   noticeRoutes,
   mealRequestRoutes,
   depositRoutes,

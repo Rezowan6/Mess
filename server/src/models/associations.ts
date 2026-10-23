@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 import { setupAuditLogAssociations } from "@/modules/auditLog/auditLog.association.js";
-=======
 import { setupCurrentBillAssociations } from "@/modules/currentBill/currentBill.association.js";
->>>>>>> 3fca7c4f14f0a8892c10dc7ea95bad9da42af510
 import { setupDepositAssociations } from "@/modules/deposit/deposit.association.js";
 import { setupEggAssociations } from "@/modules/egg/egg.association.js";
 import { setupEggRateAssociations } from "@/modules/eggRates/eggRate.association.js";
@@ -51,13 +48,11 @@ export const setupAssociations = () => {
   setupEggRateAssociations();
   setupSoldProductAssociations();
 
-<<<<<<< HEAD
   setupSettlementAssociations();
   setupPaymentMethodAssociations();
   setupSettlementConfirmationAssociations();
   setupAuditLogAssociations();
-=======
+
   setupCurrentBillAssociations();
   setupKhalaBillAssociations();
->>>>>>> 3fca7c4f14f0a8892c10dc7ea95bad9da42af510
 };

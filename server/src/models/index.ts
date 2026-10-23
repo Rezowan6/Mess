@@ -1,11 +1,8 @@
 import { MealPreference } from "@/modules/MealPreference/mealPreference.model.js";
 import { PartyExpense } from "@/modules/PartyExpense/partyExpense.model.js";
 import { PartyExpenseMember } from "@/modules/PartyExpenseMember/partyExpenseMember.model.js";
-<<<<<<< HEAD
 import { AuditLog } from "@/modules/auditLog/auditLog.model.js";
-=======
 import { CurrentBill } from "@/modules/currentBill/currentBill.model.js";
->>>>>>> 3fca7c4f14f0a8892c10dc7ea95bad9da42af510
 import { Deposit } from "@/modules/deposit/deposit.model.js";
 import { Egg } from "@/modules/egg/egg.model.js";
 import { EggRate } from "@/modules/eggRates/eggRate.model.js";
@@ -32,11 +29,8 @@ import { TenantMembership } from "@/modules/tenantMembership/tenantMembership.mo
 import { User } from "@/modules/user/user.model.js";
 
 export {
-<<<<<<< HEAD
   AuditLog,
-=======
   CurrentBill,
->>>>>>> 3fca7c4f14f0a8892c10dc7ea95bad9da42af510
   Deposit,
   Egg,
   EggRate,

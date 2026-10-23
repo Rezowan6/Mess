@@ -22,14 +22,13 @@ export const RealtimeResource = {
 
   MY_PROFILE: "my-profile",
 
-<<<<<<< HEAD
+
   PAYMENT_METHOD: "payment-method",
   SETTLEMENT: "settlement",
-=======
+
   CURRENT_BILL: "current-bill",
 
   KHALA_BILL: "khala-bill",
->>>>>>> 3fca7c4f14f0a8892c10dc7ea95bad9da42af510
 } as const;
 
 export type RealtimeResourceType =
