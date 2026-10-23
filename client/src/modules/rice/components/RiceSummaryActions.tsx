@@ -2,10 +2,8 @@ import { useDeleteRice } from "../hooks/useDeleteRice";
 import { RicePaymentStatus, type IRice } from "../types/rice.types";
 import { canAddRicePayment } from "../utils/rice.utils";
 
-import { ActionLink } from "@/shared/components/ui/ActionLink";
 import { Button } from "@/shared/components/ui/Button";
 import { PERMISSIONS } from "@/shared/constants/permissions";
-import { ROUTES } from "@/shared/constants/routes";
 import { RecordActions } from "@/shared/data-display/RecordActions";
 import { RecordDeleteMessage } from "@/shared/data-display/RecordDeleteMessage";
 import { formatDate, isRecordLocked } from "@/shared/utils/date.utils";
@@ -56,11 +54,6 @@ export const RiceSummaryActions = ({ rice, onPay, onEdit }: Props) => {
       deleteTitle="Delete Rice Purchase"
       deleteMessage={deleteMsg}
       leading={leading}
-      trailing={
-        <ActionLink to={`${ROUTES.EXPENSE}/rice/${rice.id}`}>
-          Details
-        </ActionLink>
-      }
     />
   );
 };

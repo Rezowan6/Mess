@@ -6,3 +6,6 @@ export const formatKg = (value: number | string): string =>
 
 export const toTitleCase = (value: string): string =>
   value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+
+export const formatPcs = (value: number | string): string =>
+  `${Number(value)} pcs`;

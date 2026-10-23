@@ -1,6 +1,9 @@
 import { Badge } from "@/shared/components/ui/Badge";
 import type { TableColumn } from "@/shared/components/ui/Table";
 
+import { ActionLink } from "@/shared/components/ui/ActionLink";
+import { PERMISSIONS } from "@/shared/constants/permissions";
+import { ROUTES } from "@/shared/constants/routes";
 import { formatDate } from "@/shared/utils/date.utils";
 import { formatKg, formatTaka, toTitleCase } from "@/shared/utils/format.utils";
 import { RiceSummaryActions } from "../components/RiceSummaryActions";
@@ -27,12 +30,22 @@ export const useRiceSummaryColumns = ({
       key: "supplier",
       title: "Supplier",
       render: (rice) => (
-        <div className="flex flex-col">
-          <span className="font-medium">{rice.supplierName ?? "—"}</span>
-          {rice.supplierPhone && (
-            <span className="text-xs opacity-60">{rice.supplierPhone}</span>
-          )}
-        </div>
+        <ActionLink
+          to={`${ROUTES.EXPENSE}/rice/${rice.id}`}
+          permission={PERMISSIONS.EXPENSE_CREATE}
+          onDenied="plain"
+          showIcon={false}
+          showHoverBorder={false}
+        >
+          <div className="flex flex-col text-left">
+            <span className="font-medium">{rice.supplierName ?? "—"}</span>
+            {rice.supplierPhone && (
+              <span className="text-xs text-theme-text-muted">
+                {rice.supplierPhone}
+              </span>
+            )}
+          </div>
+        </ActionLink>
       ),
     },
     {

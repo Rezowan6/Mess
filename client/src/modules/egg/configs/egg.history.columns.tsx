@@ -2,8 +2,9 @@ import type { TableColumn } from "@/shared/components/ui/Table";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { useRBAC } from "@/shared/hooks/useRBAC";
 import { formatDate } from "@/shared/utils/date.utils";
-import type { IEgg } from "../types/egg.types";
+import { formatPcs } from "@/shared/utils/format.utils";
 import { EggHistoryAction } from "../components/EggHistoryAction";
+import type { IEgg } from "../types/egg.types";
 
 export const eggHistoryColumns = (
   onEdit: (egg: IEgg) => void,
@@ -19,7 +20,7 @@ export const eggHistoryColumns = (
     {
       key: "quantity",
       title: "Egg Quantity",
-      render: (egg) => egg.quantity,
+      render: (egg) => formatPcs(egg.quantity),
     },
   ];
 
