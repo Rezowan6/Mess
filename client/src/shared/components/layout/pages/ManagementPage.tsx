@@ -1,6 +1,5 @@
-import { ChevronLeft } from "lucide-react";
-import { type ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
+import clsx from "clsx";
+import type { ReactNode } from "react";
 
 import { DescriptionText } from "../../ui/DescriptionText";
 
@@ -11,7 +10,6 @@ interface Props {
   children: ReactNode;
   action?: ReactNode;
   titleClassName?: string;
-  showBack?: boolean;
 }
 
 export const ManagementPage = ({
@@ -21,38 +19,26 @@ export const ManagementPage = ({
   children,
   action,
   titleClassName,
-  showBack = false,
 }: Props) => {
-  const navigate = useNavigate();
-
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex min-w-0 flex-1 items-center">
-          {showBack && (
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-primary transition-colors"
-              aria-label="Go back"
-            >
-              <ChevronLeft size={24} />
-            </button>
-          )}
-
-          <div className="min-w-0 flex-1">
-            <h1 className={`text-2xl font-bold ${titleClassName ?? ""}`}>
+      {/* items-start: when the description expands, the action stays at the top */}
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          {/* Same height as the action button, so the title lines up with it */}
+          <div className="flex min-h-10 items-center">
+            <h1 className={clsx("text-2xl font-bold", titleClassName)}>
               {title}
             </h1>
-
-            <DescriptionText
-              text={description}
-              maxWords={6}
-              className="text-sm text-theme-text-muted"
-            />
-
-            {footer}
           </div>
+
+          <DescriptionText
+            text={description}
+            maxWords={6}
+            className="-mt-1 text-sm text-theme-text-muted"
+          />
+
+          {footer}
         </div>
 
         {action && <div className="w-fit shrink-0">{action}</div>}

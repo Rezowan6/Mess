@@ -13,25 +13,42 @@ export const DescriptionText = ({
 }: DescriptionTextProps) => {
   const [expanded, setExpanded] = useState(false);
 
-  if (!text) return null;
+  if (!text?.trim()) return null;
 
-  const words = text.split(/\s+/);
+  // trim first, otherwise leading or trailing spaces create empty "words"
+  const words = text.trim().split(/\s+/);
   const shouldTruncate = words.length > maxWords;
 
-  const visibleText = expanded ? text : words.slice(0, maxWords).join(" ");
+  const firstPart = words.slice(0, maxWords).join(" ");
+  const restPart = words.slice(maxWords).join(" ");
+
+  if (!shouldTruncate) {
+    return <p className={className}>{firstPart}</p>;
+  }
+
+  const toggleButton = (label: string) => (
+    <button
+      type="button"
+      aria-expanded={expanded}
+      onClick={() => setExpanded((previous) => !previous)}
+      className="ml-1 cursor-pointer font-medium text-theme-info hover:underline"
+    >
+      {label}
+    </button>
+  );
 
   return (
     <p className={className}>
-      {visibleText}
+      {firstPart}
 
-      {shouldTruncate && (
-        <button
-          type="button"
-          onClick={() => setExpanded((prev) => !prev)}
-          className="ml-1 font-medium text-theme-info hover:underline cursor-pointer"
-        >
-          {expanded ? "Less" : "... More"}
-        </button>
+      {expanded ? (
+        // block = the rest of the text starts on a new line
+        <span className="block">
+          {restPart}
+          {toggleButton("Less")}
+        </span>
+      ) : (
+        toggleButton("... More")
       )}
     </p>
   );
