@@ -63,6 +63,7 @@ export const PendingMealReqRow = React.memo(function PendingMealReqRow({
         <MealBadges meals={request} />
 
         <div className="mt-2 flex items-center justify-between gap-2">
+          {/* Timestamps */}
           <span className="text-[11px] text-theme-text-muted">
             {timestamp.label}: {formatDateTime(timestamp.value)}
           </span>
