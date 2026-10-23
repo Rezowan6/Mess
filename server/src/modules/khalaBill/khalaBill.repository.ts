@@ -23,7 +23,7 @@ class KhalaBillRepository extends BaseRepository<KhalaBill> {
           attributes: ["id", "name", "avatar", "email"],
         },
       ],
-      order: [["userId", "DESC"]],
+      order: [["userId", "ASC"]],
     });
   }
 
