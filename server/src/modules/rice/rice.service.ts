@@ -5,6 +5,7 @@ import {
 } from "@/socket/realtime.constant.js";
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { getAppDate } from "@/utils/date.util.js";
 import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
@@ -181,23 +182,15 @@ class RiceService {
   async getAll({
     tenantId,
     mealSessionId,
-    page,
-    limit,
-    search,
+    query,
   }: {
     tenantId: number;
     mealSessionId: number;
-    page: number;
-    limit: number;
-    search?: string;
+    query: IPaginationQuery;
   }) {
     // Current page (filtered by search) and ALL rows (for the due summary)
     const [paginated, allRice] = await Promise.all([
-      riceRepository.getPaginatedRice(tenantId, mealSessionId, {
-        page,
-        limit,
-        ...(search && { search }),
-      }),
+      riceRepository.getPaginatedRice(tenantId, mealSessionId, query),
       riceRepository.getAllRice(tenantId, mealSessionId),
     ]);
 

@@ -1,5 +1,6 @@
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
+import { getPaginationQuery } from "@/utils/pagination.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { riceService } from "./rice.service.js";
@@ -42,24 +43,12 @@ class RiceController {
   getAll = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, mealSessionId } = getTenantContext(req);
 
-    const page = Math.max(1, Math.floor(Number(req.query.page)) || 1);
-
-    const limit = Math.min(
-      100,
-      Math.max(1, Math.floor(Number(req.query.limit)) || 10),
-    );
-
-    const search =
-      typeof req.query.search === "string"
-        ? req.query.search.trim().slice(0, 100)
-        : "";
+    const query = getPaginationQuery(req);
 
     const result = await riceService.getAll({
       tenantId,
       mealSessionId,
-      page,
-      limit,
-      ...(search && { search }),
+      query,
     });
 
     return sendResponse(res, {

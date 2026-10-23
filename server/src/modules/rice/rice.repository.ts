@@ -1,7 +1,10 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
 import { Attributes, CreationAttributes, Op, Transaction } from "sequelize";
 
+import { buildSearchCondition } from "@/common/utils/search.util.js";
 import { User } from "@/models/index.js";
+import { IPaginationQuery } from "@/types/pagination.interface.js";
+import { getSearchQuery } from "@/utils/string.util.js";
 import { RicePaymentStatus, RicePurchaseType } from "./rice.interface.js";
 import { Rice } from "./rice.model.js";
 
@@ -62,18 +65,14 @@ class RiceRepository extends BaseRepository<Rice> {
   async getPaginatedRice(
     tenantId: number,
     mealSessionId: number,
-    query: { page: number; limit: number; search?: string },
+    query: IPaginationQuery,
   ) {
-    const { page, limit, search } = query;
-
     return this.paginate(
       {
         where: {
           tenantId,
           mealSessionId,
-          ...(search && {
-            supplierName: { [Op.like]: `%${search}%` },
-          }),
+          ...buildSearchCondition(["supplierName", "paymentStatus", "purchaseType", "purchaseDate", "supplierPhone"], getSearchQuery(query)),
         },
         include: [
           {
@@ -84,7 +83,7 @@ class RiceRepository extends BaseRepository<Rice> {
         ],
         order: [["createdAt", "DESC"]],
       },
-      { page, limit },
+      query,
     );
   }
 
