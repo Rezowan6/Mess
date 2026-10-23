@@ -23,7 +23,7 @@ export const TypingText = ({
   backSpeed = 70,
   backDelay = 1000,
   smartBackspace = false,
-  showCursor= true,
+  showCursor,
   loop = true,
 }: Props) => {
   const typingRef = useRef<HTMLSpanElement>(null);

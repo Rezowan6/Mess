@@ -59,7 +59,7 @@ export const RiceSummaryTable = () => {
       <SearchInput
         value={search}
         onChange={handleSearch}
-        placeholder="by supplier name"
+        placeholderTexts={["supplier name", "phone number", "email"]}
       />
 
       {!isPending && (
@@ -77,34 +77,34 @@ export const RiceSummaryTable = () => {
             tone="success"
             className="grow sm:grow-0"
           />
-            <SummaryStat
-              label="Total Due"
-              amount={dueSummary.totalDue}
-              tone={hasDue ? "error" : "success"}
-              className="grow"
-              hint={
-                hasDue && (
-                  <>
-                    · {dueSummary.dueCount}{" "}
-                    {dueSummary.dueCount === 1 ? "purchase" : "purchases"}
-                  </>
-                )
-              }
-              action={
-                showPayAll && (
-                  <Button
-                    type="button"
-                    variant="pay"
-                    leftIcon={<Wallet />}
-                    onClick={openPayAll}
-                    className="w-full sm:w-fit"
-                  >
-                    Pay All Due
-                  </Button>
-                )
-              }
-            />
-          </div>
+          <SummaryStat
+            label="Total Due"
+            amount={dueSummary.totalDue}
+            tone={hasDue ? "error" : "success"}
+            className="grow"
+            hint={
+              hasDue && (
+                <>
+                  · {dueSummary.dueCount}{" "}
+                  {dueSummary.dueCount === 1 ? "purchase" : "purchases"}
+                </>
+              )
+            }
+            action={
+              showPayAll && (
+                <Button
+                  type="button"
+                  variant="pay"
+                  leftIcon={<Wallet />}
+                  onClick={openPayAll}
+                  className="w-full sm:w-fit"
+                >
+                  Pay All Due
+                </Button>
+              )
+            }
+          />
+        </div>
       )}
 
       {/* ...Table, Pagination and modals stay unchanged... */}
