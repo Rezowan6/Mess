@@ -3,6 +3,7 @@ import { buildSearchCondition } from "@/common/utils/search.util.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { Expenses } from "@/models/index.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
+import { getSearchQuery } from "@/utils/string.util.js";
 import { Op, col, fn } from "sequelize";
 
 class ExpensesRepository extends BaseRepository<Expenses> {
@@ -35,24 +36,14 @@ class ExpensesRepository extends BaseRepository<Expenses> {
     mealSessionId: number,
     query: IPaginationQuery,
   ) {
+    const search = getSearchQuery(query);
     return await this.paginate(
       {
         where: {
           tenantId,
           mealSessionId,
-          ...buildSearchCondition(["signature", "expenseDate"], query.search),
+          ...buildSearchCondition(["signature", "expenseDate"], search),
         },
-
-        attributes: [
-          "id",
-          "amount",
-          "category",
-          "description",
-          "signature",
-          "expenseDate",
-          "createdAt",
-        ],
-
         include: [
           {
             association: "creator",

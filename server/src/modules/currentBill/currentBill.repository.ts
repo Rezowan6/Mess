@@ -1,5 +1,7 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
-import { Op, Transaction } from "sequelize";
+import { buildSearchCondition } from "@/common/utils/search.util.js";
+import { getSearchQuery } from "@/utils/string.util.js";
+import { Transaction } from "sequelize";
 import {
   IGetBYIdCurrentBill,
   IGetCurrentBills,
@@ -16,23 +18,20 @@ class CurrentBillRepository extends BaseRepository<CurrentBill> {
     year,
     query,
   }: IGetCurrentBills) {
-    const search = query.search?.trim();
+    const search = getSearchQuery(query);
     return this.paginate(
       {
-        where: {tenantId, month, year},
+        where: {
+          tenantId,
+          month,
+          year,
+        },
         include: [
           {
             association: "member",
             attributes: ["id", "name", "avatar", "email"],
             required: Boolean(search),
-            ...(search && {
-              where: {
-                [Op.or]: [
-                  { name: { [Op.like]: `%${search}%` } },
-                  { email: { [Op.like]: `%${search}%` } },
-                ],
-              },
-            }),
+            where: buildSearchCondition(["name", "email"], search),
           },
           {
             association: "creator",

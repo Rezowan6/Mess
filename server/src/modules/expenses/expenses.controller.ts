@@ -1,8 +1,8 @@
 import { getTenantContext } from "@/helpers/getTenantContext.helper.js";
 import asyncHandler from "@/middlewares/asyncHandler.js";
-import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
 import { getAppDate } from "@/utils/date.util.js";
+import { getPaginationQuery } from "@/utils/pagination.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { expenseService } from "./expenses.service.js";
@@ -28,7 +28,6 @@ class ExpensesController {
   });
 
   summary = asyncHandler(async (req: Request, res: Response) => {
-
     const { tenantId, session, mealSessionId } = getTenantContext(req);
 
     const data = await expenseService.summary({
@@ -45,11 +44,9 @@ class ExpensesController {
   });
 
   getAll = asyncHandler(async (req: Request, res: Response) => {
-
-    const context = getTenantContext(req);
     const { tenantId, mealSessionId } = getTenantContext(req);
 
-    const query = req.query as IPaginationQuery;
+    const query = getPaginationQuery(req);
 
     const expense = await expenseService.getAll({
       tenantId,
