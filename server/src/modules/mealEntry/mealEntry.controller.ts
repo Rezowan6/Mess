@@ -4,6 +4,7 @@ import { ApiError } from "@/utils/ApiError.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { mealEntryService } from "./mealEntry.service.js";
+import { getPaginationQuery } from "@/utils/pagination.util.js";
 
 class MealEntriesController {
   my = asyncHandler(async (req: Request, res: Response) => {
@@ -60,6 +61,25 @@ class MealEntriesController {
       statusCode: 200,
       message: "Member meal summary fetched successfully.",
       data,
+    });
+  });
+
+  getMemberMealSummary = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId, mealSessionId } = getTenantContext(req);
+
+    const query = getPaginationQuery(req);
+
+    const mealSummary = await mealEntryService.getMemberMealSummary({
+      tenantId,
+      mealSessionId,
+      query,
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Member meal summary fetched successfully",
+      data: mealSummary.data,
+      meta: mealSummary.meta,
     });
   });
 

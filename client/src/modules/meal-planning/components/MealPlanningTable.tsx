@@ -23,6 +23,8 @@ interface Props {
   refetch?: () => void;
 }
 
+const SEARCH_PLACEHOLDERS = ["member name",]
+
 export const MealPlanningTable = ({
   planning,
   loading = false,
@@ -123,7 +125,7 @@ export const MealPlanningTable = ({
       <SearchInput
         value={search}
         onChange={handleSearch}
-        placeholder="by member name"
+        placeholderTexts={SEARCH_PLACEHOLDERS}
       />
 
       {/* Fixed minimum height stops the page from jumping between tabs */}

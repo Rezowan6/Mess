@@ -1,9 +1,11 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
+import { buildSearchCondition } from "@/common/utils/search.util.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { MealEntry } from "@/models/index.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
+import { getSearchQuery } from "@/utils/string.util.js";
 import { Op, Transaction, col, fn, literal } from "sequelize";
-import { ICreateMealEntryDto, IMealSummary } from "./mealEntry.interface.js";
+import { ICreateMealEntryDto } from "./mealEntry.interface.js";
 
 export class MealEntryRepository extends BaseRepository<MealEntry> {
   constructor() {
@@ -124,20 +126,13 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
     mealSessionId: number;
     query: IPaginationQuery;
   }) {
+    const search = getSearchQuery(query);
+
     const userInclude = {
       association: "user",
-
       attributes: ["id", "name", "email", "avatar"],
-
-      required: !!query.search,
-
-      ...(query.search && {
-        where: {
-          name: {
-            [Op.like]: `%${query.search}%`,
-          },
-        },
-      }),
+      required: Boolean(search),
+      where: buildSearchCondition(["name", "email"], search),
     };
 
     return this.paginateGrouped(
@@ -146,30 +141,20 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
           tenantId,
           mealSessionId,
         },
-
         attributes: [
           "userId",
-
           [fn("SUM", col("breakfast")), "totalBreakfast"],
-
           [fn("SUM", col("lunch")), "totalLunch"],
-
           [fn("SUM", col("dinner")), "totalDinner"],
-
           [fn("SUM", col("guest_meal")), "totalGuestMeal"],
-
           [fn("SUM", literal("breakfast + lunch + dinner")), "totalMeals"],
-
           [
             fn("SUM", literal("breakfast + lunch + dinner + guest_meal")),
             "grandTotalMeals",
           ],
         ],
-
         include: [userInclude],
-
         group: ["userId", "user.id", "user.name", "user.email", "user.avatar"],
-
         order: [["userId", "ASC"]],
       },
       query,
@@ -236,7 +221,6 @@ export class MealEntryRepository extends BaseRepository<MealEntry> {
       group: ["userId", "user.id"],
     });
   }
-
 }
 
 export const mealEntryRepository = new MealEntryRepository();

@@ -7,6 +7,8 @@ import { MEAL_ENTRY_MESSAGES } from "../configs/meal.entries.message";
 import { useMembersMealSummaryColumns } from "../configs/members.meal.summary.columns";
 import { useMembersMealSummary } from "../hooks/useMembersMealSummary";
 
+const SEARCH_PLACEHOLDERS = ["member name", "email"];
+
 export const MembersMealSummaryPage = () => {
   const { page, search, handleSearch, handlePage } = useTableSearchParams();
 
@@ -23,7 +25,11 @@ export const MembersMealSummaryPage = () => {
 
   return (
     <>
-      <SearchInput value={search} onChange={handleSearch} />
+      <SearchInput
+        value={search}
+        onChange={handleSearch}
+        placeholderTexts={SEARCH_PLACEHOLDERS}
+      />
       {isPending ? (
         <MealEntryTableSkeleton />
       ) : (

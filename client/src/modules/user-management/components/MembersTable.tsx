@@ -9,6 +9,8 @@ import { useTableSearchParams } from "@/shared/hooks/useTableSearchParams";
 import { useMembers } from "../hooks/useMembers";
 import { MembersTableSkeleton } from "./MembersTableSkeleton";
 
+const SEARCH_PLACEHOLDERS = ["member name", "email"];
+
 export const MembersTable = () => {
   const { page, search, handleSearch, handlePage } = useTableSearchParams();
 
@@ -26,7 +28,11 @@ export const MembersTable = () => {
 
   return (
     <div className="space-y-4">
-      <SearchInput value={search} onChange={handleSearch} />
+      <SearchInput
+        value={search}
+        onChange={handleSearch}
+        placeholderTexts={SEARCH_PLACEHOLDERS}
+      />
 
       {/* Table */}
 

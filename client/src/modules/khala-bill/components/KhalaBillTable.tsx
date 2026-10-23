@@ -8,6 +8,8 @@ import { KHALA_BILL_MESSAGES } from "../configs/khalaBill.messages";
 import { useKhalaBillsColumns } from "../configs/khalaBills.columns";
 import { useKhalaBills } from "../hooks/useKhalaBills";
 
+const SEARCH_PLACEHOLDERS = ["member name", "email"]
+
 export const KhalaBillTable = () => {
   const { search, handleSearch } = useTableSearchParams();
   const { data, isPending, isError, refetch } = useKhalaBills();
@@ -47,7 +49,7 @@ export const KhalaBillTable = () => {
       message={KHALA_BILL_MESSAGES}
       search={search}
       onSearch={handleSearch}
-      searchPlaceholder="Search member, amount or status..."
+      placeholderTexts={SEARCH_PLACEHOLDERS}
       summary={{
         label: "Total Khala Bill",
         amount: totalAmount,

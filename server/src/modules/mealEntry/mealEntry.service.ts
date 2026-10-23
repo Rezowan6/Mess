@@ -1,17 +1,35 @@
 import sequelize from "@/configs/db.js";
+import {
+  RealtimeAction,
+  RealtimeResource,
+} from "@/socket/realtime.constant.js";
+import { SocketEvent } from "@/socket/socket-event.js";
+import { socketService } from "@/socket/socket.service.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { mealEntryRepository } from "./mealEntry.repository.js";
-import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
-import { socketService } from "@/socket/socket.service.js";
-import { SocketEvent } from "@/socket/socket-event.js";
-import { RealtimeAction, RealtimeResource } from "@/socket/realtime.constant.js";
 import { mealRequestRepository } from "../mealRequest/mealRequest.repository.js";
-import { ICreateMealEntryDto, IUpdateMealEntryDto } from "./mealEntry.interface.js";
+import { mealSessionRepository } from "../mealSession/mealSession.repository.js";
+import {
+  ICreateMealEntryDto,
+  IUpdateMealEntryDto,
+} from "./mealEntry.interface.js";
+import { mealEntryRepository } from "./mealEntry.repository.js";
 
 class MealEntryService {
-  async my({ userId, tenantId, mealSessionId }: { userId: number; tenantId: number, mealSessionId:number }) {
-    return await mealEntryRepository.getMyMeal({ tenantId, userId, mealSessionId });
+  async my({
+    userId,
+    tenantId,
+    mealSessionId,
+  }: {
+    userId: number;
+    tenantId: number;
+    mealSessionId: number;
+  }) {
+    return await mealEntryRepository.getMyMeal({
+      tenantId,
+      userId,
+      mealSessionId,
+    });
   }
 
   async getAllMembersMeal({
@@ -36,8 +54,6 @@ class MealEntryService {
     });
   }
 
-
-
   async memberSummary({
     tenantId,
     mealSessionId,
@@ -48,13 +64,29 @@ class MealEntryService {
     return mealEntryRepository.getMemberSummary(tenantId, mealSessionId);
   }
 
+  async getMemberMealSummary({
+    tenantId,
+    mealSessionId,
+    query,
+  }: {
+    tenantId: number;
+    mealSessionId: number;
+    query: IPaginationQuery;
+  }) {
+    return await mealEntryRepository.getMemberMealSummary({
+      tenantId,
+      mealSessionId,
+      query,
+    });
+  }
+
   // client site not used
-  async create (data: ICreateMealEntryDto) {
-    const {tenantId, mealSessionId} = data;
+  async create(data: ICreateMealEntryDto) {
+    const { tenantId, mealSessionId } = data;
 
     await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
 
-    await mealEntryRepository.create({...data});
+    await mealEntryRepository.create({ ...data });
 
     socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.MEAL_ENTRY,
@@ -64,17 +96,21 @@ class MealEntryService {
     });
   }
 
-  async update (data: IUpdateMealEntryDto) {
-    const {id, tenantId, mealSessionId} = data;
+  async update(data: IUpdateMealEntryDto) {
+    const { id, tenantId, mealSessionId } = data;
     await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
 
-    const mealEntry = await mealEntryRepository.findOne({id, tenantId, mealSessionId});
+    const mealEntry = await mealEntryRepository.findOne({
+      id,
+      tenantId,
+      mealSessionId,
+    });
 
-    if(!mealEntry) {
+    if (!mealEntry) {
       throw new ApiError(404, "Meal Entry not found.");
     }
 
-    await mealEntryRepository.update({id, tenantId, mealSessionId}, data)
+    await mealEntryRepository.update({ id, tenantId, mealSessionId }, data);
 
     socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.MEAL_ENTRY,
@@ -84,10 +120,9 @@ class MealEntryService {
     });
 
     return null;
-
   }
 
-  async delete ({  
+  async delete({
     id,
     tenantId,
     mealSessionId,
@@ -95,17 +130,20 @@ class MealEntryService {
     id: number;
     tenantId: number;
     mealSessionId: number;
-  }){
-
+  }) {
     await mealSessionRepository.ensureSessionOpen(tenantId, mealSessionId);
 
-    const mealEntry = await mealRequestRepository.findOne({id, tenantId, mealSessionId});
+    const mealEntry = await mealRequestRepository.findOne({
+      id,
+      tenantId,
+      mealSessionId,
+    });
 
-    if(!mealEntry) {
+    if (!mealEntry) {
       throw new ApiError(404, "Meal Entry not found.");
     }
 
-    await mealEntryRepository.delete({id, tenantId, mealSessionId});
+    await mealEntryRepository.delete({ id, tenantId, mealSessionId });
 
     socketService.emitToTenant(tenantId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.MEAL_ENTRY,

@@ -6,6 +6,8 @@ import { useEggSummaryTable } from "../hooks/useEggSummaryTable";
 import { AddEggModal } from "./AddEggModal";
 import { EggTableSkeleton } from "./skeleton/EggTableSkeleton";
 
+const SEARCH_PLACEHOLDERS = ["member name", "email"];
+
 export const EggSummaryTable = () => {
   const {
     eggs,
@@ -42,7 +44,7 @@ export const EggSummaryTable = () => {
         search={search}
         onSearch={handleSearch}
         onPageChange={handlePage}
-        placeholderTexts={["member name", "email"]}
+        placeholderTexts={SEARCH_PLACEHOLDERS}
         summary={{
           label: "Total Egg",
           amount: totalEgg,

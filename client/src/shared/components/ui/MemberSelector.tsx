@@ -14,6 +14,7 @@ import { useSearchParamsOnly } from "@/shared/hooks/useSearchParams";
 import { getAvatarInitial } from "@/shared/utils/getAvatarInitial";
 
 type MemberId = number;
+const SEARCH_PLACEHOLDERS = ["member name", "email"]
 
 type BaseProps<T extends FieldValues> = {
   name: Path<T>;
@@ -52,7 +53,7 @@ export const MemberSelector = <T extends FieldValues>({
   return (
     <div className="space-y-3">
       <h3 className="font-medium">{label}</h3>
-      <SearchInput value={search} onChange={handleSearch} />
+      <SearchInput value={search} onChange={handleSearch} placeholderTexts={SEARCH_PLACEHOLDERS} />
 
       {isPending ? (
         <PartyMemberSelectorSkeleton />

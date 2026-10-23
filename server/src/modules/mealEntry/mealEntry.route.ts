@@ -12,6 +12,8 @@ router.get("/today-meals", ...adminAndManagerAccess, mealEntryController.todayMe
 
 router.get("/member-summary", ...allAccess, mealEntryController.memberSummary);
 
+router.get("/members-meal-summary", ...adminAndManagerAccess, mealEntryController.getMemberMealSummary);
+
 router.post("/", ...managerAccess, mealEntryController.create);
 
 router.patch("/:id", ...managerAccess, mealEntryController.update);
