@@ -3,21 +3,27 @@ import { MemberAvatar } from "@/shared/components/ui/MemberAvatar";
 import type { TableColumn } from "@/shared/components/ui/Table";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROUTES } from "@/shared/constants/routes";
-import { useRBAC } from "@/shared/hooks/useRBAC";
 
 import { Badge } from "@/shared/components/ui/Badge";
 import { formatTaka } from "@/shared/utils/format.utils";
 import type { IKhalaBill } from "../types/khalaBill.types";
 
 export const useKhalaBillsColumns = (): TableColumn<IKhalaBill>[] => {
-  const { can } = useRBAC();
-
   const columns: TableColumn<IKhalaBill>[] = [
     {
       key: "member",
       title: "Member",
       render: (bill) => (
-        <MemberAvatar name={bill.member?.name} avatar={bill.member?.avatar} />
+        <ActionLink
+          to={`${ROUTES.KHALA_BILL}/history/${bill.userId}`}
+          state={bill}
+          permission={PERMISSIONS.KHALA_BILL_CREATE}
+          onDenied="plain"
+          showIcon={false}
+          showHoverBorder={false}
+        >
+          <MemberAvatar name={bill.member?.name} avatar={bill.member?.avatar} />
+        </ActionLink>
       ),
     },
     {
@@ -37,21 +43,6 @@ export const useKhalaBillsColumns = (): TableColumn<IKhalaBill>[] => {
       ),
     },
   ];
-
-  if (can(PERMISSIONS.KHALA_BILL_VIEW)) {
-    columns.push({
-      key: "actions",
-      title: "Actions",
-      render: (bill) => (
-        <ActionLink
-          state={bill}
-          to={`${ROUTES.KHALA_BILL}/history/${bill.userId}`}
-        >
-          Details
-        </ActionLink>
-      ),
-    });
-  }
 
   return columns;
 };
