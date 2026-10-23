@@ -5,6 +5,7 @@ import { getAppDate } from "@/utils/date.util.js";
 import { sendResponse } from "@/utils/sendResponse.utils.js";
 import { Request, Response } from "express";
 import { depositService } from "./deposit.service.js";
+import { getPaginationQuery } from "@/utils/pagination.util.js";
 
 class DepositController {
   create = asyncHandler(async (req: Request, res: Response) => {
@@ -31,7 +32,7 @@ class DepositController {
     async (req: Request, res: Response) => {
       const { tenantId, mealSessionId } = getTenantContext(req);
 
-      const query = req.query as IPaginationQuery;
+      const query = getPaginationQuery(req);
 
       const depositSummary = await depositService.getMemberDepositSummary({
         tenantId,

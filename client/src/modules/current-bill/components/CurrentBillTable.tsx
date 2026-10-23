@@ -7,6 +7,7 @@ import { useCurrentBillsColumns } from "../configs/currentBills.columns";
 import { useCurrentBills } from "../hooks/useCurrentBills";
 
 const PAGE_LIMIT = 10;
+const SEARCH_PLACEHOLDERS = ["member name", "email"]
 
 export const CurrentBillTable = () => {
   const { page, search, handleSearch, handlePage } = useTableSearchParams();
@@ -35,6 +36,7 @@ export const CurrentBillTable = () => {
       search={search}
       onSearch={handleSearch}
       onPageChange={handlePage}
+      placeholderTexts={SEARCH_PLACEHOLDERS}
       summary={{
         label: "Total Current Bill",
         amount: Number(totalCurrentBill),

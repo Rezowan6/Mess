@@ -50,7 +50,7 @@ class EggRepository extends BaseRepository<Egg> {
   ) {
     const search = getSearchQuery(query);
 
-    return this.paginate(
+    return this.paginateGrouped(
       {
         where: {
           tenantId,

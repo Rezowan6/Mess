@@ -11,6 +11,7 @@ import { AddExpenseModal } from "./AddExpenseModal";
 import { ExpenseTableSkeleton } from "./skeleton/ExpenseTableSkeleton";
 
 const PAGE_LIMIT = 10;
+const SEARCH_PLACEHOLDERS = ["signature", "category", "date"];
 
 export const ExpenseTable = () => {
   const [selectedExpense, setSelectedExpense] = useState<IExpense | null>(null);
@@ -45,7 +46,7 @@ export const ExpenseTable = () => {
       skeleton={<ExpenseTableSkeleton />}
       message={EXPENSE_MESSAGES}
       search={search}
-      placeholderTexts={["signature", "category", "date"]}
+      placeholderTexts={SEARCH_PLACEHOLDERS}
       onSearch={handleSearch}
       onPageChange={handlePage}
       summary={{

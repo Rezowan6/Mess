@@ -7,6 +7,7 @@ import { useMemberDepositSummary } from "../hooks/useMemberDepositSummary";
 import { DepositTableSkeleton } from "./DepositTableSkeleton";
 
 const PAGE_LIMIT = 10;
+const SEARCH_PLACEHOLDERS = ["member name", "email"];
 
 export const DepositTable = () => {
   const { page, search, handleSearch, handlePage } = useTableSearchParams();
@@ -35,6 +36,7 @@ export const DepositTable = () => {
       search={search}
       onSearch={handleSearch}
       onPageChange={handlePage}
+      placeholderTexts={SEARCH_PLACEHOLDERS}
       summary={{
         label: "Total Deposit",
         amount: Number(totalDeposit),

@@ -3,6 +3,7 @@ import { buildSearchCondition } from "@/common/utils/search.util.js";
 import { getRangeTime } from "@/helpers/getRangeTime.helper.js";
 import { Deposit } from "@/models/index.js";
 import { IPaginationQuery } from "@/types/pagination.interface.js";
+import { getSearchQuery } from "@/utils/string.util.js";
 import { Op, col, fn } from "sequelize";
 
 class DepositRepository extends BaseRepository<Deposit> {
@@ -53,34 +54,24 @@ class DepositRepository extends BaseRepository<Deposit> {
     mealSessionId: number;
     query: IPaginationQuery;
   }) {
+    const search = getSearchQuery(query);
+
     const memberInclude = {
       association: "member",
-
       attributes: ["id", "name", "email", "avatar"],
-
-      required: !!query.search,
-
-      ...(query.search && {
-        where: {
-          name: {
-            [Op.like]: `%${query.search}%`,
-          },
-        },
-      }),
+      required: Boolean(search),
+      where: buildSearchCondition(["name", "email"], search),
     };
+
     return this.paginateGrouped(
       {
         where: {
           tenantId,
           mealSessionId,
         },
-
         attributes: ["memberId", [fn("SUM", col("amount")), "totalDeposit"]],
-
         include: [memberInclude],
-
         group: ["memberId", "member.id", "member.name"],
-
         order: [["memberId", "ASC"]],
       },
       query,
