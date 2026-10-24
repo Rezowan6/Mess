@@ -19,7 +19,7 @@ export class CurrentBill extends Model<
   InferAttributes<
     CurrentBill,
     {
-      omit: "createdAt" | "updatedAt";
+      omit: "createdAt" | "updatedAt" | "deletedAt";
     }
   >,
   InferCreationAttributes<CurrentBill>

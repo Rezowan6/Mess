@@ -1,7 +1,7 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
 import { buildSearchCondition } from "@/common/utils/search.util.js";
 import { getSearchQuery } from "@/utils/string.util.js";
-import { Op, Transaction } from "sequelize";
+import { col, Op, Transaction, where } from "sequelize";
 import {
   IGetBYIdCurrentBill,
   IGetCurrentBills,
@@ -103,13 +103,12 @@ class CurrentBillRepository extends BaseRepository<CurrentBill> {
   }
 
   async permanentlyDeleteExpiredSoftDeleted(cutoffDate: Date): Promise<number> {
+    if (Number.isNaN(cutoffDate.getTime())) {
+      throw new Error("Invalid cutoff date.");
+    }
+
     return this.model.destroy({
-      where: {
-        deletedAt: {
-          [Op.lte]: cutoffDate,
-        },
-      },
-      paranoid: false,
+      where: where(col("deleted_at"), Op.lte, cutoffDate),
       force: true,
     });
   }

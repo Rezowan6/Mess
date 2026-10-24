@@ -5,7 +5,7 @@ import cron from "node-cron";
 
 export const deleteExpiredCurrentBillsJob = (): void => {
   cron.schedule(
-    "0 3 * * *",
+    "0 22 * * *",
     async () => {
       try {
         const deletedCount =
