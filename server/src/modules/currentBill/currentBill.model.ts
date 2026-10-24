@@ -97,11 +97,6 @@ CurrentBill.init(
     underscored: true,
     indexes: [
       {
-        unique: true,
-        name: "current_bills_tenant_user_period_unique",
-        fields: ["tenant_id", "user_id", "year", "month"],
-      },
-      {
         name: "current_bills_tenant_period_status_index",
         fields: ["tenant_id", "year", "month", "status"],
       },

@@ -86,7 +86,13 @@ class CurrentBillRepository extends BaseRepository<CurrentBill> {
 
   async getDeletedCurrentBills(tenantId: number) {
     return this.findAll({
-      where: { tenantId },
+      where: {
+        [Op.and]: [
+          { tenantId },
+          // "IS NOT" with null makes Sequelize write: deleted_at IS NOT NULL
+          where(col("CurrentBill.deleted_at"), "IS NOT", null),
+        ],
+      },
       paranoid: false,
       include: [
         {
@@ -98,19 +104,34 @@ class CurrentBillRepository extends BaseRepository<CurrentBill> {
           attributes: ["id", "name", "avatar", "email"],
         },
       ],
-      order: [["deletedAt", "DESC"]],
-    }).then((bills) => bills.filter((bill) => bill.deletedAt !== null));
+      order: [[col("CurrentBill.deleted_at"), "DESC"]],
+    });
   }
 
-  async permanentlyDeleteExpiredSoftDeleted(cutoffDate: Date): Promise<number> {
+  // Deletes in batches, so one huge delete never locks the table for long
+  async permanentlyDeleteExpiredSoftDeleted(
+    cutoffDate: Date,
+    batchSize = 500,
+  ): Promise<number> {
     if (Number.isNaN(cutoffDate.getTime())) {
       throw new Error("Invalid cutoff date.");
     }
 
-    return this.model.destroy({
-      where: where(col("deleted_at"), Op.lte, cutoffDate),
-      force: true,
-    });
+    let total = 0;
+
+    for (;;) {
+      const deleted = await this.model.destroy({
+        where: where(col("deleted_at"), Op.lte, cutoffDate),
+        force: true,
+        limit: batchSize,
+      });
+
+      total += deleted;
+
+      if (deleted < batchSize) break;
+    }
+
+    return total;
   }
 }
 

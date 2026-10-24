@@ -9,10 +9,12 @@ import { ApiError } from "@/utils/ApiError.js";
 import { getDateBeforeDays, isWithinHours } from "@/utils/date.util.js";
 import { logger } from "@/utils/logger.js";
 import { UniqueConstraintError } from "sequelize";
-import { khalaBillStatus } from "../khalaBill/khalaBill.interface.js";
+import { DepositPaymentMethodType } from "../deposit/deposit.interface.js";
 import { Notification } from "../notification/notification.interface.js";
 import { notificationService } from "../notification/notification.service.js";
+import { membershipRepository } from "../tenantMembership/tenantMembership.repository.js";
 import {
+  CurrentBillStatus,
   ICreateCurrentBillDto,
   IDeleteCurrentBillDto,
   IGetBYIdCurrentBill,
@@ -21,6 +23,8 @@ import {
   IUpdateCurrentBillDto,
 } from "./currentBill.interface.js";
 import { currentBillRepository } from "./currentBill.repository.js";
+
+const PAID_STATUS: CurrentBillStatus = "paid";
 
 class CurrentBillService {
   async getMembercurrentBills({
@@ -50,22 +54,43 @@ class CurrentBillService {
   }
 
   async create(data: ICreateCurrentBillDto) {
-    const { tenantId, userId, month, year, createdBy } = data;
+    const { tenantId, userId, month, year, amount, paymentMethod, createdBy } =
+      data;
 
-    const currentBill = await currentBillRepository.findOne({
+    // The member must belong to this mess
+    const isMember = await membershipRepository.exists({
       tenantId,
       userId,
-      month,
-      year,
+      status: "active",
     });
 
-    if (currentBill) {
-      throw new ApiError(409, "Current bill allready exists this month.");
+    if (!isMember) {
+      throw new ApiError(404, "Member not found in this mess.");
     }
-    const result = await currentBillRepository.create({
-      ...data,
-      status: khalaBillStatus.paid,
-    });
+
+    // Only the validated fields are stored. The unique index is the final guard
+    // against two requests creating the same bill at the same moment.
+    const result = await currentBillRepository
+      .create({
+        tenantId,
+        userId,
+        month,
+        year,
+        amount,
+        paymentMethod,
+        createdBy,
+        status: PAID_STATUS,
+      })
+      .catch((error: unknown) => {
+        if (error instanceof UniqueConstraintError) {
+          throw new ApiError(
+            409,
+            "A current bill already exists for this member and month.",
+          );
+        }
+
+        throw error;
+      });
 
     socketService.emitToTenantUser(tenantId, userId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.CURRENT_BILL,
@@ -74,8 +99,7 @@ class CurrentBillService {
       userId,
     });
 
-    // Notify only the member who received the currentBill.
-    const billingPeriod = `${month}/${year}`;
+    // A notification failure must never fail the create itself.
     try {
       await notificationService.create({
         tenantId,
@@ -83,7 +107,7 @@ class CurrentBillService {
         createdBy,
         mealSessionId: null,
         title: "Current-bill Added",
-        message: `Your current bill of ৳ ${Number(result.amount).toFixed(2)} for ${billingPeriod} has been added to your account.`,
+        message: `Your current bill of ৳ ${Number(result.amount).toFixed(2)} for ${month}/${year} has been added to your account.`,
         type: Notification.CURRENT_BILL_ADDED,
       });
     } catch (error) {
@@ -97,40 +121,66 @@ class CurrentBillService {
   }
 
   async update(data: IUpdateCurrentBillDto) {
-    const { id, tenantId, createdBy } = data;
-    const currentBill = await currentBillRepository.findOne({
-      id,
-      tenantId,
+    const { id, tenantId, createdBy, amount, paymentMethod } = data;
+
+    const changed = await sequelize.transaction(async (transaction) => {
+      // Lock the row so an update and a delete cannot run at the same time
+      const currentBill = await currentBillRepository.findOneWithOptions({
+        where: { id, tenantId },
+        transaction,
+        lock: transaction.LOCK.UPDATE,
+      });
+
+      if (!currentBill) {
+        throw new ApiError(404, "currentBill not found.");
+      }
+
+      if (!isWithinHours(currentBill.createdAt, 24)) {
+        throw new ApiError(
+          409,
+          "This currentBill can only be updated within 24 hours of creation.",
+        );
+      }
+
+      const oldAmount = Number(currentBill.amount);
+
+      const updates: {
+        amount?: number;
+        paymentMethod?: DepositPaymentMethodType;
+      } = {};
+
+      if (amount !== undefined && amount !== oldAmount) {
+        updates.amount = amount;
+      }
+
+      if (
+        paymentMethod !== undefined &&
+        paymentMethod !== currentBill.paymentMethod
+      ) {
+        updates.paymentMethod = paymentMethod;
+      }
+
+      // Nothing really changed: no write, no event, no notification
+      if (Object.keys(updates).length === 0) return null;
+
+      await currentBillRepository.update({ id, tenantId }, updates, {
+        transaction,
+      });
+
+      return {
+        userId: currentBill.userId,
+        month: currentBill.month,
+        year: currentBill.year,
+        oldAmount,
+        newAmount: updates.amount ?? oldAmount,
+      };
     });
 
-    if (!currentBill) {
-      throw new ApiError(404, "currentBill not found.");
-    }
+    if (!changed) return null;
 
-    if (!isWithinHours(currentBill.createdAt, 24)) {
-      throw new ApiError(
-        409,
-        "This currentBill can only be updated within 24 hours of creation.",
-      );
-    }
+    const { userId, month, year, oldAmount, newAmount } = changed;
 
-    const userId = currentBill.userId;
-
-    // Keep the old amount for the notification message
-    const oldAmount = Number(currentBill.amount);
-
-    const updates = {
-      ...(data.amount !== undefined && { amount: data.amount }),
-      ...(data.paymentMethod !== undefined && {
-        paymentMethod: data.paymentMethod,
-      }),
-      ...(data.status !== undefined && { status: data.status }),
-    };
-
-    await currentBillRepository.update(
-      { id, tenantId, userId: currentBill.userId },
-      updates,
-    );
+    // Emit only after a successful commit
     socketService.emitToTenantUser(tenantId, userId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.CURRENT_BILL,
       action: RealtimeAction.UPDATED,
@@ -138,18 +188,9 @@ class CurrentBillService {
       userId,
     });
 
-    // Notify only the member whose current bill was changed.
     // A notification failure must never fail the update itself.
     try {
-      const newAmount =
-        data.amount !== undefined ? Number(data.amount) : oldAmount;
-
-      const billingPeriod = `${currentBill.month}/${currentBill.year}`;
-
-      const message =
-        newAmount !== oldAmount
-          ? `Your current bill for ${billingPeriod} has been updated from ৳ ${oldAmount.toFixed(2)} to ৳ ${newAmount.toFixed(2)}.`
-          : `Your current bill details for ${billingPeriod} have been updated.`;
+      const billingPeriod = `${month}/${year}`;
 
       await notificationService.create({
         tenantId,
@@ -157,13 +198,16 @@ class CurrentBillService {
         createdBy,
         mealSessionId: null,
         title: "Current-bill Updated",
-        message,
+        message:
+          newAmount !== oldAmount
+            ? `Your current bill for ${billingPeriod} has been updated from ৳ ${oldAmount.toFixed(2)} to ৳ ${newAmount.toFixed(2)}.`
+            : `Your current bill details for ${billingPeriod} have been updated.`,
         type: Notification.CURRENT_BILL_UPDATED,
       });
     } catch (error) {
       logger.error(
-        { error, tenantId, userId: currentBill.userId },
-        "current-bill update notification creation failed",
+        { error, tenantId, userId },
+        "Current-bill update notification creation failed",
       );
     }
 
@@ -173,33 +217,38 @@ class CurrentBillService {
   async delete(data: IDeleteCurrentBillDto) {
     const { id, tenantId, createdBy } = data;
 
-    const currentBill = await currentBillRepository.findOne({
-      id,
-      tenantId,
+    const deleted = await sequelize.transaction(async (transaction) => {
+      const currentBill = await currentBillRepository.findOneWithOptions({
+        where: { id, tenantId },
+        transaction,
+        lock: transaction.LOCK.UPDATE,
+      });
+
+      if (!currentBill) {
+        throw new ApiError(404, "currentBill not found.");
+      }
+
+      if (!isWithinHours(currentBill.createdAt, 24)) {
+        throw new ApiError(
+          409,
+          "This currentBill can only be deleted within 24 hours of creation.",
+        );
+      }
+
+      // The tenant in the where clause keeps the delete inside this tenant
+      await currentBillRepository.delete({ id, tenantId }, { transaction });
+
+      return {
+        userId: currentBill.userId,
+        month: currentBill.month,
+        year: currentBill.year,
+        amount: Number(currentBill.amount),
+      };
     });
 
-    if (!currentBill) {
-      throw new ApiError(404, "currentBill not found.");
-    }
+    const { userId, month, year, amount } = deleted;
 
-    if (!isWithinHours(currentBill.createdAt, 24)) {
-      throw new ApiError(
-        409,
-        "This currentBill can only be deleted within 24 hours of creation.",
-      );
-    }
-
-    // Keep these before deleting, they are needed for the notification
-    const userId = currentBill.userId;
-    const amount = Number(currentBill.amount);
-
-    // tenantId and mealSessionId in the where clause keep the delete inside this tenant
-    await currentBillRepository.delete({
-      id,
-      tenantId,
-      userId,
-    });
-
+    // Emit only after a successful commit
     socketService.emitToTenantUser(tenantId, userId, SocketEvent.DATA_UPDATED, {
       resource: RealtimeResource.CURRENT_BILL,
       action: RealtimeAction.DELETED,
@@ -207,18 +256,15 @@ class CurrentBillService {
       userId,
     });
 
-    // Notify only the member whose deposit was removed.
     // A notification failure must never fail the delete itself.
     try {
-      const billingPeriod = `${currentBill.month}/${currentBill.year}`;
-
       await notificationService.create({
         tenantId,
         userId,
         createdBy,
         mealSessionId: null,
-        title: "current-bill Removed",
-        message: `Your current bill of ৳ ${amount.toFixed(2)} for ${billingPeriod} has been removed.`,
+        title: "Current-bill Removed",
+        message: `Your current bill of ৳ ${amount.toFixed(2)} for ${month}/${year} has been removed.`,
         type: Notification.CURRENT_BILL_DELETED,
       });
     } catch (error) {
@@ -325,13 +371,13 @@ class CurrentBillService {
     return null;
   }
 
-async purgeExpiredDeletedCurrentBills(): Promise<number> {
-  const cutoffDate = getDateBeforeDays(7);
+  async purgeExpiredDeletedCurrentBills(): Promise<number> {
+    const cutoffDate = getDateBeforeDays(7);
 
-  return currentBillRepository.permanentlyDeleteExpiredSoftDeleted(
-    cutoffDate,
-  );
-}
+    return currentBillRepository.permanentlyDeleteExpiredSoftDeleted(
+      cutoffDate,
+    );
+  }
 }
 
 export const currentBillService = new CurrentBillService();

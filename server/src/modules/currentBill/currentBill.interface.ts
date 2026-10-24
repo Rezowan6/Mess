@@ -1,5 +1,9 @@
 import { IPaginationQuery } from "@/types/pagination.interface.js";
-import type { DepositPaymentMethodType } from "../deposit/deposit.interface.js";
+import type {
+  CreateCurrentBillBody,
+  UpdateCurrentBillBody,
+} from "./currentBill.validation.js";
+
 export const CURRENT_BILL_STATUS = [
   "pending",
   "partially_paid",
@@ -8,25 +12,16 @@ export const CURRENT_BILL_STATUS = [
 
 export type CurrentBillStatus = (typeof CURRENT_BILL_STATUS)[number];
 
-export interface ICreateCurrentBillDto {
+export type ICreateCurrentBillDto = CreateCurrentBillBody & {
   tenantId: number;
-  userId: number;
   createdBy: number;
-  amount: number;
-  paymentMethod: DepositPaymentMethodType;
-  month: number;
-  year: number;
-  status?: CurrentBillStatus;
-}
+};
 
-export interface IUpdateCurrentBillDto {
+export type IUpdateCurrentBillDto = UpdateCurrentBillBody & {
   id: number;
   tenantId: number;
   createdBy: number;
-  amount?: number;
-  paymentMethod?: DepositPaymentMethodType;
-  status?: CurrentBillStatus;
-}
+};
 
 export interface IDeleteCurrentBillDto {
   id: number;

@@ -30,25 +30,6 @@ class CurrentBillController {
     });
   });
 
-  getById = asyncHandler(async (req: Request, res: Response) => {
-    const { tenantId } = getTenantOnlyContext(req);
-    const id = getIdParam(req);
-
-    const { year } = getCurrentMonthAndYear();
-
-    const currentBill = await currentBillService.getById({
-      tenantId,
-      userId: id,
-      year: Number(year),
-    });
-
-    return sendResponse(res, {
-      statusCode: 201,
-      message: "Current-bill fetched successfully",
-      data: currentBill,
-    });
-  });
-
   getDeletedCurrentBills = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId } = getTenantOnlyContext(req);
 
@@ -62,10 +43,30 @@ class CurrentBillController {
     });
   });
 
+  getById = asyncHandler(async (req: Request, res: Response) => {
+    const { tenantId } = getTenantOnlyContext(req);
+    const id = getIdParam(req);
+
+    const { year } = getCurrentMonthAndYear();
+
+    const currentBill = await currentBillService.getById({
+      tenantId,
+      userId: id,
+      year: Number(year),
+    });
+
+    return sendResponse(res, {
+      statusCode: 200,
+      message: "Current-bill fetched successfully",
+      data: currentBill,
+    });
+  });
+
   create = asyncHandler(async (req: Request, res: Response) => {
     const { tenantId, userId } = getTenantOnlyContext(req);
 
-    const deposit = await currentBillService.create({
+    // req.body is already validated and holds only the allowed fields
+    await currentBillService.create({
       ...req.body,
       tenantId,
       createdBy: userId,
@@ -74,7 +75,7 @@ class CurrentBillController {
     return sendResponse(res, {
       statusCode: 201,
       message: "Current-bill create successfully",
-      data: deposit,
+      data: null,
     });
   });
 
@@ -82,17 +83,17 @@ class CurrentBillController {
     const { tenantId, userId } = getTenantOnlyContext(req);
     const id = getIdParam(req);
 
-    const currentBill = await currentBillService.update({
-      id,
+    await currentBillService.update({
       ...req.body,
+      id,
       tenantId,
       createdBy: userId,
     });
 
     return sendResponse(res, {
-      statusCode: 201,
+      statusCode: 200,
       message: "Current-bill update successfully",
-      data: currentBill,
+      data: null,
     });
   });
 
@@ -100,16 +101,16 @@ class CurrentBillController {
     const { tenantId, userId } = getTenantOnlyContext(req);
     const id = getIdParam(req);
 
-    const currentBill = await currentBillService.delete({
+    await currentBillService.delete({
       id,
       tenantId,
       createdBy: userId,
     });
 
     return sendResponse(res, {
-      statusCode: 201,
+      statusCode: 200,
       message: "Current-bill deleted successfully",
-      data: currentBill,
+      data: null,
     });
   });
 

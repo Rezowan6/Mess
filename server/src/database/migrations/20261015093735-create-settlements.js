@@ -80,11 +80,11 @@ export default {
       },
 
       payment_method_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER.UNSIGNED, // must match payment_methods.id exactly
         allowNull: true,
         references: { model: "payment_methods", key: "id" },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        onUpdate: "RESTRICT",
+        onDelete: "RESTRICT",
       },
 
       payment_method: {
