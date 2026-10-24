@@ -3,6 +3,7 @@ import { setupAssociations } from "@/models/associations.js";
 import "dotenv/config";
 import http from "http";
 import app from "./app.js";
+import { deleteExpiredCurrentBillsJob } from "./jobs/currentBill/deleteExpiredCurrentBills.job.js";
 import { startMealRequestJob } from "./jobs/mealRequest/mealRequest.job.js";
 import { initSocket } from "./socket/socket.js";
 
@@ -22,6 +23,7 @@ const startServer = async (): Promise<void> => {
 
     // cron job
     startMealRequestJob();
+    deleteExpiredCurrentBillsJob();
 
     httpServer.listen(PORT, () => {
       console.log(`Server running on port http://localhost:${PORT}`);

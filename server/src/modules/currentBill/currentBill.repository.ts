@@ -1,7 +1,7 @@
 import { BaseRepository } from "@/common/repo/base.repository.js";
 import { buildSearchCondition } from "@/common/utils/search.util.js";
 import { getSearchQuery } from "@/utils/string.util.js";
-import { Transaction } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import {
   IGetBYIdCurrentBill,
   IGetCurrentBills,
@@ -100,6 +100,18 @@ class CurrentBillRepository extends BaseRepository<CurrentBill> {
       ],
       order: [["deletedAt", "DESC"]],
     }).then((bills) => bills.filter((bill) => bill.deletedAt !== null));
+  }
+
+  async permanentlyDeleteExpiredSoftDeleted(cutoffDate: Date): Promise<number> {
+    return this.model.destroy({
+      where: {
+        deletedAt: {
+          [Op.lte]: cutoffDate,
+        },
+      },
+      paranoid: false,
+      force: true,
+    });
   }
 }
 

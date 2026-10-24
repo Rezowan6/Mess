@@ -6,7 +6,7 @@ import {
 import { SocketEvent } from "@/socket/socket-event.js";
 import { socketService } from "@/socket/socket.service.js";
 import { ApiError } from "@/utils/ApiError.js";
-import { isWithinHours } from "@/utils/date.util.js";
+import { getDateBeforeDays, isWithinHours } from "@/utils/date.util.js";
 import { logger } from "@/utils/logger.js";
 import { UniqueConstraintError } from "sequelize";
 import { khalaBillStatus } from "../khalaBill/khalaBill.interface.js";
@@ -23,8 +23,18 @@ import {
 import { currentBillRepository } from "./currentBill.repository.js";
 
 class CurrentBillService {
-  async getMembercurrentBills({ tenantId, month, year, query }: IGetCurrentBills) {
-    return await currentBillRepository.getMemberCurrentBills({tenantId, month, year,query,});
+  async getMembercurrentBills({
+    tenantId,
+    month,
+    year,
+    query,
+  }: IGetCurrentBills) {
+    return await currentBillRepository.getMemberCurrentBills({
+      tenantId,
+      month,
+      year,
+      query,
+    });
   }
 
   async getById({ tenantId, userId, year }: IGetBYIdCurrentBill) {
@@ -314,6 +324,14 @@ class CurrentBillService {
 
     return null;
   }
+
+async purgeExpiredDeletedCurrentBills(): Promise<number> {
+  const cutoffDate = getDateBeforeDays(7);
+
+  return currentBillRepository.permanentlyDeleteExpiredSoftDeleted(
+    cutoffDate,
+  );
+}
 }
 
 export const currentBillService = new CurrentBillService();

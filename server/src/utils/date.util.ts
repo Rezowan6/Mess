@@ -71,3 +71,14 @@ export const getCurrentMonthAndYear = () => {
 export const formatDisplayDate = (date: Date | string | number): string => {
   return appTime(date).format("DD MMM YYYY");
 };
+
+export const getDateBeforeDays = (
+  days: number,
+  fromDate?: Date | string | number,
+): Date => {
+  if (!Number.isFinite(days) || days < 0) {
+    throw new Error("Days must be a non-negative number.");
+  }
+
+  return appTime(fromDate).subtract(days, "day").toDate();
+};
